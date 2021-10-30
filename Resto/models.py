@@ -7,11 +7,11 @@ from django.db.models.deletion import CASCADE
 class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
-    description = models.TextField(max_length=200,blank=True)
+    description = models.TextField(max_length=100,blank=True)
     date_created = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Categories'
+        verbose_name = 'Categorie'
 
     def __str__(self):
         return self.name
