@@ -13,7 +13,11 @@
         <div class="card card-{{cat.cat_id}}">
             <p class="card__exit"><i class="fas fa-times"></i></p>
             <div class="card__icon"><i class="fas fa-bolt"></i></div>
-            <!-- <img source='' alt='img'> -->
+            <div style="text-align: center">
+                <img src="{{cat.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit: scale-down;image-rendering: auto;
+                flex: auto;text-align: center;">
+            </div>
+
             <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
                 <h2 class="card__title" style="text-align: center;">{{cat.name}}</h2>
                 <p class="card-text" style="text-align: center;">{{cat.description}}</p>

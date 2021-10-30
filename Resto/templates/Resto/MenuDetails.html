@@ -7,7 +7,7 @@
     <div class='row row-cols g-3 mt-5'>
         {% for i in item %}
         <div class='col-4 mb-5'>
-            <img class="img-fluid rounded" source="{% static 'Resto/GazMinute.png'%}" alt='img'>
+            <img class="card-img-top" src="{{i.img.url}}" alt="{{ i.name}}" style="width: auto; height: 150px; object-fit: scale-down;">
             <h2 style="color: tomato;">{{i.name}}</h2>
             <div class='mb-2'>
                 <p>{{i.description}}</p>
