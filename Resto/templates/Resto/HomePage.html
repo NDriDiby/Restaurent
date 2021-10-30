@@ -4,26 +4,29 @@
 
 <div class="main-container">
     <div class="heading">
-        <h1 class="heading__title">Texas GrillZ Menu</h1>
-        <p class="heading__credits"><a class="heading__link" target="_blank" href="https://dribbble.com/sl">Design by N'Dri Diby</a></p>
+        <!-- <h1 class="heading__title">Texas GrillZ Menu</h1> -->
+        <img class='mt-3' src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 300px; height: 300px; object-fit: scale-down;image-rendering: auto;
+        flex: auto;text-align: center;">
+        <h1 class="heading__title">Menu</h1>
     </div>
 
-    <div class="cards">
+    <div class="cards mt-5">
         {% for cat in category %}
-        <div class="card card-{{cat.cat_id}}">
-            <p class="card__exit"><i class="fas fa-times"></i></p>
-            <div class="card__icon"><i class="fas fa-bolt"></i></div>
-            <div style="text-align: center">
-                <img src="{{cat.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit: scale-down;image-rendering: auto;
-                flex: auto;text-align: center;">
-            </div>
+        <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
+            <div class="card card-{{cat.cat_id}}">
+                <!-- <p class="card__exit"><i class="fas fa-times"></i></p> -->
+                <!-- <div class="card__icon"><i class="fas fa-bolt"></i></div> -->
+                <div style="text-align: center">
+                    <img src="{{cat.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit:scale-down;image-rendering: auto;text-align: center;">
+                </div>
 
-            <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
+
                 <h2 class="card__title" style="text-align: center;">{{cat.name}}</h2>
                 <p class="card-text" style="text-align: center;">{{cat.description}}</p>
-            </a>
-        </div>
-        {% endfor %}
+
+            </div>
+            {% endfor %}
     </div>
+    </a>
 </div>
 {% endblock content %}
