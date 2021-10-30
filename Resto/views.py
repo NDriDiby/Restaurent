@@ -9,5 +9,15 @@ def HomePage(request):
     context = {
         'category':category,
     }
-
     return render(request,'Resto/HomePage.html',context)
+
+
+def MenuDetails(request,menu_id):
+    
+    menu = Category.objects.get(id = menu_id)
+
+    context = {
+        'menu':menu
+    }
+
+    return render(request,'Resto/MenuDetails.html',context)

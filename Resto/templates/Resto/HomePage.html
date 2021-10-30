@@ -11,10 +11,12 @@
     <div class="cards">
         {% for cat in category %}
         <div class="card card-{{cat.cat_id}}">
+            <p class="card__exit"><i class="fas fa-times"></i></p>
             <div class="card__icon"><i class="fas fa-bolt"></i></div>
-            <img source='' alt='img'>
-            <a href="#">
-                <h2 class="card__link">{{cat.name}}</h2>
+            <!-- <img source='' alt='img'> -->
+            <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
+                <h2 class="card__title" style="text-align: center;">{{cat.name}}</h2>
+                <p class="card__title">{{cat.desciption}}</p>
             </a>
         </div>
         {% endfor %}

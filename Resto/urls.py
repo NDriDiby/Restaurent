@@ -4,4 +4,6 @@ from. import views
 
 urlpatterns = [
     path('', views.HomePage,name='homepage'),
+    path('menudetails/<menu_id>', views.MenuDetails,name='menu_details'),
+
 ]
