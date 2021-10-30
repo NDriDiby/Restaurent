@@ -16,7 +16,7 @@
             <!-- <img source='' alt='img'> -->
             <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
                 <h2 class="card__title" style="text-align: center;">{{cat.name}}</h2>
-                <p class="card__title">{{cat.desciption}}</p>
+                <p class="card-text" style="text-align: center;">{{cat.description}}</p>
             </a>
         </div>
         {% endfor %}

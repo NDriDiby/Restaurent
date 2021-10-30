@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from.models import Category
+from.models import Category,Item
 
 # Create your views here.
 
 def HomePage(request):
-    category = Category.objects.all()
-
+    category = Category.objects.all().order_by("name")
     context = {
         'category':category,
     }
@@ -15,11 +14,13 @@ def HomePage(request):
 def MenuDetails(request,menu_id):
     
     menu = Category.objects.get(id = menu_id)
-    category = Category.objects.all()
+    category = Category.objects.all().order_by("name")
+    item = Item.objects.filter(category__id = menu_id)
 
     context = {
         'menu':menu,
-        'category':category
+        'category':category,
+        'item':item
     }
 
     return render(request,'Resto/MenuDetails.html',context)

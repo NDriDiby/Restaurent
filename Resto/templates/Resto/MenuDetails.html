@@ -8,45 +8,18 @@
     </div>
 
     <div class='row row-cols g-3 mt-5'>
+        {% for i in item %}
+        <div class='col-4 mb-5'>
+            <h2 style="color: tomato;">{{i.name}}</h2>
+            <div class='mb-2'>
+                <p>{{i.description}}</p>
+                <b><p>{{i.prix}} FCFA</p></b>
+            </div>
 
-        <div class='col-4'>
-            <h1>Good</h1>
         </div>
-
-        <div class='col-4'>
-            <h1>Job</h1>
-        </div>
-
-        <div class='col-4'>
-            <h1>Omi</h1>
-        </div>
-        <div class='col-4'>
-            <h1>Good</h1>
-        </div>
-
-        <div class='col-4'>
-            <h1>Job</h1>
-        </div>
-
-        <div class='col-4'>
-            <h1>Omi</h1>
-        </div>
-
-        <div class='col-4'>
-            <h1>Good</h1>
-        </div>
-
-        <div class='col-4'>
-            <h1>Job</h1>
-        </div>
-
-        <div class='col-4'>
-            <h1>Omi</h1>
-        </div>
-
-
-
+        {% endfor %}
     </div>
+    <hr>
 </div>
 
 {%endblock content%}
