@@ -15,9 +15,11 @@ def HomePage(request):
 def MenuDetails(request,menu_id):
     
     menu = Category.objects.get(id = menu_id)
+    category = Category.objects.all()
 
     context = {
-        'menu':menu
+        'menu':menu,
+        'category':category
     }
 
     return render(request,'Resto/MenuDetails.html',context)
