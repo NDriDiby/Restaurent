@@ -1,0 +1,23 @@
+{% extends "Resto/base.html" %} {% block content %} {% load static %}
+
+
+
+<div class="main-container">
+    <div class="heading">
+        <h1 class="heading__title">Texas GrillZ Menu</h1>
+        <p class="heading__credits"><a class="heading__link" target="_blank" href="https://dribbble.com/sl">Design by Simon Lurwer on Dribbble</a></p>
+    </div>
+
+    <div class="cards">
+        {% for cat in category %}
+        <div class="card card-{{cat.cat_id}}">
+            <div class="card__icon"><i class="fas fa-bolt"></i></div>
+            <img source='' alt='img'>
+            <a href="#">
+                <h2 class="card__link">{{cat.name}}</h2>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
