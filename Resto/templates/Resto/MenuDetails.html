@@ -4,26 +4,22 @@
         <h1>{{menu.name}}</h1>
     </div>
 
-    {% for i in item %}
-    <div class='row g-3 mt-5' style="align-items: center;width: 350px;">
-        <div class='col'>
-            <div class='card justify-content-center'>
-                <div>
-                    <img src="{{i.img.url}}" alt="{{i.name}}" style="width:250px; height:300px;
-                    object-fit: scale-down;image-rendering: auto">
-                    <h2 style="color: tomato;">{{i.name}}</h2>
-                </div>
-                <div class=' card-title'>
-                    <p>{{i.description}}</p>
-                    <b><p>{{i.prix}} FCFA</p></b>
-                </div>
 
+
+    <div class="card card-{{menu.id}} mt-5">
+        {% for i in item %}
+        <a href="#" style="text-decoration:none;">
+            <div class="card">
+                <div style="text-align: center" class='mt-3'>
+                    <img src="{{i.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit:scale-down;image-rendering: auto;text-align: center;">
+                </div>
+                <h2 class="card-text" style="text-align: center;">{{i.name}}</h2>
+                <p class="card-text" style="text-align: center;">{{i.description}}</p>
+                <p class="card-text" style="text-align: center;">{{i.prix}} FCFA</p>
             </div>
-
-        </div>
-
+            {% endfor %}
+        </a>
     </div>
-    {% endfor %}
 </div>
 
 
