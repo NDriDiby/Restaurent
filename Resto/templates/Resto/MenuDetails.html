@@ -4,20 +4,26 @@
         <h1>{{menu.name}}</h1>
     </div>
 
-    <div class='row row-cols g-3 mt-5'>
-        {% for i in item %}
-        <div class='col-4 mb-5'>
-            <img class="card-img-top" src="{{i.img.url}}" alt="{{ i.name}}" style="width: auto; height: 150px; object-fit: scale-down;">
-            <h2 style="color: tomato;">{{i.name}}</h2>
-            <div class='mb-2'>
-                <p>{{i.description}}</p>
-                <b><p>{{i.prix}} FCFA</p></b>
+    {% for i in item %}
+    <div class='row g-3 mt-5' style="align-items: center;width: 350px;">
+        <div class='col'>
+            <div class='card justify-content-center'>
+                <div>
+                    <img src="{{i.img.url}}" alt="{{i.name}}" style="width:250px; height:300px;
+                    object-fit: scale-down;image-rendering: auto">
+                    <h2 style="color: tomato;">{{i.name}}</h2>
+                </div>
+                <div class=' card-title'>
+                    <p>{{i.description}}</p>
+                    <b><p>{{i.prix}} FCFA</p></b>
+                </div>
+
             </div>
 
         </div>
-        {% endfor %}
+
     </div>
-    <hr>
+    {% endfor %}
 </div>
 
 

@@ -12,7 +12,6 @@ def HomePage(request):
 
 
 def MenuDetails(request,menu_id):
-    
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
@@ -22,5 +21,4 @@ def MenuDetails(request,menu_id):
         'category':category,
         'item':item
     }
-
     return render(request,'Resto/MenuDetails.html',context)

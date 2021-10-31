@@ -9,24 +9,19 @@
         flex: auto;text-align: center;">
         <h1 class="heading__title">Menu</h1>
     </div>
-
     <div class="cards mt-5">
         {% for cat in category %}
         <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
             <div class="card card-{{cat.cat_id}}">
-                <!-- <p class="card__exit"><i class="fas fa-times"></i></p> -->
-                <!-- <div class="card__icon"><i class="fas fa-bolt"></i></div> -->
-                <div style="text-align: center">
+                <div style="text-align: center" class='mt-3'>
                     <img src="{{cat.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit:scale-down;image-rendering: auto;text-align: center;">
                 </div>
-
-
                 <h2 class="card__title" style="text-align: center;">{{cat.name}}</h2>
                 <p class="card-text" style="text-align: center;">{{cat.description}}</p>
-
             </div>
             {% endfor %}
+        </a>
     </div>
-    </a>
+
 </div>
 {% endblock content %}
