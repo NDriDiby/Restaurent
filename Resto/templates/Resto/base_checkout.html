@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico"> {% if title %}
+    <title>{{title}}</title>
+    {% endif %}
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/myorder.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="blog-header py-5">
+            <div class="align-items-center">
+
+                <div class="col text-center">
+                    <a class="blog-header-logo text-dark" href="{% url 'homepage' %}">
+                        <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 130px; height: 130px; object-fit: scale-down;image-rendering: auto;
+                    flex: auto;text-align: center;">
+                    </a>
+                </div>
+
+            </div>
+        </header>
+
+
+
+        <main role="main" class="container">
+            <div class="row">
+
+                {% block content %} {% endblock content %}
+            </div>
+            <!-- /.row -->
+
+        </main>
+        <!-- /.container -->
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script>
+            window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')
+        </script>
+        <script src="../../../../assets/js/vendor/popper.min.js"></script>
+        <script src="../../../../dist/js/bootstrap.min.js"></script>
+        <script src="../../../../assets/js/vendor/holder.min.js"></script>
+        <script>
+            Holder.addTheme('thumb', {
+                bg: '#55595c',
+                fg: '#eceeef',
+                text: 'Thumbnail'
+            });
+        </script> -->
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

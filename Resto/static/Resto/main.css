@@ -327,3 +327,15 @@ body {
         justify-content: center;
     }
 }
+
+
+/*cart*/
+
+#cart-icon {
+    width: 25px;
+    display: inline-block;
+    margin-left: 15px;
+}
+
+
+/*shopping cart*/
