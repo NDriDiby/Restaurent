@@ -4,7 +4,7 @@ for (var i = 0; i < updated_but.length; i++) {
     updated_but[i].addEventListener('click', function() {
         var itemId = this.dataset.product
         var action = this.dataset.action
-        console.log("itemId:", itemId, 'action:', action)
+
 
         if (user === 'AnonymousUser') {
             console.log('not logged in')
@@ -14,8 +14,9 @@ for (var i = 0; i < updated_but.length; i++) {
     })
 }
 
+
 function updateUserOrder(itemId, action) {
-    console.log(user, 'is logged in, sendind data....')
+    console.log(user, 'is logged in, sengind data....')
 
     var url = '/updateitem/'
 
@@ -25,7 +26,7 @@ function updateUserOrder(itemId, action) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify({ "itemId:": itemId, 'action:': action })
+            body: JSON.stringify({ "itemId": itemId, 'action': action })
         })
         .then((response) => {
             return response.json()

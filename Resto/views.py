@@ -58,7 +58,10 @@ def MyOrder(request):
 
 def UpdatedItem(request):
     data = json.loads(request.body)
-    item = data['itemId']
+    itemId = data['itemId']
+    action = data['action']
+    print(itemId)
+    print(action)
     
 
 
