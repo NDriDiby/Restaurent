@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from.models import Category,Item,Order,OrderItem
 from django.contrib import messages
 from.forms import ItemOrder
+import json
 from django.http.response import HttpResponseRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -54,6 +55,15 @@ def MyOrder(request):
     return render(request,'Resto/MyOrder.html',context)
 
 
-@csrf_exempt
+
 def UpdatedItem(request):
+    data = json.loads(request.body)
+    item = data['itemId']
+    
+
+
+    
+
+
+
     return JsonResponse("Item was added", safe = False)
