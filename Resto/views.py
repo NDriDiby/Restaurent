@@ -1,8 +1,10 @@
+
 from django.shortcuts import render,redirect
 from.models import Category,Item,Order,OrderItem
 from django.contrib import messages
 from.forms import ItemOrder
 from django.http.response import HttpResponseRedirect,JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def HomePage(request):
@@ -13,6 +15,7 @@ def HomePage(request):
     return render(request,'Resto/HomePage.html',context)
 
 
+@csrf_exempt
 def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
@@ -49,3 +52,8 @@ def MyOrder(request):
 
     }    
     return render(request,'Resto/MyOrder.html',context)
+
+
+@csrf_exempt
+def UpdatedItem(request):
+    return JsonResponse("Item was added", safe = False)

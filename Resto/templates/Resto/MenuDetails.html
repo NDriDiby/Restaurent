@@ -41,9 +41,10 @@
                 <h2 class="card-text" style="text-align: center;">{{i.name}}</h2>
                 <p class="card-text" style="text-align: center;">{{i.description}}</p>
                 <p class="card-text" style="text-align: center;"><b>{{i.prix}} FCFA</b></p>
+                <div>
+                    <button data-product="{{i.id}}" data-action='add' class='btn btn-outline-success add-btn update-cart'>Commander</button>
+                </div>
             </div>
-
-
             {% endfor %}
         </a>
     </div>
@@ -64,7 +65,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <a href="/menudetails/{{menu.id}}"><button type="submit" class="btn btn-primary" name = 'yes'>Ajouter</button></a>
+                        <a href="/menudetails/{{menu.id}}"><button  type="submit" class="btn btn-primary update-cart" name = 'yes'>Ajouter</button></a>
                     </div>
                 </form>
             </div>
