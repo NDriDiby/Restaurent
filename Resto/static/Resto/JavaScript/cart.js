@@ -5,7 +5,6 @@ for (var i = 0; i < updated_but.length; i++) {
         var itemId = this.dataset.product
         var action = this.dataset.action
 
-
         if (user === 'AnonymousUser') {
             console.log('not logged in')
         } else {
@@ -33,6 +32,7 @@ function updateUserOrder(itemId, action) {
         })
         .then((data) => {
             console.log('data:', data)
+            location.reload()
         })
 
 }

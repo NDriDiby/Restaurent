@@ -64,9 +64,12 @@
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
                     <a href="{% url 'order' %}">
-                        <img src='{% static "Resto/cart.png" %}' style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
+                        <img id='cart-icon' src='{% static "Resto/cart.png" %}' style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;"></a>
-                    <p id='cart-total'>0</p>
+                    <div style="background-color: crimson;">
+                        <p class='mt-2' id='cart-total'>{{cart_quantity}}</p>
+                    </div>
+
                 </div>
             </div>
         </header>

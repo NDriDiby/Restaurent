@@ -3,6 +3,7 @@ from ast import AugLoad
 from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -15,6 +16,15 @@ class Category(models.Model):
 
     class Meta:
         verbose_name = 'Categorie'
+
+    def __str__(self):
+        return self.name
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
+    name = models.CharField(max_length=30)
+    email = models.EmailField(max_length=30)
 
     def __str__(self):
         return self.name
@@ -35,12 +45,13 @@ class Item(models.Model):
 
 
 class Order(models.Model):
-    transaction_id = models.IntegerField()
+    customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,blank=True,null=True)
+    transaction_id = models.IntegerField(default=0,null = True, blank = True )
     complete = models.BooleanField(default=False,null=True,blank=False)
     date_ordered = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.transaction_id)
+        return str(self.customer.name)
 
     #Total value of cart
     def get_order_total(self):
@@ -49,18 +60,18 @@ class Order(models.Model):
         return total
 
 
+    #Total quantity in the cart
     def get_order_quantity(self):
         order = self.orderitem_set.all()
         total = sum([item.quantity for item in order])
         return total
 
     
-
-
-
 class OrderItem(models.Model):
-    item = models.ForeignKey(Item, on_delete=CASCADE, blank=True)
-    order = models.ForeignKey(Order,on_delete=CASCADE, blank = True)
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
+    item = models.ForeignKey(Item, on_delete=CASCADE)
+    order = models.ForeignKey(Order,on_delete=CASCADE)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     date_added = models.DateTimeField(auto_now=True)
 

@@ -34,7 +34,7 @@
             </div>
             <div class="price">{{item.item.prix}} FCFA</div>
             <div class="quantity">
-                <input type="number" value="4" min="1" class="quantity-field">
+                <input data-product={{item.item.id}} data-action='add' type="number" value="{{item.quantity}}" min="0" class="quantity-field update-cart">
             </div>
             <div class="subtotal">{{item.get_total}} FCFA</div>
             <div class="remove">
