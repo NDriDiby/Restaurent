@@ -119,17 +119,28 @@ def SendOrder(request):
         item = OrderItem.objects.filter(order = order)
         print(order)
         print(item)
+
+    elif status =='completed':
+        customer = request.user
+        order = Order.objects.get(customer__id = customer.customer.id)
+        order.status = 'completed'
+        order.complete = True
+        order.save()
+
+        print('completed order')
+
+
     return JsonResponse("Order Sent",safe=False)
 
 
 
 def Cuisine(request):
-
     ready=False
     all_order = Order.objects.filter(status='sent')
+    complete_order = Order.objects.filter(complete=True)
 
     context = {
         'all_order':all_order,
-
+        'complete':complete_order
     }
     return render(request,'Resto/Cuisine.html',context)

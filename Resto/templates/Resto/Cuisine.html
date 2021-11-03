@@ -19,6 +19,29 @@
         </p>
         {% endfor %} {% endfor %}
     </div>
+    <button data-action='completed' class='btn btn-outline-success mb-2 send-order'> Complete </button>
+</div>
+
+<br>
+<hr>
+
+<div>
+    <h1>completed Order</h1>
+</div>
+
+
+
+<div>
+    {% for order in complete %}
+
+    <p class='lead'> {{order}}</p>
+    <p> {{order.date_ordered}}</p>
+
+    {% for x in order.orderitem_set.all %}
+    <p>
+        * {{x}} ({{x.quantity}})
+    </p>
+    {% endfor %} {% endfor %}
 </div>
 
 

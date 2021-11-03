@@ -34,7 +34,6 @@ function updateUserOrder(itemId, action) {
             console.log('data:', data)
 
         })
-
 }
 
 // // send order to the kitchon
@@ -43,13 +42,14 @@ var sendOrder = document.getElementsByClassName("send-order")
 for (let i = 0; i < sendOrder.length; i++) {
     sendOrder[i].addEventListener("click", function() {
         console.log("Sending Order....")
-        cuisine()
+        var action = this.dataset.action
+        cuisine(action)
 
     })
 }
 
 
-function cuisine() {
+function cuisine(act) {
     var url = '/sendorder/'
 
     fetch(url, {
@@ -58,7 +58,7 @@ function cuisine() {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify({ "order": 'sent' })
+            body: JSON.stringify({ "order": act })
         })
         .then((response) => {
             return response.json()
