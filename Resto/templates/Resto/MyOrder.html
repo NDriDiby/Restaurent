@@ -71,7 +71,7 @@
                 <div>
                     <form method=POST>
                         {% csrf_token %}
-                        <button data-action="sent" class="btn btn-outline-success add-btn send-order">Go to Secure Checkout</button>
+                        <button data-action="sent" data-order='{{order.id}}' class="btn btn-outline-success add-btn send-order">Go to Secure Checkout</button>
                     </form>
                 </div>
             </div>

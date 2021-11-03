@@ -43,13 +43,18 @@ for (let i = 0; i < sendOrder.length; i++) {
     sendOrder[i].addEventListener("click", function() {
         console.log("Sending Order....")
         var action = this.dataset.action
-        cuisine(action)
+        var order = this.dataset.order
+
+        console.log(order)
+        cuisine(action, order)
+
+
 
     })
 }
 
 
-function cuisine(act) {
+function cuisine(act, ord) {
     var url = '/sendorder/'
 
     fetch(url, {
@@ -58,7 +63,7 @@ function cuisine(act) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify({ "order": act })
+            body: JSON.stringify({ "action": act, 'order': ord })
         })
         .then((response) => {
             return response.json()

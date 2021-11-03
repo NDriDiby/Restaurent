@@ -5,7 +5,7 @@ from django.contrib import messages
 from.forms import ItemOrder
 from django.contrib.auth.models import User
 import json
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
 import random
 
@@ -104,25 +104,26 @@ def UpdatedItem(request):
     
 
 
-@csrf_exempt
+@csrf_protect
 def SendOrder(request):
     data = json.loads(request.body)
-    status = data['order']
-    print('status:',status)
+    action = data['action']
+    order_numb = data['order']
+    print('status:',action)
+    print('order_number:',order_numb)
 
 
-    if status == 'sent':
+    if action == 'sent':
         customer = request.user
-        order = Order.objects.get(customer__id = customer.customer.id)
+        order = Order.objects.filter(customer__id = customer.customer.id).last()
         order.status = 'sent'
         order.save()
         item = OrderItem.objects.filter(order = order)
         print(order)
         print(item)
 
-    elif status =='completed':
-        customer = request.user
-        order = Order.objects.get(customer__id = customer.customer.id)
+    elif action =='completed':
+        order = Order.objects.get(id = order_numb)
         order.status = 'completed'
         order.complete = True
         order.save()
@@ -133,7 +134,7 @@ def SendOrder(request):
     return JsonResponse("Order Sent",safe=False)
 
 
-
+@csrf_protect
 def Cuisine(request):
     ready=False
     all_order = Order.objects.filter(status='sent')
