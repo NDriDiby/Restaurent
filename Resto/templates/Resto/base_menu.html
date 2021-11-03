@@ -52,7 +52,6 @@
     <div class="container">
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
-
                 <div class="col-4 pt-1">
                     <a class="btn btn-sm btn-outline-secondary " href="{% url 'homepage' %}"><i class="bi bi-arrow-left-square"></i> Retour</a>
                 </div>
@@ -66,8 +65,8 @@
                     <a href="{% url 'order' %}">
                         <img id='cart-icon' src='{% static "Resto/cart.png" %}' style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;"></a>
-                    <div style="background-color: crimson;">
-                        <p class='mt-2' id='cart-total'>{{cart_quantity}}</p>
+                    <div>
+                        <p id='cart-total'>{{cart_quantity}}</p>
                     </div>
 
                 </div>
@@ -80,6 +79,9 @@
                 <a class="p-2 text-muted " href="{% url 'menu_details' m.id %} ">
                     <p style="color:skyblue;font-size: large; ">{{m.name}}</p>
                 </a> {% endfor %}
+                <a class="p-2 text-muted " href="{% url 'cuisine'  %} ">
+                    <p style="color:skyblue;font-size: large; ">Cuisine</p>
+                </a>
             </nav>
         </div>
 

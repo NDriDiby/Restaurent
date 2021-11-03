@@ -1,0 +1,26 @@
+{% extends "Resto/base_checkout.html" %} {% block content %} {% load static %}
+
+
+<div class='container'>
+
+    <div>
+        <h1>Uncomplete Order</h1>
+    </div>
+
+    <div>
+        {% for order in all_order %}
+
+        <p class='lead'> {{order}}</p>
+        <p> {{order.date_ordered}}</p>
+
+        {% for x in order.orderitem_set.all %}
+        <p>
+            * {{x}} ({{x.quantity}})
+        </p>
+        {% endfor %} {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock content %}

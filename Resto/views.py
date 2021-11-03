@@ -5,9 +5,10 @@ from django.contrib import messages
 from.forms import ItemOrder
 from django.contrib.auth.models import User
 import json
-from django.http.response import HttpResponseRedirect,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http.response import HttpResponseRedirect,JsonResponse
 import random
+
 # Create your views here.
 
 def HomePage(request):
@@ -18,13 +19,22 @@ def HomePage(request):
     return render(request,'Resto/HomePage.html',context)
 
 
-@csrf_exempt
 def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
-    cartItem = 10
-    
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order,created = order,created= Order.objects.get_or_create(customer=customer,complete = False)
+        
+
+    else:
+        item =[]
+        order ={'gat_cart_total':0,'get_order_quantity':0}
+        
+    cartItem = order.get_order_quantity()
+    print("Menu:",cartItem)
+
     if request.method == 'POST':
         order = ItemOrder(request.POST)
         if order.is_valid():
@@ -52,8 +62,8 @@ def MyOrder(request):
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,complete = False)
         items = OrderItem.objects.filter(order = order)
-        
-        #cartItem = order.get_order_quantity
+        cartItem = order.get_order_quantity()
+        print(cartItem)
     else:
         items =[]
         order ={'gat_cart_total':0,'get_order_quantity':0}
@@ -61,8 +71,7 @@ def MyOrder(request):
     context = {
         'order':order,
         'items':items,
-       # 'cart_quantity':cartItem
-
+        'cart_quantity':cartItem
     }    
     return render(request,'Resto/MyOrder.html',context)
 
@@ -76,18 +85,11 @@ def UpdatedItem(request):
     print('ItemId:',itemId)
     print('action:',action)
 
-    def generate_random_number():
-        for i in range(0,4):
-            numb = random.randint(0,10)
-        return numb
-
-
     customer = request.user.customer
     item = Item.objects.get(id=itemId)
     order,created= Order.objects.get_or_create(customer=customer,complete = False)
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item )
   
-
     if action =='add':
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
@@ -98,6 +100,36 @@ def UpdatedItem(request):
     if orderItem.quantity <=0:
         orderItem.delete()
 
-    return JsonResponse("Item was added",safe = False)
+    return JsonResponse("Item was added",safe=False)
     
 
+
+@csrf_exempt
+def SendOrder(request):
+    data = json.loads(request.body)
+    status = data['order']
+    print('status:',status)
+
+
+    if status == 'sent':
+        customer = request.user
+        order = Order.objects.get(customer__id = customer.customer.id)
+        order.status = 'sent'
+        order.save()
+        item = OrderItem.objects.filter(order = order)
+        print(order)
+        print(item)
+    return JsonResponse("Order Sent",safe=False)
+
+
+
+def Cuisine(request):
+
+    ready=False
+    all_order = Order.objects.filter(status='sent')
+
+    context = {
+        'all_order':all_order,
+
+    }
+    return render(request,'Resto/Cuisine.html',context)

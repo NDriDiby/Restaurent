@@ -48,6 +48,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,blank=True,null=True)
     transaction_id = models.IntegerField(default=0,null = True, blank = True )
     complete = models.BooleanField(default=False,null=True,blank=False)
+    status = models.CharField(max_length=30,default = 'pending')
     date_ordered = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -82,3 +83,6 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.item.prix * self.quantity
         return total
+
+
+

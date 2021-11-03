@@ -32,7 +32,40 @@ function updateUserOrder(itemId, action) {
         })
         .then((data) => {
             console.log('data:', data)
-            location.reload()
+
+        })
+
+}
+
+// // send order to the kitchon
+var sendOrder = document.getElementsByClassName("send-order")
+
+for (let i = 0; i < sendOrder.length; i++) {
+    sendOrder[i].addEventListener("click", function() {
+        console.log("Sending Order....")
+        cuisine()
+
+    })
+}
+
+
+function cuisine() {
+    var url = '/sendorder/'
+
+    fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ "order": 'sent' })
+        })
+        .then((response) => {
+            return response.json()
+        })
+        .then((data) => {
+            console.log('data:', data)
+
         })
 
 }
