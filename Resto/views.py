@@ -8,6 +8,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
 import random
+import datetime
 
 # Create your views here.
 
@@ -25,7 +26,7 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
     if request.user.is_authenticated:
         customer = request.user.customer
-        order,created =  Order.objects.get_or_create(customer=customer,complete = False)
+        order,created =  Order.objects.get_or_create(customer=customer,status = 'Pending')
         cartItem = order.get_order_quantity()
    
         
@@ -118,16 +119,16 @@ def SendOrder(request):
     if action == 'sent':
         customer = request.user
         order = Order.objects.filter(customer__id = customer.customer.id).last()
+        orderItem= OrderItem.objects.filter(order = order)
         order.status = 'Sent'
-        cartItem = 0
+        cart_quantity = 0
+
         order.save()
         item = OrderItem.objects.filter(order = order)
         print(order)
         print(item)
         
         
-
-
     elif action =='completed':
         order = Order.objects.get(id = order_numb)
         order.status = 'Completed'
@@ -136,15 +137,15 @@ def SendOrder(request):
         
         print('completed order')
 
-
     return JsonResponse("Order Sent",safe=False)
 
 
 @csrf_protect
 def Cuisine(request):
     ready=False
-    all_order = Order.objects.filter(status='sent')
+    all_order = Order.objects.filter(status='Sent')
     complete_order = Order.objects.filter(complete=True)
+    
 
     context = {
         'all_order':all_order,
@@ -154,7 +155,6 @@ def Cuisine(request):
 
 
 def OrderConfirmation(request):
-
 
     context = {}
 
