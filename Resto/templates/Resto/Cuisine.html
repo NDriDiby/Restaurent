@@ -1,57 +1,74 @@
-{% extends "Resto/base_checkout.html" %} {% block content %} {% load static %}
+{% extends 'Resto/base_cuisine.html' %} {% load static %} {% block content %}
 
-
-<div class='container'>
+<div class='container py-5'>
 
     <div class='mt-3'>
         <h1>Uncomplete Order</h1>
+        <hr>
+    </div>
+    <div class='row'>
+        <div class='col'>
+
+            <div class='mt-2'>
+                {% for order in all_order %}
+                <p class='lead'> {{order}}</p>
+                <p> {{order.date_ordered}}</p>
+
+                {% for x in order.orderitem_set.all %}
+                <p>
+                    * {{x}} ({{x.quantity}})
+                </p>
+                {% endfor %}
+            </div>
+
+            <div>
+                <form method='POST'>
+                    {% csrf_token %}
+                    <button data-action='completed' data-order={{order.id}} class='btn btn-outline-success mb-3 send-order'> Complete </button>
+                </form>
+
+
+            </div>
+
+            {% endfor %}
+        </div>
     </div>
 
-    <div class='mt-2'>
-        {% for order in all_order %}
-        <p class='lead'> {{order}}</p>
-        <p> {{order.date_ordered}}</p>
+    <hr style='color:rgb(197, 193, 193); font-weight:60px'>
 
-        {% for x in order.orderitem_set.all %}
-        <p>
-            * {{x}} ({{x.quantity}})
-        </p>
+
+    <div>
+        <h1 class='mb-4' style='text-align:center'>Completed Order</h1>
+    </div>
+    <hr>
+
+    <div class='row justify-content-evenly g-lg-3 align-items-lg-baseline'>
+        {% for order in complete %}
+        <div class='col-auto mt-3'>
+            <div class='card' style="width: 13rem; height: auto;">
+                <div class='card-body mb-1'>
+                    <h4 class="card-title mb-2" style="color: black; text-align: center;"><b>{{order}}</b></h4>
+                    <hr style="color: black;">
+                    <p class="card-text mb-1 " style="color: black; text-align: center;"> Date: {{order.date_ordered|date}}</p>
+                    {% for x in order.orderitem_set.all %}
+                    <p class="card-text mb-2" style="color: black; text-align: center;">
+                        * {{x}} ({{x.quantity}})
+                    </p>
+                    {% endfor %}
+                    <h5 class="card-text mt-1" style="color:rgb(24, 201, 24); text-align: center;">{{order.status}}</h5>
+                </div>
+
+            </div>
+
+
+        </div>
         {% endfor %}
     </div>
 
-    <div>
-        <form method='POST'>
-            {% csrf_token %}
-            <button data-action='completed' data-order={{order.id}} class='btn btn-outline-success mb-3 send-order'> Complete </button>
-        </form>
 
-
-    </div>
-
-    {% endfor %}
 </div>
 
 
-<div>
-    <h1>completed Order</h1>
-</div>
-<hr>
 
 
-
-<div>
-    {% for order in complete %}
-
-
-    <p class='lead'> {{order}}</p>
-    <p> {{order.date_ordered}}</p>
-
-    {% for x in order.orderitem_set.all %}
-    <p>
-        * {{x}} ({{x.quantity}})
-    </p>
-    {% endfor %}
-    <hr> {% endfor %}
-</div>
-</div>
 {% endblock content %}

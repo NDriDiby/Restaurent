@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.HomePage,name='homepage'),
     path('menudetails/<menu_id>/', views.MenuDetails,name='menu_details'),
     path('myorder/', views.MyOrder,name='order'),
+    path('myorder/orderconfirmation/', views.OrderConfirmation,name='order_confirmation'),
     path('updateitem/', views.UpdatedItem, name='update_item'),
     path('sendorder/', views.SendOrder, name='send_order'),
     path('cuisine/', views.Cuisine, name='cuisine'),

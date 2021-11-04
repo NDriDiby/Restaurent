@@ -47,11 +47,14 @@ for (let i = 0; i < sendOrder.length; i++) {
 
         console.log(order)
         cuisine(action, order)
-
-
-
+        console.log('redicting you to .....')
+            // location.href('/orderconfirmation/')
     })
 }
+
+
+
+
 
 
 function cuisine(act, ord) {
@@ -72,5 +75,4 @@ function cuisine(act, ord) {
             console.log('data:', data)
 
         })
-
 }

@@ -25,16 +25,17 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
     if request.user.is_authenticated:
         customer = request.user.customer
-        order,created = order,created= Order.objects.get_or_create(customer=customer,complete = False)
+        order,created =  Order.objects.get_or_create(customer=customer,complete = False)
+        cartItem = order.get_order_quantity()
+   
         
 
     else:
         item =[]
         order ={'gat_cart_total':0,'get_order_quantity':0}
+        cartItem = order.get_order_quantity()
         
-    cartItem = order.get_order_quantity()
-    print("Menu:",cartItem)
-
+    
     if request.method == 'POST':
         order = ItemOrder(request.POST)
         if order.is_valid():
@@ -63,10 +64,11 @@ def MyOrder(request):
         order,created= Order.objects.get_or_create(customer=customer,complete = False)
         items = OrderItem.objects.filter(order = order)
         cartItem = order.get_order_quantity()
-        print(cartItem)
+        
     else:
         items =[]
         order ={'gat_cart_total':0,'get_order_quantity':0}
+        cartItem = order.get_order_quantity()
     
     context = {
         'order':order,
@@ -116,18 +118,22 @@ def SendOrder(request):
     if action == 'sent':
         customer = request.user
         order = Order.objects.filter(customer__id = customer.customer.id).last()
-        order.status = 'sent'
+        order.status = 'Sent'
+        cartItem = 0
         order.save()
         item = OrderItem.objects.filter(order = order)
         print(order)
         print(item)
+        
+        
+
 
     elif action =='completed':
         order = Order.objects.get(id = order_numb)
-        order.status = 'completed'
+        order.status = 'Completed'
         order.complete = True
         order.save()
-
+        
         print('completed order')
 
 
@@ -145,3 +151,11 @@ def Cuisine(request):
         'complete':complete_order
     }
     return render(request,'Resto/Cuisine.html',context)
+
+
+def OrderConfirmation(request):
+
+
+    context = {}
+
+    return render(request,'Resto/OrderConfirmation.html',context)
