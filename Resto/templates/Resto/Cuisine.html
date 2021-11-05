@@ -1,9 +1,8 @@
 {% extends 'Resto/base_cuisine.html' %} {% load static %} {% block content %}
 
 <div class='container py-5'>
-
     <div class='mt-3' style='text-align:center'>
-        <h1>Uncomplete Order</h1>
+        <h1>Uncompleted Orders</h1>
         <hr>
     </div>
     <div class='row justify-content-evenly g-lg-3 align-items-lg-baseline'>
@@ -26,7 +25,6 @@
                             <button data-action='completed' data-order={{order.id}} class='btn btn-outline-success mb-3 send-order'> Complete </button>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -37,7 +35,7 @@
 
 
     <div>
-        <h1 class='mb-4' style='text-align:center'>Completed Order</h1>
+        <h1 class='mb-4' style='text-align:center'>Completed Orders</h1>
     </div>
     <hr>
 
@@ -59,16 +57,9 @@
                 </div>
 
             </div>
-
-
         </div>
         {% endfor %}
     </div>
-
-
 </div>
-
-
-
 
 {% endblock content %}

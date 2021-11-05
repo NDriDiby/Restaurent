@@ -33,23 +33,24 @@
     <div class="card card-{{menu.id}} mt-5">
         {% for i in item %}
         <!-- trigger modal -->
-        <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#" style="text-decoration:none;">
-            <div class="card">
-                <div style="text-align: center" class='mt-3'>
-                    <img src="{{i.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit:scale-down;image-rendering: auto;text-align: center;">
-                </div>
-                <h2 class="card-text" style="text-align: center;">{{i.name}}</h2>
-                <p class="card-text" style="text-align: center;">{{i.description}}</p>
-                <p class="card-text" style="text-align: center;"><b>{{i.prix}} FCFA</b></p>
-                <form method='POST'>
-                    <div>
-                        <button data-product="{{i.id}}" data-action='add' class='btn btn-outline-success add-btn update-cart'>Commander</button>
-                    </div>
-                </form>
+
+        <div class="card">
+            <div style="text-align: center" class='mt-3'>
+                <img src="{{i.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit:scale-down;image-rendering: auto;text-align: center;">
             </div>
-            {% endfor %}
-        </a>
+            <h2 class="card-text" style="text-align: center;">{{i.name}}</h2>
+            <p class="card-text" style="text-align: center;">{{i.description}}</p>
+            <p class="card-text" style="text-align: center;"><b>{{i.prix}} FCFA</b></p>
+            <form method='POST'>
+                <div>
+                    <button data-product="{{i.id}}" data-action='add' class='btn btn-outline-success add-btn update-cart'>Commander</button>
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -59,19 +60,18 @@
                     <h5 class="modal-title" id="staticBackdropLabel" style="text-align: center;">Commande table </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
                     Ajouter a ma table
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
-                    <a href="/menudetails/{{menu.id}}"><button  type="submit" class="btn btn-success " name = 'yes'>Ajouter</button></a>
+                    <a href="#"><button  type="submit" class="btn btn-success " name = 'yes'>Ajouter</button></a>
                 </div>
-
             </div>
         </div>
     </div>
+
+
 
 </div>
 

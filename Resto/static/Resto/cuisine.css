@@ -1,11 +1,12 @@
 body {
     font-family: sans-serif;
-    background: linear-gradient(#141e30, #243b55);
+    background: linear-gradient(#e66767, #d3deeb);
     margin-top: 5rem;
 }
 
 h1,
 h2,
+h4,
 h5,
 p {
     color: #f4f6f8;

@@ -38,15 +38,8 @@ def MenuDetails(request,menu_id):
         
     
     if request.method == 'POST':
-        order = ItemOrder(request.POST)
-        if order.is_valid():
-             item = order.cleaned_data.get('name')
-             messages.success(request,f'Account Created for {item}')
-             order = ItemOrder()
-             return HttpResponseRedirect('/menudetails/'+menu_id+'/')
-
-    else:
-         order = ItemOrder()
+        messages.success(request,f'Item added to your table')
+    
     
 
     context = {
@@ -62,7 +55,7 @@ def MenuDetails(request,menu_id):
 def MyOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order= Order.objects.get(customer=customer,complete=False)
+        order= Order.objects.get(customer=customer,complete=False,status='Pending')
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
     else:
@@ -89,7 +82,7 @@ def UpdatedItem(request):
 
     customer = request.user.customer
     item = Item.objects.get(id=itemId)
-    order= Order.objects.get(customer=customer,complete=False)
+    order= Order.objects.get(customer=customer,complete=False,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item )
   
     if action =='add':
