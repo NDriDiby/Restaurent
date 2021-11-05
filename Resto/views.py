@@ -55,7 +55,7 @@ def MenuDetails(request,menu_id):
 def MyOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order= Order.objects.get(customer=customer,complete=False,status='Pending')
+        order= Order.objects.get(customer=customer,status='Pending')
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
     else:
@@ -82,7 +82,7 @@ def UpdatedItem(request):
 
     customer = request.user.customer
     item = Item.objects.get(id=itemId)
-    order= Order.objects.get(customer=customer,complete=False,status = 'Pending')
+    order= Order.objects.get(customer=customer,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item )
   
     if action =='add':

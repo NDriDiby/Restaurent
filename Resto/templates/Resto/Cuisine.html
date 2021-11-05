@@ -10,12 +10,12 @@
             {% for order in all_order %}
             <div class='card' style="width: 12rem; height: auto; background-color:rgb(243, 166, 152)">
                 <div class='card-body mb-1'>
-                    <p class="card-title mb-2" style="color: black; text-align: center;"> {{order}}</p>
+                    <h4 class="card-title mb-2" style="color: black; text-align: center;"><b>{{order}} </b></h4>
                     <hr style="color: black;">
-                    <p class="card-text mb-1 " style="color: black; text-align: center;"> {{order.date_ordered|date}}</p>
+                    <p class="card-text mb-1 " style="color: black; text-align: center;">Date: {{order.date_ordered|date}}</p>
 
                     {% for x in order.orderitem_set.all %}
-                    <p class="card-text mb-1 " style="color: black; text-align: center;">
+                    <p class="card-text mb-2 " style="color: black; text-align: center;">
                         <b>*</b> {{x}} ({{x.quantity}})
                     </p>
                     {% endfor %}
