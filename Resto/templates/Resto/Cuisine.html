@@ -2,14 +2,14 @@
 
 <div class='container py-5'>
 
-    <div class='mt-3'>
+    <div class='mt-3' style='text-align:center'>
         <h1>Uncomplete Order</h1>
         <hr>
     </div>
     <div class='row justify-content-evenly g-lg-3 align-items-lg-baseline'>
         <div class='col-auto mt-3'>
             {% for order in all_order %}
-            <div class='card' style="width: 12rem; height: auto; background-color:rgb(184, 84, 67)">
+            <div class='card' style="width: 12rem; height: auto; background-color:rgb(243, 166, 152)">
                 <div class='card-body mb-1'>
                     <p class="card-title mb-2" style="color: black; text-align: center;"> {{order}}</p>
                     <hr style="color: black;">
@@ -44,7 +44,7 @@
     <div class='row justify-content-evenly g-lg-3 align-items-lg-baseline'>
         {% for order in complete %}
         <div class='col-auto mt-3'>
-            <div class='card' style="width: 12rem; height: auto;">
+            <div class='card' style="width: 12rem; height: auto; background-color: palegreen;">
                 <div class='card-body mb-1'>
                     <h4 class="card-title mb-2" style="color: black; text-align: center;"><b>{{order}}</b></h4>
                     <hr style="color: black;">
@@ -54,7 +54,7 @@
                         <b>*</b> {{x}} ({{x.quantity}})
                     </p>
                     {% endfor %}
-                    <h5 class="card-text mt-1" style="color:rgb(24, 201, 24); text-align: center;">#{{order.status}}</h5>
+                    <h5 class="card-text mt-1" style="color:rgb(240, 8, 8); text-align: center;">#{{order.status}}</h5>
 
                 </div>
 

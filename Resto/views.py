@@ -26,7 +26,7 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
     if request.user.is_authenticated:
         customer = request.user.customer
-        order,created =  Order.objects.get_or_create(customer=customer,status = 'Pending')
+        order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
    
         
@@ -62,10 +62,9 @@ def MenuDetails(request,menu_id):
 def MyOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order,created= Order.objects.get_or_create(customer=customer,complete = False)
-        items = OrderItem.objects.filter(order = order)
+        order= Order.objects.get(customer=customer,complete=False)
+        items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
-        
     else:
         items =[]
         order ={'gat_cart_total':0,'get_order_quantity':0}
@@ -90,7 +89,7 @@ def UpdatedItem(request):
 
     customer = request.user.customer
     item = Item.objects.get(id=itemId)
-    order,created= Order.objects.get_or_create(customer=customer,complete = False)
+    order= Order.objects.get(customer=customer,complete=False)
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item )
   
     if action =='add':
@@ -119,10 +118,7 @@ def SendOrder(request):
     if action == 'sent':
         customer = request.user
         order = Order.objects.filter(customer__id = customer.customer.id).last()
-        orderItem= OrderItem.objects.filter(order = order)
         order.status = 'Sent'
-        cart_quantity = 0
-
         order.save()
         item = OrderItem.objects.filter(order = order)
         print(order)
@@ -142,7 +138,7 @@ def SendOrder(request):
 
 @csrf_protect
 def Cuisine(request):
-    ready=False
+    
     all_order = Order.objects.filter(status='Sent')
     complete_order = Order.objects.filter(complete=True)
     
