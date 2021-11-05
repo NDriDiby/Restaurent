@@ -71,15 +71,19 @@
                 <div class="summary-total">
                     <div class="total-title">Total</div>
                     <div class="total-value final-value" id="basket-total">{{order.get_order_total}} FCFA </div>
+
                     <form method=POST class='mt-3'>
                         {% csrf_token %}
                         <button data-action="sent" data-order='{{order.id}}' class="btn btn-outline-success add-btn mt-3 send-order">Envoyer A La Cuisine</button>
                     </form>
+
                 </div>
             </div>
         </aside>
 
     </main>
 </div>
+
+
 
 {% endblock content %}

@@ -24,21 +24,24 @@ def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
+
     if request.user.is_authenticated:
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
    
         
-
     else:
-        item =[]
+        item =['check1','check2']
         order ={'gat_cart_total':0,'get_order_quantity':0}
         cartItem = order.get_order_quantity()
         
     
     if request.method == 'POST':
-        messages.success(request,f'Item added to your table')
+        order_table = request.POST.get('item')
+        order_table = Item.objects.filter(id=order_table)
+        order_table = order_table[0]
+        messages.success(request,f'{order_table} added to your table')
     
     
 
@@ -55,9 +58,14 @@ def MenuDetails(request,menu_id):
 def MyOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order= Order.objects.get(customer=customer,status='Pending')
+        order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
+
+        if len(items)==0:
+            print("cest bizzard bro")
+        
+
     else:
         items =[]
         order ={'gat_cart_total':0,'get_order_quantity':0}
@@ -95,6 +103,7 @@ def UpdatedItem(request):
     if orderItem.quantity <=0:
         orderItem.delete()
 
+    
     return JsonResponse("Item was added",safe=False)
     
 

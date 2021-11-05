@@ -42,13 +42,14 @@ var sendOrder = document.getElementsByClassName("send-order")
 for (let i = 0; i < sendOrder.length; i++) {
     sendOrder[i].addEventListener("click", function() {
         console.log("Sending Order....")
+        location.href('/')
         var action = this.dataset.action
         var order = this.dataset.order
 
         console.log(order)
         cuisine(action, order)
         console.log('redicting you to .....')
-            // location.href('/orderconfirmation/')
+
     })
 }
 
@@ -75,4 +76,10 @@ function cuisine(act, ord) {
             console.log('data:', data)
 
         })
+
+    redirect()
+}
+
+function redirect() {
+    window.location.href = '/'
 }
