@@ -62,10 +62,7 @@ def MyOrder(request):
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
 
-        if len(items)==0:
-            print("cest bizzard bro")
         
-
     else:
         items =[]
         order ={'gat_cart_total':0,'get_order_quantity':0}
@@ -96,7 +93,8 @@ def UpdatedItem(request):
     if action =='add':
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity -1)
+        print('delete me')
+        orderItem.item.delete()
 
     orderItem.save()
 

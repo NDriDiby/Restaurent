@@ -13,8 +13,8 @@
                     <h4 class="card-title mb-2" style="color: black; text-align: center;"><b>{{order}} </b></h4>
                     <hr style="color: black;">
                     <p class="card-text mb-1 " style="color: black; text-align: center;">Date: {{order.date_ordered|date}}</p>
-
                     {% for x in order.orderitem_set.all %}
+
                     <p class="card-text mb-2 " style="color: black; text-align: center;">
                         <b>*</b> {{x}} ({{x.quantity}})
                     </p>
@@ -26,9 +26,11 @@
                         </form>
                     </div>
                 </div>
+
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+
     </div>
 
     <hr style='color:rgb(197, 193, 193); font-weight:60px'>

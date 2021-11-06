@@ -36,13 +36,15 @@ function updateUserOrder(itemId, action) {
         })
 }
 
+
 // // send order to the kitchon
 var sendOrder = document.getElementsByClassName("send-order")
 
 for (let i = 0; i < sendOrder.length; i++) {
     sendOrder[i].addEventListener("click", function() {
         console.log("Sending Order....")
-        location.href('/')
+
+
         var action = this.dataset.action
         var order = this.dataset.order
 
@@ -55,10 +57,8 @@ for (let i = 0; i < sendOrder.length; i++) {
 
 
 
-
-
-
 function cuisine(act, ord) {
+
     var url = '/sendorder/'
 
     fetch(url, {
@@ -76,10 +76,4 @@ function cuisine(act, ord) {
             console.log('data:', data)
 
         })
-
-    redirect()
-}
-
-function redirect() {
-    window.location.href = '/'
 }
