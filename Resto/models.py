@@ -33,7 +33,7 @@ class Customer(models.Model):
 class Item(models.Model):
     itm_id = models.IntegerField()
     name = models.CharField(max_length = 150)
-    prix = models.FloatField()
+    prix = models.IntegerField()
     description = models.TextField(max_length=150,blank=True)
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)

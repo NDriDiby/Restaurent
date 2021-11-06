@@ -59,8 +59,8 @@ def MyOrder(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
-        #items = order.orderitem_set.all()
-        items = OrderItem.objects.filter(order = order)
+        items = order.orderitem_set.all()
+        #items = OrderItem.objects.filter(order = order)
         cartItem = order.get_order_quantity()
 
         
@@ -71,11 +71,10 @@ def MyOrder(request):
 
 
     if request.method == 'POST':
-        messages.success(request,"Item deleted")
+        table_order = request.POST.get('remove-item')
+        messages.success(request,f'{table_order} deleted')
 
-    
 
-    
     context = {
         'order':order,
         'items':items,
@@ -101,9 +100,9 @@ def UpdatedItem(request):
     if action =='add':
         orderItem.quantity = (orderItem.quantity + 1)
 
-    elif action == 'remove' and request.method == 'POST':
-        # messages.success(request,"Item deleted")
-        print('delete me')
+    elif action == 'remove':
+        #messages.success(request,"Item deleted")
+        print('delete me',orderItem)
         orderItem.delete()
 
     orderItem.save()
@@ -124,12 +123,13 @@ def SendOrder(request):
     print('status:',action)
     print('order_number:',order_numb)
 
-    if action == 'sent':
+    if request.method == 'POST' and action == 'sent':
         customer = request.user
         order = Order.objects.filter(customer__id = customer.customer.id).last()
         order.status = 'Sent'
         order.save()
         item = OrderItem.objects.filter(order = order)
+        messages.success(request,"Order Sent to kitchen")
         print(order)
         print(item)
         
@@ -141,8 +141,6 @@ def SendOrder(request):
         order.save()
         
         print('completed order')
-
-
 
     return JsonResponse("Order Sent",safe=False)
 

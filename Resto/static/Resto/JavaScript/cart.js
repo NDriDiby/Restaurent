@@ -9,6 +9,7 @@ for (var i = 0; i < updated_but.length; i++) {
             console.log('not logged in')
         } else {
             updateUserOrder(itemId, action)
+            location.reload()
         }
     })
 }
