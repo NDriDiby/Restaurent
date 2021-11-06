@@ -24,7 +24,7 @@
             <div class="basket-product">
                 <div class="item">
                     <div class="product-image">
-                        <img src="{{item.item.img.url}}" alt="Placholder Image 2" class="product-frame">
+                        <img src="{{item.item.img.url}}" alt="{{item.item.name}}" class="product-frame">
                     </div>
                     <div class="product-details">
                         <p><strong><span class="item-quantity">{{item.quantity}}</span>-{{item.item.name}}</strong></p>
@@ -34,21 +34,19 @@
                 </div>
                 <div class="price">{{item.item.prix}} FCFA</div>
                 <div class="quantity">
-                    <input data-product={{item.item.id}} data-action='add' type="number" value="{{item.quantity}}" min="0" class="quantity-field update-cart">
+                    <input value="{{item.quantity}}" class="quantity-field ">
                 </div>
                 <div class="subtotal">{{item.get_total}} FCFA</div>
                 <form method="POST">
                     {% csrf_token %}
-                    <div class="remove">
-                        <button onClick='printme()' type='submit' data-action='remove' class='btn btn-outline-danger'>Remove</button>
+                    <div>
+                        <button type='submit' data-product="{{item.item.id}}" data-action='remove' value='{{item.item.id}}' class='btn btn-outline-danger remove-btn update-cart'>Remove</button>
                     </div>
                 </form>
             </div>
-
             {% endfor %}
-
-
         </div>
+
         <aside>
             <div class="summary">
                 <div class="summary-total-items"><span class="total-items"></span> Items in your Bag ({{cart_quantity}})</div>
@@ -60,8 +58,8 @@
                         <div class="promo-value final-value" id="basket-promo"></div>
                     </div>
                 </div>
-                <!-- mode de payment -->
 
+                <!-- mode de payment -->
                 <!-- <div class="summary-delivery">
                     <select name="delivery-collection" class="summary-delivery-selection">
                   <option value="0" selected="selected">Payment</option>
@@ -75,13 +73,10 @@
                 <div class="summary-total">
                     <div class="total-title">Total</div>
                     <div class="total-value final-value" id="basket-total">{{order.get_order_total}} FCFA </div>
-
                     <form method='POST' class='mt-3'>
                         {% csrf_token %}
-                        <button data-action="sent" data-order='{{order.id}}' class="btn btn-outline-success add-btn mt-3 send-order">Envoyer A La Cuisine</button>
+                        <button type='submit' data-action="sent" data-order='{{order.id}}' class="btn btn-outline-success add-btn mt-3 send-order">Envoyer A La Cuisine</button>
                     </form>
-
-
                 </div>
             </div>
         </aside>
@@ -95,8 +90,5 @@
         console.log("delete me")
     }
 </script>
-
-
-
 
 {% endblock content %}
