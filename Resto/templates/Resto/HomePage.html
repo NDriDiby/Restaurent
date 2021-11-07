@@ -1,4 +1,6 @@
-{% extends "Resto/base.html" %} {% block content %} {% load static %}
+{% extends "Resto/base.html" %} {% block content %} {% load static %} {% for order in order.orderitem_set.all%}
+<h3> {{order}}</h3>
+{% endfor %}
 
 <div class="main-container">
     <div class="heading">

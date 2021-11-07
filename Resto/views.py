@@ -14,12 +14,14 @@ import datetime
 
 def HomePage(request):
     category = Category.objects.all().order_by("name")
-    customer = request.user.username
+    customer = request.user.id
+    order = Order.objects.filter(customer = customer).last()
     print(customer)
 
 
     context = {
         'category':category,
+        'order':order
     }
     return render(request,'Resto/HomePage.html',context)
 
@@ -30,7 +32,9 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
 
     if request.user.is_authenticated:
-        cust = Customer.objects.get_or_create(user =request.user)
+        username = User.objects.get(id=request.user.id)
+        print(username)
+        cust,created = Customer.objects.get_or_create(user =request.user)
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
@@ -77,6 +81,7 @@ def MyOrder(request):
    
     if request.method == 'POST':
         messages.success(request,"Order Sent to kitchen")
+        return HttpResponseRedirect('/')
 
 
 
