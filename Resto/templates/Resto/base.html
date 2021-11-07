@@ -53,7 +53,7 @@
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="text-muted" href="#">{{user.username}}</a>
+                    <a class="text-muted" href="#">{{request.user.username}}</a>
                 </div>
                 <div class="col-4 text-center">
                     <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
@@ -68,11 +68,11 @@
                     {% if user.is_authenticated %}
                     <a class="btn btn-sm btn-outline-secondary" href="{% url 'logout' %}">Deconnexion</a> {% else%}
                     <a class="btn btn-sm btn-outline-secondary" href="{% url 'login' %}">Connexion</a> {% endif %}
-
-
                 </div>
             </div>
         </header>
+
+
 
 
 
@@ -81,6 +81,16 @@
                 <h1 class="display-4 font-italic">Texas GrillZ</h1>
                 <p class="lead my-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours</p>
             </div>
+        </div>
+
+
+        <div class="col-12">
+            {% if messages %} {% for message in messages %}
+            <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg> {{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %} {% endif %}
         </div>
 
 

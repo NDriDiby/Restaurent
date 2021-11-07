@@ -30,6 +30,9 @@ class Customer(models.Model):
         return self.name
 
 
+
+    
+
 class Item(models.Model):
     itm_id = models.IntegerField()
     name = models.CharField(max_length = 150)

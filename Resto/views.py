@@ -1,6 +1,6 @@
 
 from django.shortcuts import render,redirect
-from.models import Category,Item,Order,OrderItem
+from.models import Category, Customer,Item,Order,OrderItem
 from django.contrib import messages
 from.forms import CustomerForm
 from django.contrib.auth.models import User
@@ -14,13 +14,12 @@ import datetime
 
 def HomePage(request):
     category = Category.objects.all().order_by("name")
-    customer  = User.objects.all()
+    customer = request.user.username
+    print(customer)
 
-    
-   
+
     context = {
         'category':category,
-         'customer':customer
     }
     return render(request,'Resto/HomePage.html',context)
 
@@ -31,11 +30,11 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
 
     if request.user.is_authenticated:
+        cust = Customer.objects.get_or_create(user =request.user)
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
    
-        
     else:
         item =['check1','check2']
         order ={'gat_cart_total':0,'get_order_quantity':0}
@@ -155,15 +154,15 @@ def Cuisine(request):
     return render(request,'Resto/Cuisine.html',context)
 
 
-def OrderConfirmation(request):
-    context = {}
-    return render(request,'Resto/OrderConfirmation.html',context)
+
+def ProcessAuth(request):
+   
+
+    return JsonResponse("I know you ",safe=False)
 
 
 
 def DeleteOrder(request,item_id):
-
-    customer = request.user.customer
 
     del_items = OrderItem.objects.get(id = item_id)
     print(del_items)
@@ -177,9 +176,7 @@ def DeleteOrder(request,item_id):
     
 
     context = {
-        #  'order':order,
           'del_item':del_items
     }
-
 
     return render(request, 'Resto/DeleteOrder.html',context)

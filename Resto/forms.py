@@ -11,10 +11,9 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class CustomerForm(UserCreationForm):
-   table = forms.IntegerField(label = 'Table Number')
    phone_number = forms.CharField(label = 'Phone Number')
 
    class Meta:
     model = User
-    fields = ('username','table','phone_number')
+    fields = ('username','phone_number')
         

@@ -12,8 +12,10 @@ def RegisterCustomer(request):
          form = CustomerForm(request.POST)
          if form.is_valid():
              cust_name = form.cleaned_data.get('username')
+             
+             form.save()
              messages.success(request,f'Account Created for {cust_name}')
-             return redirect('homepage')
+             return redirect('login')
     else:
         form = CustomerForm()
 
