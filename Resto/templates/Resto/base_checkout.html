@@ -58,8 +58,10 @@
                     flex: auto;text-align: center;">
                     </a>
                 </div>
-                <div class="col-4 pt-1">
-                    <a class="btn btn-sm btn-outline-secondary " href="{% url 'homepage'%}"><i class="bi bi-arrow-left-square"></i> Menu</a>
+                <div class="col-4  inline-block">
+                    <a class="btn btn-sm btn-outline-secondary " href="{% url 'homepage'%}"><i class="bi bi-arrow-left-square"></i> Menu</a> {% if del_item %}
+                    <a class="btn btn-sm btn-outline-secondary  " href="{% url 'order'%}"><i class="bi bi-arrow-left-square"></i> My Order </a> {% endif %}
+
                 </div>
             </div>
         </header>

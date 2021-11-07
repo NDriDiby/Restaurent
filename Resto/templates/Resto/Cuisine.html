@@ -22,7 +22,7 @@
                     <div class='mt-4' style='text-align: center'>
                         <form method='POST'>
                             {% csrf_token %}
-                            <button data-action='completed' data-order={{order.id}} class='btn btn-outline-success mb-3 send-order'> Complete </button>
+                            <button type="submit" data-action='completed' data-order={{order.id}} class='btn btn-outline-success mb-3 send-order'> Complete </button>
                         </form>
                     </div>
                 </div>

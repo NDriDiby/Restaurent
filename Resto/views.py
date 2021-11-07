@@ -2,7 +2,7 @@
 from django.shortcuts import render,redirect
 from.models import Category,Item,Order,OrderItem
 from django.contrib import messages
-from.forms import ItemOrder
+from.forms import CustomerForm
 from django.contrib.auth.models import User
 import json
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -14,8 +14,19 @@ import datetime
 
 def HomePage(request):
     category = Category.objects.all().order_by("name")
+    form = CustomerForm()
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print('good')
+    else:
+        form = CustomerForm()
+
+
     context = {
         'category':category,
+        'form':form
     }
     return render(request,'Resto/HomePage.html',context)
 
@@ -24,6 +35,8 @@ def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
+
+  
 
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -50,7 +63,8 @@ def MenuDetails(request,menu_id):
         'category':category,
         'item':item,
         'orders':order,
-        'cart_quantity':cartItem
+        'cart_quantity':cartItem,
+       
     }
     return render(request,'Resto/MenuDetails.html',context)
 
@@ -69,10 +83,10 @@ def MyOrder(request):
         order ={'gat_cart_total':0,'get_order_quantity':0}
         cartItem = order.get_order_quantity()
 
-
+   
     if request.method == 'POST':
-        table_order = request.POST.get('remove-item')
-        messages.success(request,f'{table_order} deleted')
+        messages.success(request,"Order Sent to kitchen")
+
 
 
     context = {
@@ -99,18 +113,10 @@ def UpdatedItem(request):
   
     if action =='add':
         orderItem.quantity = (orderItem.quantity + 1)
-
-    elif action == 'remove':
-        #messages.success(request,"Item deleted")
-        print('delete me',orderItem)
-        orderItem.delete()
-
-    orderItem.save()
-
-    if orderItem.quantity <=0:
-        orderItem.delete()
+        orderItem.save()
 
     
+
     return JsonResponse(f'Item was {action}',safe=False)
     
 
@@ -129,7 +135,6 @@ def SendOrder(request):
         order.status = 'Sent'
         order.save()
         item = OrderItem.objects.filter(order = order)
-        messages.success(request,"Order Sent to kitchen")
         print(order)
         print(item)
         
@@ -139,7 +144,6 @@ def SendOrder(request):
         order.status = 'Completed'
         order.complete = True
         order.save()
-        
         print('completed order')
 
     return JsonResponse("Order Sent",safe=False)
@@ -160,7 +164,30 @@ def Cuisine(request):
 
 
 def OrderConfirmation(request):
-
     context = {}
-
     return render(request,'Resto/OrderConfirmation.html',context)
+
+
+
+def DeleteOrder(request,item_id):
+
+    customer = request.user.customer
+
+    del_items = OrderItem.objects.get(id = item_id)
+    print(del_items)
+    if request.method == 'POST':
+        if request.POST.get('response') == 'Yes':
+            del_items.delete()
+        elif request.POST.get('response') == 'Cancel':
+            pass
+
+        return HttpResponseRedirect('/myorder')
+    
+
+    context = {
+        #  'order':order,
+          'del_item':del_items
+    }
+
+
+    return render(request, 'Resto/DeleteOrder.html',context)

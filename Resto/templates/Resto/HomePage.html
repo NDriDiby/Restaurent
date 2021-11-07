@@ -1,7 +1,5 @@
 {% extends "Resto/base.html" %} {% block content %} {% load static %}
 
-
-
 <div class="main-container">
     <div class="heading">
         <!-- <h1 class="heading__title">Texas GrillZ Menu</h1> -->
@@ -24,4 +22,17 @@
     </div>
 
 </div>
+
+
+
+<form method="POST">
+    {% csrf_token %} {{form.as_p}}
+
+    <button type='submit'>
+        GO
+    </button>
+
+</form>
+
+
 {% endblock content %}
