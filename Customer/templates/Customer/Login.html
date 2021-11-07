@@ -1,0 +1,17 @@
+{% extends "Resto/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %}
+<div class='container py-5'>
+    <div>
+        <form method='POST' style='text-align: center'>
+            {% csrf_token %}
+            <fieldset class='form-group'>
+                <legend class='border-bottom mb-4;' style="text-align:center ;">Connexion</legend>
+                {{form|crispy}}
+            </fieldset>
+            <div class='form-group mt-3' style="text-align:center;">
+                <button type="submit" class='btn btn-outline-info'> Connect</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

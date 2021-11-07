@@ -33,12 +33,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Resto.apps.RestoConfig',
+    'Customer.apps.CustomerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
    
 ]
 
@@ -121,6 +123,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+
+LOGIN_REDIRECT_URL = 'homepage'
+LOGIN_URL = 'login'
 
 STATIC_URL = '/static/'
 

@@ -14,19 +14,13 @@ import datetime
 
 def HomePage(request):
     category = Category.objects.all().order_by("name")
-    form = CustomerForm()
-    if request.method == 'POST':
-        form = CustomerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            print('good')
-    else:
-        form = CustomerForm()
+    customer  = User.objects.all()
 
-
+    
+   
     context = {
         'category':category,
-        'form':form
+         'customer':customer
     }
     return render(request,'Resto/HomePage.html',context)
 
@@ -35,8 +29,6 @@ def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
-
-  
 
     if request.user.is_authenticated:
         customer = request.user.customer
