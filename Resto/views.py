@@ -13,10 +13,14 @@ import datetime
 # Create your views here.
 
 def HomePage(request):
+    order = None
     category = Category.objects.all().order_by("name")
-    customer = request.user.id
-    order = Order.objects.filter(customer = customer).last()
-    print(customer)
+    if request.user.is_authenticated:
+        customer = request.user
+        order = Order.objects.filter(customer = customer.id, status = 'Sent').last()
+    else:
+        category = Category.objects.all().order_by("name")
+
 
 
     context = {
@@ -31,18 +35,21 @@ def MenuDetails(request,menu_id):
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
 
+
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
-        print(username)
         cust,created = Customer.objects.get_or_create(user =request.user)
+        cust.name = username.username
+        cust.save()
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
    
     else:
+        return HttpResponseRedirect('/register/')
         item =['check1','check2']
-        order ={'gat_cart_total':0,'get_order_quantity':0}
-        cartItem = order.get_order_quantity()
+        #order ={'gat_cart_total':0,'get_order_quantity':0}
+        #cartItem = order.get_order_quantity()
         
     
     if request.method == 'POST':
@@ -57,7 +64,7 @@ def MenuDetails(request,menu_id):
         'menu':menu,
         'category':category,
         'item':item,
-        'orders':order,
+         'orders':order,
         'cart_quantity':cartItem,
        
     }
@@ -75,8 +82,8 @@ def MyOrder(request):
         
     else:
         items =[]
-        order ={'gat_cart_total':0,'get_order_quantity':0}
-        cartItem = order.get_order_quantity()
+        # order ={'gat_cart_total':0,'get_order_quantity':0}
+        # cartItem = order.get_order_quantity()
 
    
     if request.method == 'POST':
@@ -133,14 +140,17 @@ def SendOrder(request):
         item = OrderItem.objects.filter(order = order)
         print(order)
         print(item)
-        
-        
+
+    
     elif action =='completed':
         order = Order.objects.get(id = order_numb)
         order.status = 'Completed'
         order.complete = True
         order.save()
         print('completed order')
+
+    order.save()
+    
 
     return JsonResponse("Order Sent",safe=False)
 
@@ -160,10 +170,10 @@ def Cuisine(request):
 
 
 
-def ProcessAuth(request):
-   
+def ProcessOrder(request):
 
-    return JsonResponse("I know you ",safe=False)
+
+    return JsonResponse("your order",safe=False)
 
 
 

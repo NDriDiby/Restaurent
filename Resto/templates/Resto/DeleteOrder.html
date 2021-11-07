@@ -2,9 +2,7 @@
 
 <div class='container'>
 
-    <h1>
-
-        Delete me</h1>
+    <h1>Delete me</h1>
 
 
     {{order}}
@@ -17,12 +15,10 @@
         <form class="form-inline" method="POST">
             {% csrf_token %}
             <input type="submit" class="btn btn-primary mb-2 m-lg-2" name='response' value="Yes" class='mx-2'>
-
             <a href="/myorder/"><button class="btn btn-danger mb-2 m-lg-2" name = 'response' value = 'Cancel'>
                     Cancel
                 </button></a>
         </form>
-
     </div>
 
 

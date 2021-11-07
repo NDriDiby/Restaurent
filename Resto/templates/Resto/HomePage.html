@@ -1,5 +1,11 @@
-{% extends "Resto/base.html" %} {% block content %} {% load static %} {% for order in order.orderitem_set.all%}
-<h3> {{order}}</h3>
+{% extends "Resto/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% for order in order.orderitem_set.all%}
+
+<div class='mt-2'>
+    <h4 style='color:darkseagreen'>Order: {{order}} ({{order.quantity}})</h4>
+
+</div>
+
+
 {% endfor %}
 
 <div class="main-container">
@@ -22,19 +28,8 @@
             {% endfor %}
         </a>
     </div>
-
 </div>
 
-
-
-<form method="POST">
-    {% csrf_token %} {{form.as_p}}
-
-    <button type='submit'>
-        GO
-    </button>
-
-</form>
 
 
 {% endblock content %}
