@@ -1,17 +1,17 @@
- {% extends "Resto/base.html" %} {% block content %} {% load static %}
+ {% extends "Customer/base_login.html" %} {% block content %} {% load static %}
 
-<div class='container py-5'>
-    <div class='content-section'>
-        <h2 style="color: black; text-align: center;">
-            You have been logged out
-        </h2>
-        <div class='border-top pt-4' style="text-align:center;">
-            <small class='text-muted'>
-                <a class = 'btn btn-success'
-                href="{% url 'login' %}" 
-                style="color: whitesmoke;text-decoration: none;margin-right: 31px;"> Log in Again  </a>
-            </small>
-        </div>
+
+<div style='padding-top:130px'>
+    <h2 style="color: black; text-align: center;">
+        You have been logged out
+    </h2>
+    <div class='border-top pt-4' style="text-align:center;">
+        <small class='text-muted'>
+                    <a class = 'btn btn-success'
+                    href="{% url 'login' %}" 
+                    style="color: whitesmoke;text-decoration: none;margin-right: 31px;"> Log in Again  </a>
+                </small>
     </div>
+
 </div>
 {% endblock content %}

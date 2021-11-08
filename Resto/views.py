@@ -11,14 +11,13 @@ import random
 import datetime
 
 # Create your views here.
-
 def HomePage(request):
     order = None
     category = Category.objects.all().order_by("name")
     if request.user.is_authenticated:
         customer = request.user
-        order= Order.objects.filter(customer = customer.id, status = 'Sent').last()
-        print(customer.id)
+        order= Order.objects.filter(customer__name = customer, status = 'Sent').last()
+        print(customer)
         print(order)
     else:
         category = Category.objects.all().order_by("name")
@@ -61,7 +60,6 @@ def MenuDetails(request,menu_id):
         messages.success(request,f'{order_table} added to your table')
     
     
-
     context = {
         'menu':menu,
         'category':category,
@@ -188,12 +186,9 @@ def DeleteOrder(request,item_id):
             del_items.delete()
         elif request.POST.get('response') == 'Cancel':
             pass
-
         return HttpResponseRedirect('/myorder')
     
-
     context = {
           'del_item':del_items
     }
-
     return render(request, 'Resto/DeleteOrder.html',context)

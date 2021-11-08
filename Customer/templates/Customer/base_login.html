@@ -1,0 +1,45 @@
+{% load static %} {% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/login.css' %}">
+</head>
+
+<body>
+
+    <div class='container py-5'>
+        <div class='window'>
+            <div class='overlay'>
+                <div class='content'>
+                    <div style='text-align: center' class='mb-5'>
+                        <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud" style="width: 410px; height: auto; object-fit:scale-down;image-rendering: auto;">
+                    </div>
+
+                    <div class="col-12">
+                        {% if messages %} {% for message in messages %}
+                        <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg> {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+
+                    {% block content %} {% endblock content %}
+
+
+
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>
+
+</html>

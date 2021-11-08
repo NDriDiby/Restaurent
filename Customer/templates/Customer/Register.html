@@ -1,52 +1,37 @@
- {% load static %} {% load crispy_forms_tags %}
+ {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
 
 
-<!DOCTYPE html>
-<html lang="en">
+<div class='welcome'>Icarus Restaurant</div>
+<div class='subtitle mt-2'>We're almost done. Before using our services you need to create an account.</div>
+<div class='input-fields mt-2'>
+    {% if form.errors %}
+    <p class='mt-1' style='color:tomato;text-align: center;'>This username is already taken. Please try another one.</p>
+    {% endif %}
+    <form method='POST' class="mt-4" novalidate>
+        {% csrf_token %}
+        <fieldset class='form-group mt-2' style='text-align:center'>
+            <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Join Today</legend>
+            <label class='mt-4' for=Username> Username</label> <br> {{form.username}}
+            <br>
+            <label class='mt-4' for=Username>Phone Number</label> <br> {{form.phone_number}}
+            <br>
+            <label class='mt-4' for="Password1">Password</label> <br>{{form.password1}}
+            <br>
+            <label class='mt-4' for="Password2"> Confirm Password</label><br> {{form.password2}}
+        </fieldset>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="{% static 'Resto/login.css' %}">
-</head>
-
-<body>
-    <div class='container'>
-        <div class='window'>
-            <div class='overlay'></div>
-            <div class='content'>
-                <div class='welcome'>Hello There!</div>
-                <div class='subtitle'>We're almost done. Before using our services you need to create an account.</div>
-                <div class='input-fields mt-2'>
-                    <form method='POST'>
-                        {% csrf_token %}
-                        <fieldset class='form-group'>
-                            <legend class='border-bottom mb-4'> Join Today</legend>
-                            {{form|crispy}}
-                        </fieldset>
-
-                        <div class='form-group'>
-                            <button type="submit" class='btn btn-outline-info'> Sign up</button>
-                        </div>
-
-                        <div class='border-top pt-3'>
-
-                            <small class='text-muted'>
-                            Already Have An Account? <a class = 'ml-2' href="{% url 'login' %}"> Sign in </a>
-                             </small>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+        <div class='form-group mt-5'>
+            <button type="submit" class='ghost-round full-width'> Sign up</button>
         </div>
 
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-</body>
+        <div class='border-top pt-3' style='text-align:center'>
 
-</html>
+            <small class='text-muted'>Already Have An Account? <a class = 'ml-2' href="{% url 'login' %}"> Sign in </a>
+                             </small>
+
+        </div>
+    </form>
+</div>
+</div>
+</div>
+{% endblock content %}
