@@ -27,6 +27,7 @@ def RegisterCustomer(request):
 #Profile
 @login_required
 def Profile(request):
+
     return render(request,'Customer/Profile.html')
 
 

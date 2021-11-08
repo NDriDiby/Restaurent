@@ -17,7 +17,9 @@ def HomePage(request):
     category = Category.objects.all().order_by("name")
     if request.user.is_authenticated:
         customer = request.user
-        order = Order.objects.filter(customer = customer.id, status = 'Sent').last()
+        order= Order.objects.filter(customer = customer.id, status = 'Sent').last()
+        print(customer.id)
+        print(order)
     else:
         category = Category.objects.all().order_by("name")
 

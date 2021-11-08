@@ -1,42 +1,50 @@
- {% block content %} {% load static %} {% load crispy_forms_tags %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'Resto/login.css' %}">
+ {% load static %} {% load crispy_forms_tags %}
 
 
-<div class='bold-line'></div>
-<div class='container'>
-    <div class='window'>
-        <div class='overlay'></div>
-        <div class='content'>
-            <div class='welcome'>Hello There!</div>
-            <div class='subtitle'>We're almost done. Before using our services you need to create an account.</div>
-            <div class='input-fields'>
-                <label for="{{form.username_for_label}}" class="form-label">Username</label>
-                <input type='text' placeholder='Username' class='input-line full-width'>{{form.username}}</input>
-                <input type='email' placeholder='Email' class='input-line full-width'></input>
-                <input type='password' placeholder='Password' class='input-line full-width'></input>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/login.css' %}">
+</head>
+
+<body>
+
+    <div class='container py-3'>
+        <div class='window'>
+            <div class='overlay'></div>
+            <div class='content'>
+                <div class='welcome'>Hello There!</div>
+                <div class='subtitle'>We're almost done. Before using our services you need to create an account.</div>
+                <div class='input-fields mt-5'>
+                    <form method='POST' style='text-align: center' novalidate>
+                        {% csrf_token %}
+                        <fieldset class='form-group'>
+                            <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Connexion</legend>
+                            {{ form.username.errors }}
+                            <label class='mt-5' for=Username> Username</label> {{form.username}}
+                            <br>
+                            <br> {{ form.password.errors }}
+                            <label class='mt-4' for="Password">Password</label> {{form.password}}
+                        </fieldset>
+                </div>
+                <div class='mt-5'><button type='submit' class='ghost-round full-width'>Connect</button></div>
+                <p class='mt-4'>Powered by SADIA</p>
             </div>
-            <div class='spacing'>or continue with <span class='highlight'>Facebook</span></div>
-            <div><button class='ghost-round full-width'>Create Account</button></div>
+            </form>
+
         </div>
+
+
     </div>
-</div>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>
 
-<div class='container py-5'>
-    <div>
-        <form method='POST' style='text-align: center'>
-            {% csrf_token %}
-            <fieldset class='form-group'>
-                <legend class='border-bottom mb-4;' style="text-align:center ;">Connexion</legend>
-                {{form|crispy}}
-            </fieldset>
-            <div class='form-group mt-3' style="text-align:center;">
-                <button type="submit" class='btn btn-outline-info'> Connect</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{% endblock content %}
+</html>
