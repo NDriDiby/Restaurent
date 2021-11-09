@@ -45,7 +45,7 @@ button:focus {
 
 .ghost-round:hover {
     background: rgba(255, 255, 255, 0.15);
-    color: #fff;
+    color: rgb(147, 235, 125);
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
 }
@@ -54,14 +54,14 @@ button:focus {
     background: none;
     margin-bottom: 2px;
     line-height: 2.4em;
-    color: #fff;
+    color: rgb(236, 148, 148);
     font-family: roboto;
     font-weight: 300;
     letter-spacing: 0px;
     letter-spacing: 0.02rem;
     font-size: 19px;
     font-size: 1.2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+    border-bottom: 1px solid rgb(236, 148, 148);
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
 }

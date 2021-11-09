@@ -118,6 +118,14 @@ def UpdatedItem(request):
         orderItem.quantity = (orderItem.quantity + 1)
         orderItem.save()
 
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+        orderItem.save()
+
+    if orderItem.quantity<=0:
+        orderItem.delete()
+
+
     
 
     return JsonResponse(f'Item was {action}',safe=False)

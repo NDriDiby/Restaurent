@@ -46,7 +46,10 @@
                 </div>
                 <div class="price">{{item.item.prix}} FCFA</div>
                 <div class="quantity">
-                    <input value="{{item.quantity}}" class="quantity-field ">
+                    <i data-product='{{item.item.id}}' data-action='add' class="fas fa-caret-square-up update-cart"></i>
+                    <i data-product='{{item.item.id}}' data-action='remove' class="fas fa-caret-square-down update-cart"></i>
+                    <br>
+                    <input value="{{item.quantity}}" class="quantity-field" min="" max="" type='number' name='quantity'>
                 </div>
                 <div class="subtotal">{{item.get_total}} FCFA</div>
                 <form method="POST">
