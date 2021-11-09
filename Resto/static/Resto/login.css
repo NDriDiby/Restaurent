@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,100,500);
 html,
 body {
-    background: linear-gradient(to top, #8CA6DB, #B993D6);
+    background: linear-gradient(to top, #aedef5, #ececf5);
 }
 
 input {
