@@ -10,6 +10,7 @@ from django.http.response import HttpResponseRedirect,JsonResponse
 import random
 import datetime
 
+
 # Create your views here.
 def HomePage(request):
     order = None
@@ -22,8 +23,6 @@ def HomePage(request):
     else:
         category = Category.objects.all().order_by("name")
 
-
-
     context = {
         'category':category,
         'order':order
@@ -35,6 +34,8 @@ def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
+    all_user = User.objects.values_list('username',flat=True)
+    print(all_user)
 
 
     if request.user.is_authenticated:
@@ -45,14 +46,12 @@ def MenuDetails(request,menu_id):
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
-   
+
+    
     else:
         return HttpResponseRedirect('/register/')
-        item =['check1','check2']
-        #order ={'gat_cart_total':0,'get_order_quantity':0}
-        #cartItem = order.get_order_quantity()
+
         
-    
     if request.method == 'POST':
         order_table = request.POST.get('item')
         order_table = Item.objects.filter(id=order_table)
@@ -66,7 +65,6 @@ def MenuDetails(request,menu_id):
         'item':item,
          'orders':order,
         'cart_quantity':cartItem,
-       
     }
     return render(request,'Resto/MenuDetails.html',context)
 

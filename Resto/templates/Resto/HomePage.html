@@ -1,12 +1,14 @@
-{% extends "Resto/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% for order in order.orderitem_set.all%}
-
-<div class='mt-2'>
-    <h4 style='color:darkseagreen'>Order: {{order}} ({{order.quantity}})</h4>
-
+{% extends "Resto/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if order %}
+<div>
+    <div class='mt-4'>
+        <h5>My Order:</h5>
+        {% for order in order.orderitem_set.all%}
+        <h4 style='color:darkseagreen'>* {{order}} ({{order.quantity}})</h4>
+    </div>
+    {% endfor %}
+    <!-- <small class='muted-text'>*Disapeard when order is completed</small> -->
 </div>
-
-
-{% endfor %}
+{% endif %}
 
 <div class="main-container">
     <div class="heading">
@@ -29,7 +31,4 @@
         </a>
     </div>
 </div>
-
-
-
 {% endblock content %}
