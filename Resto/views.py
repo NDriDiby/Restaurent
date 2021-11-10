@@ -37,9 +37,8 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
     print(all_user)
+
     
-
-
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
         cust,created = Customer.objects.get_or_create(user =request.user)
@@ -49,7 +48,6 @@ def MenuDetails(request,menu_id):
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         cartItem = order.get_order_quantity()
 
-    
     else:
         return HttpResponseRedirect('/register/')
 
@@ -76,16 +74,13 @@ def MyOrder(request):
         customer = request.user.customer
         order,created= Order.objects.get_or_create(customer=customer,status='Pending')
         items = order.orderitem_set.all()
-        #items = OrderItem.objects.filter(order = order)
         cartItem = order.get_order_quantity()
 
-        
+
     else:
         items =[]
-        # order ={'gat_cart_total':0,'get_order_quantity':0}
-        # cartItem = order.get_order_quantity()
+        
 
-   
     if request.method == 'POST':
         messages.success(request,"Order Sent to kitchen")
         return HttpResponseRedirect('/')
@@ -125,9 +120,6 @@ def UpdatedItem(request):
     if orderItem.quantity<=0:
         orderItem.delete()
 
-
-    
-
     return JsonResponse(f'Item was {action}',safe=False)
     
 
@@ -165,7 +157,7 @@ def SendOrder(request):
 
 @csrf_protect
 @login_required
-@permission_required('Restaurent.view_order',login_url='/login/')
+@permission_required('Resto.view_order',login_url='/login/')
 def Cuisine(request):
 
 

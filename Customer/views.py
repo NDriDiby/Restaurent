@@ -24,6 +24,7 @@ def RegisterCustomer(request):
     return render(request,'Customer/Register.html',context)
 
 
+
 #Profile
 @login_required
 def Profile(request):

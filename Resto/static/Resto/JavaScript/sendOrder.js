@@ -12,10 +12,8 @@ for (let i = 0; i < sendOrder.length; i++) {
         cuisine(action, order)
         console.log('redicting you to .....')
 
-
     })
 }
-
 
 
 function cuisine(act, ord) {

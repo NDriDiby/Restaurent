@@ -63,10 +63,10 @@
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
                     <a href="{% url 'order' %}">
-                        <img id='cart-icon' src='{% static "Resto/cart.png" %}' style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
+                        <img id='cart-icon' src='{% static "Resto/cart.png" %}' style="width: 70px; height: 70px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;"></a>
-                    <div>
-                        <p id='cart-total'>{{cart_quantity}}</p>
+                    <div id='cart-total'>
+                        <p class='mt-1'>{{cart_quantity}}</p>
                     </div>
 
                 </div>

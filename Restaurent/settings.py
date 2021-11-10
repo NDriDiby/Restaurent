@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Resto.apps.RestoConfig',
     'Customer.apps.CustomerConfig',
+    'Bakerys.apps.BakerysConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
