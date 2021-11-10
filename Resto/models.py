@@ -3,7 +3,7 @@ from ast import AugLoad
 from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 
 # Create your models here.
 
@@ -54,6 +54,9 @@ class Order(models.Model):
     status = models.CharField(max_length=30,default = 'Pending')
     date_ordered = models.DateTimeField(auto_now=True)
     date_completed = models.DateTimeField(auto_now=True)
+
+    class meta:
+        permissions = (("can view orders"))
 
     def __str__(self):
         return str(self.customer.name)

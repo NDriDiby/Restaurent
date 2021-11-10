@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 import json
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
+from django.contrib.auth.decorators import permission_required,login_required
 import random
 import datetime
 
@@ -36,6 +37,7 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
     print(all_user)
+    
 
 
     if request.user.is_authenticated:
@@ -162,12 +164,14 @@ def SendOrder(request):
 
 
 @csrf_protect
+@login_required
+@permission_required('Restaurent.view_order',login_url='/login/')
 def Cuisine(request):
-    
+
+
     all_order = Order.objects.filter(status='Sent')
     complete_order = Order.objects.filter(complete=True)
     
-
     context = {
         'all_order':all_order,
         'complete':complete_order

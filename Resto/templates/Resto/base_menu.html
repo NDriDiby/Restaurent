@@ -78,10 +78,13 @@
                 {% for m in category %}
                 <a class="p-2 text-muted " href="{% url 'menu_details' m.id %} ">
                     <p style="color:skyblue;font-size: large; ">{{m.name}}</p>
-                </a> {% endfor %}
+                </a> {% endfor %} {% if perms.Resto.view_order%}
                 <a class="p-2 text-muted " href="{% url 'cuisine'  %} ">
                     <p style="color:skyblue;font-size: large; ">Cuisine</p>
                 </a>
+                {% endif %}
+
+
             </nav>
         </div>
 
