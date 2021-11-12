@@ -1,6 +1,6 @@
 
 from django.shortcuts import render,redirect
-from.models import Category, Customer,Item,Order,OrderItem
+from.models import Category,Customer,Item,Order,OrderItem
 from django.contrib import messages
 from.forms import CustomerForm
 from django.contrib.auth.models import User
@@ -76,16 +76,8 @@ def MyOrder(request):
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
 
-
-    else:
-        items =[]
-        
-
     if request.method == 'POST':
-        messages.success(request,"Order Sent to kitchen")
         return HttpResponseRedirect('/')
-
-
 
     context = {
         'order':order,
@@ -135,11 +127,17 @@ def SendOrder(request):
     if request.method == 'POST' and action == 'sent':
         customer = request.user
         order = Order.objects.filter(customer__id = customer.customer.id).last()
-        order.status = 'Sent'
-        order.save()
-        item = OrderItem.objects.filter(order = order)
-        print(order)
-        print(item)
+        item = order.get_order_quantity()
+        print('order quant:',item)
+        if item >0:
+            order.status = 'Sent'
+            order.save()
+            messages.success(request,"Order Sent to kitchen")
+            print('order saved')
+
+        else:
+            print("I can't send your order")
+            messages.warning(request,"Your cart is empty")
 
     
     elif action =='completed':
@@ -159,7 +157,6 @@ def SendOrder(request):
 @login_required
 @permission_required('Resto.view_order',login_url='/login/')
 def Cuisine(request):
-
 
     all_order = Order.objects.filter(status='Sent')
     complete_order = Order.objects.filter(complete=True)

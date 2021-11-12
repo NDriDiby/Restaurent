@@ -5,6 +5,7 @@ from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import Permission, User
 
+
 # Create your models here.
 
 class Category(models.Model):
@@ -30,8 +31,6 @@ class Customer(models.Model):
         return self.name
 
 
-
-    
 
 class Item(models.Model):
     itm_id = models.IntegerField()

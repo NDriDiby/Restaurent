@@ -319,6 +319,18 @@ body {
     background: radial-gradient(#f588d8, #c0a3e5);
 }
 
+.card-6 {
+    background: radial-gradient(#d19497, #e9204b);
+}
+
+.card-7 {
+    background: radial-gradient(#e0eb7f, #a39f68);
+}
+
+.card-8 {
+    background: radial-gradient(#f59d55, #f0bf92);
+}
+
 
 /* RESPONSIVE */
 
