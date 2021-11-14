@@ -10,17 +10,25 @@ from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.decorators import permission_required,login_required
 import random
 import datetime
+ 
+
+ #App Name
+app = Order._meta.app_label
+
 
 
 # Create your views here.
 def HomePage(request):
     order = None
+    print('myAppName:',Order._meta.app_label)
+    request.session[str(app)] = app
+    print(str(app))
+
     category = Category.objects.all().order_by("name")
     if request.user.is_authenticated:
         customer = request.user
         order= Order.objects.filter(customer__name = customer, status = 'Sent').last()
-        print(customer)
-        print(order)
+        
     else:
         category = Category.objects.all().order_by("name")
 
@@ -36,7 +44,10 @@ def MenuDetails(request,menu_id):
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
-    print(all_user)
+
+    if request.session.has_key(str(app)):
+        print(app)
+    
 
     
     if request.user.is_authenticated:
@@ -77,7 +88,8 @@ def MyOrder(request):
         cartItem = order.get_order_quantity()
 
     if request.method == 'POST':
-        return HttpResponseRedirect('/')
+        
+        return redirect('homepage-texasgrillz')
 
     context = {
         'order':order,

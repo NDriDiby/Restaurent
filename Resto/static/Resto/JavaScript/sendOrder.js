@@ -18,7 +18,7 @@ for (let i = 0; i < sendOrder.length; i++) {
 
 function cuisine(act, ord) {
 
-    var url = '/sendorder/'
+    var url = '/texasgrillz/sendorder/'
 
     fetch(url, {
             method: 'POST',

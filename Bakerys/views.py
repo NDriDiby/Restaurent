@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect
+
+from Resto.models import Customer
 from .models import Category,OrderBakerys,ItemBakerys,OrderItemBakerys,CustomerBekerys
 import json
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
@@ -6,11 +8,22 @@ from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required,login_required
+from django.apps import AppConfig
+from django.conf import settings
+from Customer.utils import get_app_name
 
+
+#App Name
+app = OrderBakerys._meta.app_label
 
 # Create your views here.
-def HomePage(request):
+def HomePageBakerys(request):
     order = None
+
+    request.session[str(app)] = app
+    print("My App is:",app)
+    get_app_name(request)
+
     category = Category.objects.all().order_by("name")
     if request.user.is_authenticated:
         customer = request.user
@@ -28,13 +41,12 @@ def HomePage(request):
     return render(request,'Bakerys/HomePage.html',context)
 
 
-def MenuDetails(request,menu_id):
+def MenuDetailsBakerys(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
     
-
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
@@ -65,7 +77,7 @@ def MenuDetails(request,menu_id):
     return render(request,'Bakerys/MenuDetails.html',context)
 
 
-def MyOrder(request):
+def MyOrderBakerys(request):
     if request.user.is_authenticated:
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
@@ -73,7 +85,7 @@ def MyOrder(request):
         cartItem = order.get_order_quantity()
 
     if request.method == 'POST':
-         return redirect('homepage')
+         return redirect('homepage-bakerys')
 
 
     context = {
@@ -84,7 +96,7 @@ def MyOrder(request):
 
 
 
-def UpdatedItem(request):
+def UpdatedItemBakerys(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
@@ -114,7 +126,7 @@ def UpdatedItem(request):
 
 
 @csrf_protect
-def SendOrder(request):
+def SendOrderBakerys(request):
     data = json.loads(request.body)
     action = data['action']
     order_numb = data['order']
@@ -142,17 +154,33 @@ def SendOrder(request):
         order.status = 'Completed'
         order.complete = True
         order.save()
+        messages.success(request,"Order is completed")
         print('completed order')
     
     return JsonResponse("Order Sent",safe=False)
 
 
+def DeleteOrderBakerys(request,item_id):
+
+    del_items = OrderItemBakerys.objects.get(id = item_id)
+    print(del_items)
+    if request.method == 'POST':
+        if request.POST.get('response') == 'Yes':
+            del_items.delete()
+        elif request.POST.get('response') == 'Cancel':
+            pass
+        return redirect('order-bakerys')
+    
+    context = {
+          'del_item':del_items
+    }
+    return render(request, 'Bakerys/DeleteOrder.html',context)
 
 
 @csrf_protect
 @login_required
 @permission_required('Resto.view_order',login_url='/login/')
-def Cuisine(request):
+def CuisineBakerys(request):
 
 
     all_order = OrderBakerys.objects.filter(status='Sent')

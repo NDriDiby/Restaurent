@@ -49,14 +49,14 @@
             <div class="align-items-center">
 
                 <div class="col text-center">
-                    <a class="blog-header-logo text-dark" href="{% url 'homepage' %}">
+                    <a class="blog-header-logo text-dark" href="{% url 'homepage-bakerys' %}">
                         <img src="{% static 'Resto/Bakerys Logo.JPG' %}" style="width: 130px; height: 130px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;">
                     </a>
                 </div>
                 <div class="col-4  inline-block">
-                    <a class="btn btn-sm btn-outline-secondary " href="{% url 'homepage'%}"><i class="bi bi-arrow-left-square"></i> Menu</a> {% if del_item %}
-                    <a class="btn btn-sm btn-outline-secondary  " href="{% url 'order'%}"><i class="bi bi-arrow-left-square"></i> My Order </a> {% endif %}
+                    <a class="btn btn-sm btn-outline-secondary " href="{% url 'homepage-bakerys'%}"><i class="bi bi-arrow-left-square"></i> Menu</a> {% if del_item %}
+                    <a class="btn btn-sm btn-outline-secondary  " href="{% url 'order-bakerys'%}"><i class="bi bi-arrow-left-square"></i> My Order </a> {% endif %}
 
                 </div>
             </div>

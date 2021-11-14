@@ -19,7 +19,7 @@
     </div>
     <div class="cards mt-5">
         {% for cat in category %}
-        <a href="{% url 'menu_details' cat.cat_id %}" style="text-decoration:none;">
+        <a href="{% url 'menu_details-bakerys' cat.cat_id %}" style="text-decoration:none;">
             <div class="card card-{{cat.cat_id}}">
                 <div style="text-align: center" class='mt-3'>
                     <img src="{{cat.img.url}}" alt="{{i.name}}" style="width: 300px; height: 300px; object-fit:scale-down;image-rendering: auto;text-align: center;">

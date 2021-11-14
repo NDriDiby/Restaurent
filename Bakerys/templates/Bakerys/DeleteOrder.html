@@ -1,4 +1,4 @@
- {% extends "Resto/base_checkout.html" %} {% block content %} {% load static %}
+{% extends "Bakerys/base_checkout.html" %} {% block content %} {% load static %}
 
 <div class='container'>
 
@@ -15,7 +15,7 @@
         <form class="form-inline" method="POST">
             {% csrf_token %}
             <input type="submit" class="btn btn-primary mb-2 m-lg-2" name='response' value="Yes" class='mx-2'>
-            <a href="{% url 'order-texasgrillz' %}"><button class="btn btn-danger mb-2 m-lg-2" name = 'response' value = 'Cancel'>
+            <a href="{% url 'order-bakerys' %}"><button class="btn btn-danger mb-2 m-lg-2" name = 'response' value = 'Cancel'>
                     Cancel
                 </button></a>
         </form>

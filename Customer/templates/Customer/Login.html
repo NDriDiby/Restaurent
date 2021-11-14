@@ -2,8 +2,6 @@
 
 
 
-
-
 <div class='welcome'><b style='color:sandybrown'>Icarus</b><small class='text-muted' style='font-size: 45px;'><i> <strong> Restaurant</strong> </i></small></div>
 <div class='subtitle mt-3'>We're almost done. Before using our services you need to create an account.</div>
 <div class='input-fields mt-5'>
@@ -14,12 +12,15 @@
         {% csrf_token %}
         <fieldset class='form-group mt-2'>
             <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Connexion</legend>
-            <label class='mt-5' for=Username> Username</label> {{form.username}}
+            <label name='username' class='mt-5' for=Username> Username</label> {{form.username}}
             <br>
             <br>
-            <label class='mt-4' for="Password">Password</label> {{form.password}}
+            <label name='password' type='password' class='mt-4' for="Password">Password</label> {{form.password}}
         </fieldset>
 </div>
+
+
+
 
 <div class='mt-5'><button type='submit' class='ghost-round full-width'>Connect</button></div>
 </form>

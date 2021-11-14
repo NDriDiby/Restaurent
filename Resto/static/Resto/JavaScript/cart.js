@@ -18,7 +18,7 @@ for (var i = 0; i < updated_but.length; i++) {
 function updateUserOrder(itemId, action) {
     console.log(user, 'is logged in, sengind data....')
 
-    var url = '/updateitem/'
+    var url = '/texasgrillz/updateitem/'
 
     fetch(url, {
             method: 'POST',

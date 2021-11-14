@@ -31,12 +31,11 @@
     </div>
     <div class="card card-{{menu.id}} mt-5">
         {% for i in item %}
-        <div class="card">
-            <div class='mt-3 '>
-                <img src=" {{i.img.url}} " alt="{{i.name}} " style="width: 284px; height: 300px; object-fit:scale-down;image-rendering: auto;">
+        <div class="card align-items-center">
+            <div class='mt-1'>
+                <img src=" {{i.img.url}} " alt="{{i.name}} " style="width: 250px; height:auto; object-fit:scale-down;image-rendering: auto;">
             </div>
-
-            <h2 class="card-title " style="text-align: center; ">{{i.name}}</h2>
+            <h2 class="card-title mt-2" style="text-align: center; ">{{i.name}}</h2>
             <p class="card-text " style="text-align: center; ">{{i.description}}</p>
             <p class="card-text " style="text-align: center; "><b>{{i.prix}} FCFA</b></p>
             <form method='POST'>
