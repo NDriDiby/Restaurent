@@ -9,8 +9,6 @@ from django.conf import settings
 from django.http.response import HttpResponseRedirect,JsonResponse
 from Customer.utils import track_session
 
-# Create your views here.
-
 
 def Login(request):
 
@@ -39,14 +37,15 @@ def Login(request):
     return render(request,'Customer/Login.html',context)
 
 
+
+#Logout
 def Logout(request):
 
-    #tracking user session 
+    #Tracking user session 
     session = track_session(request)
-    print("logout of:",session)
-
+    
+    #LogOut current user
     logout(request)
-    messages.info(request, f"You are now logged out")
     context = {
         'session':session
     }
@@ -55,12 +54,13 @@ def Logout(request):
 
 
 
-
-#register new user
+#Register new user
 def RegisterCustomer(request):
     
+    #Tracking user session
     session = track_session(request)
 
+    #Create new account for current user then redict to current session
     if request.method == 'POST':
          form = CustomerForm(request.POST)
          if form.is_valid():
@@ -83,7 +83,6 @@ def RegisterCustomer(request):
 #Profile
 @login_required(login_url='/login/')
 def Profile(request):
-
     return render(request,'Customer/Profile.html')
 
 
