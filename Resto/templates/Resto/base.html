@@ -77,8 +77,8 @@
                     </a>
 
                     {% if user.is_authenticated %}
-                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'logout' %}">Deconnexion</a> {% else%}
-                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'login' %}">Connexion</a> {% endif %}
+                    <a class="btn btn-sm btn-outline-secondary" href="/logout?session=texasgrillz">Deconnexion</a> {% else%}
+                    <a class="btn btn-sm btn-outline-secondary" href="/login?session=texasgrillz">Connexion</a> {% endif %}
                 </div>
             </div>
         </header>

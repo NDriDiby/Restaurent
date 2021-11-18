@@ -127,7 +127,7 @@ USE_TZ = True
 
 
 
-LOGIN_REDIRECT_URL = '/texasgrillz/'
+#LOGIN_REDIRECT_URL = '/texasgrillz/'
 
 LOGIN_URL = 'login'
 

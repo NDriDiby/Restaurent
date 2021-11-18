@@ -10,24 +10,25 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required,login_required
 from django.apps import AppConfig
 from django.conf import settings
-from Customer.utils import get_app_name
+from Customer.utils import track_session
+from django.urls import resolve,ResolverMatch
+
 
 
 #App Name
 app = OrderBakerys._meta.app_label
 
-# Create your views here.
+#Home Page
 def HomePageBakerys(request):
+
+    #Track user
+    session = track_session(request)
+    
+    
     order = None
-
-    request.session[str(app)] = app
-    print("My App is:",app)
-    get_app_name(request)
-
     category = Category.objects.all().order_by("name")
     if request.user.is_authenticated:
         customer = request.user
-        print(customer)
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order= OrderBakerys.objects.filter(customer = cust, status = 'Sent').last()
         
@@ -36,7 +37,8 @@ def HomePageBakerys(request):
 
     context = {
         'category':category,
-        'order':order
+        'order':order,
+        'session':session,
     }
     return render(request,'Bakerys/HomePage.html',context)
 
@@ -46,6 +48,8 @@ def MenuDetailsBakerys(request,menu_id):
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
+    session = None
+
     
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
@@ -55,11 +59,10 @@ def MenuDetailsBakerys(request,menu_id):
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
         cartItem = order.get_order_quantity()
     
-
     else:
-        return HttpResponseRedirect('/register/')
+        return HttpResponseRedirect(f'/register?session={app}')
 
-        
+    
     if request.method == 'POST':
         order_table = request.POST.get('item')
         order_table = ItemBakerys.objects.filter(id=order_table)
@@ -78,6 +81,7 @@ def MenuDetailsBakerys(request,menu_id):
 
 
 def MyOrderBakerys(request):
+
     if request.user.is_authenticated:
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
@@ -92,6 +96,7 @@ def MyOrderBakerys(request):
         'order':order,
         'items':items,
         'cart_quantity':cartItem}    
+
     return render(request,'Bakerys/MyOrder.html',context)
 
 

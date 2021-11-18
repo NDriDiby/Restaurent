@@ -3,19 +3,22 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from Resto.forms import CustomerForm
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm #add this
 from django.conf import settings
+from django.http.response import HttpResponseRedirect,JsonResponse
+from Customer.utils import track_session
 
 # Create your views here.
 
 
 def Login(request):
-    apps = [appname.split('.')[0] for appname in settings.INSTALLED_APPS if 'Config' in appname]
-    for app in range(0,len(apps)):
-        if apps[app] in request.session:
-            print('Login App Name:',apps[app])
-            
+
+    #Tracking user session
+    session = track_session(request)
+    print('my current sess:',session)
+
+    #Authenticate user then redict to their session
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -25,31 +28,53 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect('homepage-bakerys')
-       
+                return HttpResponseRedirect(f'/{session}/')
+               
     else:
         form = AuthenticationForm()
+
     context = {
-         'form':form}
+        'form':form}
 
     return render(request,'Customer/Login.html',context)
+
+
+def Logout(request):
+
+    #tracking user session 
+    session = track_session(request)
+    print("logout of:",session)
+
+    logout(request)
+    messages.info(request, f"You are now logged out")
+    context = {
+        'session':session
+    }
+    
+    return render (request,'Customer/Logout.html',context)
+
 
 
 
 #register new user
 def RegisterCustomer(request):
+    
+    session = track_session(request)
+
     if request.method == 'POST':
          form = CustomerForm(request.POST)
          if form.is_valid():
              cust_name = form.cleaned_data.get('username')
              form.save()
              messages.success(request,f'Account Created for {cust_name}')
-             return redirect('login')
+             return HttpResponseRedirect(f'/login?register=true&session={session}')
     else:
         form = CustomerForm()
+       
 
     context={
-        'form':form
+        'form':form,
+        'session':session
     }
     return render(request,'Customer/Register.html',context)
 

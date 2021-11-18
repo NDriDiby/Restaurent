@@ -20,11 +20,9 @@ app = Order._meta.app_label
 # Create your views here.
 def HomePage(request):
     order = None
-    print('myAppName:',Order._meta.app_label)
-    request.session[str(app)] = app
-    print(str(app))
-
+   
     category = Category.objects.all().order_by("name")
+
     if request.user.is_authenticated:
         customer = request.user
         order= Order.objects.filter(customer__name = customer, status = 'Sent').last()
@@ -45,10 +43,6 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
 
-    if request.session.has_key(str(app)):
-        print(app)
-    
-
     
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
@@ -60,7 +54,7 @@ def MenuDetails(request,menu_id):
         cartItem = order.get_order_quantity()
 
     else:
-        return HttpResponseRedirect('/register/')
+        return HttpResponseRedirect(f'/register?session=texasgrillz')
 
         
     if request.method == 'POST':
@@ -161,7 +155,6 @@ def SendOrder(request):
 
     order.save()
     
-
     return JsonResponse("Order Sent",safe=False)
 
 
@@ -197,7 +190,7 @@ def DeleteOrder(request,item_id):
             del_items.delete()
         elif request.POST.get('response') == 'Cancel':
             pass
-        return HttpResponseRedirect('/myorder')
+        return redirect('order-texasgrillz')
     
     context = {
           'del_item':del_items
