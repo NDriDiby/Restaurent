@@ -24,9 +24,10 @@ def HomePageBakerys(request):
     #Track user
     session = track_session(request)
     
-    
     order = None
     category = Category.objects.all().order_by("name")
+
+    #Show order to customer
     if request.user.is_authenticated:
         customer = request.user
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
@@ -43,14 +44,14 @@ def HomePageBakerys(request):
     return render(request,'Bakerys/HomePage.html',context)
 
 
+# Menu Details 
 def MenuDetailsBakerys(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
     all_user = User.objects.values_list('username',flat=True)
-    session = None
 
-    
+    # Authenticate user or login
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
@@ -59,10 +60,12 @@ def MenuDetailsBakerys(request,menu_id):
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
         cartItem = order.get_order_quantity()
     
+    # Create new account
     else:
         return HttpResponseRedirect(f'/register?session={app}')
 
     
+    # Show item added to cart
     if request.method == 'POST':
         order_table = request.POST.get('item')
         order_table = ItemBakerys.objects.filter(id=order_table)
@@ -80,8 +83,10 @@ def MenuDetailsBakerys(request,menu_id):
     return render(request,'Bakerys/MenuDetails.html',context)
 
 
+# Customer Order
 def MyOrderBakerys(request):
 
+    #
     if request.user.is_authenticated:
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
@@ -142,15 +147,13 @@ def SendOrderBakerys(request):
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order = OrderBakerys.objects.filter(customer = cust).last()
         item = order.get_order_quantity()
-        print('order quant:',item)
         if item >0:
             order.status = 'Sent'
             order.save()
             messages.success(request,"Order Sent to kitchen")
-            print('order saved')
+
 
         else:
-            print("I can't send your order")
             messages.warning(request,"Your cart is empty")
 
             
@@ -160,7 +163,6 @@ def SendOrderBakerys(request):
         order.complete = True
         order.save()
         messages.success(request,"Order is completed")
-        print('completed order')
     
     return JsonResponse("Order Sent",safe=False)
 
