@@ -1,5 +1,7 @@
 // // send order to the kitchon
 var sendOrder = document.getElementsByClassName("send-orderBakerys")
+
+
 for (let i = 0; i < sendOrder.length; i++) {
     sendOrder[i].addEventListener("click", function() {
         console.log("Sending Order....")
@@ -7,16 +9,17 @@ for (let i = 0; i < sendOrder.length; i++) {
 
         var action = this.dataset.action
         var order = this.dataset.order
+        var note = this.dataset.note
 
         console.log(order)
-        cuisine(action, order)
+        console.log(note)
+        cuisine(action, order, note)
         console.log('redicting you to .....')
 
     })
 }
 
-
-function cuisine(act, ord) {
+function cuisine(act, ord, note) {
 
     var url = '/bakerys/sendorder/'
 
@@ -26,7 +29,7 @@ function cuisine(act, ord) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify({ "action": act, 'order': ord })
+            body: JSON.stringify({ "action": act, 'order': ord, 'note': note })
         })
         .then((response) => {
             return response.json()

@@ -62,6 +62,9 @@
         </div>
         <!-- name='remove-item' type='submit' data-product="{{item.item.id}}" data-action='remove' value='{{item.item.name}}' class='btn btn-outline-danger remove-btn update-cart' -->
 
+
+
+
         <aside>
             <div class="summary">
                 <div class="summary-total-items"><span class="total-items"></span> Items in your Bag ({{cart_quantity}})</div>
@@ -74,6 +77,7 @@
                     </div>
                 </div>
 
+
                 <!-- mode de payment -->
                 <!-- <div class="summary-delivery">
                     <select name="delivery-collection" class="summary-delivery-selection">
@@ -85,17 +89,23 @@
               </select>
                 </div> -->
 
+
                 <div class="summary-total">
+
                     <div class="total-title">Total</div>
                     <div class="total-value final-value" id="basket-total">{{order.get_order_total}} FCFA </div>
+
                     <form method='POST' class='mt-3'>
                         {% csrf_token %}
-                        <button type='submit' data-action="sent" data-order='{{order.id}}' class="btn btn-outline-success add-btn mt-3 send-orderBakerys">Envoyer A La Cuisine</button>
+                        <div style='text-align:center'>
+                            <label for="w3review">Additional Note:</label>
+                            <input id="customer_note" type="text" name="cust_note">
+                            <button type='submit' data-action="sent" data-order='{{order.id}}' value="note" class="btn btn-outline-success add-btn mt-3 send-orderBakerys">Envoyer A La Cuisine</button>
                     </form>
+                    </div>
                 </div>
-            </div>
         </aside>
 
     </main>
-</div>
-{% endblock content %}
+    </div>
+    {% endblock content %}

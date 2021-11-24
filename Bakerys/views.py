@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-
 from Resto.models import Customer
 from .models import Category,OrderBakerys,ItemBakerys,OrderItemBakerys,CustomerBekerys
 import json
@@ -12,6 +11,7 @@ from django.apps import AppConfig
 from django.conf import settings
 from Customer.utils import track_session
 from django.urls import resolve,ResolverMatch
+from.forms import OrderForm
 
 
 
@@ -49,7 +49,7 @@ def MenuDetailsBakerys(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
-    all_user = User.objects.values_list('username',flat=True)
+    
 
     # Authenticate user or login
     if request.user.is_authenticated:
@@ -94,13 +94,19 @@ def MyOrderBakerys(request):
         cartItem = order.get_order_quantity()
 
     if request.method == 'POST':
-         return redirect('homepage-bakerys')
+        order_note = request.POST.get('cust_note')
+        print(order_note)
+        return redirect('homepage-bakerys')
+
+    else:
+        form = OrderForm()
 
 
     context = {
         'order':order,
         'items':items,
-        'cart_quantity':cartItem}    
+        'cart_quantity':cartItem,
+        'form':form}    
 
     return render(request,'Bakerys/MyOrder.html',context)
 
@@ -131,7 +137,7 @@ def UpdatedItemBakerys(request):
     if orderItem.quantity<=0:
         orderItem.delete()
 
-    return JsonResponse(f'Item  {action}',safe=False)
+    return JsonResponse(f'Item {action}',safe=False)
     
 
 
@@ -143,12 +149,16 @@ def SendOrderBakerys(request):
     print('status:',action)
     print('order_number:',order_numb)
 
+
+
     if request.method == 'POST' and action == 'sent':
+
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order = OrderBakerys.objects.filter(customer = cust).last()
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
+            order.note = 'pas de piment'
             order.save()
             messages.success(request,"Order Sent to kitchen")
 
@@ -163,7 +173,8 @@ def SendOrderBakerys(request):
         order.complete = True
         order.save()
         messages.success(request,"Order is completed")
-    
+
+
     return JsonResponse("Order Sent",safe=False)
 
 
