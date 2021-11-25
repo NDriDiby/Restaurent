@@ -23,6 +23,8 @@ class CustomerBekerys(models.Model):
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
 
+    verbose_name = 'CustomerBekerys'
+
     def __str__(self):
         return self.name
 
@@ -37,6 +39,7 @@ class ItemBakerys(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
 
+    verbose_name = 'ItemBekerys'
 
     def __str__(self):
         return self.name
@@ -52,6 +55,7 @@ class OrderBakerys(models.Model):
     table = models.IntegerField(default=1)
     note = models.TextField(blank=True,max_length=100)
 
+    verbose_name = 'OrderBekerys'
     class meta:
         permissions = (("can view orders"))
 
@@ -79,6 +83,8 @@ class OrderItemBakerys(models.Model):
     order = models.ForeignKey(OrderBakerys,on_delete=CASCADE)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     date_added = models.DateTimeField(auto_now=True)
+
+    verbose_name = 'OrderItemBakerys'
 
     def __str__(self):
         return str(self.item)

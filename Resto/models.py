@@ -53,6 +53,8 @@ class Order(models.Model):
     status = models.CharField(max_length=30,default = 'Pending')
     date_ordered = models.DateTimeField(auto_now=True)
     date_completed = models.DateTimeField(auto_now=True)
+    table = models.IntegerField(default=1)
+    note = models.TextField(blank=True,max_length=100)
 
     class meta:
         permissions = (("can view orders"))

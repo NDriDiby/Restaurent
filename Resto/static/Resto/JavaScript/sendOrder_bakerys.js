@@ -1,12 +1,11 @@
-// // send order to the kitchon
+// // send order to the kitchen
 var sendOrder = document.getElementsByClassName("send-orderBakerys")
 var cust_note = document.getElementById('customer_note')
-
 
 for (let i = 0; i < sendOrder.length; i++) {
     sendOrder[i].addEventListener("click", function() {
 
-        if(cust_note.value){
+        if (cust_note.value) {
             console.log("Sending Order to the Kitchen")
             console.log("recording Order note....", cust_note)
             console.log("Customer Note Recorded:", cust_note.value)
@@ -17,20 +16,16 @@ for (let i = 0; i < sendOrder.length; i++) {
             console.log(note)
             cuisine(action, order, note)
             console.log('redicting you to .....')
-        }
-        else{
+
+        } else {
             console.log("Info Client: Order Completed")
             var action = this.dataset.action
             var order = this.dataset.order
             var note = " "
-            console.log('redicting you to .....')
             cuisine(action, order, note)
 
         }
 
-        
-
-        
 
     })
 }

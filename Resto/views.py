@@ -138,8 +138,10 @@ def SendOrder(request):
     data = json.loads(request.body)
     action = data['action']
     order_numb = data['order']
+    cust_note = data['note']
     print('status:',action)
     print('order_number:',order_numb)
+    print('cust_note:',cust_note)
 
     #Process the order
     if request.method == 'POST' and action == 'sent':
@@ -148,6 +150,7 @@ def SendOrder(request):
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
+            order.note = cust_note
             order.save()
             messages.success(request,"Order Sent to kitchen")
         else:

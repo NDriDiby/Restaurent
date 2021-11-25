@@ -11,10 +11,9 @@
             <div class='card' style="width: 12rem; height: auto; background-color:rgb(243, 166, 152)">
                 <div class='card-body mb-1'>
                     <p class="card-text mb-1 " style="color: black; text-align: center;">Date: {{order.date_ordered|date}}</p>
-                    <p style='text-align:center'><b style="color: black;" >Table Number:</b> {{order.table}}</p>
+                    <p style='text-align:center'><b style="color: black;">Table Number:</b> {{order.table}}</p>
                     <h4 class="card-title mb-1" style="color: black; text-align: center;"><b>Customer: {{order}} </b></h4>
-                    <hr style="color: black;">
-                    {% for x in order.orderitembakerys_set.all %}
+                    <hr style="color: black;"> {% for x in order.orderitembakerys_set.all %}
                     <p class="card-text mb-2 " style="color: black; text-align: center;">
                         {% if order.note %}
                         <p id='customer_note' style='text-align:center'><b style="color: black;">Note:</b> {{order.note}}</p>
