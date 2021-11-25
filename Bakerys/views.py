@@ -94,9 +94,14 @@ def MyOrderBakerys(request):
         cartItem = order.get_order_quantity()
 
     if request.method == 'POST':
-        order_note = request.POST.get('cust_note')
-        print(order_note)
-        return redirect('homepage-bakerys')
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            cust_note = form.cleaned_data['note']
+            form.save()
+            order_note = request.POST.get('cust_note')
+            print(order_note)
+            print('cust note:',cust_note)
+            return redirect('homepage-bakerys')
 
     else:
         form = OrderForm()
@@ -146,8 +151,10 @@ def SendOrderBakerys(request):
     data = json.loads(request.body)
     action = data['action']
     order_numb = data['order']
+    cust_note = data['note']
     print('status:',action)
     print('order_number:',order_numb)
+    print('cust_note:',cust_note)
 
 
 
@@ -158,7 +165,7 @@ def SendOrderBakerys(request):
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
-            order.note = 'pas de piment'
+            order.note = cust_note
             order.save()
             messages.success(request,"Order Sent to kitchen")
 

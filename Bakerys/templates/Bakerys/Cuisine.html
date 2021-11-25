@@ -10,13 +10,15 @@
             {% for order in all_order %}
             <div class='card' style="width: 12rem; height: auto; background-color:rgb(243, 166, 152)">
                 <div class='card-body mb-1'>
-                    <p style='text-align:center'>Customer Note: {{order.note}}</p>
-                    <p style='text-align:center'>Table Number: {{order.table}}</p>
-                    <h4 class="card-title mb-2" style="color: black; text-align: center;"><b>{{order}} </b></h4>
-                    <hr style="color: black;">
                     <p class="card-text mb-1 " style="color: black; text-align: center;">Date: {{order.date_ordered|date}}</p>
+                    <p style='text-align:center'><b style="color: black;" >Table Number:</b> {{order.table}}</p>
+                    <h4 class="card-title mb-1" style="color: black; text-align: center;"><b>Customer: {{order}} </b></h4>
+                    <hr style="color: black;">
                     {% for x in order.orderitembakerys_set.all %}
                     <p class="card-text mb-2 " style="color: black; text-align: center;">
+                        {% if order.note %}
+                        <p id='customer_note' style='text-align:center'><b style="color: black;">Note:</b> {{order.note}}</p>
+                        {% endif %}
                         <b>*</b> {{x}} ({{x.quantity}})
                     </p>
                     {% endfor %}
