@@ -47,7 +47,7 @@ class ItemBakerys(models.Model):
 
 class OrderBakerys(models.Model):
     customer = models.ForeignKey(CustomerBekerys,on_delete=models.SET_NULL,blank=True,null=True)
-    transaction_id = models.IntegerField(default=0,null = True, blank = True )
+    transaction_id = models.CharField(null = True, blank = True,max_length=10)
     complete = models.BooleanField(default=False,null=True,blank=False)
     status = models.CharField(max_length=30,default = 'Pending')
     date_ordered = models.DateTimeField(auto_now=True)

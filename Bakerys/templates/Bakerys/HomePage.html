@@ -1,17 +1,30 @@
 {% extends "Bakerys/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if order %}
-<div>
-    <div class='mt-4'>
-        <h5>My Order</h5>
-        <h5>Table: {{order.table}}</h5>
-        <h5>Total: {{order.get_order_total}} F</h5>
-        {% for order in order.orderitembakerys_set.all%}
-        <h4 style='color:darkseagreen'>* {{order}} ({{order.quantity}})</h4>
 
+<div class='showOrder mt-3'>
+
+    <div class="spinner-grow text-muted"></div>
+    <div class="spinner-grow text-primary"></div>
+    <div class="spinner-grow text-success"></div>
+    <div class="spinner-grow text-info"></div>
+    <div class="spinner-grow text-warning"></div>
+    <div class="spinner-grow text-danger"></div>
+    <div class="spinner-grow text-secondary"></div>
+
+
+    <div class='mt-4'>
+        <h6>My Order - ({{order.date_ordered}})</h6>
+        <h6>Reference ID: <small>{{order.transaction_id}}</small></h6>
+
+        <h6>Table: {{order.table}}</h6>
+        <h6>Total: {{order.get_order_total}} F</h6>
+        {% for order in order.orderitembakerys_set.all%}
+        <h5 style='color:darkseagreen'>* {{order}} ({{order.quantity}})</h5>
     </div>
     {% endfor %}
+    <small>Note: {{order.note}}</small>
     <!-- <small class='muted-text'>*Disapeard when order is completed</small> -->
+    {% endif %}
 </div>
-{% endif %}
 
 <div class="main-container">
     <div class="heading">

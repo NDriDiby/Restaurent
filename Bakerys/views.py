@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required,login_required
 from django.apps import AppConfig
 from django.conf import settings
-from Customer.utils import track_session
+from Customer.utils import track_session,order_number
 from django.urls import resolve,ResolverMatch
 from.forms import OrderForm
 
@@ -27,24 +27,27 @@ def HomePageBakerys(request):
         table = 1
     else:
         table = int(table[:-1])
-    print(type(table))
-    print('Table Number:',table)
+
 
     #Track user
     session = track_session(request)
     
     #Category to choose from
+    
+    
     order_sent = None
     category = Category.objects.all().order_by("name")
 
     
     if request.user.is_authenticated:
-        #Create a customer object and an order
+        #Create a customer object
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = username.username
         cust.save()
-        order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',table=table)
+        #Create Order
+        order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',
+        table=table)
 
         #Show order to customer
         order_sent = OrderBakerys.objects.filter(customer = cust, status = 'Sent').last()
@@ -181,6 +184,7 @@ def SendOrderBakerys(request):
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
+            order.transaction_id = order_number()
             order.note = cust_note
             order.save()
             messages.success(request,"Order Sent to kitchen")
