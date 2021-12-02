@@ -14,31 +14,47 @@ from django.urls import resolve,ResolverMatch
 from.forms import OrderForm
 
 
+#www.Icarus.com/bakerys?session=bakerys/?table=X
 
 #App Name
-app = OrderBakerys._meta.app_label
+app = OrderBakerys._meta.app_label+"?table=14"
 
 #Home Page
 def HomePageBakerys(request):
+    #Grab the Table number from the url using request
+    table = request.GET.get('table')
+    if table is None:
+        table = 1
+    else:
+        table = int(table[:-1])
+    print(type(table))
+    print('Table Number:',table)
 
     #Track user
     session = track_session(request)
     
-    order = None
+    #Category to choose from
+    order_sent = None
     category = Category.objects.all().order_by("name")
 
-    #Show order to customer
+    
     if request.user.is_authenticated:
-        customer = request.user
+        #Create a customer object and an order
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
-        order= OrderBakerys.objects.filter(customer = cust, status = 'Sent').last()
+        username = User.objects.get(id=request.user.id)
+        cust.name = username.username
+        cust.save()
+        order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',table=table)
+
+        #Show order to customer
+        order_sent = OrderBakerys.objects.filter(customer = cust, status = 'Sent').last()
         
     else:
         category = Category.objects.all().order_by("name")
 
     context = {
         'category':category,
-        'order':order,
+        'order':order_sent,
         'session':session,
     }
     return render(request,'Bakerys/HomePage.html',context)
@@ -50,8 +66,7 @@ def MenuDetailsBakerys(request,menu_id):
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
     
-
-    # Authenticate user or login
+    # Authenticate then create an order
     if request.user.is_authenticated:
         username = User.objects.get(id=request.user.id)
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
@@ -79,6 +94,7 @@ def MenuDetailsBakerys(request,menu_id):
         'item':item,
          'orders':order,
         'cart_quantity':cartItem,
+        
     }
     return render(request,'Bakerys/MenuDetails.html',context)
 
@@ -86,22 +102,19 @@ def MenuDetailsBakerys(request,menu_id):
 # Customer Order
 def MyOrderBakerys(request):
 
-    #
+    #Get Order
     if request.user.is_authenticated:
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
         items = order.orderitembakerys_set.all()
         cartItem = order.get_order_quantity()
 
+    #Form Validation
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            cust_note = form.cleaned_data['note']
-            form.save()
-            order_note = request.POST.get('cust_note')
-            print(order_note)
-            print('cust note:',cust_note)
-            return redirect('homepage-bakerys')
+            #form.save()
+            return HttpResponseRedirect(f'/bakerys?session={app}')
 
     else:
         form = OrderForm()
@@ -116,7 +129,7 @@ def MyOrderBakerys(request):
     return render(request,'Bakerys/MyOrder.html',context)
 
 
-
+#Increase and Decrease cart item
 def UpdatedItemBakerys(request):
     data = json.loads(request.body)
     itemId = data['itemId']
@@ -125,7 +138,7 @@ def UpdatedItemBakerys(request):
     print('ItemId:',itemId)
     print('action:',action)
 
-    
+    #Retrive the order
     cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
     item = ItemBakerys.objects.get(id=itemId)
     order= OrderBakerys.objects.get(customer=cust,status = 'Pending')
@@ -146,6 +159,7 @@ def UpdatedItemBakerys(request):
     
 
 
+#Send order to the Kitchen
 @csrf_protect
 def SendOrderBakerys(request):
     data = json.loads(request.body)
@@ -158,10 +172,12 @@ def SendOrderBakerys(request):
 
 
 
+
     if request.method == 'POST' and action == 'sent':
 
+        #Retrieve the order then send to the kitchen
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
-        order = OrderBakerys.objects.filter(customer = cust).last()
+        order,created = OrderBakerys.objects.get_or_create(id=order_numb, customer = cust)
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
@@ -173,7 +189,7 @@ def SendOrderBakerys(request):
         else:
             messages.warning(request,"Your cart is empty")
 
-            
+    #Order Completed
     elif action =='completed':
         order = OrderBakerys.objects.get(id = order_numb)
         order.status = 'Completed'
@@ -185,8 +201,9 @@ def SendOrderBakerys(request):
     return JsonResponse("Order Sent",safe=False)
 
 
+#Delete Order
 def DeleteOrderBakerys(request,item_id):
-
+             
     del_items = OrderItemBakerys.objects.get(id = item_id)
     print(del_items)
     if request.method == 'POST':
@@ -202,11 +219,11 @@ def DeleteOrderBakerys(request,item_id):
     return render(request, 'Bakerys/DeleteOrder.html',context)
 
 
+#Cuisine Access
 @csrf_protect
 @login_required
 @permission_required('Resto.view_order',login_url='/login/')
 def CuisineBakerys(request):
-
 
     all_order = OrderBakerys.objects.filter(status='Sent')
     complete_order = OrderBakerys.objects.filter(complete=True)

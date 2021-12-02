@@ -18,7 +18,7 @@ admin.site.register(OrderItemBakerys,OrderItemAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id','customer','note','transaction_id','complete','status' ,'date_ordered','date_completed')
+    list_display = ('id','customer', 'table' ,'note','transaction_id','complete','status' ,'date_ordered','date_completed')
 admin.site.register(OrderBakerys,OrderAdmin)
 
 
