@@ -77,7 +77,7 @@
                 <div class="col-4 text-center">
                     <img src="{% static 'Resto/Bakerys Logo.JPG' %}" style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;">
-                    <a class="blog-header-logo text-dark" href="{% url 'homepage-bakerys' %}">Bakery's</a>
+                    <a class="blog-header-logo text-dark" href="/bakerys/?session={{app}}">Bakery's</a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
                     <!-- <a class="text-muted" href="#">
@@ -86,7 +86,7 @@
 
                     {% if user.is_authenticated %}
                     <a class="btn btn-sm btn-outline-secondary" href="/logout?session=bakerys">Deconnexion</a> {% else%}
-                    <a class="btn btn-sm btn-outline-secondary" href="/login?session=bakerys">Connexion</a> {% endif %}
+                    <a class="btn btn-sm btn-outline-secondary" href="/login?session={{app}}">Connexion</a> {% endif %}
                 </div>
             </div>
         </header>

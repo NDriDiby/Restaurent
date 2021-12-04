@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path,include
 from. import views
+from .models import OrderBakerys
+
+app = OrderBakerys._meta.app_label+"?table=14"
 
 urlpatterns = [
     path('bakerys/', views.HomePageBakerys,name='homepage-bakerys'),

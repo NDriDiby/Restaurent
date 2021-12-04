@@ -21,6 +21,7 @@ def track_session(request):
         session = request.GET.get('session').lower()
     return session
 
+
 def order_number():
     number = [str(randint(0,9)) for i in range(0,5)]
     letter = ['B','A','K','E','R','Y','S']
@@ -28,6 +29,31 @@ def order_number():
     number = "".join(number)
     order_number = letter+' #'+str(number)
     return order_number
+
+def target_app(request):
+    session_id = request.GET.get('session')
+    table = str(request.GET.get('table'))
+
+    if session_id == None or table == None:
+        pass
+    else:
+        table = str(request.GET.get('table'))
+        table = int(table)
+        targetApp = session_id+'&table='+str(table)
+        return targetApp
+
+
+def get_table_number(request):
+    table = str(request.GET.get('table'))
+    if table == None:
+        pass
+    else:
+        table = str(request.GET.get('table'))
+        if table is not None:
+            table = int(table)
+        return table
+
+    
 
 
 

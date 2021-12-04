@@ -7,11 +7,18 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm #add this
 from django.conf import settings
 from django.http.response import HttpResponseRedirect,JsonResponse
-from Customer.utils import track_session
+from Customer.utils import track_session,target_app
+from Bakerys.models import OrderBakerys
+
+#App Name
+app = OrderBakerys._meta.app_label+"&table=13"
 
 
 def Login(request):
 
+    targetApp = target_app(request)
+    
+    
     #Tracking user session
     session = track_session(request)
     print('my current sess:',session)
@@ -26,13 +33,14 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return HttpResponseRedirect(f'/{session}/')
+                return HttpResponseRedirect(f'/{session}/?session={targetApp}')
                
     else:
         form = AuthenticationForm()
 
     context = {
-        'form':form}
+        'form':form,
+        'app':targetApp}
 
     return render(request,'Customer/Login.html',context)
 

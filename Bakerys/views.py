@@ -9,45 +9,44 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required,login_required
 from django.apps import AppConfig
 from django.conf import settings
-from Customer.utils import track_session,order_number
+from Customer.utils import track_session,order_number,get_table_number,target_app
 from django.urls import resolve,ResolverMatch
 from.forms import OrderForm
 
 
 #www.Icarus.com/bakerys?session=bakerys/?table=X
 
-#App Name
-app = OrderBakerys._meta.app_label+"?table=14"
+
 
 #Home Page
 def HomePageBakerys(request):
-    #Grab the Table number from the url using request
-    table = request.GET.get('table')
-    if table is None:
-        table = 1
-    else:
-        table = int(table[:-1])
 
-
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
+    
     #Track user
     session = track_session(request)
+    targetApp = target_app(request) #session=bakerys/?table=x
     
     #Category to choose from
-    
-    
     order_sent = None
     category = Category.objects.all().order_by("name")
 
     
     if request.user.is_authenticated:
+       
         #Create a customer object
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = username.username
         cust.save()
+
         #Create Order
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',
         table=table)
+        print('Table Number:',order.table)
 
         #Show order to customer
         order_sent = OrderBakerys.objects.filter(customer = cust, status = 'Sent').last()
@@ -59,28 +58,49 @@ def HomePageBakerys(request):
         'category':category,
         'order':order_sent,
         'session':session,
+         'app':targetApp
     }
     return render(request,'Bakerys/HomePage.html',context)
 
 
 # Menu Details 
 def MenuDetailsBakerys(request,menu_id):
+
+    #Get Table Number
+    table = get_table_number(request)
+
+    #Track user
+    targetApp = target_app(request)
+
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
     
+    order = None
+    cartItem = None
+
     # Authenticate then create an order
     if request.user.is_authenticated:
-        username = User.objects.get(id=request.user.id)
-        cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
-        cust.name = username.username
-        cust.save()
-        order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
-        cartItem = order.get_order_quantity()
-    
+        try:
+            username = User.objects.get(id=request.user.id)
+            cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
+            cust.name = username.username
+            cust.save()
+            order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
+            cartItem = order.get_order_quantity()
+        except:
+            messages.warning(request,"Can't pass order on multiple table")
+            messages.success(request,f"Your new table number is {table}")
+            pending_order = OrderBakerys.objects.filter(customer=cust,status='Pending')
+            pending_order[0].delete()
+            order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',table=table)
+            cartItem = order.get_order_quantity()
+            return HttpResponseRedirect(f'/bakerys?session={targetApp}')
+            
+
     # Create new account
     else:
-        return HttpResponseRedirect(f'/register?session={app}')
+        return HttpResponseRedirect(f'/register?session={targetApp}')
 
     
     # Show item added to cart
@@ -97,6 +117,7 @@ def MenuDetailsBakerys(request,menu_id):
         'item':item,
          'orders':order,
         'cart_quantity':cartItem,
+        'app':targetApp
         
     }
     return render(request,'Bakerys/MenuDetails.html',context)
@@ -105,10 +126,18 @@ def MenuDetailsBakerys(request,menu_id):
 # Customer Order
 def MyOrderBakerys(request):
 
+    #Grab the Table number from the url using request
+    table = get_table_number(request)
+
+    #Track user
+    targetApp = target_app(request)
+    
+
     #Get Order
     if request.user.is_authenticated:
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
-        order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
+        order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',table=table)
+        print("Another Table:",order.table)
         items = order.orderitembakerys_set.all()
         cartItem = order.get_order_quantity()
 
@@ -117,7 +146,7 @@ def MyOrderBakerys(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             #form.save()
-            return HttpResponseRedirect(f'/bakerys?session={app}')
+            return HttpResponseRedirect(f'/bakerys?session={targetApp}')
 
     else:
         form = OrderForm()
@@ -127,7 +156,9 @@ def MyOrderBakerys(request):
         'order':order,
         'items':items,
         'cart_quantity':cartItem,
-        'form':form}    
+        'form':form,
+        'app':targetApp
+        }    
 
     return render(request,'Bakerys/MyOrder.html',context)
 
