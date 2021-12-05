@@ -14,6 +14,8 @@ from django.urls import resolve,ResolverMatch
 from.forms import OrderForm
 
 
+
+
 #www.Icarus.com/bakerys?session=bakerys/?table=X
 
 
@@ -51,8 +53,7 @@ def HomePageBakerys(request):
         #Show order to customer
         order_sent = OrderBakerys.objects.filter(customer = cust, status = 'Sent').last()
         
-    else:
-        category = Category.objects.all().order_by("name")
+    
 
     context = {
         'category':category,
@@ -108,7 +109,7 @@ def MenuDetailsBakerys(request,menu_id):
         order_table = request.POST.get('item')
         order_table = ItemBakerys.objects.filter(id=order_table)
         order_table = order_table[0]
-        messages.success(request,f'{order_table} added to your table')
+        messages.success(request,f'{order_table} ajouté a votre table')
     
     
     context = {
@@ -137,7 +138,6 @@ def MyOrderBakerys(request):
     if request.user.is_authenticated:
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',table=table)
-        print("Another Table:",order.table)
         items = order.orderitembakerys_set.all()
         cartItem = order.get_order_quantity()
 
@@ -145,7 +145,6 @@ def MyOrderBakerys(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            #form.save()
             return HttpResponseRedirect(f'/bakerys?session={targetApp}')
 
     else:
@@ -205,10 +204,7 @@ def SendOrderBakerys(request):
     print('cust_note:',cust_note)
 
 
-
-
     if request.method == 'POST' and action == 'sent':
-
         #Retrieve the order then send to the kitchen
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created = OrderBakerys.objects.get_or_create(id=order_numb, customer = cust)
@@ -218,7 +214,7 @@ def SendOrderBakerys(request):
             order.transaction_id = order_number()
             order.note = cust_note
             order.save()
-            messages.success(request,"Order Sent to kitchen")
+            messages.success(request,"Votre commande a été bien reću par notre cuisine!")
 
 
         else:
@@ -238,15 +234,19 @@ def SendOrderBakerys(request):
 
 #Delete Order
 def DeleteOrderBakerys(request,item_id):
+
+    #Track user
+    targetApp = target_app(request)
              
     del_items = OrderItemBakerys.objects.get(id = item_id)
     print(del_items)
     if request.method == 'POST':
         if request.POST.get('response') == 'Yes':
             del_items.delete()
+            messages.success(request,f'{del_items} supprimé')
         elif request.POST.get('response') == 'Cancel':
             pass
-        return redirect('order-bakerys')
+        return HttpResponseRedirect(f'/bakerys/myorder/?session={targetApp}')
     
     context = {
           'del_item':del_items

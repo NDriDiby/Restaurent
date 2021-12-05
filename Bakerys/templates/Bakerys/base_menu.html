@@ -76,14 +76,13 @@
         <div class=" nav-scroller py-1 mb-2 ">
             <nav class="nav d-flex justify-content-between ">
                 {% for m in category %}
-                <a class="p-2 text-muted " href="{% url 'menu_details-bakerys' m.id %} ">
+                <a class="p-2 text-muted " href="/bakerys/menudetails/{{m.id}}/?session={{app}}">
                     <p style="color:skyblue;font-size: large; ">{{m.name}}</p>
                 </a> {% endfor %} {% if perms.Resto.view_order%}
                 <a class="p-2 text-muted " href="{% url 'cuisine-bakerys'  %} ">
                     <p style="color:skyblue;font-size: large; ">Cuisine</p>
                 </a>
                 {% endif %}
-
 
             </nav>
         </div>

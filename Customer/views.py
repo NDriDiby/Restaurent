@@ -10,16 +10,12 @@ from django.http.response import HttpResponseRedirect,JsonResponse
 from Customer.utils import track_session,target_app
 from Bakerys.models import OrderBakerys
 
-#App Name
-app = OrderBakerys._meta.app_label+"&table=13"
 
 
 def Login(request):
 
-    targetApp = target_app(request)
-    
-    
     #Tracking user session
+    targetApp = target_app(request)
     session = track_session(request)
     print('my current sess:',session)
 
@@ -40,7 +36,8 @@ def Login(request):
 
     context = {
         'form':form,
-        'app':targetApp}
+        'app':targetApp
+        }
 
     return render(request,'Customer/Login.html',context)
 
@@ -50,22 +47,24 @@ def Login(request):
 def Logout(request):
 
     #Tracking user session 
+    targetApp = target_app(request)
     session = track_session(request)
     
     #LogOut current user
     logout(request)
     context = {
-        'session':session
+        'session':session,
+        'app':targetApp
     }
     
     return render (request,'Customer/Logout.html',context)
-
 
 
 #Register new user
 def RegisterCustomer(request):
     
     #Tracking user session
+    targetApp = target_app(request)
     session = track_session(request)
 
     #Create new account for current user then redict to current session
@@ -82,7 +81,8 @@ def RegisterCustomer(request):
 
     context={
         'form':form,
-        'session':session
+        'session':session,
+        'app':targetApp
     }
     return render(request,'Customer/Register.html',context)
 

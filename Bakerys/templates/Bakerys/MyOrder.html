@@ -26,8 +26,8 @@
             <div class="basket-labels">
                 <ul>
                     <li class="item item-heading">Item</li>
-                    <li class="price">Price</li>
-                    <li class="quantity">Quantity</li>
+                    <li class="price">Prix</li>
+                    <li class="quantity">Quantité</li>
                     <li class="subtotal">Subtotal</li>
                 </ul>
             </div>
@@ -54,7 +54,7 @@
                 <form method="POST">
                     {% csrf_token %}
                     <div>
-                        <a class='btn btn-outline-danger' href="{% url 'delete_order-bakerys' item.id %}">Remove</a>
+                        <a class='btn btn-outline-danger mt-2' href="/bakerys/deleteorder/{{item.id}}/?session={{app}}">Supprimer</a>
                     </div>
                 </form>
             </div>

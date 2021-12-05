@@ -13,9 +13,7 @@ from random import randint
 
 #Tracking user 
 def track_session(request):
-
     """ this function will track the current user on the web browser"""
-
     session = None
     if 'session' in request.GET:
         session = request.GET.get('session').lower()
@@ -23,6 +21,7 @@ def track_session(request):
 
 
 def order_number():
+    ''' This function create andom number for orders'''
     number = [str(randint(0,9)) for i in range(0,5)]
     letter = ['B','A','K','E','R','Y','S']
     letter = "".join(letter)
@@ -30,7 +29,9 @@ def order_number():
     order_number = letter+' #'+str(number)
     return order_number
 
+
 def target_app(request):
+    ''' This function track the session and the table number '''
     session_id = request.GET.get('session')
     table = str(request.GET.get('table'))
 
@@ -44,6 +45,7 @@ def target_app(request):
 
 
 def get_table_number(request):
+    ''' This function retrive the table number '''
     table = str(request.GET.get('table'))
     if table == None:
         pass
