@@ -205,10 +205,10 @@ def SendOrder(request):
     print('status:',action)
     print('order_number:',order_numb)
     print('cust_note:',cust_note)
-
+    customer = request.user
     #Process the order
     if request.method == 'POST' and action == 'sent':
-        customer = request.user
+        
         order = Order.objects.filter(customer__id = customer.customer.id).last()
         item = order.get_order_quantity()
         if item >0:
@@ -226,7 +226,7 @@ def SendOrder(request):
         order.status = 'Completed'
         order.complete = True
         order.save()
-        print('completed order')
+        messages.success(request,f"{customer}, your order is completed")
 
     order.save()
     
