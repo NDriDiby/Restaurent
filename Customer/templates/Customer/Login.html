@@ -1,0 +1,34 @@
+ {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+
+
+<div class='welcome'><b style='color:sandybrown'>Icarus</b><small class='text-muted' style='font-size: 45px;'><i> <strong> Restaurant</strong> </i></small></div>
+<div class='subtitle mt-3'>We're almost done. Before using our services you need to create an account.</div>
+<div class='input-fields mt-5'>
+    {% if form.errors %}
+    <p class='mt-1' style='color:tomato;text-align: center;'>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+    <form method='POST' style='text-align: center' novalidate>
+        {% csrf_token %}
+        <fieldset class='form-group mt-2'>
+            <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Connexion</legend>
+            <label name='username' class='mt-5' for=Username> Username</label> {{form.username}}
+            <br>
+            <br>
+            <label name='password' type='password' class='mt-4' for="Password">Password</label> {{form.password}}
+        </fieldset>
+</div>
+
+<div class='mt-5'><button type='submit' class='ghost-round full-width'>Connect</button></div>
+
+</form>
+
+<div style='text-align:center' class='mx-5'>
+    <small><a  href="#">Lost password?</a></small>
+</div>
+
+
+
+
+
+
+{% endblock content %}

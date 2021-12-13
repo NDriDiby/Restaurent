@@ -22,7 +22,41 @@
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 
+    <script type="text/javascript">
+        //Get current user
+
+        //CSRF TOKEN
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+    </script>
+
 </head>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </symbol>
+    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </symbol>
+    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+    </symbol>
+  </svg>
 
 <body>
 
@@ -30,22 +64,24 @@
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="text-muted" href="#">Subscribe</a>
+                    <a class="form" href="#" style='text-decoration: none; font-size:28px;color:seashell;font-family:BlinkMacSystemFont'>{{request.user.username}}</a>
                 </div>
                 <div class="col-4 text-center">
                     <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;">
-                    <a class="blog-header-logo text-dark" href="{% url 'homepage' %}">Texas GrillZ</a>
+                    <a class="blog-header-logo text-dark" href="{% url 'homepage-texasgrillz' %}">Texas GrillZ</a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
-                    <a class="text-muted" href="#">
+                    <!-- <a class="text-muted" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-                    </a>
-                    <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
+                    </a> -->
+
+                    {% if user.is_authenticated %}
+                    <a class="btn btn-sm btn-outline-secondary" href="/logout?session=texasgrillz">Deconnexion</a> {% else%}
+                    <a class="btn btn-sm btn-outline-secondary" href="/login?session=texasgrillz">Connexion</a> {% endif %}
                 </div>
             </div>
         </header>
-
 
 
         <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
@@ -54,6 +90,19 @@
                 <p class="lead my-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours</p>
             </div>
         </div>
+
+
+        <div class="col-12">
+            {% if messages %} {% for message in messages %}
+            <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
+                {% if message.tags == 'success' %}
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="{{message.tags}}:"><use xlink:href="#check-circle-fill"/></svg> {{message}} {% else %}
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} {% endif %}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {%endif%}
 
 
         <main role="main" class="container">
@@ -67,7 +116,8 @@
         <!-- /.container -->
 
         <footer class="blog-footer">
-            <p>Power by SADIA (Societe Africaine de L'inteligence Artificiel) <a href="https://getbootstrap.com/"> SADIA </a> by <a href="https://twitter.com/mdo">@N'Dri Diby</a>.</p>
+            <p class='text-muted'>Powered by Nova Cloud Artificial Intelligence</p>
+            <small class='text-muted'> All Rights Reserved 2021 </small>
             <p>
                 <a href="#">Back to top</a>
             </p>

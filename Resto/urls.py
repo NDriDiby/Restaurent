@@ -3,7 +3,13 @@ from django.urls import path,include
 from. import views
 
 urlpatterns = [
-    path('', views.HomePage,name='homepage'),
-    path('menudetails/<menu_id>', views.MenuDetails,name='menu_details'),
+    path('texasgrillz/', views.HomePage,name='homepage-texasgrillz'),
+    path('texasgrillz/menudetails/<menu_id>/', views.MenuDetails,name='menu_details-texasgrillz'),
+    path('texasgrillz/myorder/', views.MyOrder,name='order-texasgrillz'),
+    path('texasgrillz/processauth/', views.ProcessOrder,name='process_order-texasgrillz'),
+    path('texasgrillz/updateitem/', views.UpdatedItem, name='update_item-texasgrillz'),
+    path('texasgrillz/sendorder/', views.SendOrder, name='send_order-texasgrillz'),
+    path('texasgrillz/cuisine/', views.Cuisine, name='cuisine-texasgrillz'),
+    path('texasgrillz/deleteorder/<item_id>/',views.DeleteOrder, name='delete_order-texasgrillz'),
 
 ]
