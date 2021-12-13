@@ -249,7 +249,8 @@ def DeleteOrderBakerys(request,item_id):
         return HttpResponseRedirect(f'/bakerys/myorder/?session={targetApp}')
     
     context = {
-          'del_item':del_items
+          'del_item':del_items,
+          'app':targetApp
     }
     return render(request, 'Bakerys/DeleteOrder.html',context)
 
