@@ -16,7 +16,7 @@ from.forms import OrderForm
 
 
 
-#www.Icarus.com/bakerys?session=bakerys/?table=X
+#www.Icarus.com/bakerys?session=bakerys&table=X
 
 
 
@@ -73,9 +73,11 @@ def MenuDetailsBakerys(request,menu_id):
     #Track user
     targetApp = target_app(request)
 
+    #Get and show the item in each category
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
+    
     
     order = None
     cartItem = None
@@ -206,16 +208,16 @@ def SendOrderBakerys(request):
 
     if request.method == 'POST' and action == 'sent':
         #Retrieve the order then send to the kitchen
+        customer = request.user
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created = OrderBakerys.objects.get_or_create(id=order_numb, customer = cust)
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
-            order.transaction_id = order_number()
+            order.transaction_id = order_number('bakerys')
             order.note = cust_note
             order.save()
-            messages.success(request,"Votre commande a été bien reću par notre cuisine!")
-
+            messages.success(request,f"{customer}, votre commande a été bien reću par notre cuisine!")
 
         else:
             messages.warning(request,"Your cart is empty")
@@ -249,7 +251,8 @@ def DeleteOrderBakerys(request,item_id):
         return HttpResponseRedirect(f'/bakerys/myorder/?session={targetApp}')
     
     context = {
-          'del_item':del_items
+          'del_item':del_items,
+          'app':targetApp
     }
     return render(request, 'Bakerys/DeleteOrder.html',context)
 
