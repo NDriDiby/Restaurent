@@ -21,7 +21,7 @@
             <b>Customer: {{order}} </b>
           </h4>
           <hr style="color: black" />
-          {% for x in order.orderitembakerys_set.all %}
+          {% for x in order.orderitem_set.all %}
           <p class="card-text mb-2" style="color: black; text-align: center">
             <b>*</b> {{x}} ({{x.quantity}})
           </p>
