@@ -1,35 +1,33 @@
- {% extends "Resto/base_checkout.html" %} {% block content %} {% load static %}
+{% extends "Resto/base_checkout.html" %} {% block content %} {% load static %}
 
-<div class='container'>
+<div class="container">
+  <h1>Delete me</h1>
 
-    <h1>Delete me</h1>
+  {{order}}
 
+  <p>Do you want to delele "{{del_item}}" from your Order?</p>
 
-    {{order}}
-
-    <p>
-        Do you want to delele "{{del_item}}" from your Order?
-    </p>
-
-    <div class='mt-3'>
-        <form class="form-inline" method="POST">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-primary mb-2 m-lg-2" name='response' value="Yes" class='mx-2'>
-            <a href="{% url 'order-texasgrillz' %}"><button class="btn btn-danger mb-2 m-lg-2" name = 'response' value = 'Cancel'>
-                    Cancel
-                </button></a>
-        </form>
-    </div>
-
-
-
-
-
-
+  <div class="mt-3">
+    <form class="form-inline" method="POST">
+      {% csrf_token %}
+      <input
+        type="submit"
+        class="btn btn-primary mb-2 m-lg-2"
+        name="response"
+        value="Yes"
+        class="mx-2"
+      />
+      <a href="/texasgrillz/myorder/?session={{app}}"
+        ><button
+          class="btn btn-danger mb-2 m-lg-2"
+          name="response"
+          value="Cancel"
+        >
+          Cancel
+        </button></a
+      >
+    </form>
+  </div>
 </div>
-
-
-
-
 
 {% endblock content %}

@@ -24,5 +24,5 @@ admin.site.register(OrderItem,OrderItemAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id','customer','transaction_id','complete','status' ,'date_ordered','date_completed')
+    list_display = ('id','customer','table' ,'transaction_id','complete','status' ,'date_ordered','date_completed')
 admin.site.register(Order,OrderAdmin)

@@ -16,7 +16,7 @@ from.forms import OrderForm
 
 
 
-#www.Icarus.com/bakerys?session=bakerys/?table=X
+#www.Icarus.com/bakerys?session=bakerys&table=X
 
 
 
@@ -73,9 +73,11 @@ def MenuDetailsBakerys(request,menu_id):
     #Track user
     targetApp = target_app(request)
 
+    #Get and show the item in each category
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
+    
     
     order = None
     cartItem = None
@@ -215,7 +217,6 @@ def SendOrderBakerys(request):
             order.note = cust_note
             order.save()
             messages.success(request,"Votre commande a été bien reću par notre cuisine!")
-
 
         else:
             messages.warning(request,"Your cart is empty")

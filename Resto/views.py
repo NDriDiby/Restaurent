@@ -5,11 +5,13 @@ from django.contrib import messages
 from.forms import CustomerForm
 from django.contrib.auth.models import User
 import json
+from Customer.utils import track_session,order_number,get_table_number,target_app
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.decorators import permission_required,login_required
 import random
 import datetime
+from Bakerys.forms import OrderForm
  
 
  #App Name
@@ -19,51 +21,101 @@ app = Order._meta.app_label
 
 #HomePage
 def HomePage(request):
+    
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
+    
+    #Track user
+    session = track_session(request)
+    targetApp = target_app(request) #session=bakerys/?table=x
+    
+    
     order = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
 
-    #Show user's order
+    
     if request.user.is_authenticated:
-        customer = request.user
-        order= Order.objects.filter(customer__name = customer, status = 'Sent').last()
+
         
+        #Create a customer object
+        cust,created = Customer.objects.get_or_create(user =request.user)
+        username = User.objects.get(id=request.user.id)
+        cust.name = username.username
+        cust.save()
+        
+        #Create Order
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending',
+        table=table)
+        print('Table Number:',order.table)
+        
+        
+        #Show order to customer
+        order_sent = Order.objects.filter(customer = cust, status = 'Sent').last()
 
     context = {
         'category':category,
-        'order':order
+        'order':order_sent,
+        'app':targetApp
     }
     return render(request,'Resto/HomePage.html',context)
 
 
 #Menu Details
 def MenuDetails(request,menu_id):
+    
+    
+    #Get Table Number
+    table = get_table_number(request)
+    
+    #Track user
+    targetApp = target_app(request)
 
+    
     #Get and show the item in each category
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
-    all_user = User.objects.values_list('username',flat=True)
 
+
+
+    order = None
+    cartItem = None
+    
     
     #Create customer and order
+    # Authenticate then create an order
     if request.user.is_authenticated:
-        username = User.objects.get(id=request.user.id)
-        cust,created = Customer.objects.get_or_create(user =request.user)
-        cust.name = username.username
-        cust.save()
-        customer = request.user.customer
-        order,created= Order.objects.get_or_create(customer=customer,status='Pending')
-        cartItem = order.get_order_quantity()
+        try:
+            username = User.objects.get(id=request.user.id)
+            cust,created = Customer.objects.get_or_create(user =request.user)
+            cust.name = username.username
+            cust.save()
+            order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+            cartItem = order.get_order_quantity()
+            print("Found the order")
+        except:
+            messages.warning(request,"Can't pass order on multiple table")
+            messages.success(request,f"Your new table number is {table}")
+            pending_order = Order.objects.filter(customer=cust,status='Pending')
+            pending_order[0].delete()
+            order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+            cartItem = order.get_order_quantity()
+            return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
+            
 
-    else: #Redirect to registration page
-        return HttpResponseRedirect(f'/register?session=texasgrillz')
+    # Create new account
+    else:
+        return HttpResponseRedirect(f'/register?session={targetApp}')
 
-    #Show to the user the item added to hios table
-    if request.method == 'POST': 
+    
+    # Show item added to cart
+    if request.method == 'POST':
         order_table = request.POST.get('item')
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
-        messages.success(request,f'{order_table} added to your table')
+        messages.success(request,f'{order_table} ajouté a votre table')
     
     
     context = {
@@ -72,24 +124,34 @@ def MenuDetails(request,menu_id):
         'item':item,
          'orders':order,
         'cart_quantity':cartItem,
+        'app':targetApp
+        
     }
     return render(request,'Resto/MenuDetails.html',context)
 
 
 #My Order
 def MyOrder(request):
+    
+    #Grab the Table number from the url using request
+    table = get_table_number(request)
 
-    #get the Order and it items
+    #Track user
+    targetApp = target_app(request)
+
+    #get the Order and  items
     if request.user.is_authenticated:
         customer = request.user.customer
-        order,created= Order.objects.get_or_create(customer=customer,status='Pending')
+        order,created= Order.objects.get_or_create(customer=customer,status='Pending',table=table)
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
 
     if request.method == 'POST':
         #redirect to HomePage
-        return redirect('homepage-texasgrillz')
+        return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
 
+   
+        
     context = {
         'order':order,
         'items':items,
@@ -107,7 +169,7 @@ def UpdatedItem(request):
     action = data['action']
 
     #Update the Cart of the current user
-    customer = request.user.customer
+    customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order= Order.objects.get(customer=customer,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item )
@@ -150,9 +212,10 @@ def SendOrder(request):
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
+            order.transaction_id = order_number()
             order.note = cust_note
             order.save()
-            messages.success(request,"Order Sent to kitchen")
+            messages.success(request,f"{customer}, Votre commande a été bien reću par notre cuisine!")
         else:
             messages.warning(request,"Your cart is empty")
 

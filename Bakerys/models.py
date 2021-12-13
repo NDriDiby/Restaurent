@@ -22,8 +22,8 @@ class CustomerBekerys(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
-
-    verbose_name = 'CustomerBekery'
+    class Meta:
+        verbose_name = 'CustomerBekery'
 
     def __str__(self):
         return self.name
@@ -38,8 +38,8 @@ class ItemBakerys(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
-
-    verbose_name = 'ItemBekery'
+    class Meta:
+        verbose_name = 'ItemBekery'
 
     def __str__(self):
         return self.name
@@ -55,9 +55,10 @@ class OrderBakerys(models.Model):
     table = models.IntegerField(default=1)
     note = models.TextField(blank=True,max_length=100)
 
-    verbose_name = 'OrderBekery'
-    class meta:
-        permissions = (("can view orders"))
+    
+    class Meta:
+        verbose_name = 'OrderBekery'
+        #permissions = (("can view orders",))
 
     def __str__(self):
         return str(self.customer.name)
@@ -84,7 +85,8 @@ class OrderItemBakerys(models.Model):
     quantity = models.IntegerField(default=0,null = True, blank = True )
     date_added = models.DateTimeField(auto_now=True)
 
-    verbose_name = 'OrderItemBakery'
+    class Meta:
+        verbose_name = 'OrderItemBakery'
 
     def __str__(self):
         return str(self.item)
