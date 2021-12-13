@@ -20,10 +20,10 @@ def track_session(request):
     return session
 
 
-def order_number():
+def order_number(session):
     ''' This function create andom number for orders'''
     number = [str(randint(0,9)) for i in range(0,5)]
-    letter = ['B','A','K','E','R','Y','S']
+    letter = [ sess.upper() for sess in session ]
     letter = "".join(letter)
     number = "".join(number)
     order_number = letter+' #'+str(number)

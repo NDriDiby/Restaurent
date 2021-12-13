@@ -208,15 +208,16 @@ def SendOrderBakerys(request):
 
     if request.method == 'POST' and action == 'sent':
         #Retrieve the order then send to the kitchen
+        customer = request.user
         cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
         order,created = OrderBakerys.objects.get_or_create(id=order_numb, customer = cust)
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
-            order.transaction_id = order_number()
+            order.transaction_id = order_number('bakerys')
             order.note = cust_note
             order.save()
-            messages.success(request,"Votre commande a été bien reću par notre cuisine!")
+            messages.success(request,f"{customer}, votre commande a été bien reću par notre cuisine!")
 
         else:
             messages.warning(request,"Your cart is empty")

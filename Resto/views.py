@@ -155,7 +155,8 @@ def MyOrder(request):
     context = {
         'order':order,
         'items':items,
-        'cart_quantity':cartItem
+        'cart_quantity':cartItem,
+        'app':targetApp
     }    
     return render(request,'Resto/MyOrder.html',context)
 
@@ -212,10 +213,10 @@ def SendOrder(request):
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
-            order.transaction_id = order_number()
+            order.transaction_id = order_number('texasgrillz')
             order.note = cust_note
             order.save()
-            messages.success(request,f"{customer}, Votre commande a été bien reću par notre cuisine!")
+            messages.success(request,f"{customer}, votre commande a été bien reću par notre cuisine!")
         else:
             messages.warning(request,"Your cart is empty")
 
@@ -259,17 +260,22 @@ def ProcessOrder(request):
 
 #Delete Order
 def DeleteOrder(request,item_id):
+    
+    #Track user
+    targetApp = target_app(request)
 
     #Get the item then delete
     del_items = OrderItem.objects.get(id = item_id)
     if request.method == 'POST':
         if request.POST.get('response') == 'Yes':
             del_items.delete()
+            messages.success(request,f'{del_items} supprimé')
         elif request.POST.get('response') == 'Cancel':
             pass
-        return redirect('order-texasgrillz')
+        return HttpResponseRedirect(f'/texasgrillz/myorder/?session={targetApp}')
     
     context = {
-          'del_item':del_items
+          'del_item':del_items,
+          'app':targetApp
     }
     return render(request, 'Resto/DeleteOrder.html',context)
