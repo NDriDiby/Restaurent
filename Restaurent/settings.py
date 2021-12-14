@@ -13,12 +13,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -136,10 +136,12 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 LOGIN_URL = 'login'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_ROOT, "static"),
+    os.path.join(BASE_DIR, "static"),
    ]
 
 MEDIA_URL = '/media/'
@@ -147,7 +149,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
