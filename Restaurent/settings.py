@@ -132,21 +132,22 @@ USE_TZ = True
 
 
 #LOGIN_REDIRECT_URL = '/texasgrillz/'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 LOGIN_URL = 'login'
 
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "Resto/static"),
+    os.path.join(PROJECT_ROOT, "static"),
    ]
 
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
