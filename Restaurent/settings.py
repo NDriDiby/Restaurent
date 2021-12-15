@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
-django_heroku.settings(locals())
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux'
+SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -132,7 +131,6 @@ USE_TZ = True
 
 
 #LOGIN_REDIRECT_URL = '/texasgrillz/'
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 LOGIN_URL = 'login'
 
@@ -144,8 +142,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
    ]
 
-MEDIA_URL = '/media/'
 
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
@@ -160,3 +158,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import django_heroku
+django_heroku.settings(locals())
