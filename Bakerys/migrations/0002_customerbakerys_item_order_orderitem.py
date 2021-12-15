@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(default='Pending', max_length=30)),
                 ('date_ordered', models.DateTimeField(auto_now=True)),
                 ('date_completed', models.DateTimeField(auto_now=True)),
-                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='Bakerys.customerbekerys')),
+                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='Bakerys.customer')),
             ],
         ),
         migrations.CreateModel(
@@ -54,8 +54,8 @@ class Migration(migrations.Migration):
                 ('quantity', models.IntegerField(blank=True, default=0, null=True)),
                 ('date_added', models.DateTimeField(auto_now=True)),
                 ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.customerbekerys')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Bakerys.itembakerys')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Bakerys.orderbakerys')),
+                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Bakerys.item')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Bakerys.order')),
             ],
         ),
     ]
