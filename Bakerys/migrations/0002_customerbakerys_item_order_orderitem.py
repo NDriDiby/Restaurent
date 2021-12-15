@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('Bakerys', '0001_initial'),
-        ('Bakerys','__last__')
+        ('Bakerys', '0003_rename_customerbakerys_customerbekerys')
     ]
 
     operations = [
