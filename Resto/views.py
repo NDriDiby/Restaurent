@@ -216,7 +216,7 @@ def SendOrder(request):
             order.transaction_id = order_number('texasgrillz')
             order.note = cust_note
             order.save()
-            messages.success(request,f"{customer}, votre commande a été bien reću par notre cuisine!")
+            messages.success(request,f"{customer}, votre commande a été bien réçu par notre cuisine!")
         else:
             messages.warning(request,"Your cart is empty")
 
