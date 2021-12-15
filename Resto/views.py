@@ -32,7 +32,7 @@ def HomePage(request):
     targetApp = target_app(request) #session=bakerys/?table=x
     
     
-    order = None #set order to none
+    order_sent = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
 
     
