@@ -1,1 +1,1 @@
-web: gunicorn restaurent.wsgi
+web: gunicorn Restaurent.wsgi
