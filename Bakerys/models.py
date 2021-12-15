@@ -39,7 +39,7 @@ class ItemBakerys(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
     class Meta:
-        verbose_name = 'ItemBekery'
+        verbose_name = 'ItemBakery'
 
     def __str__(self):
         return self.name
@@ -57,7 +57,7 @@ class OrderBakerys(models.Model):
 
     
     class Meta:
-        verbose_name = 'OrderBekery'
+        verbose_name = 'OrderBakery'
         #permissions = (("can view orders",))
 
     def __str__(self):
