@@ -31,7 +31,9 @@ SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://icarusrestaurant.herokuapp.com']
+ALLOWED_HOSTS = []
+
+CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com']
 
 
 # Application definition
@@ -87,10 +89,22 @@ WSGI_APPLICATION = 'Restaurent.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
+        'USER': 'yvlsowwfcscpsj', # The username from 1.6
+        'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
+        'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com', # Host name/address from 1.6,
+        'PORT': '5432' # Port from 1.6
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 
