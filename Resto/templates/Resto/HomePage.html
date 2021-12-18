@@ -52,20 +52,12 @@
     >
       <div class="card card-{{cat.cat_id}}">
         <div style="text-align: center" class="mt-3">
-          <img
-            src="{{cat.img.url}}"
-            alt="{{cat.name}}"
-            style="
-              width: 300px;
-              height: 250px;
-              object-fit: scale-down;
-              image-rendering: auto;
-              text-align: center;
-            "
-          />
+          <img class="card-img-top" src="{{cat.img.url}}" alt="{{cat.name}}" />
         </div>
-        <h2 class="card__title" style="text-align: center">{{cat.name}}</h2>
-        <p class="card-text" style="text-align: center">{{cat.description}}</p>
+        <div class="card-body">
+          <h2 class="card__title" style="text-align: center">{{cat.name}}</h2>
+          <p class="card-text" style="text-align: center">{{cat.description}}</p>
+        </div>
       </div>
       {% endfor %}
     </a>
