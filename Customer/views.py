@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm #add this
 from django.conf import settings
 from django.http.response import HttpResponseRedirect,JsonResponse
-from Customer.utils import track_session,target_app
+from Customer.utils import track_session,target_app,get_table_number
 from Bakerys.models import OrderBakerys
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -64,6 +64,11 @@ def Logout(request):
 
 #Register new user
 def RegisterCustomer(request):
+    
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
     
     #Tracking user session
     targetApp = target_app(request)
