@@ -44,14 +44,14 @@
     />
     <h1 class="heading__title">Menu</h1>
   </div>
-  <div class="cards mt-5">
+  <div class="cards mt-3">
     {% for cat in category %}
     <a
       href="/texasgrillz/menudetails/{{cat.cat_id}}/?session={{app}}"
       style="text-decoration: none"
     >
       <div class="card card-{{cat.cat_id}}">
-        <div style="text-align: center" class="mt-1">
+        <div style="text-align: center">
           <img
             style="
               width: 300px;
@@ -64,10 +64,8 @@
             alt="{{cat.name}}"
           />
         </div>
-        <div class="card-body">
-          <h2 class="card__title" style="text-align: center">{{cat.name}}</h2>
-          <p class="card-text" style="text-align: center">{{cat.description}}</p>
-        </div>
+        <h2 class="card__title" style="text-align: center">{{cat.name}}</h2>
+        <p class="card-text" style="text-align: center">{{cat.description}}</p>
       </div>
       {% endfor %}
     </a>
