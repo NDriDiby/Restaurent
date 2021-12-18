@@ -15,6 +15,11 @@ from django.utils import timezone
 
 
 def Login(request):
+    
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
 
     #Tracking user session
     targetApp = target_app(request)
@@ -81,7 +86,7 @@ def RegisterCustomer(request):
              cust_name = form.cleaned_data.get('username')
              form.save()
              messages.success(request,f'Account Created for {cust_name}')
-             return HttpResponseRedirect(f'/login?register=true&session={session}')
+             return HttpResponseRedirect(f'/login?register=true&session={targetApp}')
     else:
         form = CustomerForm()
        
