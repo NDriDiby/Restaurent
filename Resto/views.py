@@ -148,6 +148,7 @@ def MyOrder(request):
 
     if request.method == 'POST':
         #redirect to HomePage
+        messages.warning(request,"Your cart is empty")
         return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
 
    
