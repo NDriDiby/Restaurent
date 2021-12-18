@@ -145,10 +145,20 @@ def MyOrder(request):
         order,created= Order.objects.get_or_create(customer=customer,status='Pending',table=table)
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
-
+        
+        
     if request.method == 'POST':
         #redirect to HomePage
-        messages.warning(request,"Your cart is empty")
+        order_id= request.POST.get("order")
+        print(order_id)
+        order= Order.objects.get(id = order_id)
+        items = order.orderitem_set.all()
+        cartItem = order.get_order_quantity()
+        if cartItem > 0:
+            messages.success(request,f"{customer}, votre commande a été bien réçu par notre cuisine!")
+        else:
+            messages.warning(request,"Your cart is empty")
+            
         return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
 
    
