@@ -162,7 +162,7 @@ LOGIN_URL = 'login'
 AWS_ACCESS_KEY_ID = 'AKIAT454HLON6TTI5DZF'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'icarus-restaurant'
-AWS_URL='https://taste-of-chef.s3.amazonaws.com/'
+AWS_URL='https://icarus-restaurant.s3.amazonaws.com/'
 
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
