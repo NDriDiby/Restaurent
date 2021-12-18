@@ -52,7 +52,7 @@ def HomePage(request):
         
         
         #Show order to customer
-        order_sent = Order.objects.filter(customer = cust, status = 'Sent').last()
+        order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table).last()
 
     context = {
         'category':category,

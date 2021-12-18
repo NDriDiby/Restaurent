@@ -54,7 +54,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now=True)
     date_completed = models.DateTimeField(auto_now=True)
     table = models.IntegerField(default=1)
-    note = models.TextField(blank=True,max_length=100)
+    note = models.TextField(blank=True,max_length=50)
 
     class meta:
         permissions = (("can view orders"))
