@@ -42,31 +42,27 @@
     {% for i in item %}
     <div class="card">
       <div class="mt-1">
-        <img
-          class="img-fluid"
-          src=" {{i.img.url}} "
-          alt="{{i.name}} "
-          style="max-width: 240px; height: 300px; object-fit: scale-down; image-rendering: auto"
-        />
+        <img class="img-fluid" src=" {{i.img.url}} " alt="{{i.name}} " />
       </div>
-
-      <h2 class="card-title" style="text-align: center">{{i.name}}</h2>
-      <p class="card-text" style="text-align: center">{{i.description}}</p>
-      <p class="card-text" style="text-align: center"><b>{{i.prix}} FCFA</b></p>
-      <form method="POST">
-        <div>
-          {% csrf_token %}
-          <button
-            data-product="{{i.id}}"
-            name="item"
-            value="{{i.id}}"
-            data-action="add"
-            class="btn btn-outline-success add-btn update-cart"
-          >
-            Commander
-          </button>
-        </div>
-      </form>
+      <div class="card-body">
+        <h2 class="card-title" style="text-align: center">{{i.name}}</h2>
+        <p class="card-text" style="text-align: center">{{i.description}}</p>
+        <p class="card-text" style="text-align: center"><b>{{i.prix}} FCFA</b></p>
+        <form method="POST">
+          <div>
+            {% csrf_token %}
+            <button
+              data-product="{{i.id}}"
+              name="item"
+              value="{{i.id}}"
+              data-action="add"
+              class="btn btn-outline-success add-btn update-cart"
+            >
+              Commander
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
     {% endfor %}
   </div>
