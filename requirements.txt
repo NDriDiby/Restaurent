@@ -12,7 +12,7 @@ django-crispy-forms==1.13.0
 django-heroku==0.0.0
 django-storages==1.12.3
 filelock==3.0.12
-heroku==0.1.4
+heroku
 idna==3.3
 isort==5.6.4
 jmespath==0.10.0
@@ -30,6 +30,7 @@ six==1.15.0
 sqlparse==0.4.1
 toml==0.10.2
 urllib3==1.26.7
+python-dateutil
 virtualenv==20.3.0
 whitenoise==5.3.0
 wrapt==1.12.1
