@@ -38,14 +38,14 @@
   <div class="heading__title">
     <h1>{{menu.name}}</h1>
   </div>
-  <div class="card card-{{menu.id}} mt-5">
+  <div class="card card-{{menu.id}} mt-3">
     {% for i in item %}
     <div class="card">
-      <div class="mt-3">
+      <div class="mt-1">
         <img
           src=" {{i.img.url}} "
           alt="{{i.name}} "
-          style="width: auto; height: 300px; object-fit: scale-down; image-rendering: auto"
+          style="max-width: 240px; height: 300px; object-fit: scale-down; image-rendering: auto"
         />
       </div>
 
