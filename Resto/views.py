@@ -115,7 +115,7 @@ def MenuDetails(request,menu_id):
         order_table = request.POST.get('item')
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
-        messages.success(request,f'{order_table} ajouté a votre table')
+        messages.success(request,f'{order_table} a été ajouté votre table')
     
     
     context = {

@@ -37,6 +37,9 @@ def Login(request):
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
                 return HttpResponseRedirect(f'/{session}/?session={targetApp}')
+        else:
+            messages.warning(request, f"Username and password didn't match")
+                
                
     else:
         form = AuthenticationForm()
@@ -81,12 +84,16 @@ def RegisterCustomer(request):
 
     #Create new account for current user then redict to current session
     if request.method == 'POST':
-         form = CustomerForm(request.POST)
-         if form.is_valid():
-             cust_name = form.cleaned_data.get('username')
-             form.save()
-             messages.success(request,f'Account Created for {cust_name}')
-             return HttpResponseRedirect(f'/login?register=true&session={targetApp}')
+        form = CustomerForm(request.POST)
+        print(form.error_messages)
+        if form.is_valid():
+            cust_name = form.cleaned_data.get('username')
+            form.save()
+            messages.success(request,f'Account Created for {cust_name}')
+            return HttpResponseRedirect(f'/login?register=true&session={targetApp}')
+        else:
+            messages.warning(request,f"The two password fields didn't match")
+            
     else:
         form = CustomerForm()
        
