@@ -135,6 +135,7 @@ def MyOrder(request):
     
     #Grab the Table number from the url using request
     table = get_table_number(request)
+    order=None
 
     #Track user
     targetApp = target_app(request)
