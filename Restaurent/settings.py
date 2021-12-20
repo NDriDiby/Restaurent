@@ -31,9 +31,9 @@ SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
 
 
 # Application definition
