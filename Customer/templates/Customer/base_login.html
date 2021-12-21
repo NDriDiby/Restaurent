@@ -32,22 +32,17 @@
             <div class='overlay'>
                 <div class='content'>
                     <div style='text-align: center' class='mb-5'>
-                        <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud" style="width: 300px; height: auto; object-fit:scale-down;image-rendering: auto;">
+                        <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud" style="width: 410px; height: auto; object-fit:scale-down;image-rendering: auto;">
                     </div>
-
-                    
 
                     <div class="col-12">
                         {% if messages %} {% for message in messages %}
                         <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
-                            {% if message.tags == 'success' %}
-                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="{{message.tags}}:"><use xlink:href="#check-circle-fill"/></svg> {{message}} {% else %}
-                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} {% endif %}
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg> {{message}}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        {% endfor %}
+                        {% endfor %} {% endif %}
                     </div>
-                    {% endif %}
 
                     {% block content %} {% endblock content %}
 

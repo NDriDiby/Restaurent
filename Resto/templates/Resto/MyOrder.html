@@ -126,18 +126,15 @@
               <label for="w3review">Additional Note:</label>
               <textarea id="customer_note" type="text" name="cust_note"> </textarea>
             </div>
-            <div style="padding-left: 101px">
-              <button
-                type="submit"
-                data-action="sent"
-                data-order="{{order.id}}"
-                class="btn btn-outline-success add-btn mt-3 send-order"
-                name="order"
-                value="{{order.id}}"
-              >
-                Envoyer A La Cuisine
-              </button>
-            </div>
+
+            <button
+              type="submit"
+              data-action="sent"
+              data-order="{{order.id}}"
+              class="btn btn-outline-success add-btn mt-3 send-order"
+            >
+              Envoyer A La Cuisine
+            </button>
           </form>
         </div>
       </div>

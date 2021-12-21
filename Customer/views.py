@@ -7,19 +7,12 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm #add this
 from django.conf import settings
 from django.http.response import HttpResponseRedirect,JsonResponse
-from Customer.utils import track_session,target_app,get_table_number
+from Customer.utils import track_session,target_app
 from Bakerys.models import OrderBakerys
-from django.contrib.auth.models import User
-from django.utils import timezone
 
 
 
 def Login(request):
-    
-    #Table Number
-    table = get_table_number(request)
-    if table == None:
-        pass
 
     #Tracking user session
     targetApp = target_app(request)
@@ -37,9 +30,6 @@ def Login(request):
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
                 return HttpResponseRedirect(f'/{session}/?session={targetApp}')
-        else:
-            messages.warning(request, f"Username and password didn't match")
-                
                
     else:
         form = AuthenticationForm()
@@ -73,27 +63,18 @@ def Logout(request):
 #Register new user
 def RegisterCustomer(request):
     
-    #Table Number
-    table = get_table_number(request)
-    if table == None:
-        pass
-    
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
 
     #Create new account for current user then redict to current session
     if request.method == 'POST':
-        form = CustomerForm(request.POST)
-        print(form.error_messages)
-        if form.is_valid():
-            cust_name = form.cleaned_data.get('username')
-            form.save()
-            messages.success(request,f'Account Created for {cust_name}')
-            return HttpResponseRedirect(f'/login?register=true&session={targetApp}')
-        else:
-            messages.warning(request,f"The two password fields didn't match")
-            
+         form = CustomerForm(request.POST)
+         if form.is_valid():
+             cust_name = form.cleaned_data.get('username')
+             form.save()
+             messages.success(request,f'Account Created for {cust_name}')
+             return HttpResponseRedirect(f'/login?register=true&session={session}')
     else:
         form = CustomerForm()
        
