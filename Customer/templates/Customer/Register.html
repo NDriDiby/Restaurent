@@ -1,24 +1,26 @@
  {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
 
 
-<div class='welcome'><b style='color:sandybrown'>Icarus</b><small class='text-muted' style='font-size: 45px;'><i> <strong> Restaurant</strong> </i></small></div>
-<div class='subtitle mt-3'>We're almost done. Before using our services you need to create an account.</div>
-<div class='input-fields mt-2'>
-    {% if form.errors %}
-    <p class='mt-1' style='color:tomato;text-align: center;'>This username is already taken. Please try another one.</p>
-    {% endif %}
-    <form method='POST' class="mt-4" novalidate>
+ <div class = 'container'>
+
+  <div class = 'product' style = 'text-align:center'>
+
+        <h4 style='color:sandybrown'> Icarus <small class='text-muted' ><i> <strong> Restaurant</strong> </i></small></h4>
+        <small class='text-muted' >We're almost done.Before using our services you need to create an account.</small> 
+
+    <form method='POST' class = 'mt-5' novalidate>
         {% csrf_token %}
-        <fieldset class='form-group mt-2' style='text-align:center'>
+       
+        <fieldset class='form-group ' style='text-align:center'>
             <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Join Today</legend>
-            <label class='mt-4' for=Username> Username</label> <br> {{form.username}}
+            {{form.username|as_crispy_field}}
             <br>
-            <label class='mt-4' for=Username>Phone Number</label> <br> {{form.phone_number}}
+            <br> {{form.phone_number|as_crispy_field}}
             <br>
-            <label class='mt-4' for="Password1">Password</label> <br>{{form.password1}}
+             <br>{{form.password1|as_crispy_field}}
             <br>
-            <label class='mt-4' for="Password2"> Confirm Password</label><br> {{form.password2}}
-        </fieldset>
+            <br> {{form.password2|as_crispy_field}}
+        </fieldset> 
 
         <div class='form-group mt-5'>
             <button type="submit" class='ghost-round full-width'> Sign up</button>
@@ -31,6 +33,7 @@
 
         </div>
     </form>
+</div>
 </div>
 </div>
 </div>

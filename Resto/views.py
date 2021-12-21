@@ -32,7 +32,7 @@ def HomePage(request):
     targetApp = target_app(request) #session=bakerys/?table=x
     
     
-    order = None #set order to none
+    order_sent = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
 
     
@@ -52,7 +52,7 @@ def HomePage(request):
         
         
         #Show order to customer
-        order_sent = Order.objects.filter(customer = cust, status = 'Sent').last()
+        order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table).last()
 
     context = {
         'category':category,
@@ -115,7 +115,7 @@ def MenuDetails(request,menu_id):
         order_table = request.POST.get('item')
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
-        messages.success(request,f'{order_table} ajouté a votre table')
+        messages.success(request,f'{order_table} a été ajouté votre table')
     
     
     context = {
@@ -135,6 +135,7 @@ def MyOrder(request):
     
     #Grab the Table number from the url using request
     table = get_table_number(request)
+    order=None
 
     #Track user
     targetApp = target_app(request)
@@ -145,9 +146,20 @@ def MyOrder(request):
         order,created= Order.objects.get_or_create(customer=customer,status='Pending',table=table)
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
-
+        
+        
     if request.method == 'POST':
         #redirect to HomePage
+        order_id= request.POST.get("order")
+        print(order_id)
+        order= Order.objects.get(id = order_id)
+        items = order.orderitem_set.all()
+        cartItem = order.get_order_quantity()
+        if cartItem > 0:
+            messages.success(request,f"{customer}, votre commande a été bien réçu par notre cuisine!")
+        else:
+            messages.warning(request,"Your cart is empty")
+            
         return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
 
    

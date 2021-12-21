@@ -48,13 +48,13 @@ class Item(models.Model):
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,blank=True,null=True)
-    transaction_id = models.CharField(null = True, blank = True,max_length=10)
+    transaction_id = models.CharField(null = True, blank = True,max_length=20)
     complete = models.BooleanField(default=False,null=True,blank=False)
-    status = models.CharField(max_length=30,default = 'Pending')
+    status = models.CharField(max_length=20,default = 'Pending')
     date_ordered = models.DateTimeField(auto_now=True)
     date_completed = models.DateTimeField(auto_now=True)
     table = models.IntegerField(default=1)
-    note = models.TextField(blank=True,max_length=100)
+    note = models.TextField(blank=True,max_length=50)
 
     class meta:
         permissions = (("can view orders"))
