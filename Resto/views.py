@@ -115,7 +115,11 @@ def MenuDetails(request,menu_id):
         order_table = request.POST.get('item')
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
-        messages.success(request,f'{order_table} a été ajouté votre table')
+        cust,created = Customer.objects.get_or_create(user =request.user)
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+        meal_quant = OrderItem.objects.get(order = order,item = order_table)
+        meal_quant = meal_quant.quantity
+        messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
     
     
     context = {
