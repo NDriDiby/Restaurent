@@ -180,6 +180,8 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
+    
+    print(itemId)
 
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
