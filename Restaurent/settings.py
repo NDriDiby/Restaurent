@@ -14,9 +14,13 @@ from pathlib import Path
 import os
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+#BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -28,6 +32,8 @@ SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com']
 
 
 # Application definition
@@ -43,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'storages',
    
 ]
 
@@ -54,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Restaurent.urls'
@@ -80,12 +88,28 @@ WSGI_APPLICATION = 'Restaurent.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+#DATA BASE - PRODUCTION 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
+        'USER': 'yvlsowwfcscpsj', # The username from 1.6
+        'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
+        'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com', # Host name/address from 1.6,
+        'PORT': '5432' # Port from 1.6
     }
 }
+
+#DATA BASE - DEVELOPMENT
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
 
 
 
@@ -132,18 +156,51 @@ USE_TZ = True
 
 LOGIN_URL = 'login'
 
-STATIC_URL = '/static/'
+
+# AWS S3 SETTINGS  - STORAGE PRODUCTION
+
+AWS_ACCESS_KEY_ID = 'AKIAT454HLON6TTI5DZF'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'icarus-restaurant'
+AWS_URL='https://icarus-restaurant.s3.amazonaws.com/'
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_DEFAULT_ACL = None
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
-   ]
+    os.path.join(BASE_DIR, 'Resto/static'),
+]
 
-MEDIA_URL = '/media/'
+STATIC_URL = AWS_URL + 'static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = AWS_URL + '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+
+#STORAGE - DEVELOPMENT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+#    ]
+
+
+
+#MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
- 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
@@ -153,5 +210,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+
 import django_heroku
 django_heroku.settings(locals())
+
