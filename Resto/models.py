@@ -6,8 +6,24 @@ from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import Permission, User
 
 
-# Create your models here.
+steak_choice = [('Rare','Rare'),
+                ('Medium','Medium'),
+                ('Medium Rare','Medium Rare'),
+                 ('Medium Well','Medium Well'),
+                ('Well Done','Well Done')]
 
+
+coca_cola_product = [('Coca-Cola','Coca-Cola'),
+                     ('Fanta','Fanta'),
+                     ('Sprite','Sprite')]
+
+
+assaisonement = [('Avec Piment','Avec Piment'),
+                 ('Sans Piment','Sans Piment')]
+
+
+
+# Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
@@ -44,6 +60,18 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Accompagment(models.Model):
+    pass
+
+class Supplement(models.Model):
+    parent_food = models.ForeignKey(Item,on_delete=models.CASCADE)
+    name = models.CharField(max_length = 150)
+    description = models.TextField(max_length=150,blank=True)
+    prix = models.IntegerField()
+    date_created = models.DateTimeField(auto_now=True)
+    
 
 
 class Order(models.Model):

@@ -43,6 +43,16 @@
             <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
             <p class="card-text">{{ i.description }}</p>
             <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
+
+            {% comment %} Order Supplement {% endcomment %}
+            <div class="supplement">
+              {% for sup in i.supplement_set.all %} {% if sup.name != ' ' %}
+              <input type="checkbox" id="supplement" value="{{sup.name}}" />
+              <label>{{sup.name}} (+{{sup.prix}} FCFA)</label><br />
+              {% endif %} {% endfor %}
+            </div>
+            <br />
+
             <form method="POST">
               <div>
                 {% csrf_token %}
