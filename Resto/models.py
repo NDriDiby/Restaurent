@@ -76,7 +76,7 @@ class ItemChoices(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.parent_food+'_'+self.name
+        return self.name
     
     
 

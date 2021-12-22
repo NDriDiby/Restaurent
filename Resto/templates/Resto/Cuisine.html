@@ -11,36 +11,21 @@
     <div class="col-auto mt-3">
       <div class="card" style="width: 12rem; height: auto; background-color: rgb(243, 166, 152)">
         <div class="card-body mb-1">
-          <p class="card-text mb-1" style="color: black; text-align: center">
-            Date: {{order.date_ordered|date}}
-          </p>
-          <p style="text-align: center">
-            <b style="color: black">Table Number:</b> {{order.table}}
-          </p>
+          <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_ordered|date}}</p>
+          <p style="text-align: center"><b style="color: black">Table Number:</b> {{order.table}}</p>
           <h4 class="card-title mb-1" style="color: black; text-align: center">
             <b>Customer: {{order}} </b>
           </h4>
           <hr style="color: black" />
           {% for x in order.orderitem_set.all %}
-          <p class="card-text mb-2" style="color: black; text-align: center">
-            <b>*</b> {{x}} ({{x.quantity}})
-          </p>
+          <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{x}} ({{x.quantity}})</p>
           {% endfor %} {% if order.note %}
-          <p id="customer_note" style="text-align: center">
-            <b style="color: black">Note:</b> {{order.note}}
-          </p>
+          <p id="customer_note" style="text-align: center"><b style="color: black">Note:</b> {{order.note}}</p>
           {% endif %}
           <div class="mt-4" style="text-align: center">
             <form method="POST">
               {% csrf_token %}
-              <button
-                type="submit"
-                data-action="completed"
-                data-order="{{order.id}}"
-                class="btn btn-outline-success mb-3 send-order"
-              >
-                Complete
-              </button>
+              <button type="submit" data-action="completed" data-order="{{order.id}}" class="btn btn-outline-success mb-3 send-order">Complete</button>
             </form>
           </div>
         </div>
@@ -61,19 +46,20 @@
     <div class="col-auto mt-3">
       <div class="card" style="width: 12rem; height: auto; background-color: palegreen">
         <div class="card-body mb-1">
-          <h4 class="card-title mb-2" style="color: black; text-align: center"><b>{{order}}</b></h4>
-          <hr style="color: black" />
-          <p class="card-text mb-1" style="color: black; text-align: center">
-            Date: {{order.date_completed}}
-          </p>
-          {% for x in order.orderitem_set.all %}
-          <p class="card-text mb-2" style="color: black; text-align: center">
-            <b>*</b> {{x}} ({{x.quantity}})
-          </p>
-          {% endfor %}
-          <h5 class="card-text mt-1" style="color: rgb(240, 8, 8); text-align: center">
-            #{{order.status}}
-          </h5>
+          <a onClick="ShowAndHide()">
+            <h4 class="card-title mb-2" style="color: black; text-align: center"><b>{{order}} </b></h4>
+            <h6 style="color: black; text-align: center">Table Number:{{order.table}}</h6>
+            <h6 style="color: black; text-align: center">Reference Number:{{order.transaction_id}}</h6>
+            <hr style="color: black" />
+          </a>
+
+          <div class="full_order" style="display: none">
+            <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_completed}}</p>
+            {% for x in order.orderitem_set.all %}
+            <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{x}} ({{x.quantity}})</p>
+            {% endfor %}
+            <h5 class="card-text mt-1" style="color: rgb(240, 8, 8); text-align: center">#{{order.status}}</h5>
+          </div>
         </div>
       </div>
     </div>
@@ -81,4 +67,14 @@
   </div>
 </div>
 
+<script>
+  function ShowAndHide(classe) {
+    var x = document.getElementByClassName(classe);
+    for (var i = 0; i < x.length; i++) {
+      var s = x[i].style;
+      s.display = s.display === "none" ? "block" : "none";
+    }
+  }
+  ShowAndHide("full_order");
+</script>
 {% endblock content %}

@@ -2,6 +2,7 @@
 var updated_but = document.getElementsByClassName("update-cart");
 var cart_plus = document.getElementById("plus");
 var cart_minus = document.getElementById("moin");
+
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
@@ -20,7 +21,7 @@ for (var i = 0; i < updated_but.length; i++) {
 }
 
 function updateUserOrder(itemId, action) {
-  console.log(user, "is logged in, sengind data....");
+  console.log(user, "is logged in, sending data....");
 
   var url = "/texasgrillz/updateitem/";
 
@@ -41,7 +42,7 @@ function updateUserOrder(itemId, action) {
 }
 
 function ShowBotton() {
-  var x = document.getElementById("update-cart");
+  var x = document.getElementsByClassName("update-cart");
   if (x.style.display == "none") {
     x.style.display = "block";
   } else {
