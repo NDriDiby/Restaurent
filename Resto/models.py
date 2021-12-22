@@ -56,6 +56,9 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
+    assaisonement = models.CharField(max_length = 50, choices=assaisonement,blank = True)
+    steak_choice = models.CharField(max_length = 50,choices=steak_choice,blank=True)
+    boisson_choice = models.CharField(max_length = 50,choices=coca_cola_product,blank=True)
 
 
     def __str__(self):
@@ -66,10 +69,10 @@ class Accompagment(models.Model):
     pass
 
 class Supplement(models.Model):
-    parent_food = models.ForeignKey(Item,on_delete=models.CASCADE)
-    name = models.CharField(max_length = 150)
+    parent_food = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length = 150,blank=True)
     description = models.TextField(max_length=150,blank=True)
-    prix = models.IntegerField()
+    prix = models.IntegerField(blank=True)
     date_created = models.DateTimeField(auto_now=True)
     
 
