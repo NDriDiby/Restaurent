@@ -69,7 +69,7 @@
 
 <script>
   function ShowAndHide(classe) {
-    var x = document.getElementByClassName(classe);
+    var x = document.getElementsByClassName(classe);
     for (var i = 0; i < x.length; i++) {
       var s = x[i].style;
       s.display = s.display === "none" ? "block" : "none";

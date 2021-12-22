@@ -67,9 +67,9 @@
             <form method="POST">
               <div>
                 {% csrf_token %}
-                <i id="plus" style="display: none" data-product="{{i.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
+                <i id="plus" data-product="{{i.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
                 <button data-product="{{i.id}}" name="item" value="{{i.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-                <i id="minus" style="display: none" data-product="{{i.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
+                <i id="minus" data-product="{{i.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
               </div>
             </form>
           </div>
