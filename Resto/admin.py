@@ -1,11 +1,16 @@
 from django.contrib import admin
-from.models import Category,Item,Order,OrderItem,Customer
+from.models import Category,Item,Order,OrderItem,Customer,Supplement,Accompagment
 
 # Register your models here.
 
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('user','name','email')
 admin.site.register(Customer,CustomerAdmin)
+
+
+class SupplementAdmin(admin.ModelAdmin):
+    list_display = ('parent_food','name','description','prix','date_created')
+admin.site.register(Supplement,SupplementAdmin)
 
 
 class CategoryAdmin(admin.ModelAdmin):

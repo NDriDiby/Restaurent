@@ -6,8 +6,24 @@ from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import Permission, User
 
 
-# Create your models here.
+steak_choice = [('Rare','Rare'),
+                ('Medium','Medium'),
+                ('Medium Rare','Medium Rare'),
+                 ('Medium Well','Medium Well'),
+                ('Well Done','Well Done')]
 
+
+coca_cola_product = [('Coca-Cola','Coca-Cola'),
+                     ('Fanta','Fanta'),
+                     ('Sprite','Sprite')]
+
+
+assaisonement = [('Avec Piment','Avec Piment'),
+                 ('Sans Piment','Sans Piment')]
+
+
+
+# Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
@@ -40,10 +56,25 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
+    assaisonement = models.CharField(max_length = 50, choices=assaisonement,blank = True)
+    steak_choice = models.CharField(max_length = 50,choices=steak_choice,blank=True)
+    boisson_choice = models.CharField(max_length = 50,choices=coca_cola_product,blank=True)
 
 
     def __str__(self):
         return self.name
+    
+
+class Accompagment(models.Model):
+    pass
+
+class Supplement(models.Model):
+    parent_food = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length = 150,blank=True)
+    description = models.TextField(max_length=150,blank=True)
+    prix = models.IntegerField(blank=True)
+    date_created = models.DateTimeField(auto_now=True)
+    
 
 
 class Order(models.Model):
