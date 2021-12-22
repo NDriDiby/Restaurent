@@ -16,6 +16,7 @@ for (var i = 0; i < updated_but.length; i++) {
   });
 
   console.log("just checking");
+  ShowBotton();
 }
 
 function updateUserOrder(itemId, action) {
@@ -37,4 +38,13 @@ function updateUserOrder(itemId, action) {
     .then((data) => {
       console.log("data:", data);
     });
+}
+
+function ShowBotton() {
+  var x = document.getElementById("update-cart");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
 }
