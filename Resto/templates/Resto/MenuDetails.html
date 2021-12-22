@@ -43,11 +43,10 @@
             <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
             <p class="card-text">{{ i.description }}</p>
             <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
-
             {% comment %} Order Supplement {% endcomment %}
             <div class="supplement">
               <div class="row">
-                {% for sup in i.supplement_set.all %} {% if sup.name != ' ' %}
+                {% for sup in i.itemchoices_set.all %} {% if sup.name != ' ' %}
                 <div class="col-6 col-sm-4 mb-2">
                   <input type="checkbox" id="supplement" name="check" value="{{sup.name}}" />
                   <label>{{sup.name}}</label><br />
@@ -68,7 +67,7 @@
             <form method="POST">
               <div>
                 {% csrf_token %}
-                <i id="plus" style="mx-2" data-product="{{i.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
+                <i id="plus" data-product="{{i.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
                 <button data-product="{{i.id}}" name="item" value="{{i.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
                 <i id="minus" data-product="{{i.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
               </div>
@@ -100,4 +99,4 @@
   {% endcomment %}
 </div>
 
-{%endblock content%}
+{% endblock content %}

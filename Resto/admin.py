@@ -1,5 +1,5 @@
 from django.contrib import admin
-from.models import Category,Item,Order,OrderItem,Customer,Supplement,Accompagment
+from.models import Category,Item,Order,OrderItem,Customer,ItemChoices,Accompagment
 
 # Register your models here.
 
@@ -8,9 +8,9 @@ class CustomerAdmin(admin.ModelAdmin):
 admin.site.register(Customer,CustomerAdmin)
 
 
-class SupplementAdmin(admin.ModelAdmin):
+class ItemChoicesAdmin(admin.ModelAdmin):
     list_display = ('parent_food','name','description','prix','date_created')
-admin.site.register(Supplement,SupplementAdmin)
+admin.site.register(ItemChoices,ItemChoicesAdmin)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -24,7 +24,7 @@ admin.site.register(Item,ItemAdmin)
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('id','item','order','quantity','date_added')
+    list_display = ('id','item','item_choice' ,'order','quantity','date_added')
 admin.site.register(OrderItem,OrderItemAdmin)
 
 

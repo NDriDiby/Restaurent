@@ -117,8 +117,9 @@ def MenuDetails(request,menu_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-        meal_quant = OrderItem.objects.get(order = order,item = order_table)
-        meal_quant = meal_quant.quantity
+        meal_quant,created = OrderItem.objects.get_or_create(customer=cust,order = order,item = order_table)
+        print(meal_quant.quantity)
+        #meal_quant = meal_quant.quantity
         messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
     
     
