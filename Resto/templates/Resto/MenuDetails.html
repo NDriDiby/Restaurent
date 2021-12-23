@@ -43,7 +43,7 @@
             <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
             <p class="card-text">{{ i.description }}</p>
             <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
-            <button href="{% url 'item_details-texasgrillz' i.id%}" class="btn btn-success">View Details</button>
+            <button href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" class="btn btn-success">View Details</button>
             {% comment %} Order Supplement {% endcomment %}
 
             <form method="POST">

@@ -74,7 +74,7 @@
     <div class="card">
       <div class="card-header">
         <h6 class="card-link"   href="#collapseOne">
-          {{order}} - {{order.transaction_id}} - {{order.status}} <i style ='color:green' class="bi bi-check-square"></i>
+          <strong>Table Number:{{order.table}}</strong> - <strong style="color:rgb(56, 129, 197);">{{order}}</strong> -  {{order.id}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
         </h6>
       </div>
       <div id="order{{order.id}}" class="collapse show" data-parent="#accordion">

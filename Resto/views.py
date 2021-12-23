@@ -150,8 +150,21 @@ def ItemDetails(request,item_id):
     
     item = Item.objects.get(id=item_id)
     
+    if request.user.is_authenticated:
+        try:
+            username = User.objects.get(id=request.user.id)
+            cust,created = Customer.objects.get_or_create(user =request.user)
+            cust.name = username.username
+            cust.save()
+            order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+            cartItem = order.get_order_quantity()
+        except:
+            print('other option bro')
+    
     context = {
-        'item':item
+        'item':item,
+        'orders':order,
+        'cart_quantity':cartItem,
     }
     
     return render (request,'Resto/ItemsDetails.html',context)

@@ -1,9 +1,33 @@
-{% extends "Resto/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %}
+{% extends "Resto/base_menu.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if item %}
+<div class="col-sm-12 col-md-6 col-lg-3 pb-4">
+  <div class="card h-100" style="border: none">
+    <img src="{{item.img.url }}" class="card-img-top" alt="{{item.name}}" />
+    <div class="card-body" style="text-align: center">
+      <h5 class="card-title">{{item.name}}</h5>
+      <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
+      <p class="card-text">{{ item.description }}</p>
+      <p class="card-text text-muted"><strong>{{item.prix }} FCFA</strong></p>
 
-<h5>{{item.name}}</h5>
+      <form method="POST">
+        <div>
+          {% csrf_token %}
+          <div class="supplement">
+            <div class="row">
+              {% for item in item.itemchoices_set.all %}
+              <div class="col-6 col-sm-4 mb-2 cust_choice">
+                <input id="item_choice" type="checkbox" name="item_choice" value="{{item.name}}" />
+                <label>{{item.name}}</label><br />
+              </div>
+              {% endfor %}
+            </div>
+          </div>
 
-{% for choice in item.itemchoices_set.all %}
-
-<p>{{choice.name}}</p>
-
-{% endfor %} {% endblock content %}
+          <i id="minus" data-product="{{item.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
+          <button data-product="{{item.id}}" name="item" value="{{item.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+          <i id="plus" data-product="{{item.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
+        </div>
+      </form>
+      {% endif %} {% endblock content %}
+    </div>
+  </div>
+</div>
