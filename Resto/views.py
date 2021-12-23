@@ -109,7 +109,6 @@ def MenuDetails(request,menu_id):
     else:
         return HttpResponseRedirect(f'/register?session={targetApp}')
 
-    
     # Show item added to cart
     if request.method == 'POST':
         order_table = request.POST.get('item')
@@ -117,11 +116,10 @@ def MenuDetails(request,menu_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-        meal_quant,created = OrderItem.objects.get_or_create(customer=cust,order = order,item = order_table)
-        print(meal_quant.quantity)
-        #meal_quant = meal_quant.quantity
-        messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
-    
+        meal_quant= OrderItem.objects.filter(order = order,item = order_table)
+        if meal_quant:
+            meal_quant = meal_quant[0].quantity
+            messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
     
     context = {
         'menu':menu,
@@ -186,8 +184,10 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
+    item_choice = data['item_choice']
     
     print(itemId)
+    print(item_choice)
 
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)

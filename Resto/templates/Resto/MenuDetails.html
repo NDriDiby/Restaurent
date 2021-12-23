@@ -48,20 +48,11 @@
               <div class="row">
                 {% for sup in i.itemchoices_set.all %} {% if sup.name != ' ' %}
                 <div class="col-6 col-sm-4 mb-2">
-                  <input type="checkbox" id="supplement" name="check" value="{{sup.name}}" />
+                  <input type="checkbox" id="item_choice" name="check" value="{{sup.name}}" />
                   <label>{{sup.name}}</label><br />
                 </div>
                 {% endif %} {% endfor %}
               </div>
-
-              <script>
-                function onlyOne(checkbox) {
-                  var checkboxes = document.getElementsByName("check");
-                  checkboxes.forEach((item) => {
-                    if (item !== checkbox) item.checked = false;
-                  });
-                }
-              </script>
             </div>
 
             <form method="POST">
