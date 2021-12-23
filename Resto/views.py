@@ -160,6 +160,16 @@ def ItemDetails(request,item_id):
             cartItem = order.get_order_quantity()
         except:
             print('other option bro')
+            
+    if request.method == 'POST':
+        order_table = request.POST.get('item')
+        order_table = Item.objects.filter(id=order_table)
+        order_table = order_table[0]
+        cust,created = Customer.objects.get_or_create(user =request.user)
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+        orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
+        orderitem_quantity = orderitem.quantity
+        messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
     
     context = {
         'item':item,
