@@ -1,11 +1,27 @@
 // Add item to your cart
 var updated_but = document.getElementsByClassName("update-cart");
 var item_choice = document.getElementById("item_choice");
+var choice = document.getElementsByClassName("cust_choice");
+
+// console.log("myChoice");
+// if (choice.value != null) {
+//   for (var j = 0; j < choice.length; j++) {
+//     choice[j].addEventListener("click", function () {
+//       console.log("myVChoice", choice[j]);
+//     });
+//   }
+// } else {
+//   choice = null;
+// }
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
+
+    for (var j = 0; j < choice.length; j++) {
+      console.log(choice[j].textContent);
+    }
 
     if (item_choice != null) {
       var cust_choice = item_choice.value;

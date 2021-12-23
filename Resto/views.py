@@ -135,6 +135,29 @@ def MenuDetails(request,menu_id):
     return render(request,'Resto/MenuDetails.html',context)
 
 
+def ItemDetails(request,item_id):
+    
+    #Table Number
+    try:
+        table = get_table_number(request)
+        #table == None:
+    except:
+        pass
+    
+    #Track user
+    session = track_session(request)
+    targetApp = target_app(request) #session=bakerys/?table=x
+    
+    item = Item.objects.get(id=item_id)
+    
+    context = {
+        'item':item
+    }
+    
+    return render (request,'Resto/ItemsDetails.html',context)
+    
+
+
 #My Order
 def MyOrder(request):
     
@@ -191,8 +214,6 @@ def UpdatedItem(request):
     print('Customer choice is:',item_choice)
     
     
-   
-
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
