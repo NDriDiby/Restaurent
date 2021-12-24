@@ -35,20 +35,18 @@ def HomePage(request):
     order_sent = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
 
-    
+    #After user has logged in
     if request.user.is_authenticated:
-
-        
         #Create a customer object
         cust,created = Customer.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = username.username
         cust.save()
         
-        #Create Order
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending',
-        table=table)
-        print('Table Number:',order.table)
+        # #Create Order
+        # order,created= Order.objects.get_or_create(customer=cust,status='Pending',
+        # table=table)
+        # print('Table Number:',order.table)
         
         
         #Show order to customer
@@ -274,6 +272,8 @@ def SendOrder(request):
     print('order_number:',order_numb)
     print('cust_note:',cust_note)
     customer = request.user
+    
+    
     #Process the order
     if request.method == 'POST' and action == 'sent':
         
