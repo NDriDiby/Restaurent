@@ -19,10 +19,6 @@ for (var i = 0; i < updated_but.length; i++) {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
 
-    for (var j = 0; j < choice.length; j++) {
-      console.log(choice[j].textContent);
-    }
-
     if (item_choice != null) {
       var cust_choice = item_choice.value;
       if (user === "AnonymousUser") {

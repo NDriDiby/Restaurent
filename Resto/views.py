@@ -65,14 +65,12 @@ def HomePage(request):
 #Menu Details
 def MenuDetails(request,menu_id):
     
-    
     #Get Table Number
     table = get_table_number(request)
     
     #Track user
     targetApp = target_app(request)
 
-    
     #Get and show the item in each category
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
@@ -127,7 +125,7 @@ def MenuDetails(request,menu_id):
         'menu':menu,
         'category':category,
         'item':item,
-         'orders':order,
+        'orders':order,
         'cart_quantity':cartItem,
         'app':targetApp
         
@@ -137,18 +135,14 @@ def MenuDetails(request,menu_id):
 
 def ItemDetails(request,item_id):
     
-    #Table Number
-    try:
-        table = get_table_number(request)
-        #table == None:
-    except:
-        pass
+    #Get Table Number
+    table = get_table_number(request)
     
     #Track user
-    session = track_session(request)
-    targetApp = target_app(request) #session=bakerys/?table=x
+    targetApp = target_app(request)
     
     item = Item.objects.get(id=item_id)
+    cartItem = 0
     
     if request.user.is_authenticated:
         try:
@@ -166,15 +160,17 @@ def ItemDetails(request,item_id):
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
         orderitem_quantity = orderitem.quantity
+        print('customer choice:',request.POST.get('item_choice'))
         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
     
     context = {
         'item':item,
         'orders':order,
         'cart_quantity':cartItem,
+        'app:':targetApp
     }
     
     return render (request,'Resto/ItemsDetails.html',context)
@@ -184,14 +180,17 @@ def ItemDetails(request,item_id):
 #My Order
 def MyOrder(request):
     
-    #Grab the Table number from the url using request
+    #Table Number
     table = get_table_number(request)
-    order=None
-    items = None
+        
 
     #Track user
     targetApp = target_app(request)
 
+
+    order = None
+    items = None
+    
     #get the Order and  items
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -234,8 +233,7 @@ def UpdatedItem(request):
     action = data['action']
     item_choice = data['item_choice']
     
-    print('Customer choice is:',item_choice)
-    
+   
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
