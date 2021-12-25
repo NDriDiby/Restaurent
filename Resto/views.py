@@ -140,17 +140,14 @@ def ItemDetails(request,item_id):
     #Choice Category
     assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
     cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
-    print(assaisonement)
-    print(cuisson)
-    # item_choice_cat = ItemChoiceCategory.objects.filter(item_id = item_id)
-    # print(item_choice_cat)
+    
     
     #Get Table Number
     table = get_table_number(request)
     
     #Track user
     targetApp = target_app(request)
-    print('Position:',targetApp)
+    
     
     item = Item.objects.get(id=item_id)
     cartItem = 0
@@ -174,7 +171,12 @@ def ItemDetails(request,item_id):
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
         orderitem_quantity = orderitem.quantity
-        print('customer choice:',request.POST.get('item_choice'))
+        print('customer choice_saissoning:',request.POST.get('item_choice'))
+        print('customer choice_cuisson:',request.POST.get('cuisson'))
+        orderitem.sessoning = request.POST.get('item_choice')
+        orderitem.cuisson = request.POST.get('cuisson')
+        orderitem.save()
+        
         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
     
     context = {
@@ -226,7 +228,7 @@ def MyOrder(request):
         else:
             messages.warning(request,"Your cart is empty")
             
-        return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
+        return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
    
         
@@ -247,6 +249,7 @@ def UpdatedItem(request):
     itemId = data['itemId']
     action = data['action']
     item_choice = data['item_choice']
+    print('My choice:',item_choice)
     
    
     

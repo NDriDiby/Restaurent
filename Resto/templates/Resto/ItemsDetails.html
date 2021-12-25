@@ -59,39 +59,34 @@
         <p class="card-text">{{ items.description }}</p>
         <p class="card-text text-muted"><strong>{{items.prix }} FCFA</strong></p>
 
-        {% if assaisonement %}
-        <h2>Saisoning</h2>
-        {% for saissoning in assaisonement %}
-        <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{saissoning.name}}" />
-        <label>{{saissoning.name}}</label><br />
-        {% endfor %} {% endif %}
-        <br />
-
-        {% if cuisson %}
-        <h2>Cuisson</h2>
-        {% for cuiss in cuisson %}
-        <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{cuiss.name}}" />
-        <label>{{cuiss.name}}</label><br />
-        {% endfor %} {% endif %}
-
         <form method="POST">
           <div>
-            {% csrf_token %}
+            {% csrf_token %} {% if assaisonement %}
+            <h3>Saisoning</h3>
+            {% for saissoning in assaisonement %}
+            <input id="item_choice-1" type="checkbox" name="item_choice" value="{{saissoning.name}}" />
+            <label>{{saissoning.name}}</label><br />
+            {% endfor %} {% endif %}
+            <br />
+
+            {% if cuisson %}
+            <h3>Cuisson</h3>
+            {% for cuiss in cuisson %}
+            <input id="item_choice" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
+            <label>{{cuiss.name}}</label><br />
+            {% endfor %} {% endif %}
+
             <div class="supplement mb-2">
               <div class="row">
                 <div class="col-6 col-sm-4 mb-2 cust_choice">
-                  <p>
-                    <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{item.name}}" />
-                    <label>{{item.name}}</label><br />
-                  </p>
+                  <p>{% comment %} <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{items.name}}" /> {% endcomment %}</p>
                 </div>
                 <hr />
               </div>
             </div>
-
-            <i id="minus" data-product="{{item.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
-            <button data-product="{{item.id}}" name="item" value="{{item.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-            <i id="plus" data-product="{{item.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
+            <i id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
+            <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+            <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
           </div>
         </form>
         {% endif %} {% endblock content %}

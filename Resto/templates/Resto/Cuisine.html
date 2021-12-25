@@ -89,6 +89,7 @@
           <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_completed}}</p>
           {% for orders in order.orderitem_set.all %}
           <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{orders}} ({{orders.quantity}})</p>
+          {{order.sessoning}}
           {% endfor %}
           <h5 class="card-text mt-1" style="color: rgb(240, 8, 8); text-align: center">#{{order.status}}</h5>
         </div>
