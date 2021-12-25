@@ -35,12 +35,12 @@ for (var i = 0; i < updated_but.length; i++) {
   });
 }
 
-function updateUserOrder(itemId, action, item_choice) {
+async function updateUserOrder(itemId, action, item_choice) {
   console.log(user, "is logged in, sending data....");
 
   var url = "/texasgrillz/updateitem/";
 
-  fetch(url, {
+  await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

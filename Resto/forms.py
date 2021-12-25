@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django.db.models import fields
 from django.db.models.fields import DateTimeField
 from django import forms
-from.models import Item
+from.models import Item,ItemChoices,ItemChoiceCategory
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -16,4 +16,14 @@ class CustomerForm(UserCreationForm):
    class Meta:
     model = User
     fields = ('username','phone_number')
+    
+    
+class ItemChoiceForm(forms.ModelForm):
+   name = forms.ModelMultipleChoiceField(queryset=ItemChoices.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+   choice_category = forms.ModelMultipleChoiceField(queryset=ItemChoiceCategory.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+   
+   class Meta:
+      model = ItemChoices
+      exclude=['parent_food','description','date_created','prix']
+
         

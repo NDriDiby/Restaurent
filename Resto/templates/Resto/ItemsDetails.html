@@ -1,4 +1,4 @@
-{% extends "Resto/base_menu.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if item %}
+{% extends "Resto/base_items.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if items %}
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
   <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -16,47 +16,86 @@
   </symbol>
 </svg>
 
-<div class="col-12">
-  {% if messages %} {% for message in messages %}
-  <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
-    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-      <use xlink:href="#check-circle-fill" />
-    </svg>
-    {{message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  {% endfor %} {% endif %}
-</div>
+<div class="container">
+  <header class="blog-header py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+      </div>
 
-<div class="col-sm-12 col-md-6 col-lg-3 pb-4">
-  <div class="card h-100" style="border: none">
-    <img src="{{item.img.url }}" class="card-img-top" alt="{{item.name}}" />
-    <div class="card-body" style="text-align: center">
-      <h5 class="card-title">{{item.name}}</h5>
-      <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
-      <p class="card-text">{{ item.description }}</p>
-      <p class="card-text text-muted"><strong>{{item.prix }} FCFA</strong></p>
-
-      <form method="POST">
-        <div>
-          {% csrf_token %}
-          <div class="supplement mb-2">
-            <div class="row">
-              {% for item in item.itemchoices_set.all %}
-              <div class="col-6 col-sm-4 mb-2 cust_choice">
-                <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{item.name}}" />
-                <label>{{item.name}}</label><br />
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-
-          <i id="minus" data-product="{{item.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
-          <button data-product="{{item.id}}" name="item" value="{{item.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-          <i id="plus" data-product="{{item.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
+      <div class="col-4 text-center">
+        <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 100px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center" />
+        <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <a href="/texasgrillz/myorder/?session={{app}}">
+          <img id="cart-icon" src='{% static "Resto/cart.png" %}' style="width: 70px; height: 70px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center"
+        /></a>
+        <div id="cart-total">
+          <p class="mt-2">{{cart_quantity}}</p>
         </div>
-      </form>
-      {% endif %} {% endblock content %}
+      </div>
+    </div>
+  </header>
+
+  <div class="col-12">
+    {% if messages %} {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+        <use xlink:href="#check-circle-fill" />
+      </svg>
+      {{message}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+
+  <div class="col-sm-12 col-md-6 col-lg-3 pb-4">
+    <div class="card h-100" style="border: none">
+      <img src="{{items.img.url }}" class="card-img-top" alt="{{items.name}}" />
+      <div class="card-body" style="text-align: center">
+        <h5 class="card-title">{{items.name}}</h5>
+        <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
+        <p class="card-text">{{ items.description }}</p>
+        <p class="card-text text-muted"><strong>{{items.prix }} FCFA</strong></p>
+
+        {% if assaisonement %}
+        <h2>Saisoning</h2>
+        {% for saissoning in assaisonement %}
+        <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{saissoning.name}}" />
+        <label>{{saissoning.name}}</label><br />
+        {% endfor %} {% endif %}
+        <br />
+
+        {% if cuisson %}
+        <h2>Cuisson</h2>
+        {% for cuiss in cuisson %}
+        <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{cuiss.name}}" />
+        <label>{{cuiss.name}}</label><br />
+        {% endfor %} {% endif %}
+
+        <form method="POST">
+          <div>
+            {% csrf_token %}
+            <div class="supplement mb-2">
+              <div class="row">
+                <div class="col-6 col-sm-4 mb-2 cust_choice">
+                  <p>
+                    <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{item.name}}" />
+                    <label>{{item.name}}</label><br />
+                  </p>
+                </div>
+                <hr />
+              </div>
+            </div>
+
+            <i id="minus" data-product="{{item.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
+            <button data-product="{{item.id}}" name="item" value="{{item.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+            <i id="plus" data-product="{{item.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
+          </div>
+        </form>
+        {% endif %} {% endblock content %}
+      </div>
     </div>
   </div>
 </div>

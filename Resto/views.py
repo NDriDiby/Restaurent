@@ -1,8 +1,8 @@
 
 from django.shortcuts import render,redirect
-from.models import Category,Customer,Item,Order,OrderItem,ItemChoices
+from.models import Category,Customer,Item,Order,OrderItem,ItemChoices,ItemChoiceCategory
 from django.contrib import messages
-from.forms import CustomerForm
+from.forms import CustomerForm,ItemChoiceForm
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app
@@ -132,12 +132,25 @@ def MenuDetails(request,menu_id):
 
 
 def ItemDetails(request,item_id):
+
+    #Form
+    form = ItemChoiceForm()
+    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id)
+    
+    #Choice Category
+    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
+    cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
+    print(assaisonement)
+    print(cuisson)
+    # item_choice_cat = ItemChoiceCategory.objects.filter(item_id = item_id)
+    # print(item_choice_cat)
     
     #Get Table Number
     table = get_table_number(request)
     
     #Track user
     targetApp = target_app(request)
+    print('Position:',targetApp)
     
     item = Item.objects.get(id=item_id)
     cartItem = 0
@@ -165,10 +178,14 @@ def ItemDetails(request,item_id):
         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
     
     context = {
-        'item':item,
+        'items':item,
         'orders':order,
         'cart_quantity':cartItem,
-        'app:':targetApp
+        'app':targetApp,
+        'form':form,
+        'assaisonement':assaisonement,
+        'cuisson':cuisson
+        #'item_choice_cat':item_choice_cat
     }
     
     return render (request,'Resto/ItemsDetails.html',context)

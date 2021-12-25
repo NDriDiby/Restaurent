@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'storages',
+    'django_extensions',
    
 ]
 
@@ -157,40 +158,40 @@ USE_TZ = True
 LOGIN_URL = 'login'
 
 
-# AWS S3 SETTINGS  - STORAGE PRODUCTION
+# # AWS S3 SETTINGS  - STORAGE PRODUCTION
 
-AWS_ACCESS_KEY_ID = 'AKIAT454HLON6TTI5DZF'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'icarus-restaurant'
-AWS_URL='https://icarus-restaurant.s3.amazonaws.com/'
+# AWS_ACCESS_KEY_ID = 'AKIAT454HLON6TTI5DZF'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'icarus-restaurant'
+# AWS_URL='https://icarus-restaurant.s3.amazonaws.com/'
 
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
 
-AWS_DEFAULT_ACL = None
-AWS_S3_REGION_NAME = 'us-east-2'
-AWS_S3_SIGNATURE_VERSION = 's3v4'
+# AWS_DEFAULT_ACL = None
+# AWS_S3_REGION_NAME = 'us-east-2'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Resto/static'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 
-STATIC_URL = AWS_URL + 'static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = AWS_URL + '/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATIC_URL = AWS_URL + 'static/'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# MEDIA_URL = AWS_URL + '/media/'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 #STORAGE - DEVELOPMENT
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
+STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"),
-#    ]
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, "static"),
+   ]
 
 
 
