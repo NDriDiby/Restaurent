@@ -56,7 +56,7 @@
       <div class="card-body" style="text-align: center">
         <h4 class="card-title" style="color:brown;">{{items.name}}</h4>
         <p class="card-text">{{ items.description }}</p>
-        <p class="card-text text-muted"><strong>{{items.prix }} FCFA</strong></p>
+        <p class="card-text " style="color:rgb(59, 59, 59)"><strong>{{items.prix }} FCFA</strong></p>
 
         <form method="POST">
           <div>
@@ -64,7 +64,7 @@
             {% comment %} ingredients {% endcomment %}
             {% if ingredients %}
             <div class="ingredient">
-              <h5 style="color:brown;">Ingredients</h5>
+              <h5 style="color:black;"><strong>Ingredients</strong></h5>
               {% for ingredient in ingredients %}
               <input id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
               <label>{{ingredient.name}}</label><br />
@@ -76,7 +76,7 @@
             {% comment %} seasoning {% endcomment %}
             {% if assaisonement %}
             <div class="saissoning">
-              <h5 style="color: brown;">Saisoning</h5>
+              <h5 style="color: black">Saisoning</h5>
               {% for saissoning in assaisonement %}
               <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
               <label>{{saissoning.name}}</label><br />
@@ -87,7 +87,7 @@
             {% comment %} cuisson {% endcomment %}
             {% if cuisson %}
             <div class = 'cuisson'>
-              <h5 style="color: brown;">Cuisson</h5>
+              <h5 style="color: black;">Cuisson</h5>
               {% for cuiss in cuisson %}
               <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
               <label>{{cuiss.name}}</label><br />

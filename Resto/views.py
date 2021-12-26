@@ -326,9 +326,14 @@ def Cuisine(request):
     all_order = Order.objects.filter(status='Sent')
     complete_order = Order.objects.filter(complete=True)
     
+    total_completed_order = len(complete_order)
+    total_uncompleted_order = len(all_order)
+    
     context = {
         'all_order':all_order,
-        'complete':complete_order
+        'complete':complete_order,
+        'total_completed_order':total_completed_order,
+        'total_uncompleted_order':total_uncompleted_order
     }
     return render(request,'Resto/Cuisine.html',context)
 
