@@ -35,44 +35,23 @@
   <div class="row justify-content-evenly g-lg-3 align-items-lg-baseline">
     <div class="card card-{{menu.id}} mt-3">
       {% for i in item %}
-      <div class="col-sm-12 col-md-6 col-lg-3 pb-4">
-        <div class="card h-100" style="border: none">
-          <img src="{{i.img.url }}" class="card-img-top" alt="{{i.name}}" />
-          <div class="card-body" style="text-align: center">
-            <h5 class="card-title">{{i.name}}</h5>
-            <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
-            <p class="card-text">{{ i.description }}</p>
-            <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
-
-            {% comment %} Order Supplement {% endcomment %}
-            <div class="supplement mb-2">
-              {% for sup in i.supplement_set.all %} {% if sup.name != ' ' %}
-              <input type="checkbox" id="supplement" name="check" value="{{sup.name}}" />
-              <label>{{sup.name}} (+{{sup.prix}} FCFA)</label><br />
-              {% endif %} {% endfor %}
-
-              <script>
-                function onlyOne(checkbox) {
-                  var checkboxes = document.getElementsByName("check");
-                  checkboxes.forEach((item) => {
-                    if (item !== checkbox) item.checked = false;
-                  });
-                }
-              </script>
+      <a href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none">
+        <div class="col-sm-12 col-md-6 col-lg-3 pb-1">
+          <div class="card" style="border: none;">
+            <div class="card-body">
+              <h5 class="card-title">{{i.name}}</h5>
+              <p class="card-text">{{ i.description }}</p>
+              <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
             </div>
-
-            <form method="POST">
-              <div>
-                {% csrf_token %}
-                <i style="mx-2" data-product="{{i.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
-                <button data-product="{{i.id}}" name="item" value="{{i.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-                <i data-product="{{i.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
-              </div>
-            </form>
+            <div style='margin-left:220px;margin-top:-130px;position:relative'>
+              <img src="{{i.img.url }}" class="card-img-top" alt="{{i.name}}" 
+            style="width: 100px; height: 100px; object-fit: scale-down; image-rendering: auto; text-align: center"/> 
+            </div>
           </div>
-        </div>
+          </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+    </a>
     </div>
     {% comment %} {% for i in item %}
     <div class="card">
@@ -95,5 +74,4 @@
   </div>
   {% endcomment %}
 </div>
-
-{%endblock content%}
+{% endblock content %}

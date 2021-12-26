@@ -56,9 +56,7 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
-    assaisonement = models.CharField(max_length = 50, choices=assaisonement,blank = True)
-    steak_choice = models.CharField(max_length = 50,choices=steak_choice,blank=True)
-    boisson_choice = models.CharField(max_length = 50,choices=coca_cola_product,blank=True)
+    
 
 
     def __str__(self):
@@ -68,12 +66,27 @@ class Item(models.Model):
 class Accompagment(models.Model):
     pass
 
-class Supplement(models.Model):
+
+class ItemChoiceCategory(models.Model):
+    item = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length = 50,blank=True)
+    date_created = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+
+class ItemChoices(models.Model):
     parent_food = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
     name = models.CharField(max_length = 150,blank=True)
-    description = models.TextField(max_length=150,blank=True)
+    choice_category = models.ForeignKey(ItemChoiceCategory,on_delete=models.CASCADE,blank=True,null=True)
+    description = models.TextField(max_length=20,blank=True)
     prix = models.IntegerField(blank=True)
     date_created = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
     
 
 
@@ -110,9 +123,9 @@ class Order(models.Model):
 class OrderItem(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
-    item = models.ForeignKey(Item, on_delete=CASCADE)
-    order = models.ForeignKey(Order,on_delete=CASCADE)
+    item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
+    item_choice = models.ForeignKey(ItemChoices,on_delete=models.CASCADE,blank=True,null=True)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):

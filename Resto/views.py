@@ -1,8 +1,8 @@
 
 from django.shortcuts import render,redirect
-from.models import Category,Customer,Item,Order,OrderItem
+from.models import Category,Customer,Item,Order,OrderItem,ItemChoices,ItemChoiceCategory
 from django.contrib import messages
-from.forms import CustomerForm
+from.forms import CustomerForm,ItemChoiceForm
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app
@@ -35,20 +35,18 @@ def HomePage(request):
     order_sent = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
 
-    
+    #After user has logged in
     if request.user.is_authenticated:
-
-        
         #Create a customer object
         cust,created = Customer.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = username.username
         cust.save()
         
-        #Create Order
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending',
-        table=table)
-        print('Table Number:',order.table)
+        # #Create Order
+        # order,created= Order.objects.get_or_create(customer=cust,status='Pending',
+        # table=table)
+        # print('Table Number:',order.table)
         
         
         #Show order to customer
@@ -65,14 +63,12 @@ def HomePage(request):
 #Menu Details
 def MenuDetails(request,menu_id):
     
-    
     #Get Table Number
     table = get_table_number(request)
     
     #Track user
     targetApp = target_app(request)
 
-    
     #Get and show the item in each category
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
@@ -94,7 +90,6 @@ def MenuDetails(request,menu_id):
             cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending')
             cartItem = order.get_order_quantity()
-            print("Found the order")
         except:
             messages.warning(request,"Can't pass order on multiple table")
             messages.success(request,f"Your new table number is {table}")
@@ -109,7 +104,6 @@ def MenuDetails(request,menu_id):
     else:
         return HttpResponseRedirect(f'/register?session={targetApp}')
 
-    
     # Show item added to cart
     if request.method == 'POST':
         order_table = request.POST.get('item')
@@ -117,16 +111,19 @@ def MenuDetails(request,menu_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-        meal_quant = OrderItem.objects.get(order = order,item = order_table)
-        meal_quant = meal_quant.quantity
-        messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
-    
+        messages.success(request,f'{order_table} a été ajouté votre table')
+        # meal_quant= OrderItem.objects.filter(order = order,item = order_table)
+        # if meal_quant:
+        #     meal_quant = meal_quant[0].quantity
+        #     messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
+        # else:
+            
     
     context = {
         'menu':menu,
         'category':category,
         'item':item,
-         'orders':order,
+        'orders':order,
         'cart_quantity':cartItem,
         'app':targetApp
         
@@ -134,17 +131,83 @@ def MenuDetails(request,menu_id):
     return render(request,'Resto/MenuDetails.html',context)
 
 
+def ItemDetails(request,item_id):
+
+    #Form
+    form = ItemChoiceForm()
+    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id)
+    
+    #Choice Category
+    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
+    cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
+    
+    
+    #Get Table Number
+    table = get_table_number(request)
+    
+    #Track user
+    targetApp = target_app(request)
+    
+    
+    item = Item.objects.get(id=item_id)
+    cartItem = 0
+    
+    if request.user.is_authenticated:
+        try:
+            username = User.objects.get(id=request.user.id)
+            cust,created = Customer.objects.get_or_create(user =request.user)
+            cust.name = username.username
+            cust.save()
+            order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+            cartItem = order.get_order_quantity()
+        except:
+            print('other option bro')
+            
+    if request.method == 'POST':
+        order_table = request.POST.get('item')
+        order_table = Item.objects.filter(id=order_table)
+        order_table = order_table[0]
+        cust,created = Customer.objects.get_or_create(user =request.user)
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+        orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
+        orderitem_quantity = orderitem.quantity
+        print('customer choice_saissoning:',request.POST.get('item_choice'))
+        print('customer choice_cuisson:',request.POST.get('cuisson'))
+        orderitem.sessoning = request.POST.get('item_choice')
+        orderitem.cuisson = request.POST.get('cuisson')
+        orderitem.save()
+        
+        messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
+    
+    context = {
+        'items':item,
+        'orders':order,
+        'cart_quantity':cartItem,
+        'app':targetApp,
+        'form':form,
+        'assaisonement':assaisonement,
+        'cuisson':cuisson
+        #'item_choice_cat':item_choice_cat
+    }
+    
+    return render (request,'Resto/ItemsDetails.html',context)
+    
+
+
 #My Order
 def MyOrder(request):
     
-    #Grab the Table number from the url using request
+    #Table Number
     table = get_table_number(request)
-    order=None
-    items = None
+        
 
     #Track user
     targetApp = target_app(request)
 
+
+    order = None
+    items = None
+    
     #get the Order and  items
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -165,7 +228,7 @@ def MyOrder(request):
         else:
             messages.warning(request,"Your cart is empty")
             
-        return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
+        return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
    
         
@@ -185,14 +248,18 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
+    item_choice = data['item_choice']
+    print('My choice:',item_choice)
     
-    print(itemId)
-
+   
+    
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order= Order.objects.get(customer=customer,status = 'Pending')
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item )
+    # item_choice,created = ItemChoices.objects.get_or_create(id = item_choice,prix =0)
+    # print('My choice:',item_choice)
+    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
   
     #Increase quantity
     if action =='add':
@@ -225,6 +292,8 @@ def SendOrder(request):
     print('order_number:',order_numb)
     print('cust_note:',cust_note)
     customer = request.user
+    
+    
     #Process the order
     if request.method == 'POST' and action == 'sent':
         
