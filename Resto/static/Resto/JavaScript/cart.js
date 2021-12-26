@@ -1,7 +1,7 @@
 // Add item to your cart
 var updated_but = document.getElementsByClassName("update-cart");
-var item_choice = document.getElementById("item_choice");
-var choice = document.getElementsByClassName("cust_choice");
+var ingredient = document.getElementById("ingredients");
+var seasoning = document.getElementsByClassName("seasoning");
 
 // console.log("myChoice");
 // if (choice.value != null) {
