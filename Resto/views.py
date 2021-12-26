@@ -132,6 +132,10 @@ def MenuDetails(request,menu_id):
 
 
 def ItemDetails(request,item_id):
+    
+    #Item
+    order = None
+    cartItem = None
 
     #Form
     form = ItemChoiceForm()
@@ -170,15 +174,9 @@ def ItemDetails(request,item_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-        orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
+        orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
         orderitem_quantity = orderitem.quantity
-        print('customer choice_ingredient:',request.POST.getlist('ingredient'))
-        print('customer choice_saissoning:',request.POST.get('assaisonement'))
-        print('customer choice_cuisson:',request.POST.getlist('cuisson'))
-        orderitem.sessoning = request.POST.get('item_choice')
-        orderitem.cuisson = request.POST.get('cuisson')
         orderitem.save()
-        
         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
     
     context = {
@@ -190,7 +188,6 @@ def ItemDetails(request,item_id):
         'assaisonement':assaisonement,
         'cuisson':cuisson,
         'ingredients':ingredients
-        #'item_choice_cat':item_choice_cat
     }
     
     return render (request,'Resto/ItemsDetails.html',context)
@@ -246,22 +243,17 @@ def MyOrder(request):
 
 #Backend Process of Item
 def UpdatedItem(request):
-
+    
     #Get the response from the backend
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-    item_choice = data['item_choice']
-    print('My choice:',item_choice)
-    
    
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order= Order.objects.get(customer=customer,status = 'Pending')
-    # item_choice,created = ItemChoices.objects.get_or_create(id = item_choice,prix =0)
-    # print('My choice:',item_choice)
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
   
     #Increase quantity

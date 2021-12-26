@@ -55,49 +55,55 @@
       <img src="{{items.img.url }}" class="card-img-top" alt="{{items.name}}" />
       <div class="card-body" style="text-align: center">
         <h5 class="card-title">{{items.name}}</h5>
-        <p class="card-text text-muted" style="font-size: 12px">{{ f.type }}</p>
         <p class="card-text">{{ items.description }}</p>
         <p class="card-text text-muted"><strong>{{items.prix }} FCFA</strong></p>
 
         <form method="POST">
           <div>
-            {% csrf_token %} {% if ingredients %}
-            <h3>Ingredients</h3>
-            {% for ingredient in ingredients %}
-            <input id="item_choice" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
-            <label>{{ingredient.name}}</label><br />
-            {% endfor %} {% endif %}<br />
-
-            {% if assaisonement %}
-            <h3>Saisoning</h3>
-            {% for saissoning in assaisonement %}
-            <input id="item_choice-1" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
-            <label>{{saissoning.name}}</label><br />
-            {% endfor %} {% endif %}
-            <br />
-            {% if cuisson %}
-            <h3>Cuisson</h3>
-            {% for cuiss in cuisson %}
-            <input id="item_choice" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
-            <label>{{cuiss.name}}</label><br />
-            {% endfor %} {% endif %}
-            <br />
-
-            <div class="supplement mb-2">
-              <div class="row">
-                <div class="col-6 col-sm-4 mb-2 cust_choice">
-                  <p>{% comment %} <input id="item_choice-{{item.id}}" type="checkbox" name="item_choice" value="{{items.name}}" /> {% endcomment %}</p>
-                </div>
-                <hr />
-              </div>
+            {% csrf_token %} 
+            {% comment %} ingredients {% endcomment %}
+            {% if ingredients %}
+            <div class="ingredient">
+              <h4>Ingredients</h4>
+              {% for ingredient in ingredients %}
+              <input id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+              <label>{{ingredient.name}}</label><br />
+              {% endfor %} <br />
             </div>
+            {% endif %}
+
+            
+            {% comment %} seasoning {% endcomment %}
+            {% if assaisonement %}
+            <div class="saissoning">
+              <h4>Saisoning</h4>
+              {% for saissoning in assaisonement %}
+              <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
+              <label>{{saissoning.name}}</label><br />
+              {% endfor %}<br /> 
+            </div>
+            {% endif %}
+
+            {% comment %} cuisson {% endcomment %}
+            {% if cuisson %}
+            <div class = 'cuisson'>
+              <h4>Cuisson</h4>
+              {% for cuiss in cuisson %}
+              <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
+              <label>{{cuiss.name}}</label><br />
+              {% endfor %}<br /> 
+            <div>
+            {% endif %}
+            <hr>
+            
             <i id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
             <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
             <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
           </div>
         </form>
-        {% endif %} {% endblock content %}
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
+{% endblock content %}
