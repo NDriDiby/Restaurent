@@ -135,11 +135,12 @@ def ItemDetails(request,item_id):
 
     #Form
     form = ItemChoiceForm()
-    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id)
+    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
     
     #Choice Category
     assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
     cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
+    ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
     
     
     #Get Table Number
@@ -171,8 +172,9 @@ def ItemDetails(request,item_id):
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
         orderitem_quantity = orderitem.quantity
-        print('customer choice_saissoning:',request.POST.get('item_choice'))
-        print('customer choice_cuisson:',request.POST.get('cuisson'))
+        print('customer choice_ingredient:',request.POST.getlist('ingredient'))
+        print('customer choice_saissoning:',request.POST.get('assaisonement'))
+        print('customer choice_cuisson:',request.POST.getlist('cuisson'))
         orderitem.sessoning = request.POST.get('item_choice')
         orderitem.cuisson = request.POST.get('cuisson')
         orderitem.save()
@@ -186,7 +188,8 @@ def ItemDetails(request,item_id):
         'app':targetApp,
         'form':form,
         'assaisonement':assaisonement,
-        'cuisson':cuisson
+        'cuisson':cuisson,
+        'ingredients':ingredients
         #'item_choice_cat':item_choice_cat
     }
     

@@ -61,20 +61,27 @@
 
         <form method="POST">
           <div>
-            {% csrf_token %} {% if assaisonement %}
+            {% csrf_token %} {% if ingredients %}
+            <h3>Ingredients</h3>
+            {% for ingredient in ingredients %}
+            <input id="item_choice" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+            <label>{{ingredient.name}}</label><br />
+            {% endfor %} {% endif %}<br />
+
+            {% if assaisonement %}
             <h3>Saisoning</h3>
             {% for saissoning in assaisonement %}
-            <input id="item_choice-1" type="checkbox" name="item_choice" value="{{saissoning.name}}" />
+            <input id="item_choice-1" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
             <label>{{saissoning.name}}</label><br />
             {% endfor %} {% endif %}
             <br />
-
             {% if cuisson %}
             <h3>Cuisson</h3>
             {% for cuiss in cuisson %}
             <input id="item_choice" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
             <label>{{cuiss.name}}</label><br />
             {% endfor %} {% endif %}
+            <br />
 
             <div class="supplement mb-2">
               <div class="row">
