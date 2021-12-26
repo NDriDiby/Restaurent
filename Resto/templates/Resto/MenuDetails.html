@@ -33,45 +33,27 @@
     <h1 style="text-align: center">{{menu.name}}</h1>
   </div>
   <div class="row justify-content-evenly g-lg-3 align-items-lg-baseline">
-    <div class="card card-{{menu.id}} mt-3">
+    <div class="card card-6 mt-3">
       {% for i in item %}
-      <a href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none">
-        <div class="col-sm-12 col-md-6 col-lg-3 pb-1">
-          <div class="card" style="border: none;">
-            <div class="card-body">
-              <h5 class="card-title">{{i.name}}</h5>
-              <p class="card-text">{{ i.description }}</p>
-              <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
+      <a href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none;color:black">
+          <div class="col-sm-12 col-md-6 col-lg-3 pb-1">
+            <div class="card" style="border: none;">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-8"><h5 class="card-title" style='style="color:brown;"'>{{i.name}}</h5>
+                    <p class="card-text">{{ i.description }}</p>
+                    <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p></div>
+                  <div class="col-4"><img src="{{i.img.url }}" class="card-img-top" alt="{{i.name}}" 
+                    style="width: 100px; height: 100px; object-fit: scale-down; image-rendering: auto; text-align: center"/> </div>
+                </div>
+                
+              </div>
+            
             </div>
-            <div style='margin-left:220px;margin-top:-130px;position:relative'>
-              <img src="{{i.img.url }}" class="card-img-top" alt="{{i.name}}" 
-            style="width: 100px; height: 100px; object-fit: scale-down; image-rendering: auto; text-align: center"/> 
-            </div>
-          </div>
           </div>
         {% endfor %}
-      </div>
-    </a>
+        </div>
+      </a>
     </div>
-    {% comment %} {% for i in item %}
-    <div class="card">
-      <div class="mt-1">
-        <img class="img-fluid" src=" {{i.img.url}} " alt="{{i.name}} " />
-      </div>
-      <div class="card-body">
-        <h2 class="card-title" style="text-align: center">{{i.name}}</h2>
-        <p class="card-text" style="text-align: center">{{i.description}}</p>
-        <p class="card-text" style="text-align: center"><b>{{i.prix}} FCFA</b></p>
-        <form method="POST">
-          <div>
-            {% csrf_token %}
-            <button data-product="{{i.id}}" name="item" value="{{i.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  {% endcomment %}
 </div>
 {% endblock content %}
