@@ -97,12 +97,12 @@ def MenuDetails(request,menu_id):
             pending_order[0].delete()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
-            return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
+            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
             
 
     # Create new account
     else:
-        return HttpResponseRedirect(f'/register?session={targetApp}')
+        return HttpResponseRedirect(f'/register/?session={targetApp}')
 
     # Show item added to cart
     if request.method == 'POST':

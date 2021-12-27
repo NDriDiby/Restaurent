@@ -35,11 +35,11 @@
   <div class="cards mt-1">
     {% for cat in category %}
     <a href="/texasgrillz/menudetails/{{cat.cat_id}}/?session={{app}}" style="text-decoration: none">
-      <div class="card card-6">
-        <div class="card" style="text-align: center">
-          <img style="width: 200px; height: 300px; object-fit: scale-down; image-rendering: auto; text-align: center" src="{{cat.img.url}}" alt="{{cat.name}}" />
-          <h2 class="card__title" style="text-align: center; margin-top: -80px; color: brown">{{cat.name}}</h2>
-          <p class="card-text" style="text-align: center; color: black; margin-top: -45px"><strong>{{cat.description}}</strong></p>
+      <div class="card">
+        <div class="card card-6" style="text-align: center">
+          <img style="width: 300px; height: 300px; object-fit: scale-down; image-rendering: auto; text-align: center" src="{{cat.img.url}}" alt="{{cat.name}}" />
+          <h2 class="card__title" style="text-align: center">{{cat.name}}</h2>
+          <p class="card-text" style="text-align: center; color: black"><strong>{{cat.description}}</strong></p>
         </div>
       </div>
       {% endfor %}

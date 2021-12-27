@@ -15,11 +15,12 @@
             <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Join Today</legend>
             {{form.username|as_crispy_field}}
             <br>
-            <br> {{form.phone_number|as_crispy_field}}
-            <br>
-             <br>{{form.password1|as_crispy_field}}
-            <br>
-            <br> {{form.password2|as_crispy_field}}
+            {{form.nom|as_crispy_field}}<br>
+            {{form.prenom|as_crispy_field}}<br>
+            {{form.email|as_crispy_field}}<br> 
+            {{form.phone_number|as_crispy_field}}<br>
+            {{form.password1|as_crispy_field}}<br>
+            {{form.password2|as_crispy_field}}
         </fieldset> 
 
         <div class='form-group mt-5'>
@@ -30,10 +31,6 @@
 
             <small class='text-muted'>Already Have An Account? <a class = 'ml-2' href="/login/?session={{app}}"> Sign in </a>
                              </small>
-
-            <small class='text-muted'>Join Today! <a class = 'ml-2' href="/login/?session={{app}}"> Sign in </a>
-                    </small>
-
         </div>
     </form>
 </div>

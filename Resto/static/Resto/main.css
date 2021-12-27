@@ -229,8 +229,8 @@ body {
 }
 
 .card {
-  /* margin: 5px;
-  padding: 5px; */
+  margin: 5px;
+  padding: 5px;
   /* width: 500px;
     min-height: 200px; */
   display: grid;
