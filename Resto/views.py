@@ -110,7 +110,7 @@ def MenuDetails(request,menu_id):
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         messages.success(request,f'{order_table} a été ajouté votre table')
         # meal_quant= OrderItem.objects.filter(order = order,item = order_table)
         # if meal_quant:
@@ -174,7 +174,10 @@ def ItemDetails(request,item_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-        orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
+        print(order.id)
+        orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
+        print('myorder',orderitem)
+        #orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
         orderitem_quantity = orderitem.quantity
         orderitem.save()
         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')

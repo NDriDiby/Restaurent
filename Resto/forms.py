@@ -11,11 +11,15 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class CustomerForm(UserCreationForm):
+   nom = forms.CharField(label = 'Nom')
+   prenom = forms.CharField(label = 'Nom')
+   email = forms.EmailField(label = 'Email')
    phone_number = forms.CharField(label = 'Phone Number')
+   
 
    class Meta:
     model = User
-    fields = ('username','phone_number')
+    fields = ('username','phone_number','nom','prenom','email')
     
     
 class ItemChoiceForm(forms.ModelForm):

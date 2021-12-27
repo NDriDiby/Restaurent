@@ -1,18 +1,15 @@
 // Add item to your cart
 var updated_but = document.getElementsByClassName("update-cart");
-var ingredient = document.getElementByClassName("ingredients");
-var seasoning = document.getElementsByClassName("seasoning");
-var cuisson = document.getElementsByClassName("cuisson");
+var ingredient = null;
+var seasoning = null;
+var cuisson = null;
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
 
-    console.log("Ingredients:");
-    for (var checkbox of ingredient) {
-      if (checkbox.checked) console.log(checkbox.value);
-    }
+    console.log("Ingredients");
 
     if (user === "AnonymousUser") {
       console.log("not logged in");

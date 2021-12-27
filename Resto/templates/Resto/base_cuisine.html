@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Refresh the page every 30 seconds -->
-    <meta http-equiv="refresh" content="30" />
+    <meta http-equiv="refresh" content="180" />
 
     <!-- Bootstrap CSS -->
     <link
@@ -77,10 +77,11 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="/">Menu</a>
-              <a class="nav-item nav-link" href="">Operation</a>
+              <a class="nav-item nav-link" href="">Menu</a>
+              <a class="nav-item nav-link" href="">Analytics</a>
               <a class="nav-item nav-link" href="">Employees</a>
-              <a class="nav-item nav-link" href="">Distributeur</a>
+              <a class="nav-item nav-link" href="">Inventory</a>
+              <a class="nav-item nav-link" href="">Mybar</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav" style="margin-left: 600px">
@@ -94,13 +95,11 @@
       </nav>
     </header>
 
-    <main class="container">
-      <div class="row">
-        <div class="col-10">{% block content %}{% endblock %}</div>
+    <div class="row">
+      <div class="col-8">{% block content %}{% endblock %}</div>
 
-        <div class="col-2 mt-lg-2">{% block sidebar %} {% endblock sidebar %}</div>
-      </div>
-    </main>
+      <div class="col-4 mt-lg-2">{% block sidebar %} {% endblock sidebar %}</div>
+    </div>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script
