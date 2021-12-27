@@ -125,7 +125,9 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
     item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
-    item_choice = models.ForeignKey(ItemChoices,on_delete=models.CASCADE,blank=True,null=True)
+    ingredient = models.CharField(null = True, blank = True,max_length=150)
+    seasoning = models.CharField(null = True, blank = True,max_length=150)
+    cuisson = models.CharField(null = True, blank = True,max_length=150)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):

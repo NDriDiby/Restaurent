@@ -97,12 +97,12 @@ def MenuDetails(request,menu_id):
             pending_order[0].delete()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
-            return HttpResponseRedirect(f'/texasgrillz?session={targetApp}')
+            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
             
 
     # Create new account
     else:
-        return HttpResponseRedirect(f'/register?session={targetApp}')
+        return HttpResponseRedirect(f'/register/?session={targetApp}')
 
     # Show item added to cart
     if request.method == 'POST':
@@ -110,7 +110,7 @@ def MenuDetails(request,menu_id):
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         messages.success(request,f'{order_table} a été ajouté votre table')
         # meal_quant= OrderItem.objects.filter(order = order,item = order_table)
         # if meal_quant:
@@ -132,14 +132,19 @@ def MenuDetails(request,menu_id):
 
 
 def ItemDetails(request,item_id):
+    
+    #Item
+    order = None
+    cartItem = None
 
     #Form
     form = ItemChoiceForm()
-    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id)
+    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
     
     #Choice Category
     assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
     cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
+    ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
     
     
     #Get Table Number
@@ -169,14 +174,12 @@ def ItemDetails(request,item_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-        orderitem = OrderItem.objects.get(order_id = order.id, item = item_id)
+        print(order.id)
+        orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
+        print('myorder',orderitem)
+        #orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
         orderitem_quantity = orderitem.quantity
-        print('customer choice_saissoning:',request.POST.get('item_choice'))
-        print('customer choice_cuisson:',request.POST.get('cuisson'))
-        orderitem.sessoning = request.POST.get('item_choice')
-        orderitem.cuisson = request.POST.get('cuisson')
         orderitem.save()
-        
         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
     
     context = {
@@ -186,8 +189,8 @@ def ItemDetails(request,item_id):
         'app':targetApp,
         'form':form,
         'assaisonement':assaisonement,
-        'cuisson':cuisson
-        #'item_choice_cat':item_choice_cat
+        'cuisson':cuisson,
+        'ingredients':ingredients
     }
     
     return render (request,'Resto/ItemsDetails.html',context)
@@ -243,22 +246,17 @@ def MyOrder(request):
 
 #Backend Process of Item
 def UpdatedItem(request):
-
+    
     #Get the response from the backend
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-    item_choice = data['item_choice']
-    print('My choice:',item_choice)
-    
    
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order= Order.objects.get(customer=customer,status = 'Pending')
-    # item_choice,created = ItemChoices.objects.get_or_create(id = item_choice,prix =0)
-    # print('My choice:',item_choice)
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
   
     #Increase quantity
@@ -331,9 +329,14 @@ def Cuisine(request):
     all_order = Order.objects.filter(status='Sent')
     complete_order = Order.objects.filter(complete=True)
     
+    total_completed_order = len(complete_order)
+    total_uncompleted_order = len(all_order)
+    
     context = {
         'all_order':all_order,
-        'complete':complete_order
+        'complete':complete_order,
+        'total_completed_order':total_completed_order,
+        'total_uncompleted_order':total_uncompleted_order
     }
     return render(request,'Resto/Cuisine.html',context)
 

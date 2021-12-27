@@ -1,17 +1,20 @@
 {% extends 'Resto/base_cuisine.html' %} {% load static %} {% block content %}
 
+
 <div class="container py-5">
+
   <div class="mt-3" style="text-align: center">
-    <h1 style="color: black">Uncompleted Orders</h1>
-    <hr />
+      <h1 style="color: black">Uncompleted Orders</h1>
+      <hr />
   </div>
+
 
   <div class="row justify-content-evenly g-lg-3 align-items-lg-baseline">
     {% for order in all_order %}
     <div class="col-auto mt-3">
       <div class="card" style="width: 12rem; height: auto; background-color: rgb(243, 166, 152)">
         <div class="card-body mb-1">
-          <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_ordered|date}}</p>
+          <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_ordered}}</p>
           <p style="text-align: center"><b style="color: black">Table Number:</b> {{order.table}}</p>
           <h4 class="card-title mb-1" style="color: black; text-align: center">
             <b>Customer: {{order}} </b>
@@ -41,30 +44,8 @@
   </div>
   <hr />
 
-  {% comment %} <div class="row justify-content-evenly g-lg-3 align-items-lg-baseline">
-    {% for order in complete %}
-    <div class="col-auto mt-3">
-      <div class="card" style="width: 12rem; height: auto; background-color: palegreen">
-        <div class="card-body mb-1">
-          <a onClick="ShowAndHide()">
-            <h4 class="card-title mb-2" style="color: black; text-align: center"><b>{{order}} </b></h4>
-            <h6 style="color: black; text-align: center">Table Number:{{order.table}}</h6>
-            <h6 style="color: black; text-align: center">Reference Number:{{order.transaction_id}}</h6>
-            <hr style="color: black" />
-          </a>
-
-          <div class="full_order" style="display: block">
-            <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_completed}}</p>
-            {% for x in order.orderitem_set.all %}
-            <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{x}} ({{x.quantity}})</p>
-            {% endfor %}
-            <h5 class="card-text mt-1" style="color: rgb(240, 8, 8); text-align: center">#{{order.status}}</h5>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div> {% endcomment %}
+  
+  
 
   <h2>Accordion Example</h2>
   <p><strong>Note:</strong> The <strong>data-parent</strong> attribute makes sure that all collapsible elements under the specified parent will be closed when one of the collapsible item is shown.</p>
@@ -74,48 +55,61 @@
     <div class="card">
       <div class="card-header">
         <h6 class="card-link"   href="#collapseOne">
-          <strong>Table Number:{{order.table}}</strong> - <strong style="color:rgb(56, 129, 197);">{{order}}</strong> -  {{order.id}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
+          Table Number: {{order.table}} - Customer Name: <strong style="color:rgb(3, 131, 250);">{{order}}</strong> - Order Number: {{order.id}} - Ref: {{order.transaction_id}} - Date: {{order.date_completed}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
         </h6>
       </div>
-      <div id="order{{order.id}}" class="collapse show" data-parent="#accordion">
-        <div class="card-body">
-          <h4 class="card-title mb-2" style="color: black; text-align: center"><b>{{order}} </b></h4>
-            <h6 style="color: black; text-align: center">Table Number:{{order.table}}</h6>
-            <h6 style="color: black; text-align: center">Reference Number:{{order.transaction_id}}</h6>
-            <hr style="color: black" />
-        </div>
-
+      <div id="order{{order.id}}" class="collapse show mt-2" data-parent="#accordion">
         <div class="full_order" style="display: block">
-          <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_completed}}</p>
           {% for orders in order.orderitem_set.all %}
           <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{orders}} ({{orders.quantity}})</p>
           {{order.sessoning}}
           {% endfor %}
-          <h5 class="card-text mt-1" style="color: rgb(240, 8, 8); text-align: center">#{{order.status}}</h5>
         </div>
       </div>
     </div>
     {% endfor %}
 
   </div>
+
+</div>
   {% endblock content %}
 
-    {% comment %} {% for order in complete %}
-      <div class="card">
-        <div class="card-header">
-          <span data-subject="{{order.id}}" data-toggle="collapse" data-target="#books_list{{order.id }}"> {{order.transaction_id}} </span>
-        </div>
-        <div id="books_list{{order.id }}">
-          {% for orders in order.orderitem_set.all %}
-          <div class="card-body">
-            <p class="card-text" style="color: black; text-align: center"><b>*</b> {{orders}} ({{orders.quantity}})</p>
+
+  {% block sidebar %}
+  {% comment %} peformance cuisine {% endcomment %}
+  <div class='py-5 mt-3'> 
+      <div class ='row'> 
+          <div >
+            <h4 style='color:rgb(51, 49, 49);text-align:center'>Performance Cuisine<h4>
           </div>
-          {% endfor %}
-        </div>
+        
+          <div class ='cards'>
+              <div class ='card' style='text-align:center'>
+                <h6 class='lead mt-2'><strong>Uncompleted Orders</strong></h6>
+                <p style='color:rgb(224, 34, 34);font-size:50px'><strong>{{total_uncompleted_order}}</strong></p>
+              </div>
+          </div>
+        
+
+          <div class ='cards'>
+              <div class ='card' style='text-align:center'>
+                <h6 class='lead mt-2'><strong>Completed Orders</strong><h6>
+                <p style='color:rgb(54, 126, 54);font-size:50px'><strong>{{total_completed_order}}</strong></p>
+              </div>
+          </div>
+
+
+          <div class ='cards' >
+              <div class ='card'style='text-align:center;'>
+                <h6 class='lead mt-2'><strong>Table</strong></h6>
+                <p  style='color:rgb(112, 108, 108);font-size:50px'><strong style='color:rgb(54, 126, 54)'>9</strong><strong>/20</strong></p>
+              </div>
+          </div>
       </div>
-      {% endfor %}
-    </div>
-  </div> {% endcomment %}
+  </div>
+  {% comment %} peformance cuisine {% endcomment %}
+  {% endblock sidebar %}
+
   
 
 

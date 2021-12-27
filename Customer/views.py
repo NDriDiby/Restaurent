@@ -90,7 +90,7 @@ def RegisterCustomer(request):
             cust_name = form.cleaned_data.get('username')
             form.save()
             messages.success(request,f'Account Created for {cust_name}')
-            return HttpResponseRedirect(f'/login?register=true&session={targetApp}')
+            return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
             messages.warning(request,f"The two password fields didn't match")
             
