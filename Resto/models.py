@@ -139,4 +139,39 @@ class OrderItem(models.Model):
         return total
 
 
+class IventoryItemCategory(models.Model):
+    name = models.CharField(max_length=150,null = True, blank = True)
+    description = models.CharField(max_length=150,null = True, blank = True)
+    date_created = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+    def total_spending_category(self):
+        category = self.iventoryitem_set.all()
+        spending = sum([item.prix for item in category])
+        return spending
+    
+    def total_item_category(self):
+        category = self.iventoryitem_set.all()
+        count = len([item.name for item in category])
+        return count
+        
+    
+
+class IventoryItem(models.Model):
+    name = models.CharField(max_length=150)
+    description = models.CharField(max_length=150,null = True, blank = True)
+    date_created = models.DateTimeField(auto_now=True)
+    prix = models.IntegerField(blank=True)
+    quantity = models.IntegerField(blank=True)
+    category = models.ForeignKey(IventoryItemCategory,on_delete=CASCADE,blank=True,null=True)
+    date_created = models.DateTimeField(auto_now=True)
+    
+    
+    def __str__(self):
+        return self.name
+    
+    
+    
 
