@@ -60,36 +60,37 @@
   <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-        <div class="container">
-          <a href="/">
-            <img
-              class="img-fuid rounded"
-              style="width: auto; height: 40px; object-fit: scale-down; padding-right: 2px; margin-right: 5px"
-              src="{% static 'Resto/TexasGrillzLogo.jpeg' %}"
-              alt="GazMinute Logo"
-            />
-          </a>
+        <a href="/">
+          <img
+            class="img-fuid rounded"
+            style="width: auto; height: 40px; object-fit: scale-down; padding-right: 2px; margin-right: 5px"
+            src="{% static 'Resto/TexasGrillzLogo.jpeg' %}"
+            alt="GazMinute Logo"
+          />
+        </a>
 
-          <div></div>
-          <a class="navbar-brand mr-4" href="/">Texas GrillZ</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="">Menu</a>
-              <a class="nav-item nav-link" href="">Analytics</a>
-              <a class="nav-item nav-link" href="">Employees</a>
-              <a class="nav-item nav-link" href="">Inventory</a>
-              <a class="nav-item nav-link" href="">Mybar</a>
-            </div>
-            <!-- Navbar Right Side -->
-            <div class="navbar-nav" style="margin-left: 600px">
-              <a class="nav-item nav-link" href="">Profile</a>
-              <a class="nav-item nav-link" href="">Deconnexion</a>
-              <a class="nav-item nav-link" href="">Connexion</a>
-              <a class="nav-item nav-link" href="">Register</a>
-            </div>
+        <a class="navbar-brand mr-4" href="/">Texas GrillZ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/texasgrillz/?session=texasgrillz&table=0">Menu</a>
+            {% if categorie %}
+            <a class="nav-item nav-link" href="/texasgrillz/cuisine/">Cuisine</a>
+            {% else %}
+            <a class="nav-item nav-link" href="/texasgrillz/inventory/">Inventory</a>
+            {% endif %} {% if 'myBar' %}
+            <a class="nav-item nav-link" href="">MyBar</a>
+            {% endif %}
+            <a class="nav-item nav-link" href="">Analytics</a>
+          </div>
+          <!-- Navbar Right Side -->
+          <div class="navbar-nav" style="margin-left: 600px">
+            <a class="nav-item nav-link" href="">Profile</a>
+            <a class="nav-item nav-link" href="">Deconnexion</a>
+            <a class="nav-item nav-link" href="">Connexion</a>
+            <a class="nav-item nav-link" href="">Register</a>
           </div>
         </div>
       </nav>

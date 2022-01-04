@@ -1,6 +1,7 @@
 
 from django.shortcuts import render,redirect
-from.models import Category,Customer,Item,Order,OrderItem,ItemChoices,ItemChoiceCategory
+from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
+                    IventoryItem,IventoryItemCategory)
 from django.contrib import messages
 from.forms import CustomerForm,ItemChoiceForm
 from django.contrib.auth.models import User
@@ -342,12 +343,6 @@ def Cuisine(request):
 
 
 
-def ProcessOrder(request):
-
-
-    return JsonResponse("your order",safe=False)
-
-
 
 #Delete Order
 def DeleteOrder(request,item_id):
@@ -370,3 +365,17 @@ def DeleteOrder(request,item_id):
           'app':targetApp
     }
     return render(request, 'Resto/DeleteOrder.html',context)
+
+
+
+
+#Inventory Management System
+def IventorySystem(request):
+    categories = IventoryItemCategory.objects.all()
+
+    context = {
+        'categorie': categories
+    }
+    
+    return render(request,'Resto/IventorySystem.html',context)
+
