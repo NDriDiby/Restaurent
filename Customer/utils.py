@@ -33,15 +33,14 @@ def order_number(session):
 def target_app(request):
     ''' This function track the session and the table number '''
     session_id = request.GET.get('session')
-    table = str(request.GET.get('table'))
+    table = request.GET.get('table')
 
     if session_id == None or table == None:
-        pass
+        targetApp = 'nosession'
     else:
-        table = str(request.GET.get('table'))
-        table = int(table)
-        targetApp = session_id+'&table='+str(table)
-        return targetApp
+        targetApp = session_id+'&table='+table
+        
+    return targetApp
 
 
 def get_table_number(request):

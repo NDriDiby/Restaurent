@@ -1,104 +1,112 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-
-<head>
+  <head>
     <!-- Required meta tags -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Refresh the page every 30 seconds -->
-    <meta http-equiv="refresh" content="30">
+    <meta http-equiv="refresh" content="180" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="{% static 'Resto/cuisine.css' %}">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/cuisine.css' %}" />
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"> {% if title %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link rel="shortcut icon" href="{% static 'Resto/favicon.ico' %}" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,300&display=swap" rel="stylesheet" />
+
+    {% if title %}
 
     <title>{{tile}}</title>
     {% endif %}
 
-
     <script type="text/javascript">
-        //Get current user
-        var user = '{{request.user}}'
+      //Get current user
+      var user = "{{request.user}}";
 
-        //CSRF TOKEN
-        function getToken(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
+      //CSRF TOKEN
+      function getToken(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
             }
-            return cookieValue;
+          }
         }
-        const csrftoken = getToken('csrftoken');
+        return cookieValue;
+      }
+      const csrftoken = getToken("csrftoken");
     </script>
-</head>
+  </head>
 
-
-<body>
-
+  <body>
     <header class="site-header">
-        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-            <div class="container">
-                <a href="/">
-                    <img class="img-fuid rounded" style="width: auto; height: 40px; object-fit: scale-down; padding-right: 2px; margin-right: 5px;" src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="GazMinute Logo" />
-                </a>
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a href="/">
+            <img
+              class="img-fuid rounded"
+              style="width: auto; height: 40px; object-fit: scale-down; padding-right: 2px; margin-right: 5px"
+              src="{% static 'Resto/TexasGrillzLogo.jpeg' %}"
+              alt="GazMinute Logo"
+            />
+          </a>
 
-                <div>
-                </div>
-                <a class="navbar-brand mr-4" href="/">Texas GrillZ</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <div></div>
+          <a class="navbar-brand mr-4" href="/">Texas GrillZ</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-                <div class="collapse navbar-collapse" id="navbarToggle">
-                    <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="/">Menu</a>
-                        <a class="nav-item nav-link" href="">Operation</a>
-                        <a class="nav-item nav-link" href=''>Employees</a>
-                        <a class="nav-item nav-link" href=''>Distributeur</a>
-                    </div>
-                    <!-- Navbar Right Side -->
-                    <div class="navbar-nav" style="margin-left: 600px;">
-
-                        <a class="nav-item nav-link" href="">Profile</a>
-                        <a class="nav-item nav-link" href="">Deconnexion</a>
-                        <a class="nav-item nav-link" href="">Connexion</a>
-                        <a class="nav-item nav-link" href="">Register</a>
-                    </div>
-                </div>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="">Menu</a>
+              <a class="nav-item nav-link" href="">Analytics</a>
+              <a class="nav-item nav-link" href="">Employees</a>
+              <a class="nav-item nav-link" href="">Inventory</a>
+              <a class="nav-item nav-link" href="">Mybar</a>
             </div>
-        </nav>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav" style="margin-left: 600px">
+              <a class="nav-item nav-link" href="">Profile</a>
+              <a class="nav-item nav-link" href="">Deconnexion</a>
+              <a class="nav-item nav-link" href="">Connexion</a>
+              <a class="nav-item nav-link" href="">Register</a>
+            </div>
+          </div>
+        </div>
+      </nav>
     </header>
 
-    <main class="container">
-        <div class="row">
-            <div class="col-10">
+    <div class="row">
+      <div class="col-8">{% block content %}{% endblock %}</div>
 
-                {% block content %}{% endblock %}
-            </div>
-
-            <div class="col-2 mt-lg-2">
-
-                {% block sidebar %} {% endblock sidebar %}
-            </div>
-        </div>
-    </main>
+      <div class="col-4 mt-lg-2">{% block sidebar %} {% endblock sidebar %}</div>
+    </div>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
@@ -106,10 +114,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
     -->
 
-    <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}">
-    </script>
-    <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}">
-    </script>
-</body>
+    <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
+    <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

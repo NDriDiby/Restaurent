@@ -6,8 +6,24 @@ from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import Permission, User
 
 
-# Create your models here.
+steak_choice = [('Rare','Rare'),
+                ('Medium','Medium'),
+                ('Medium Rare','Medium Rare'),
+                 ('Medium Well','Medium Well'),
+                ('Well Done','Well Done')]
 
+
+coca_cola_product = [('Coca-Cola','Coca-Cola'),
+                     ('Fanta','Fanta'),
+                     ('Sprite','Sprite')]
+
+
+assaisonement = [('Avec Piment','Avec Piment'),
+                 ('Sans Piment','Sans Piment')]
+
+
+
+# Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
@@ -40,10 +56,38 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
+    
 
 
     def __str__(self):
         return self.name
+    
+
+class Accompagment(models.Model):
+    pass
+
+
+class ItemChoiceCategory(models.Model):
+    item = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length = 50,blank=True)
+    date_created = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+
+class ItemChoices(models.Model):
+    parent_food = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length = 150,blank=True)
+    choice_category = models.ForeignKey(ItemChoiceCategory,on_delete=models.CASCADE,blank=True,null=True)
+    description = models.TextField(max_length=20,blank=True)
+    prix = models.IntegerField(blank=True)
+    date_created = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+    
 
 
 class Order(models.Model):
@@ -79,9 +123,11 @@ class Order(models.Model):
 class OrderItem(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
-    item = models.ForeignKey(Item, on_delete=CASCADE)
-    order = models.ForeignKey(Order,on_delete=CASCADE)
+    item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
+    ingredient = models.CharField(null = True, blank = True,max_length=150)
+    seasoning = models.CharField(null = True, blank = True,max_length=150)
+    cuisson = models.CharField(null = True, blank = True,max_length=150)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
