@@ -371,14 +371,11 @@ def DeleteOrder(request,item_id):
 
 #Inventory Management System
 def IventorySystem(request):
-    
     categories = IventoryItemCategory.objects.all()
-    print(categories)
-    
+
     context = {
         'categorie': categories
     }
-    
     
     return render(request,'Resto/IventorySystem.html',context)
 
