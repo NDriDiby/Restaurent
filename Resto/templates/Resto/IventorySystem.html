@@ -1,0 +1,25 @@
+{% extends 'Resto/base_cuisine.html' %} {% load static %} {% block content %}
+
+<div class="container py-5">
+  <h1 class="mt-5" style="color: black; text-align: center">Inventory Management System</h1>
+
+  <div class="row mt-5">
+    {% for cat in categorie %}
+    <div class="col-sm">
+      <div class="card" style="width: 20rem; border-color: chocolate">
+        <div class="card-body">
+          <h5 class="card-title" style="color: brown; text-align: center">{{cat.name}} ({{cat.total_item_category}}) - ({{cat.total_spending_category}} FCFA)</h5>
+          <hr />
+          {% for catitem in cat.iventoryitem_set.all %}
+          <p class="card-text" style="color: black">+ {{catitem.name}} ({{catitem.quantity}}) - {{catitem.prix}} FCFA</p>
+          {% endfor %}
+          <div class="mt-2" style="text-align: center">
+            <a href="#" class="btn btn-primary">Add Item</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endblock content %}
+</div>
