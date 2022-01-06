@@ -176,12 +176,15 @@ def ItemDetails(request,item_id):
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         print(order.id)
-        orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
-        print('myorder',orderitem)
-        #orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
-        orderitem_quantity = orderitem.quantity
-        orderitem.save()
-        messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
+        try:
+            orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
+            print('myorder',orderitem)
+            #orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
+            orderitem_quantity = orderitem.quantity
+            orderitem.save()
+            messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
+        except:
+            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
     
     context = {
         'items':item,
