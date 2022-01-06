@@ -1,7 +1,7 @@
 from django.contrib import admin
 from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
-                    Accompagment,ItemChoiceCategory,IventoryItemCategory,IventoryItem)
+                    ItemChoiceCategory,IventoryItemCategory,IventoryItem)
 
 # Register your models here.
 

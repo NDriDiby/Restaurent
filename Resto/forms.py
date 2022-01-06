@@ -10,8 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 
-class MyUser(AbstractBaseUser):
-   pass
+
    
 class CustomerForm(UserCreationForm):
    nom = forms.CharField(label = 'Nom')
