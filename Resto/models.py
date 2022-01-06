@@ -63,8 +63,6 @@ class Item(models.Model):
         return self.name
     
 
-class Accompagment(models.Model):
-    pass
 
 
 class ItemChoiceCategory(models.Model):
