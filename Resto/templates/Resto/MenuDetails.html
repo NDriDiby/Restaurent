@@ -33,9 +33,9 @@
     <h1 style="text-align: center">{{menu.name}}</h1>
   </div>
   <div class="row justify-content-evenly g-lg-3 align-items-lg-baseline">
-    <div class="card card-6 mt-3">
+    <div class="card card-6 mt-3"><!--effect .card in main.css-->
       {% for i in item %}
-        <div class="col-sm-12 col-md-6 col-lg-3 pb-1">
+        <div class="col-sm-12 pb-1"> <!--col-md-6 col-lg-3-->
           <a href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none;color:black">
             <div class="card" style="border: none;">
               <div class="card-body">
@@ -45,7 +45,7 @@
                     <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
                   </div>
                   <div class="col-4" style="margin: 0px; padding-left: 0px;"><img src="{{i.img.url }}" class="card-img-top" alt="{{i.name}}" 
-                    style="width: 100%; height: auto; object-fit: scale-down; image-rendering: auto; text-align:center;"/> </div>
+                    style="width: 100%; height: auto; object-fit: scale-down; image-rendering: auto; text-align:center;"/> 
                   </div>
                 </div>
               </div>

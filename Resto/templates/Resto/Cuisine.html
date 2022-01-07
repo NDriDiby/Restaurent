@@ -78,13 +78,22 @@
   {% block sidebar %}
   {% comment %} peformance cuisine {% endcomment %}
   <div class='py-5 mt-3'> 
-      <div class ='row'> 
+      <div class ='row performanceCuisine'> 
           <div >
             <h4 style='color:rgb(51, 49, 49);text-align:center'>Performance Cuisine<h4>
           </div>
-        
+
+
+          <style>
+            .performanceCuisine{
+              width: 75%;
+              justify-content: space-around;
+            }
+          </style>
+
+          
           <div class ='cards'>
-              <div class ='card' style='text-align:center'>
+              <div class ='card' style='text-align:center;'>
                 <h6 class='lead mt-2'><strong>Uncompleted Orders</strong></h6>
                 <p style='color:rgb(224, 34, 34);font-size:50px'><strong>{{total_uncompleted_order}}</strong></p>
               </div>
@@ -92,14 +101,14 @@
         
 
           <div class ='cards'>
-              <div class ='card' style='text-align:center'>
+              <div class ='card' style='text-align:center;'>
                 <h6 class='lead mt-2'><strong>Completed Orders</strong><h6>
                 <p style='color:rgb(54, 126, 54);font-size:50px'><strong>{{total_completed_order}}</strong></p>
               </div>
           </div>
 
 
-          <div class ='cards' >
+          <div class ='cards'>
               <div class ='card'style='text-align:center;'>
                 <h6 class='lead mt-2'><strong>Table</strong></h6>
                 <p  style='color:rgb(112, 108, 108);font-size:50px'><strong style='color:rgb(54, 126, 54)'>9</strong><strong>/20</strong></p>
