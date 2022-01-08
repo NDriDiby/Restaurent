@@ -43,13 +43,7 @@ def HomePage(request):
         username = User.objects.get(id=request.user.id)
         cust.name = username.username
         cust.save()
-        
-        # #Create Order
-        # order,created= Order.objects.get_or_create(customer=cust,status='Pending',
-        # table=table)
-        # print('Table Number:',order.table)
-        
-        
+    
         #Show order to customer
         order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table).last()
 
@@ -76,12 +70,12 @@ def MenuDetails(request,menu_id):
     item = Item.objects.filter(category__id = menu_id)
 
 
-
     order = None
-    cartItem = None
+    cartItem = 0
     
     
     #Create customer and order
+    
     # Authenticate then create an order
     if request.user.is_authenticated:
         try:
@@ -89,35 +83,10 @@ def MenuDetails(request,menu_id):
             cust,created = Customer.objects.get_or_create(user =request.user)
             cust.name = username.username
             cust.save()
-            order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-            cartItem = order.get_order_quantity()
-        except:
-            messages.warning(request,"Can't pass order on multiple table")
-            messages.success(request,f"Your new table number is {table}")
-            pending_order = Order.objects.filter(customer=cust,status='Pending')
-            pending_order[0].delete()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
-            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
-            
-
-    # Create new account
-    else:
-        return HttpResponseRedirect(f'/register/?session={targetApp}')
-
-    # Show item added to cart
-    if request.method == 'POST':
-        order_table = request.POST.get('item')
-        order_table = Item.objects.filter(id=order_table)
-        order_table = order_table[0]
-        cust,created = Customer.objects.get_or_create(user =request.user)
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-        messages.success(request,f'{order_table} a été ajouté votre table')
-        # meal_quant= OrderItem.objects.filter(order = order,item = order_table)
-        # if meal_quant:
-        #     meal_quant = meal_quant[0].quantity
-        #     messages.success(request,f'({meal_quant}) {order_table} a été ajouté votre table')
-        # else:
+        except:
+            pass
             
     
     context = {
@@ -136,7 +105,7 @@ def ItemDetails(request,item_id):
     
     #Item
     order = None
-    cartItem = None
+    cartItem = 0
 
     #Form
     form = ItemChoiceForm()
@@ -167,7 +136,18 @@ def ItemDetails(request,item_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending')
             cartItem = order.get_order_quantity()
         except:
-            print('other option bro')
+            messages.warning(request,"Can't pass order on multiple table")
+            messages.success(request,f"Your new table number is {table}")
+            pending_order = Order.objects.filter(customer=cust,status='Pending')
+            pending_order.delete()
+            order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+            cartItem = order.get_order_quantity()
+            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
+           
+    
+    else:
+        return HttpResponseRedirect(f'/register/?session={targetApp}')
+        
             
     if request.method == 'POST':
         order_table = request.POST.get('item')
@@ -175,11 +155,9 @@ def ItemDetails(request,item_id):
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-        print(order.id)
         try:
             orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
             print('myorder',orderitem)
-            #orderitem= OrderItem.objects.get(order_id = order.id, item_id = item_id)
             orderitem_quantity = orderitem.quantity
             orderitem.save()
             messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
@@ -255,18 +233,21 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-   
+    
+
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
-    order= Order.objects.get(customer=customer,status = 'Pending')
+    order= Order.objects.filter(customer=customer,status = 'Pending').last()
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+    
   
     #Increase quantity
     if action =='add':
         orderItem.quantity = (orderItem.quantity + 1)
         orderItem.save()
+        
 
     #Decrese quantity
     elif action == 'remove':
