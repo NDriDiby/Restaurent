@@ -75,6 +75,7 @@ def MenuDetails(request,menu_id):
     
     
     #Create customer and order
+    
     # Authenticate then create an order
     if request.user.is_authenticated:
         try:
@@ -85,31 +86,9 @@ def MenuDetails(request,menu_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
         except:
-            # messages.warning(request,"Can't pass order on multiple table")
-            # messages.success(request,f"Your new table number is {table}")
-            # pending_order = Order.objects.filter(customer=cust,status='Pending')
-            # pending_order[0].delete()
-            # order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-            # cartItem = order.get_order_quantity()
-            # return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
             pass
             
-            
-
-    # Create new account
-    # else:
-    #     return HttpResponseRedirect(f'/register/?session={targetApp}')
-
-    # # Show item added to cart
-    # if request.method == 'POST':
-    #     order_table = request.POST.get('item')
-    #     order_table = Item.objects.filter(id=order_table)
-    #     order_table = order_table[0]
-    #     cust,created = Customer.objects.get_or_create(user =request.user)
-    #     order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-    #     messages.success(request,f'{order_table} a été ajouté votre table')
-        
-            
+    
     context = {
         'menu':menu,
         'category':category,
@@ -126,7 +105,7 @@ def ItemDetails(request,item_id):
     
     #Item
     order = None
-    cartItem = None
+    cartItem = 0
 
     #Form
     form = ItemChoiceForm()
@@ -160,7 +139,7 @@ def ItemDetails(request,item_id):
             messages.warning(request,"Can't pass order on multiple table")
             messages.success(request,f"Your new table number is {table}")
             pending_order = Order.objects.filter(customer=cust,status='Pending')
-            pending_order[0].delete()
+            pending_order.delete()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
@@ -262,11 +241,13 @@ def UpdatedItem(request):
     item = Item.objects.get(id=itemId)
     order= Order.objects.filter(customer=customer,status = 'Pending').last()
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+    
   
     #Increase quantity
     if action =='add':
         orderItem.quantity = (orderItem.quantity + 1)
         orderItem.save()
+        
 
     #Decrese quantity
     elif action == 'remove':
