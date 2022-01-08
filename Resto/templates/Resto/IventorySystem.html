@@ -12,6 +12,8 @@
     <title>Dashboard</title>
 </head>
 <body>
+
+  
     <div class="container">
         <aside class="sidebar">
             <ul id="sidebar-menu">
@@ -24,6 +26,8 @@
             </ul>
         </aside>
         <header>
+
+
             <div class="nav">
                 <div class="inpt">
                     <input type="text" id="search" placeholder="search">
@@ -122,26 +126,22 @@
                 </div>
            
                 <div class="third">
-                    <div class="cat1">
+                  {% for cat in categorie %}
+                    <div class={{cat.id}}>
                         <div class="item1">
-                            <span>Meats</span>
-                            <h3>14,555</h3>
+                            <span>{{cat.name}}</span>
+                            <h3>{{cat.total_spending_category}}</h3>
                             <ol>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                <li>beef</li>
-                                
+                              {% for catitem in cat.iventoryitem_set.all %}
+                                <li>{{catitem.name}}</li>
+                                {% endfor %}
                             </ol>
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
-                    <div class="cat2">
+                    {% endfor %}
+
+                    <!-- <div class="cat2">
                         <div class="item1">
                             <span>Drinks</span>
                             <h3>2314</h3>
@@ -160,6 +160,7 @@
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
+                    
                     <div class="cat3">
                         <div class="item1">
                             <span>Skewers</span>
@@ -201,7 +202,7 @@
                             <h3>14255</h3>
                         </div>
                         <i class="fas fa-users"></i>
-                    </div>
+                    </div> -->
               </div>
         </main>
     </div>
