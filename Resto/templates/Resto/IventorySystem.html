@@ -9,11 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/dashbord.css' %}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <title>Dashboard</title>
 </head>
 <body>
-
-  
     <div class="container">
         <aside class="sidebar">
             <ul id="sidebar-menu">
@@ -47,23 +46,20 @@
             </div>
         </header>
         <main> 
-            <div id="Products" class="tabcontent">
+            <div id="Products" class="tabcontent" style="text-align: center;">
                 <h3>Products</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit, laborum alias. 
-                  Exercitationem doloribus deserunt voluptate quae eius aperiam nemo nisi dolore. 
-                  Eligendi dolor totam adipisci non quisquam perferendis enim aperiam hic at provident. Facere, inventore. 
-                  Illum, reprehenderit. Dolor consectetur repellat harum, ipsa qui minima modi non. 
-                  Fugiat exercitationem dolore ducimus repellendus officia nam aspernatur, eum saepe impedit? 
-                  Unde enim eius assumenda, eveniet aliquid nulla laborum quod in illum incidunt vitae cupiditate delectus 
-                  voluptatum? Culpa adipisci vero dignissimos est quaerat illum amet,
-                   debitis laudantium sequi ab odit provident doloremque optio quae nisi minus quis id laborum soluta? 
-                   Corrupti, pariatur quisquam tempore facilis ratione quia quod dolorem, 
-                   neque repellendus excepturi et reprehenderit recusandae nobis animi vitae repellat iusto? 
-                   Libero cumque eius numquam consequuntur explicabo aperiam, quidem voluptate ratione nihil illo voluptatibus 
-                   omnis voluptates laborum mollitia cum. Neque ea rerum molestias cupiditate nostrum maxime sit asperiores suscipit adipisci enim! 
-                   Cum, voluptatum fuga quo minima laboriosam omnis aperiam quasi delectus quod reprehenderit, ratione eaque deserunt! Doloribus,
-                    qui. Nemo adipisci voluptatem unde sit quod hic est ea fugiat laudantium sed, perspiciatis vitae id nam eum pariatur vero debitis iure velit fuga! 
-                    Quia numquam quis possimus inventore, repellat corporis dignissimos fuga voluptatem asperiores voluptate dolorem ipsa!\</p>
+                <div >
+                    {% for cat in categorie %}
+                    <div class="col-sm">
+                      <div class="card" style="width: 20rem; border-color: chocolate">
+                        <div class="card-body">
+                          <h5 class="card-title" style="color: brown; text-align: center">{{cat.name}} ({{cat.total_item_category}}) - ({{cat.total_spending_category}} FCFA)</h5>
+                          <hr />
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
               </div>
            
               <div id="Dashboard" class="tabcontent">
@@ -137,7 +133,7 @@
                                 {% endfor %}
                             </ol>
                         </div>
-                        <i class="fas fa-users"></i>
+                       <i class="fas fa-users"></i> 
                     </div>
                     {% endfor %}
 
@@ -155,7 +151,6 @@
                                 <li>pepsi</li>
                                 <li>pepsi</li>
                                 <li>pepsi</li>
-                               
                             </ol>
                         </div>
                         <i class="fas fa-users"></i>
@@ -168,6 +163,7 @@
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
+                    
                     <div class="cat4">
                         <div class="item1">
                             <span>Burgers</span>
@@ -175,6 +171,7 @@
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
+
                     <div class="cat5">
                         <div class="item1">
                             <span>Total Sale</span>
@@ -182,6 +179,7 @@
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
+
                     <div class="cat6">
                         <div class="item1">
                             <span>Visitors</span>
@@ -189,6 +187,7 @@
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
+
                     <div class="cat7">
                         <div class="item1">
                             <span>Visitors</span>
@@ -196,17 +195,21 @@
                         </div>
                         <i class="fas fa-users"></i>
                     </div>
+
                     <div class="cat8">
                         <div class="item1">
                             <span>Visitors</span>
                             <h3>14255</h3>
                         </div>
                         <i class="fas fa-users"></i>
-                    </div> -->
-              </div>
+                    </div>-->
+              </div> 
         </main>
     </div>
 
     <script src="{% static 'Resto/JavaScript/inventory.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
