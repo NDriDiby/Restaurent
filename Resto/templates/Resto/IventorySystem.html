@@ -1,216 +1,166 @@
-
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/dashbord.css' %}">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/dashbord.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <title>Dashboard</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <aside class="sidebar">
-            <ul id="sidebar-menu">
-                <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}"  height="50px" width="50px" style="border-radius:50%;" alt="">
-                <div class="tab">
-                  <button class="tablinks" onclick="openTab(event, 'Categories')">Inventory</button>
-                    <button class="tablinks" onclick="openTab(event, 'Dashboard')">Dashboard</button>
-                    <button class="tablinks" onclick="openTab(event, 'Products')">Products</button>
-                    <button onclick="location.href ='/texasgrillz/cuisine/'">Cuisine</button>
-                  </div>
+      <aside class="sidebar">
+        <ul id="sidebar-menu">
+          <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" height="50px" width="50px" style="border-radius: 50%" alt="" />
+          <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Categories')">Inventory</button>
+            <button class="tablinks" onclick="openTab(event, 'Dashboard')">Dashboard</button>
+            <button class="tablinks" onclick="openTab(event, 'Products')">Products</button>
+            <button onclick="location.href ='/texasgrillz/cuisine/'">Cuisine</button>
+          </div>
+        </ul>
+      </aside>
+      <header>
+        <div class="nav">
+          <div class="inpt">
+            <input type="text" id="search" placeholder="search" />
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="right">
+            <ul>
+              <li><i class="fas fa-info"></i></li>
+              <li><i class="fas fa-flag-usa"></i></li>
+              <li><i class="fas fa-bell"></i></li>
             </ul>
-        </aside>
-        <header>
-
-
-            <div class="nav">
-                <div class="inpt">
-                    <input type="text" id="search" placeholder="search">
-                    <i class="fas fa-search"></i>
-                </div>
-                <div class="right">
-                    <ul>
-                        <li><i class="fas fa-info"></i></li>
-                        <li><i class="fas fa-flag-usa"></i></li>
-                        <li><i class="fas fa-bell"></i></li>
-                    </ul>
-                    <div class="info">
-                        <h3>John Quinn</h3>
-                        <span>Admin Profile</span>
-                    </div>
-                </div>
+            <div class="info">
+              <h3>{{request.user}}</h3>
+              <span>Admin Profile</span>
             </div>
-        </header>
-        <main> 
-            <div id="Products" class="tabcontent" style="text-align: center;">
-                <h3>Products</h3>
-                <div >
-                    {% for cat in categorie %}
-                    <div class="col-sm">
-                      <div class="card" style="width: 20rem; border-color: chocolate">
-                        <div class="card-body">
-                          <h5 class="card-title" style="color: brown; text-align: center">{{cat.name}} ({{cat.total_item_category}}) - ({{cat.total_spending_category}} FCFA)</h5>
-                          <hr />
-                        </div>
-                      </div>
-                    </div>
-                    {% endfor %}
-                  </div>
+          </div>
+        </div>
+      </header>
+      <main>
+        <!-- Product -->
+        <div id="Products" class="tabcontent" style="text-align: center">
+          <h3>Products</h3>
+          <div>
+            {% for cat in categorie %}
+            <div class="col-sm">
+              <div class="card" style="width: 20rem; border-color: chocolate">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: brown; text-align: center">{{cat.name}} ({{cat.total_item_category}}) - ({{cat.total_spending_category}} FCFA)</h5>
+                  <hr />
+                </div>
               </div>
-           
-              <div id="Dashboard" class="tabcontent">
-                <h3>Dashboard</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit, laborum alias. 
-                  Exercitationem doloribus deserunt voluptate quae eius aperiam nemo nisi dolore. 
-                  Eligendi dolor totam adipisci non quisquam perferendis enim aperiam hic at provident.
-                   Facere, inventore. Illum, reprehenderit. Dolor consectetur repellat harum, ipsa qui minima modi non.
-                    Fugiat exercitationem dolore ducimus repellendus officia nam aspernatur, eum saepe impedit? Unde enim eius assumenda,
-                     eveniet aliquid nulla laborum quod in illum incidunt vitae cupiditate delectus voluptatum?
-                      Culpa adipisci vero dignissimos est quaerat illum amet, 
-                      debitis laudantium sequi ab odit provident doloremque optio quae nisi minus quis id laborum soluta? Corrupti, 
-                      pariatur quisquam tempore facilis ratione quia quod dolorem, neque repellendus excepturi et reprehenderit recusandae nobis animi vitae repellat iusto?
-                       Libero cumque eius numquam consequuntur explicabo aperiam, quidem voluptate ratione nihil illo voluptatibus omnis voluptates laborum mollitia cum. 
-                       Neque ea rerum molestias cupiditate nostrum maxime sit asperiores suscipit adipisci enim! 
-                       Cum, voluptatum fuga quo minima laboriosam omnis aperiam quasi delectus quod reprehenderit, 
-                       ratione eaque deserunt! Doloribus, qui. Nemo adipisci voluptatem unde sit quod hic est ea fugiat laudantium sed, 
-                       perspiciatis vitae id nam eum pariatur vero debitis iure velit fuga! Quia numquam quis possimus inventore, 
-                       repellat corporis dignissimos fuga voluptatem asperiores voluptate dolorem ipsa!\</p>
-              </div> 
-              <div id="Categories" class="tabcontent">
-                <div class="first">
-                    <div class="child1">
-                        <i class="fas fa-dollar-sign"></i>
-                        <div class="data">
-                            <h3>Total Revenue</h3>
-                            <span>$18,832</span>
-                        </div>
-                    </div>
-                    <div class="child2">
-                        <i class="fas fa-credit-card"></i>
-                        <div class="data">
-                            <h3>Total Expense</h3>
-                            <span>$8,832</span>
-                        </div>
-                    </div>
-                    <div class="child3">
-                        <i class="far fa-smile-beam"></i>
-                        <div class="data">
-                            <h3>Total Customer</h3>
-                            <span>3253</span>
-                        </div>
-                    </div>
-                    <div class="child4">
-                        <i class="fas fa-store-alt"></i>
-                        <div class="data">
-                            <h3>Total Order</h3>
-                            <span>1832</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="second">
-                    <div class="second-date">
-                        <p>Today</p>
-                        <p>Week</p>
-                        <p>Month</p>
-                        <p>Year</p>
-                    </div>
-                    <input type="date" id="dt">
-                </div>
-           
-                <div class="third">
-                  {% for cat in categorie %}
-                    <div class="cat{{cat.id}}">
-                        <div class="item1">
-                            <h5>{{cat.name}}</h5>
-                            <h3>{{cat.total_spending_category}}</h3>
-                            <ol>
-                              {% for catitem in cat.iventoryitem_set.all %}
-                                <li>{{catitem.name}}</li>
-                                {% endfor %}
-                            </ol>
-                        </div>
-                       <i class="fas fa-users"></i> 
-                    </div>
-                    {% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
 
-                    <!-- <div class="cat2">
-                        <div class="item1">
-                            <span>Drinks</span>
-                            <h3>2314</h3>
-                            <ol>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                                <li>pepsi</li>
-                            </ol>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>
-                    
-                    <div class="cat3">
-                        <div class="item1">
-                            <span>Skewers</span>
-                            <h3>$1500</h3>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>
-                    
-                    <div class="cat4">
-                        <div class="item1">
-                            <span>Burgers</span>
-                            <h3>147</h3>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>
+        <!-- end Product -->
 
-                    <div class="cat5">
-                        <div class="item1">
-                            <span>Total Sale</span>
-                            <h3>$35000</h3>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>
+        <!-- Dashboard -->
 
-                    <div class="cat6">
-                        <div class="item1">
-                            <span>Visitors</span>
-                            <h3>14255</h3>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>
+        <div id="Dashboard" class="tabcontent">
+          <h3>Dashboard</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit, laborum alias. Exercitationem doloribus deserunt voluptate quae eius aperiam nemo nisi dolore. Eligendi dolor totam
+            adipisci non quisquam perferendis enim aperiam hic at provident. Facere, inventore. Illum, reprehenderit. Dolor consectetur repellat harum, ipsa qui minima modi non. Fugiat exercitationem
+            dolore ducimus repellendus officia nam aspernatur, eum saepe impedit? Unde enim eius assumenda, eveniet aliquid nulla laborum quod in illum incidunt vitae cupiditate delectus voluptatum?
+            Culpa adipisci vero dignissimos est quaerat illum amet, debitis laudantium sequi ab odit provident doloremque optio quae nisi minus quis id laborum soluta? Corrupti, pariatur quisquam
+            tempore facilis ratione quia quod dolorem, neque repellendus excepturi et reprehenderit recusandae nobis animi vitae repellat iusto? Libero cumque eius numquam consequuntur explicabo
+            aperiam, quidem voluptate ratione nihil illo voluptatibus omnis voluptates laborum mollitia cum. Neque ea rerum molestias cupiditate nostrum maxime sit asperiores suscipit adipisci enim!
+            Cum, voluptatum fuga quo minima laboriosam omnis aperiam quasi delectus quod reprehenderit, ratione eaque deserunt! Doloribus, qui. Nemo adipisci voluptatem unde sit quod hic est ea fugiat
+            laudantium sed, perspiciatis vitae id nam eum pariatur vero debitis iure velit fuga! Quia numquam quis possimus inventore, repellat corporis dignissimos fuga voluptatem asperiores
+            voluptate dolorem ipsa!\
+          </p>
+        </div>
 
-                    <div class="cat7">
-                        <div class="item1">
-                            <span>Visitors</span>
-                            <h3>14255</h3>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>
+        <!-- end Dashboard -->
 
-                    <div class="cat8">
-                        <div class="item1">
-                            <span>Visitors</span>
-                            <h3>14255</h3>
-                        </div>
-                        <i class="fas fa-users"></i>
-                    </div>-->
-              </div> 
-        </main>
+        <div id="Categories" class="tabcontent">
+          <div class="first">
+            <div class="child1">
+              <i class="fas fa-dollar-sign"></i>
+              <div class="data">
+                <h3>Total Revenue</h3>
+                <span>$18,832</span>
+              </div>
+            </div>
+            <div class="child2">
+              <i class="fas fa-credit-card"></i>
+              <div class="data">
+                <h3>Total Expense</h3>
+                <span>$8,832</span>
+              </div>
+            </div>
+            <div class="child3">
+              <i class="far fa-smile-beam"></i>
+              <div class="data">
+                <h3>Total Customer</h3>
+                <span>3253</span>
+              </div>
+            </div>
+            <div class="child4">
+              <i class="fas fa-store-alt"></i>
+              <div class="data">
+                <h3>Total Order</h3>
+                <span>1832</span>
+              </div>
+            </div>
+          </div>
+          <div class="second">
+            <div class="second-date">
+              <p>Today</p>
+              <p>Week</p>
+              <p>Month</p>
+              <p>Year</p>
+            </div>
+            <input type="date" id="dt" />
+          </div>
+
+          <div class="third">
+            {% for cat in categorie %}
+            <div class="cat{{cat.id}}">
+              <div class="item1">
+                <h5>{{cat.name}}</h5>
+                <h3>{{cat.total_spending_category}}</h3>
+                <ol>
+                  {% for catitem in cat.iventoryitem_set.all %}
+                  <li>{{catitem.name}}</li>
+                  {% endfor %}
+                </ol>
+              </div>
+              <i class="fas fa-users"></i>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="{% static 'Resto/JavaScript/inventory.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
+
+<!-- http://preview.themeforest.net/item/ebazar-ecommerce-bootstrap-admin-template/full_screen_preview/33983389?_ga=2.267152206.1308864378.1640661597-388301878.1640661597 -->
