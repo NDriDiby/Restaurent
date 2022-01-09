@@ -219,3 +219,7 @@ a.socialIcon:hover,
     transition: all 0.8s;
     transition: all 0.8s
 }
+.performanceCuisine{
+    width: 75%;
+    justify-content: space-around;
+  }

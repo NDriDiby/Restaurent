@@ -41,7 +41,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-8"><h5 class="card-title" style="color:brown;">{{i.name}}</h5>
-                    <p class="card-text">{{ i.description }}</p>
+                    <p class="card-text">{{ i.description | truncatechars:28 }}</p>
                     <p class="card-text text-muted"><strong>{{i.prix }} FCFA</strong></p>
                   </div>
                   <div class="col-4" style="margin: 0px; padding-left: 0px;"><img src="{{i.img.url }}" class="card-img-top" alt="{{i.name}}" 
