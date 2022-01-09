@@ -52,10 +52,7 @@
 
   <!-- get user table -->
   
-  <script>
-    var table = "{{request.GET}}"
-    console.log(table)
-  </script>
+  
 
   <!-- display menu info -->
   <div class="col-sm-12 col-md-6 col-lg-3 pb-4">
@@ -66,7 +63,7 @@
         <p class="card-text">{{ items.description }}</p>
         <p class="card-text " style="color:rgb(59, 59, 59)"><strong>{{items.prix }} FCFA</strong></p>
 
-        <form method="POST">
+        <form method="POST" id ='choiceOptions'>
           <div>
             {% csrf_token %} 
             {% comment %} ingredients {% endcomment %}
@@ -102,11 +99,28 @@
               {% endfor %}<br /> 
             <div>
             {% endif %}
-            <hr>
+
+              <script>
+                function getSelected() {
+                  // Get all the child elements inside the DIV.
+
+                  var ingredients = document.getElementsByName('ingredient')
+
+                  if(ingredients.checked){
+                    console.log(ingredients.value)
+                  }
+
+                }
+              </script>
             
-            <i id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mx-2 update-cart"></i>
-            <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-            <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mx-2 update-cart"></i>
+            <hr>
+            <div class ='d-flex justify-content-center'>
+              <i id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mt-1 p-2 update-cart"></i>
+            <button onclick ='getSelected()' data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+            <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mt-1 p-2 update-cart"></i>
+            </div>
+            
+
           </div>
         </form>
         {% endif %}

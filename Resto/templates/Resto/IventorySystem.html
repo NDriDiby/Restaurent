@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +25,7 @@
             <button class="tablinks" onclick="openTab(event, 'Categories')">Inventory</button>
             <button class="tablinks" onclick="openTab(event, 'Dashboard')">Dashboard</button>
             <button class="tablinks" onclick="openTab(event, 'Products')">Products</button>
+            <button class="tablinks" onclick="openTab(event, 'AddProducts')">Add Products</button>
             <button onclick="location.href ='/texasgrillz/cuisine/'">Cuisine</button>
           </div>
         </ul>
@@ -145,6 +146,24 @@
             {% endfor %}
           </div>
         </div>
+
+        <!-- Add Producs -->
+        <div id="AddProducts" class="tabcontent" style="text-align: center">
+          <h3>Add New Products</h3>
+          <br />
+          <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="mt-3">
+              <div class="fieldset">{{form.as_table}}</div>
+            </div>
+            <br />
+
+            <button class="btn-btn success" type="submit">ADD</button>
+          </form>
+        </div>
+
+        <!-- End AddProducts -->
       </main>
     </div>
 

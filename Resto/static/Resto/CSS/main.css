@@ -313,6 +313,9 @@ body {
 
 .card-6 {
   background: radial-gradient(#d19497, rgb(233, 32, 75));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /*grid-template-rows: repeat(1,285px);
+  grid-gap: 20px;*/
 }
 
 .card-7 {

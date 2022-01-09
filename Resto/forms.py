@@ -3,8 +3,8 @@ from django.db import models
 from django.forms import ModelForm
 from django.db.models import fields
 from django.db.models.fields import DateTimeField
-from django import forms
-from.models import Item,ItemChoices,ItemChoiceCategory
+from .forms import models
+from.models import Item,ItemChoices,ItemChoiceCategory,IventoryItem
 from django.contrib.auth.models import AbstractUser, User,AbstractBaseUser
 from django.contrib.auth.forms import UserCreationForm
 
@@ -31,5 +31,14 @@ class ItemChoiceForm(forms.ModelForm):
    class Meta:
       model = ItemChoices
       exclude=['parent_food','description','date_created','prix']
+      
+      
+class AddProducts(forms.ModelForm):
+   
+   class Meta:
+      model = IventoryItem
+      exclude = ['date_created','description']
+      
+   
 
         
