@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm
+from.forms import CustomerForm,ItemChoiceForm,AddProducts
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app
@@ -356,9 +356,18 @@ def DeleteOrder(request,item_id):
 #Inventory Management System
 def IventorySystem(request):
     categories = IventoryItemCategory.objects.all()
+    
+    
+    if request.POST == 'POST':
+        form = AddProducts(request.POST)
+        if form.is_valid:
+            pass
+    else:
+        form = AddProducts()
 
     context = {
-        'categorie': categories
+        'categorie': categories,
+        'form':AddProducts
     }
     
     return render(request,'Resto/IventorySystem.html',context)

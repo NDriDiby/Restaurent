@@ -19,7 +19,7 @@ function openTab(evt, tabName) {
   evt.currentTarget.className += " active";
 }
 window.onload = function () {
-  // document.getElementById("Categories").style.display = "none";
   document.getElementById("Products").style.display = "none";
   document.getElementById("Dashboard").style.display = "none";
+  document.getElementById("Addproducts").style.display = "none";
 };
