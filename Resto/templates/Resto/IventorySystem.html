@@ -49,6 +49,7 @@
           </div>
         </div>
       </header>
+
       <main>
         <!-- Product -->
         <div id="Products" class="tabcontent" style="text-align: center">
@@ -66,11 +67,9 @@
             {% endfor %}
           </div>
         </div>
-
         <!-- end Product -->
 
         <!-- Dashboard -->
-
         <div id="Dashboard" class="tabcontent">
           <h3>Dashboard</h3>
           <p>
@@ -85,8 +84,22 @@
             voluptate dolorem ipsa!\
           </p>
         </div>
-
         <!-- end Dashboard -->
+
+        <!-- Add Producs -->
+        <div id="AddProducts" class="tabcontent" style="text-align: center">
+          <h3>Add New Products</h3>
+          <br />
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="mt-3">
+              <div class="fieldset">{{form.as_p}}</div>
+            </div>
+            <br />
+            <button class="btn-btn success" type="submit">ADD</button>
+          </form>
+        </div>
+        <!-- End AddProducts -->
 
         <div id="Categories" class="tabcontent">
           <div class="first">
@@ -146,24 +159,6 @@
             {% endfor %}
           </div>
         </div>
-
-        <!-- Add Producs -->
-        <div id="AddProducts" class="tabcontent" style="text-align: center">
-          <h3>Add New Products</h3>
-          <br />
-          <form action="" method="post">
-            {% csrf_token %}
-
-            <div class="mt-3">
-              <div class="fieldset">{{form.as_table}}</div>
-            </div>
-            <br />
-
-            <button class="btn-btn success" type="submit">ADD</button>
-          </form>
-        </div>
-
-        <!-- End AddProducts -->
       </main>
     </div>
 

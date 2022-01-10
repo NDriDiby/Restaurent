@@ -21,5 +21,5 @@ function openTab(evt, tabName) {
 window.onload = function () {
   document.getElementById("Products").style.display = "none";
   document.getElementById("Dashboard").style.display = "none";
-  document.getElementById("Addproducts").style.display = "none";
+  document.getElementById("AddProducts").style.display = "none";
 };
