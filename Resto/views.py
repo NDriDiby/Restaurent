@@ -357,11 +357,14 @@ def DeleteOrder(request,item_id):
 def IventorySystem(request):
     categories = IventoryItemCategory.objects.all()
     
-    
-    if request.POST == 'POST':
+    if request.method == 'POST':
         form = AddProducts(request.POST)
-        if form.is_valid:
-            pass
+        if form.is_valid():
+            product = form.cleaned_data.get('name')
+            category = form.cleaned_data.get('category')
+            #form.save()
+            messages.success(request,f'{product} added to your inventory')
+            return HttpResponseRedirect(f'/texasgrillz/inventory/')
     else:
         form = AddProducts()
 
