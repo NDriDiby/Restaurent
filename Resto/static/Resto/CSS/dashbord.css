@@ -5,7 +5,7 @@ body{
         padding: 0;
     
 }
-/* .container{
+.container{
     padding: 20px;
     display: grid;
     grid-template-columns: auto 90%;
@@ -17,7 +17,7 @@ body{
         "sidebar main"   
         "sidebar main"   
         "sidebar main";   
-} */
+}
 header{
     grid-area: header; 
     padding-left: 20px;

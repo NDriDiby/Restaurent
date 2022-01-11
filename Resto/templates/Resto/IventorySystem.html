@@ -30,6 +30,19 @@
   </head>
   <body>
     <div class="container">
+      <aside class="sidebar">
+        <ul id="sidebar-menu">
+          <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" height="50px" width="50px" style="border-radius: 50%" alt="" />
+          <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Categories')">Inventory</button>
+            <button class="tablinks" onclick="openTab(event, 'Dashboard')">Dashboard</button>
+            <button class="tablinks" onclick="openTab(event, 'Products')">Products</button>
+            <button class="tablinks" onclick="openTab(event, 'AddProducts')">Add Products</button>
+            <button onclick="location.href ='/texasgrillz/cuisine/'">Cuisine</button>
+          </div>
+        </ul>
+      </aside>
+
       <header>
         <div class="nav">
           <div class="inpt">
@@ -49,19 +62,6 @@
           </div>
         </div>
       </header>
-
-      <aside class="sidebar">
-        <ul id="sidebar-menu">
-          <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" height="50px" width="50px" style="border-radius: 50%" alt="" />
-          <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Categories')">Inventory</button>
-            <button class="tablinks" onclick="openTab(event, 'Dashboard')">Dashboard</button>
-            <button class="tablinks" onclick="openTab(event, 'Products')">Products</button>
-            <button class="tablinks" onclick="openTab(event, 'AddProducts')">Add Products</button>
-            <button onclick="location.href ='/texasgrillz/cuisine/'">Cuisine</button>
-          </div>
-        </ul>
-      </aside>
 
       <!-- Message -->
       <div class="col-12">
