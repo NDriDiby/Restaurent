@@ -8,12 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Bootstrap CSS -->
-    <link
+    <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
       crossorigin="anonymous"
-    />
+    /> -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="shortcut icon" href="{% static 'Resto/favicon.ico' %}" />
@@ -64,7 +64,7 @@
       </header>
 
       <!-- Message -->
-      <div class="col-12">
+      <div class="col-12 mt-5">
         {% if messages %} {% for message in messages %}
         <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
@@ -180,17 +180,17 @@
 
           <div class="third">
             {% for cat in categorie %}
-            <div class="cat{{cat.id}}">
+            <div class="cat{{cat.id}}" style="width: 220px">
               <div class="item1">
-                <h5>{{cat.name}}</h5>
-                <h3>{{cat.total_spending_category}}</h3>
+                <h5 style="text-align: center; padding-left: 20px">{{cat.name}}</h5>
+                <!-- <h3>{{cat.total_spending_category}}</h3> -->
                 <ol>
                   {% for catitem in cat.iventoryitem_set.all %}
                   <li>{{catitem.name}}</li>
                   {% endfor %}
                 </ol>
               </div>
-              <i class="fas fa-users"></i>
+              <!-- <i class="fas fa-users"></i> -->
             </div>
             {% endfor %}
           </div>

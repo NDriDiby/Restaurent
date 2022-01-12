@@ -40,6 +40,8 @@ class CustomerForm(UserCreationForm):
     fields = ('username','phone_number','nom','prenom','email')
     
     
+    
+    
 class ItemChoiceForm(forms.ModelForm):
    name = forms.ModelMultipleChoiceField(queryset=ItemChoices.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
    choice_category = forms.ModelMultipleChoiceField(queryset=ItemChoiceCategory.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
