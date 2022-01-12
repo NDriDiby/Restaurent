@@ -91,10 +91,10 @@ def RegisterCustomer(request):
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
             form.save()
-            user,created = User.objects.get_or_create(username = cust_name)
-            user.first_name = cust_first_name
-            user.last_name = cust_last_name 
-            user.save()
+            # user,created = User.objects.get_or_create(username = cust_name)
+            # user.first_name = cust_first_name
+            # user.last_name = cust_last_name 
+            # user.save()
             messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
             return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:

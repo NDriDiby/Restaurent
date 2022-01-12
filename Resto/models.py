@@ -102,7 +102,7 @@ class Order(models.Model):
         permissions = (("can view orders"))
 
     def __str__(self):
-        return str(self.customer.name)
+        return str(self.customer)
 
     #Total value of cart
     def get_order_total(self):
