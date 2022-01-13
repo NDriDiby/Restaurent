@@ -23,7 +23,7 @@
         <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
       </div>
 
-      <div class="col-4 text-center">
+      <div class="col-4 text-center" style="display: inline-flex; flex-direction: column;align-items: center;">
         <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 100px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center" />
         <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
       </div>
@@ -67,7 +67,7 @@
         <p class="card-text " style="color:rgb(59, 59, 59)"><strong>{{items.prix }} FCFA</strong></p>
 
         <form method="POST">
-          <div>
+          <div style="display: flex; justify-content: center;align-items: center;">
             {% csrf_token %} 
             {% comment %} ingredients {% endcomment %}
             {% if ingredients %}
