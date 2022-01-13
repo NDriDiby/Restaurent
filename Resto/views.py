@@ -235,7 +235,6 @@ def UpdatedItem(request):
     action = data['action']
     
     
-
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
@@ -325,7 +324,6 @@ def Cuisine(request):
         'total_uncompleted_order':total_uncompleted_order
     }
     return render(request,'Resto/Cuisine.html',context)
-
 
 
 
