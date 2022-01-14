@@ -234,7 +234,7 @@ def UpdatedItem(request):
     itemId = data['itemId']
     action = data['action']
     
-
+    
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
@@ -327,7 +327,6 @@ def Cuisine(request):
 
 
 
-
 #Delete Order
 def DeleteOrder(request,item_id):
     
@@ -362,7 +361,7 @@ def IventorySystem(request):
         if form.is_valid():
             product = form.cleaned_data.get('name')
             category = form.cleaned_data.get('category')
-            #form.save()
+            form.save()
             messages.success(request,f'{product} added to your inventory')
             return HttpResponseRedirect(f'/texasgrillz/inventory/')
     else:

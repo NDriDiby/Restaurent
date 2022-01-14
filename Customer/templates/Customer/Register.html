@@ -5,7 +5,7 @@
 
   <div class = 'product' style = 'text-align:center'>
 
-        <h4 style='color:sandybrown'> Icarus <small class='text-muted' ><i> <strong> Restaurant</strong> </i></small></h4>
+        <h4 style='color:sandybrown'> Icarus <small class='text-muted' ><i> <strong> Bar & Restaurant</strong> </i></small></h4>
         <small class='text-muted' >We're almost done.Before using our services you need to create an account.</small> 
 
     <form method='POST' class = 'mt-5' novalidate>
@@ -17,7 +17,7 @@
             <br>
             {{form.nom|as_crispy_field}}<br>
             {{form.prenom|as_crispy_field}}<br>
-            {{form.email|as_crispy_field}}<br> 
+            {% comment %} {{form.email|as_crispy_field}}<br>  {% endcomment %}
             {{form.phone_number|as_crispy_field}}<br>
             {{form.password1|as_crispy_field}}<br>
             {{form.password2|as_crispy_field}}

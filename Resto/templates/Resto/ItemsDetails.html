@@ -105,10 +105,18 @@
                   // Get all the child elements inside the DIV.
 
                   var ingredients = document.getElementsByName('ingredient')
+                  var ingre = new Array()
+                  var sea = new Array()
+                  var cui = new Array()
+                  
 
-                  if(ingredients.checked){
-                    console.log(ingredients.value)
+                  for(let i=0; i<ingredient.length; i++){
+                    if(ingredient[i].checked){
+                      ingre.push(ingredient[i])
+                    }
                   }
+                    console.log(ingre)
+                  
 
                 }
               </script>

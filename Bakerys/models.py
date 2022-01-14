@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import Permission,User
+from django.conf import settings
+
 
 # Create your models here.
 
@@ -19,7 +21,7 @@ class Category(models.Model):
 
 
 class CustomerBekerys(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
     class Meta:

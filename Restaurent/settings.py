@@ -39,9 +39,9 @@ CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'Resto.apps.RestoConfig',
-    'Customer.apps.CustomerConfig',
-    'Bakerys.apps.BakerysConfig',
+    'Resto.apps.RestoConfig', #TexasGrillz
+    'Customer.apps.CustomerConfig', #Customer
+    'Bakerys.apps.BakerysConfig', #Bakerys
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'storages',
     'django_extensions',
+   
 
 ]
 
@@ -210,6 +211,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTHENTICATION_BACKENDS =['Customer.EmailAuth.EmailAuthBackend']
+
+
 
 
 
