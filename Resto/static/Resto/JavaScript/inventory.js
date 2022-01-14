@@ -23,3 +23,29 @@ window.onload = function () {
   document.getElementById("Dashboard").style.display = "none";
   document.getElementById("AddProducts").style.display = "none";
 };
+
+const button = document.getElementById("btn");
+const message = document.getElementById("message");
+const x = document.getElementById("x");
+const para = document.createElement("li");
+para.innerHTML = "<span>X</span>";
+
+btn.addEventListener("click", () => {
+  message.style.display = "block";
+  setTimeout(() => {
+    message.style.display = "none";
+  }, 5000);
+
+  setTimeout(() => {
+    const node = document.createTextNode("pepsi");
+    para.appendChild(node);
+    const element = document.querySelector("#ul2");
+    element.appendChild(para);
+    para.style.opacity = 1;
+  }, 1000);
+
+  setTimeout(() => {
+    para.style.backgroundColor = "rgb(245, 252, 245)";
+    para.style.color = "black";
+  }, 3000);
+});
