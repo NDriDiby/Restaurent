@@ -17,7 +17,7 @@
             <br>
             {{form.nom|as_crispy_field}}<br>
             {{form.prenom|as_crispy_field}}<br>
-            {{form.email|as_crispy_field}}<br> 
+            {% comment %} {{form.email|as_crispy_field}}<br>  {% endcomment %}
             {{form.phone_number|as_crispy_field}}<br>
             {{form.password1|as_crispy_field}}<br>
             {{form.password2|as_crispy_field}}
