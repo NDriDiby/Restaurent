@@ -1,34 +1,51 @@
-{% extends 'Customer/base_login.html' %} {% load static %}{% block content %} {% load crispy_forms_tags %}
+<!DOCTYPE html>
 
-<div class="container">
-  <div class="product" style="text-align: center">
-    <h4 style="color: sandybrown">
-      Icarus
-      <small class="text-muted"
-        ><i> <strong> Bar & Restaurant</strong> </i></small
-      >
-    </h4>
-    <small class="text-muted">Welcome back, we're happy to serve you.</small>
-
-    <div class="input-fields mt-5">
-      <form method="POST" style="text-align: center" novalidate>
-        {% csrf_token %}
-        <fieldset class="form-group mt-2">
-          <legend class="border-bottom mb-lg-5;" style="text-align: center">Connexion</legend>
-
-          {{form.username|as_crispy_field}}
-          <br />
-          {{form.password|as_crispy_field}}
-        </fieldset>
-        <div class="mt-5"><button type="submit" class="ghost-round full-width">Connect</button></div>
-
-        <div style="text-align: center" class="mx-5">
-          <small><a href="#">Lost password?</a></small
-          ><br />
-          <small class="text-muted">Join Today! <a class="ml-2" href="/register/?session={{app}}"> Sign up </a> </small>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-{% endblock content %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/login.css' %}">
+</head>
+    <title>Login</title>
+</head>
+<body>
+    <!-- <img src="/images/Logo.png" alt=""> -->
+    <div class="login-container">
+        <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud">
+        <h1>Login</h1>
+        <form action="POST" nonvalidate>
+                {% csrf_token %}
+                  <div class="one">
+                      <label style="padding-right: 225px;" for="Username">Email</label><br>
+                      <input type="text" placeholder="Type your username"><br>
+                  </div>
+                  <div class="two">
+                      <label style="padding-right: 195px;" for="Password">Password</label><br>
+                      <input type="password"  placeholder="Type your Password">
+                  </div>
+                  <button type ='submit' >Login</button>
+            
+              <a style="text-decoration: none;" href="/changePassword/?session={{app}}"><p style="text-align: 50px;" id="forget">Forgot password?</p></a>
+              
+              <div class="middle">
+                  <p>Or Sign Up Using</p>
+                  <div class="icons">
+                      <a href="google.com"><i class="fab fa-facebook"></i></a>
+                      <i class="fab fa-twitter"></i>
+                      <i class="fab fa-google"></i>
+                      <i class="fab fa-instagram"></i>
+                      <i class="fab fa-linkedin"></i>
+                  </div>
+              </div>
+              <div class="bottom" type='submit'>
+                  <p>Or Sign Up Using</p><br>
+                  <span id="span"><a class="ml-2" style="text-decoration: none;" href="/register/?session={{app}}">SIGN UP</a></span>
+              </div>
+          </div>
+        </form>
+    
+</body>
+</html>
