@@ -87,11 +87,6 @@ form button {
   animation: social-logo 1s infinite;
 }
 
-.fa-twitter:hover {
-  cursor: pointer;
-  animation: social-logo 1s infinite;
-}
-
 @keyframes social-logo {
   0% {
     transform: translateY(0px);
@@ -143,6 +138,7 @@ form button {
 .middle {
   padding: 10px 0;
 }
+
 /* change base on the sceen type */
 @media screen and (max-width: 375px) {
   body {

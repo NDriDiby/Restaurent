@@ -1,18 +1,17 @@
 {% load static %} {% load crispy_forms_tags %}
-
-
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="{% static 'Resto/login.css' %}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/login.css' %}">
 </head>
-
+    <title>Login</title>
+</head>
 <body>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -27,34 +26,24 @@
         </symbol>
       </svg>
 
-    <div class='container py-5'>
-        <div class='window'>
-            <div class='overlay'>
-                <div class='content'>
-                    <div style='text-align: center' class='mb-5'>
-                        <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud" style="width: 300px; height: auto; object-fit:scale-down;image-rendering: auto;">
-                    </div>
+      <div class="login-container">
+            <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud">
 
-                    
-
-                    <div class="col-12">
-                        {% if messages %} {% for message in messages %}
-                        <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
-                            {% if message.tags == 'success' %}
-                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="{{message.tags}}:"><use xlink:href="#check-circle-fill"/></svg> {{message}} {% else %}
-                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} {% endif %}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    {% block content %} {% endblock content %}
-
-
-
+            <div class="col-12">
+                {% if messages %} {% for message in messages %}
+                <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
+                    {% if message.tags == 'success' %}
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="{{message.tags}}:"><use xlink:href="#check-circle-fill"/></svg> {{message}} {% else %}
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+                {% endfor %}
             </div>
+            {% endif %}
+
+
+            {% block content %} {% endblock content %}
+
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>

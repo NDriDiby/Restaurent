@@ -35,8 +35,12 @@ def Login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {user.first_name}.")
-                return HttpResponseRedirect(f'/{session}/?session={targetApp}')
+                if user.has_perm('resto.view_order'):
+                    print('I am the boss')
+                    return HttpResponseRedirect(f'/texasgrillz/cuisine/')
+                else:
+                    messages.info(request, f"You are now logged in as {user.first_name}")
+                    return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
             messages.warning(request, f"Username and password didn't match")
                 
