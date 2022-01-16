@@ -88,9 +88,10 @@
           <!-- Navbar Right Side -->
           <div class="navbar-nav" style="margin-left: 600px">
             <a class="nav-item nav-link" href="">Profile</a>
-            <a class="nav-item nav-link" href="">Deconnexion</a>
-            <a class="nav-item nav-link" href="">Connexion</a>
             <a class="nav-item nav-link" href="">Register</a>
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="/logout/?session=texasgrillz&table=0">Deconnexion</a>
+            {% endif %}
           </div>
         </div>
       </nav>

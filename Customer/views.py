@@ -102,7 +102,7 @@ def RegisterCustomer(request):
             messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
             return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
-            messages.warning(request,f"{form.error_messages}")
+            messages.warning(request,f"The two password fields didn’t match")
             
     else:
         form = CustomerForm()
