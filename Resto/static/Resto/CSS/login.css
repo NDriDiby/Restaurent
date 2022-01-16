@@ -27,10 +27,12 @@ h1 {
   padding: 30px 0;
   font-size: 18px;
 }
+
 /* form {
   text-align: left;
   padding-left: 35px;
 } */
+
 input {
   border: none;
   border-bottom: 1px solid rgb(151, 150, 150);
@@ -147,6 +149,10 @@ form button {
   }
 
   .login-container {
-    padding-left: 28px;
+    padding-left: 30px;
+  }
+
+  .bottom {
+    padding-left: 20px;
   }
 }

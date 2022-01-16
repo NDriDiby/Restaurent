@@ -36,7 +36,6 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 if user.has_perm('resto.view_order'):
-                    print('I am the boss')
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
                     messages.info(request, f"You are now logged in as {user.first_name}")
@@ -89,7 +88,6 @@ def RegisterCustomer(request):
     #Create new account for current user then redict to current session
     if request.method == 'POST':
         form = CustomerForm(request.POST)
-        print(form.error_messages['password_mismatch'])
         if form.is_valid():
             cust_name = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')
