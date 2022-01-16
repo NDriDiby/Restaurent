@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.decorators import permission_required,login_required
 import random
-import datetime
+from datetime import datetime,timedelta,time
 from Bakerys.forms import OrderForm
  
 
@@ -309,9 +309,12 @@ def SendOrder(request):
 @login_required
 @permission_required('Resto.view_order',login_url='/login/') #Permission required
 def Cuisine(request):
-
+    
+    #Order of the day
+    today = datetime.now().date()
+    
     #Show all order sent to the kitchen
-    all_order = Order.objects.filter(status='Sent')
+    all_order = Order.objects.filter(status='Sent',date_ordered__icontains = today)
     complete_order = Order.objects.filter(complete=True)
     
     total_completed_order = len(complete_order)
