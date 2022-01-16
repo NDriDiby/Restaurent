@@ -214,7 +214,7 @@ a.socialIcon:hover,
 }
 
 .social-circle i {
-<<<<<<< HEAD
+
     color: #fff;
     transition: all 0.8s;
     transition: all 0.8s
@@ -229,14 +229,10 @@ a.socialIcon:hover,
     justify-content: space-evenly;
     flex-wrap: wrap;
 }
-=======
-  color: #fff;
-  transition: all 0.8s;
-  transition: all 0.8s;
-}
+
 
 .performanceCuisine {
   width: 75%;
   justify-content: space-around;
 }
->>>>>>> TexasGrillz
+
