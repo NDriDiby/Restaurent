@@ -35,8 +35,11 @@ def Login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {user.first_name}.")
-                return HttpResponseRedirect(f'/{session}/?session={targetApp}')
+                if user.has_perm('resto.view_order'):
+                    return HttpResponseRedirect(f'/texasgrillz/cuisine/')
+                else:
+                    messages.info(request, f"You are now logged in as {user.first_name}")
+                    return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
             messages.warning(request, f"Username and password didn't match")
                 
@@ -85,7 +88,6 @@ def RegisterCustomer(request):
     #Create new account for current user then redict to current session
     if request.method == 'POST':
         form = CustomerForm(request.POST)
-        print(form.error_messages['password_mismatch'])
         if form.is_valid():
             cust_name = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')

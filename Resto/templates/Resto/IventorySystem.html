@@ -189,7 +189,7 @@
                 <hr />
                 <ul id="ul2">
                   {% for catitem in cat.iventoryitem_set.all %}
-                  <li>{{catitem.name}} - ({{catitem.quantity}}) - [{{catitem.prix}}]</li>
+                  <li>{{catitem.name}} ({{catitem.quantity}})</li>
                   {% endfor %}
                 </ul>
               </div>
