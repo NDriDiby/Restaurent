@@ -1,6 +1,6 @@
 {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
 
-<h4 style="color: sandybrown">
+<h4 class="mt-2" style="color: sandybrown">
   Icarus
   <small class="text-muted"
     ><i> <strong> Bar & Restaurant</strong> </i></small
@@ -11,21 +11,37 @@
 <form method="POST" class="mt-5" novalidate>
   {% csrf_token %}
 
-  <fieldset class="form-group" style="text-align: center">
-    <legend class="border-bottom mb-lg-5;" style="text-align: center">Join Today</legend>
-    {{form.username|as_crispy_field}}
-    <br />
-    {{form.nom|as_crispy_field}}<br />
-    {{form.prenom|as_crispy_field}}<br />
-    {% comment %} {{form.email|as_crispy_field}}<br />
-    {% endcomment %} {{form.phone_number|as_crispy_field}}<br />
-    {{form.password1|as_crispy_field}}<br />
-    {{form.password2|as_crispy_field}}
-  </fieldset>
-
-  <div class="form-group mt-5">
-    <button type="submit" class="ghost-round full-width">Sign up</button>
+  <div class="one">
+    <label style="padding-right: 230px" for="Email">Nom</label><br />
+    <input type="text" placeholder="Type your last name" {{form.nom}} <br />
   </div>
+
+  <div class="two">
+    <label style="padding-right: 210px" for="Password">Prenom</label><br />
+    <input type="text" placeholder="Type your first name" {{form.prenom}}
+  </div>
+
+  <div class="one">
+    <label style="padding-right: 225px" for="Email">Email</label><br />
+    <input type="text" placeholder="Type your email" {{form.username}} <br />
+  </div>
+
+  <div class="two">
+    <label style="padding-right: 150px" for="Password">Phone Number</label><br />
+    <input type="text" placeholder="Type your phone number" {{form.phone_number}}
+  </div>
+
+  <div class="one">
+    <label style="padding-right: 190px" for="Email">Password</label><br />
+    <input type="password" placeholder="Type your password" {{form.password1}} <br />
+  </div>
+
+  <div class="two">
+    <label style="padding-right: 125px" for="Password">Confirm Password</label><br />
+    <input type="password" placeholder="Confirm your password" {{form.password2}}
+  </div>
+
+  <button type="submit" class="ghost-round full-width">Sign up</button>
 
   <div class="border-top pt-3" style="text-align: center">
     <small class="text-muted">Already Have An Account? <a class="ml-2" href="/login/?session={{app}}"> Sign in </a> </small>

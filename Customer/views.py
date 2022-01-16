@@ -97,6 +97,7 @@ def RegisterCustomer(request):
             user,created= User.objects.get_or_create(username = cust_name)
             user.first_name = cust_first_name
             user.last_name = cust_last_name 
+            user.email = cust_name
             user.save()
             messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
             return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')

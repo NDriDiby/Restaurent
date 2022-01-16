@@ -19,7 +19,7 @@ class CustomerForm(UserCreationForm):
    
    class Meta:
     model = User
-    fields = ('username','phone_number','nom','prenom','email')
+    fields = ('username','phone_number','nom','prenom')
     
     
     

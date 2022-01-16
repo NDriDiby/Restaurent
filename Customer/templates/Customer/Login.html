@@ -2,6 +2,15 @@
 {% extends "Customer/base_login.html" %}{% load static %} 
 
 {% block content %}
+
+<h4 class='mt-2' style="color: sandybrown">
+    Icarus
+    <small class="text-muted"
+      ><i> <strong> Bar & Restaurant</strong> </i></small
+    >
+  </h4>
+  <small class="text-muted">Thank you for using our service.</small>
+  
   <h1>Login</h1>
   <form method="POST"  nonvalidate>
           {% csrf_token %}
