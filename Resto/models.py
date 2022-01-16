@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import AbstractUser,User,AbstractBaseUser,BaseUserManager,PermissionsMixin
-from django.utils.translation import ugettext, ugettext_lazy as _
+# from django.utils.translation import ugettext, ugettext_lazy as _
 from django.conf import settings
 
 
