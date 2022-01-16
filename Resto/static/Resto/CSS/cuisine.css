@@ -223,3 +223,9 @@ a.socialIcon:hover,
     width: 75%;
     justify-content: space-around;
   }
+
+.full_order{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}

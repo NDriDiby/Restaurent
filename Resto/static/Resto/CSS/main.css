@@ -219,6 +219,11 @@ body {
 .heading__credits .heading__link {
   color: inherit;
 }
+#heading_logo{
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 /* CARDS */
 
