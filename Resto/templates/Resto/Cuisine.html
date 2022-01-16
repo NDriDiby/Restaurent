@@ -17,7 +17,7 @@
           <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_ordered}}</p>
           <p style="text-align: center"><b style="color: black">Table Number:</b> {{order.table}}</p>
           <h4 class="card-title mb-1" style="color: black; text-align: center">
-            <b>Customer: {{order}} </b>
+            <b>Customer: {{order.customer.user.first_name}} {{order.customer.user.last_name}} </b>
           </h4>
           <hr style="color: black" />
           {% for x in order.orderitem_set.all %}
@@ -54,7 +54,7 @@
     <div class="card">
       <div class="card-header">
         <h6 class="card-link"   href="#collapseOne">
-          Table Number: {{order.table}} - Customer Name: <strong style="color:rgb(3, 131, 250);">{{order}}</strong> - Order Number: {{order.id}} - Ref: {{order.transaction_id}} - Date: {{order.date_completed}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
+          Table Number: {{order.table}} - Customer Name: <strong style="color:rgb(3, 131, 250);">{{order.customer.user.first_name}} {{order.customer.user.last_name}}</strong> - Order Number: {{order.id}} - Ref: {{order.transaction_id}} - Date: {{order.date_completed}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
         </h6>
       </div>
       <div id="order{{order.id}}" class="collapse show mt-2" data-parent="#accordion">

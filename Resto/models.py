@@ -31,6 +31,8 @@ class Customer(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
+    first_name = User.first_name
+    last_name = User.last_name
     
 
     def __str__(self):
