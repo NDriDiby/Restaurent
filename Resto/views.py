@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm
+from.forms import CustomerForm,ItemChoiceForm,AddProducts
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app
@@ -234,7 +234,7 @@ def UpdatedItem(request):
     itemId = data['itemId']
     action = data['action']
     
-
+    
     
     #Update the Cart of the current user
     customer, created= Customer.objects.get_or_create(user = request.user)
@@ -327,7 +327,6 @@ def Cuisine(request):
 
 
 
-
 #Delete Order
 def DeleteOrder(request,item_id):
     
@@ -356,9 +355,21 @@ def DeleteOrder(request,item_id):
 #Inventory Management System
 def IventorySystem(request):
     categories = IventoryItemCategory.objects.all()
+    
+    if request.method == 'POST':
+        form = AddProducts(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data.get('name')
+            category = form.cleaned_data.get('category')
+            form.save()
+            messages.success(request,f'{product} added to your inventory')
+            return HttpResponseRedirect(f'/texasgrillz/inventory/')
+    else:
+        form = AddProducts()
 
     context = {
-        'categorie': categories
+        'categorie': categories,
+        'form':AddProducts
     }
     
     return render(request,'Resto/IventorySystem.html',context)

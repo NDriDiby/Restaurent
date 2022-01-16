@@ -39,16 +39,15 @@
 
   <hr style="color: rgb(197, 193, 193); font-weight: 60px" />
 
+
+  {% comment %} Completed Order {% endcomment %}
   <div>
     <h1 class="mb-4" style="color: black; text-align: center">Completed Orders</h1>
   </div>
   <hr />
 
-  
-  
+  <br>
 
-  <h2>Accordion Example</h2>
-  <p><strong>Note:</strong> The <strong>data-parent</strong> attribute makes sure that all collapsible elements under the specified parent will be closed when one of the collapsible item is shown.</p>
   <div id="accordion">
     {% for order in complete %}
     <span  data-target='#order{{order.id}}' data-toggle="collapse" data-order ={{order.id}} >
@@ -83,6 +82,16 @@
             <h4 style='color:rgb(51, 49, 49);text-align:center'>Performance Cuisine<h4>
           </div>
 
+<<<<<<< HEAD
+=======
+          <style>
+            .performanceCuisine{
+              width: 65%;
+              justify-content: space-around;
+            }
+          </style>
+
+>>>>>>> TexasGrillz
           
           <div class ='cards'>
               <div class ='card' style='text-align:center;'>

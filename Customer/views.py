@@ -35,7 +35,7 @@ def Login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+                messages.info(request, f"You are now logged in as {user.first_name}.")
                 return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
             messages.warning(request, f"Username and password didn't match")
@@ -85,16 +85,21 @@ def RegisterCustomer(request):
     #Create new account for current user then redict to current session
     if request.method == 'POST':
         form = CustomerForm(request.POST)
-        print(form.error_messages)
+        print(form.error_messages['password_mismatch'])
         if form.is_valid():
             cust_name = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
+            cust_email = form.cleaned_data.get('email')
             form.save()
+            user,created= User.objects.get_or_create(username = cust_name)
+            user.first_name = cust_first_name
+            user.last_name = cust_last_name 
+            user.save()
             messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
             return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
-            messages.warning(request,f"The two password fields didn't match")
+            messages.warning(request,f"{form.error_messages}")
             
     else:
         form = CustomerForm()

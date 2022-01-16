@@ -18,6 +18,7 @@ body{
         "sidebar main"   
         "sidebar main";   
 }
+
 header{
     grid-area: header; 
     padding-left: 20px;
@@ -159,23 +160,27 @@ main{
    grid-area: cat1;
    background-color: rgb(245, 252, 245);
    display: flex;
+   width:300px;
 }
 .cat2{
     grid-area: cat2;
     background-color: rgb(245, 252, 245);
     display: flex;
+    
 }
 
 .cat3{
     grid-area: cat3;
     background-color: rgb(245, 252, 245);
     display: flex;
+   
 }
 
 .cat4{
     grid-area: cat4;
     background-color: rgb(245, 252, 245);
     display: flex;
+    
 }
 
 .cat5{
