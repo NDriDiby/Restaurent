@@ -1,40 +1,35 @@
- {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+{% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
 
+<h4 style="color: sandybrown">
+  Icarus
+  <small class="text-muted"
+    ><i> <strong> Bar & Restaurant</strong> </i></small
+  >
+</h4>
+<small class="text-muted">We're almost done.Before using our services you need to create an account.</small>
 
- <div class = 'container'>
+<form method="POST" class="mt-5" novalidate>
+  {% csrf_token %}
 
-  <div class = 'product' style = 'text-align:center'>
+  <fieldset class="form-group" style="text-align: center">
+    <legend class="border-bottom mb-lg-5;" style="text-align: center">Join Today</legend>
+    {{form.username|as_crispy_field}}
+    <br />
+    {{form.nom|as_crispy_field}}<br />
+    {{form.prenom|as_crispy_field}}<br />
+    {% comment %} {{form.email|as_crispy_field}}<br />
+    {% endcomment %} {{form.phone_number|as_crispy_field}}<br />
+    {{form.password1|as_crispy_field}}<br />
+    {{form.password2|as_crispy_field}}
+  </fieldset>
 
-        <h4 style='color:sandybrown'> Icarus <small class='text-muted' ><i> <strong> Bar & Restaurant</strong> </i></small></h4>
-        <small class='text-muted' >We're almost done.Before using our services you need to create an account.</small> 
+  <div class="form-group mt-5">
+    <button type="submit" class="ghost-round full-width">Sign up</button>
+  </div>
 
-    <form method='POST' class = 'mt-5' novalidate>
-        {% csrf_token %}
-       
-        <fieldset class='form-group ' style='text-align:center'>
-            <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Join Today</legend>
-            {{form.username|as_crispy_field}}
-            <br>
-            {{form.nom|as_crispy_field}}<br>
-            {{form.prenom|as_crispy_field}}<br>
-            {{form.email|as_crispy_field}}<br> 
-            {{form.phone_number|as_crispy_field}}<br>
-            {{form.password1|as_crispy_field}}<br>
-            {{form.password2|as_crispy_field}}
-        </fieldset> 
+  <div class="border-top pt-3" style="text-align: center">
+    <small class="text-muted">Already Have An Account? <a class="ml-2" href="/login/?session={{app}}"> Sign in </a> </small>
+  </div>
+</form>
 
-        <div class='form-group mt-5'>
-            <button type="submit" class='ghost-round full-width'> Sign up</button>
-        </div>
-
-        <div class='border-top pt-3' style='text-align:center'>
-
-            <small class='text-muted'>Already Have An Account? <a class = 'ml-2' href="/login/?session={{app}}"> Sign in </a>
-                             </small>
-        </div>
-    </form>
-</div>
-</div>
-</div>
-</div>
 {% endblock content %}
