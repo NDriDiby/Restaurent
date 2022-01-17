@@ -2,6 +2,9 @@ body {
   font-family: sans-serif;
   background: linear-gradient(#ffffff, #80b3ec);
   margin-top: 5rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 150vh;
 }
 
 h1,
@@ -214,25 +217,22 @@ a.socialIcon:hover,
 }
 
 .social-circle i {
-
-    color: #fff;
-    transition: all 0.8s;
-    transition: all 0.8s
+  color: #fff;
+  transition: all 0.8s;
+  transition: all 0.8s;
 }
-.performanceCuisine{
-    width: 75%;
-    justify-content: space-around;
-  }
-
-.full_order{
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-
 .performanceCuisine {
   width: 75%;
   justify-content: space-around;
 }
 
+.full_order {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.performanceCuisine {
+  width: 75%;
+  justify-content: space-around;
+}
