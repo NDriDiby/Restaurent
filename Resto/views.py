@@ -324,7 +324,8 @@ def Cuisine(request):
         'all_order':all_order,
         'complete':complete_order,
         'total_completed_order':total_completed_order,
-        'total_uncompleted_order':total_uncompleted_order
+        'total_uncompleted_order':total_uncompleted_order,
+        'today':today
     }
     return render(request,'Resto/Cuisine.html',context)
 

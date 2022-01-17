@@ -156,3 +156,10 @@ form button {
     padding-left: 20px;
   }
 }
+
+@media screen and (max-width: 420px) {
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+}
