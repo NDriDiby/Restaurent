@@ -12,6 +12,7 @@ from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.decorators import permission_required,login_required
 import random
 from datetime import datetime,timedelta,time
+from django.utils import timezone
 from Bakerys.forms import OrderForm
  
 
@@ -287,7 +288,7 @@ def SendOrder(request):
             order.transaction_id = order_number('texasgrillz')
             order.note = cust_note
             order.save()
-            messages.success(request,f"{customer}, votre commande a été bien réçu par notre cuisine!")
+            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
             messages.warning(request,"Your cart is empty")
 
@@ -297,7 +298,7 @@ def SendOrder(request):
         order.status = 'Completed'
         order.complete = True
         order.save()
-        messages.success(request,f"{customer}, your order is completed")
+        messages.success(request,f"{order.customer.user.first_name}, your order is completed")
 
     order.save()
     
@@ -311,11 +312,20 @@ def SendOrder(request):
 def Cuisine(request):
     
     #Order of the day
-    today = datetime.now().date()
+    today_1 = datetime.now().date() + timedelta(1)
+    today = timezone.localtime(timezone.now()).date()
+    now = timezone.now()
+    
+    print('Current Time',timezone.localtime(timezone.now()).date())
+    print("Now",now)
+    print("datetime",today_1)
+    
+    
     
     #Show all order sent to the kitchen
-    all_order = Order.objects.filter(status='Sent',date_ordered__icontains = today)
-    complete_order = Order.objects.filter(complete=True)
+    all_order = Order.objects.filter(status='Sent',date_ordered__icontains = today_1)
+    print("Date recived",all_order.last().date_ordered)
+    complete_order = Order.objects.filter(complete=True,date_completed__icontains = today_1).order_by('date_completed')
     
     total_completed_order = len(complete_order)
     total_uncompleted_order = len(all_order)

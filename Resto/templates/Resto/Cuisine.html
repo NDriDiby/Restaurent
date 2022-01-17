@@ -11,6 +11,7 @@
 
 
   <div class="row justify-content-evenly g-lg-3 align-items-lg-baseline">
+    {% if all_order %}
     {% for order in all_order %}
     <div class="col-auto mt-3">
       <div class="card" style="width: 12rem; height: auto; background-color: rgb(243, 166, 152)">
@@ -36,6 +37,10 @@
       </div>
     </div>
     {% endfor %}
+    {% else %}
+      <!-- No order -->
+    <h1 style='color:orange;text-align:center'>There is no order</h1>
+    {% endif %} 
   </div>
 
   <hr style="color: rgb(197, 193, 193); font-weight: 60px" />
