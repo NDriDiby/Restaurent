@@ -1,11 +1,11 @@
 {% extends 'Resto/base_cuisine.html' %} {% load static %} {% block content %}
-
+{% load humanize %} 
 
 <div class="container py-5">
 
   <div class="mt-3" style="text-align: center">
       <h1 style="color: black">Uncompleted Orders</h1>
-      <small class="text-muted" >{{today}}</small>
+      <small class="text-muted" > Date: {{today}}</small>
       <hr />
   </div>
 
@@ -26,15 +26,19 @@
           <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{x}} ({{x.quantity}})</p>
           {% endfor %} {% if order.note %}
           <p id="customer_note" style="text-align: center"><b style="color: black">Note:</b> {{order.note}}</p>
+          
           {% endif %}
           <div class="mt-4" style="text-align: center">
             <form method="POST">
               {% csrf_token %}
+              <small class="text-muted mt-2" >{{order.date_ordered|naturaltime}}</small>
               <button type="submit" data-action="completed" data-order="{{order.id}}" class="btn btn-outline-success mb-3 send-order">Complete</button>
             </form>
+            
           </div>
         </div>
       </div>
+      
     </div>
     {% endfor %}
     {% else %}

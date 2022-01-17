@@ -132,7 +132,7 @@ def ItemDetails(request,item_id):
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            cust.name = username.username
+            cust.name = username.first_name
             cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending')
             cartItem = order.get_order_quantity()
@@ -210,7 +210,7 @@ def MyOrder(request):
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
         if cartItem > 0:
-            messages.success(request,f"{customer}, votre commande a été bien réçu par notre cuisine!")
+            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
             messages.warning(request,"Your cart is empty")
             
@@ -297,6 +297,7 @@ def SendOrder(request):
         order = Order.objects.get(id = order_numb)
         order.status = 'Completed'
         order.complete = True
+        order.date_completed = timezone.localtime()
         order.save()
         messages.success(request,f"{order.customer.user.first_name}, your order is completed")
 
@@ -312,20 +313,22 @@ def SendOrder(request):
 def Cuisine(request):
     
     #Order of the day
-    today_1 = datetime.now().date() + timedelta(1)
+    today_1 = datetime.now().date() 
     today = timezone.localtime(timezone.now()).date()
-    now = timezone.now()
+    now = timezone.make_aware(datetime.now())
     
-    print('Current Time',timezone.localtime(timezone.now()).date())
+    print('Current Time',today)
     print("Now",now)
     print("datetime",today_1)
+    print('timezonenow',timezone.localtime())
     
     
     
     #Show all order sent to the kitchen
-    all_order = Order.objects.filter(status='Sent',date_ordered__icontains = today_1)
-    print("Date recived",all_order.last().date_ordered)
-    complete_order = Order.objects.filter(complete=True,date_completed__icontains = today_1).order_by('date_completed')
+    all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
+    #print("Date recived",all_order.last().date_ordered)
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    print("Date completed",complete_order.last().date_completed)
     
     total_completed_order = len(complete_order)
     total_uncompleted_order = len(all_order)

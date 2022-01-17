@@ -31,8 +31,8 @@ class Customer(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
-    first_name = User.first_name
-    last_name = User.last_name
+    # first_name = models.CharField(max_length=30)
+    # last_name = models.CharField(max_length=30)
     
 
     def __str__(self):
@@ -86,7 +86,7 @@ class Order(models.Model):
     complete = models.BooleanField(default=False,null=True,blank=False)
     status = models.CharField(max_length=20,default = 'Pending')
     date_ordered = models.DateTimeField(auto_now=True)
-    date_completed = models.DateTimeField(auto_now=True)
+    date_completed = models.DateTimeField(auto_now_add=True)
     table = models.IntegerField(default=1)
     note = models.TextField(blank=True,max_length=50)
 
