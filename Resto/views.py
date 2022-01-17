@@ -42,7 +42,7 @@ def HomePage(request):
         #Create a customer object
         cust,created = Customer.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
-        cust.name = username.username
+        cust.name = f'{username.first_name} {username.last_name}'
         cust.save()
     
         #Show order to customer
@@ -82,8 +82,8 @@ def MenuDetails(request,menu_id):
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            cust.name = username.username
-            cust.save()
+            # cust.name = f'{username.first_name} {username.last_name}'
+            # cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
         except:
@@ -132,8 +132,8 @@ def ItemDetails(request,item_id):
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            cust.name = username.first_name
-            cust.save()
+            # cust.name = f'{username.first_name} {username.last_name}'
+            # cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending')
             cartItem = order.get_order_quantity()
         except:
