@@ -59,6 +59,7 @@
   <br>
 
   <div id="accordion">
+    {% if complete %}
     {% for order in complete %}
     <span  data-target='#order{{order.id}}' data-toggle="collapse" data-order ={{order.id}} >
     <div class="card">
@@ -76,13 +77,15 @@
         </div>
       </div>
     </div>
-    {% endfor %}
+    {% endfor %}{% else %}
 
+     <!-- No order -->
+     <h1 style='color:orange;text-align:center'>All orders have been completed</h1>
+     {% endif %} 
   </div>
 
 </div>
-  {% endblock content %}
-
+    {% endblock content %}
 
   {% block sidebar %}
   {% comment %} peformance cuisine {% endcomment %}
@@ -127,6 +130,7 @@
   </div>
   {% comment %} peformance cuisine {% endcomment %}
   {% endblock sidebar %}
+</div>
 
   
 

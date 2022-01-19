@@ -1,7 +1,9 @@
 body {
   font-family: sans-serif;
   background: linear-gradient(#ffffff, #80b3ec);
+  background-size: cover;
   margin-top: 5rem;
+  height: 200vh;
 }
 
 h1,

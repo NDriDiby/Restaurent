@@ -22,7 +22,7 @@ img {
   border-radius: 5px;
   padding-top: 10px;
   margin-top: 90px;
-  animation: slide 3s forwards;
+  animation: slide 0.5s forwards;
 }
 @keyframes slide {
   0% {
@@ -40,9 +40,8 @@ h1 {
 /* form{
   text-align: left;
   padding-left: 35px;
-
-  
 } */
+
 #label {
   padding-right: 190px;
 }
