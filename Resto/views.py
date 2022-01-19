@@ -328,7 +328,7 @@ def Cuisine(request):
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     #print("Date recived",all_order.last().date_ordered)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
-    print("Date completed",complete_order.last().date_completed)
+    #print("Date completed",complete_order.last().date_completed)
     
     total_completed_order = len(complete_order)
     total_uncompleted_order = len(all_order)

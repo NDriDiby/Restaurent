@@ -15,10 +15,12 @@
   <form method="POST" id='login'  nonvalidate>
           {% csrf_token %}
             <div class="one">
+              <i class="fas fa-envelope"></i>
                 <label style="padding-right: 225px;" for="Email">Email</label><br>
                 <input type="text" placeholder="Type your email" {{form.username}} <br>
             </div>
             <div class="two">
+              <i class="fas fa-lock"></i>
                 <label style="padding-right: 195px;" for="Password">Password</label><br>
                 <input type="password"  placeholder="Type your password" {{form.password}}
             </div>
@@ -27,11 +29,7 @@
 
             <button type='submit'>Login</button>
 
-            <script>
-            function login() {
-                document.getElementById("login").submit();
-            }
-          </script>
+            
       
          <!-- <div class="middle">
             <p>Or Sign Up Using</p>

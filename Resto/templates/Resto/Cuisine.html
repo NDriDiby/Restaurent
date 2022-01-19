@@ -31,7 +31,7 @@
           <div class="mt-4" style="text-align: center">
             <form method="POST">
               {% csrf_token %}
-              <small class="text-muted mt-2" >{{order.date_ordered|naturaltime}}</small>
+              <small class="text-muted mb-4" >{{order.date_ordered|naturaltime}}</small>
               <button type="submit" data-action="completed" data-order="{{order.id}}" class="btn btn-outline-success mb-3 send-order">Complete</button>
             </form>
             
