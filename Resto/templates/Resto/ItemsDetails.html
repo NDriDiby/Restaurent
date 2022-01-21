@@ -106,20 +106,17 @@
             {% endif %}
 
               <script>
-
-
+                //Let the user pick what they want
                 let custChoice = []
-
                 function selectedItem(){
                   var ingredients = document.querySelectorAll('input');
                   for(let i=1;i<ingredients.length;i++){
                     if(ingredients[i].checked === true){
                       custChoice.push(ingredients[i].value)
-                      //console.log(custChoice.toString())
+                      console.log(custChoice.toString())
                     }
                   }
                 }
-                  
               </script>
             
             <hr>
