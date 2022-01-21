@@ -9,14 +9,14 @@ for (var i = 0; i < updated_but.length; i++) {
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      updateUserOrder(itemId, action);
-      console.log(custChoice);
+      updateUserOrder(itemId, action, custChoice);
+      console.log(custChoice.toString());
       location.reload();
     }
   });
 }
 
-async function updateUserOrder(itemId, action) {
+async function updateUserOrder(itemId, action, custChoice) {
   console.log(user, "is logged in, sending data....");
 
   var url = "/texasgrillz/updateitem/";
@@ -27,7 +27,7 @@ async function updateUserOrder(itemId, action) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
-    body: JSON.stringify({ itemId: itemId, action: action }),
+    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice.toString() }),
   })
     .then((response) => {
       return response.json();
