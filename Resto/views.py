@@ -158,7 +158,6 @@ def ItemDetails(request,item_id):
         order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
         try:
             orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
-            print('myorder',orderitem)
             orderitem_quantity = orderitem.quantity
             orderitem.save()
             messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
@@ -234,6 +233,9 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
+    choice = data['choice']
+    
+    print(choice)
     
     
     
@@ -241,7 +243,7 @@ def UpdatedItem(request):
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order= Order.objects.filter(customer=customer,status = 'Pending').last()
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = choice)
     
   
     #Increase quantity
@@ -271,9 +273,6 @@ def SendOrder(request):
     action = data['action']
     order_numb = data['order']
     cust_note = data['note']
-    print('status:',action)
-    print('order_number:',order_numb)
-    print('cust_note:',cust_note)
     customer = request.user
     
     

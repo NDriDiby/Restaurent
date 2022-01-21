@@ -106,31 +106,23 @@
             {% endif %}
 
               <script>
-                function getSelected() {
-                  // Get all the child elements inside the DIV.
-                  var ingredients = document.querySelectorAll('input')
-                  
-                  var ingre = new Array()
-                  var sea = new Array()
-                  var cui = new Array()
-
-                  ingredient.forEach((check)=>{
-                    check.addEventListner('click',(e)=>{
-                      if(check.checked){
-                        ingre.push(check.name)
-                        console.log(ingre)
-                      }
-                    })
-                  })
+                //Let the user pick what they want
+                let custChoice = []
+                function selectedItem(){
+                  var ingredients = document.querySelectorAll('input');
+                  for(let i=1;i<ingredients.length;i++){
+                    if(ingredients[i].checked === true){
+                      custChoice.push(ingredients[i].value)
+                      //console.log(custChoice.toString())
+                    }
+                  }
                 }
-
-                
               </script>
             
             <hr>
             <div class ='d-flex justify-content-center'>
               <i id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mt-1 p-2 update-cart"></i>
-            <button onclick ='getSelected()' data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+            <button onclick="selectedItem()" data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
             <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mt-1 p-2 update-cart"></i>
             </div>
             
