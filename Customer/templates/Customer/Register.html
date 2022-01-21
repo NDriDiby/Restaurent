@@ -12,38 +12,44 @@
   {% csrf_token %}
 
   <div class="one">
+    <i class="fas fa-user-circle"></i>
     <label style="padding-right: 230px" for="Email">Nom</label><br />
     <input type="text" placeholder="Type your last name" {{form.nom}} <br />
   </div>
 
   <div class="two">
+    <i class="fas fa-user-circle"></i>
     <label style="padding-right: 210px" for="Password">Prenom</label><br />
     <input type="text" placeholder="Type your first name" {{form.prenom}}
   </div>
 
   <div class="one">
+    <i class="fas fa-envelope"></i>
     <label style="padding-right: 225px" for="Email">Email</label><br />
     <input type="text" placeholder="Type your email" {{form.username}} <br />
   </div>
 
   <div class="two">
+    <i class="fas fa-phone-square-alt"></i>
     <label style="padding-right: 150px" for="Password">Phone Number</label><br />
     <input type="text" placeholder="Type your phone number" {{form.phone_number}}
   </div>
 
   <div class="one">
+    <i class="fas fa-lock"></i>
     <label style="padding-right: 190px" for="Email">Password</label><br />
     <input type="password" placeholder="Type your password" {{form.password1}} <br />
   </div>
 
   <div class="two">
+    <i class="fas fa-lock"></i>
     <label style="padding-right: 125px" for="Password">Confirm Password</label><br />
     <input type="password" placeholder="Confirm your password" {{form.password2}}
   </div>
 
-  <button type="submit" class="ghost-round full-width">Sign up</button>
+  <button class="mt-2" type="submit">Sign up</button>
 
-  <div class="border-top pt-3" style="text-align: center">
+  <div style="text-align: center">
     <small class="text-muted">Already Have An Account? <a class="ml-2" href="/login/?session={{app}}"> Sign in </a> </small>
   </div>
 </form>

@@ -19,6 +19,8 @@ from Bakerys.forms import OrderForm
  #App Name
 app = Order._meta.app_label
 
+today = timezone.localtime(timezone.now()).date()
+
 
 
 #HomePage
@@ -42,7 +44,7 @@ def HomePage(request):
         #Create a customer object
         cust,created = Customer.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
-        cust.name = username.username
+        cust.name = f'{username.first_name} {username.last_name}'
         cust.save()
     
         #Show order to customer
@@ -82,8 +84,8 @@ def MenuDetails(request,menu_id):
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            cust.name = username.username
-            cust.save()
+            # cust.name = f'{username.first_name} {username.last_name}'
+            # cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
         except:
@@ -132,8 +134,6 @@ def ItemDetails(request,item_id):
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            cust.name = username.first_name
-            cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending')
             cartItem = order.get_order_quantity()
         except:
@@ -264,7 +264,6 @@ def UpdatedItem(request):
 
 
 #BackEnd process of Order
-@csrf_protect
 def SendOrder(request):
 
     #get the data from the BackEnd
@@ -300,6 +299,7 @@ def SendOrder(request):
         order.date_completed = timezone.localtime()
         order.save()
         messages.success(request,f"{order.customer.user.first_name}, your order is completed")
+        print("Order Completed at:",timezone.localtime())
 
     order.save()
     
@@ -307,28 +307,18 @@ def SendOrder(request):
 
 
 #Cuisine (Owner access Only)
-@csrf_protect
 @login_required
 @permission_required('Resto.view_order',login_url='/login/') #Permission required
 def Cuisine(request):
     
     #Order of the day
-    today_1 = datetime.now().date() 
-    today = timezone.localtime(timezone.now()).date()
-    now = timezone.make_aware(datetime.now())
+   
     
-    print('Current Time',today)
-    print("Now",now)
-    print("datetime",today_1)
-    print('timezonenow',timezone.localtime())
-    
-    
-    
+
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
-    #print("Date recived",all_order.last().date_ordered)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
-    print("Date completed",complete_order.last().date_completed)
+
     
     total_completed_order = len(complete_order)
     total_uncompleted_order = len(all_order)

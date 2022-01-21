@@ -31,7 +31,7 @@
           <div class="mt-4" style="text-align: center">
             <form method="POST">
               {% csrf_token %}
-              <small class="text-muted mt-2" >{{order.date_ordered|naturaltime}}</small>
+              <small class="text-muted mb-4" >{{order.date_ordered|naturaltime}}</small>
               <button type="submit" data-action="completed" data-order="{{order.id}}" class="btn btn-outline-success mb-3 send-order">Complete</button>
             </form>
             
@@ -47,24 +47,25 @@
     {% endif %} 
   </div>
 
-  <hr style="color: rgb(197, 193, 193); font-weight: 60px" />
+ 
 
 
   {% comment %} Completed Order {% endcomment %}
-  <div>
+  <div class='pt-5'>
     <h1 class="mb-4" style="color: black; text-align: center">Completed Orders</h1>
   </div>
-  <hr />
+  <hr >
 
   <br>
 
   <div id="accordion">
+    {% if complete %}
     {% for order in complete %}
     <span  data-target='#order{{order.id}}' data-toggle="collapse" data-order ={{order.id}} >
     <div class="card">
       <div class="card-header">
         <h6 class="card-link"   href="#collapseOne">
-          Table Number: {{order.table}} - Customer Name: <strong style="color:rgb(3, 131, 250);">{{order.customer.user.first_name}} {{order.customer.user.last_name}}</strong> - Order Number: {{order.id}} - Ref: {{order.transaction_id}} - Date: {{order.date_completed}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
+          Table:{{order.table}} - Customer Name: <strong style="color:rgb(3, 131, 250);">{{order.customer.user.first_name}} {{order.customer.user.last_name}}</strong> - Order Number: {{order.id}} - Ref: {{order.transaction_id}} - Date: {{order.date_completed}} - <strong style ='color:green' >{{order.status}}</strong> <i style ='color:green' class="bi bi-check-square"></i>
         </h6>
       </div>
       <div id="order{{order.id}}" class="collapse show mt-2" data-parent="#accordion">
@@ -76,13 +77,15 @@
         </div>
       </div>
     </div>
-    {% endfor %}
+    {% endfor %}{% else %}
 
+     <!-- No order -->
+     <h1 style='color:orange;text-align:center'>All orders have been completed</h1>
+     {% endif %} 
   </div>
 
 </div>
-  {% endblock content %}
-
+    {% endblock content %}
 
   {% block sidebar %}
   {% comment %} peformance cuisine {% endcomment %}
@@ -95,7 +98,7 @@
           <style>
             .performanceCuisine{
               width: 65%;
-              justify-content: space-around;
+              justify-content:space-around;
             }
           </style>
 
@@ -127,6 +130,7 @@
   </div>
   {% comment %} peformance cuisine {% endcomment %}
   {% endblock sidebar %}
+</div>
 
   
 

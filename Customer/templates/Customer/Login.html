@@ -12,21 +12,25 @@
   <small class="text-muted" style="padding-left: 10px">Thank you for using our service.</small>
   
   <h1>Login</h1>
-  <form method="POST"  nonvalidate>
+  <form method="POST" id='login'  nonvalidate>
           {% csrf_token %}
             <div class="one">
+              <i class="fas fa-envelope"></i>
                 <label style="padding-right: 225px;" for="Email">Email</label><br>
                 <input type="text" placeholder="Type your email" {{form.username}} <br>
             </div>
             <div class="two">
+              <i class="fas fa-lock"></i>
                 <label style="padding-right: 195px;" for="Password">Password</label><br>
                 <input type="password"  placeholder="Type your password" {{form.password}}
             </div>
 
-            <button type ='submit' >Login</button>
+            <a  href="/changePassword/?session={{app}}"><p id="forget">Forgot password?</p></a>
+
+            <button type='submit'>Login</button>
+
+            
       
-        <a style="text-decoration: none;" href="/changePassword/?session={{app}}"><p style="text-align: 50px; margin-top:10px" id="forget">Forgot password?</p></a>
-        
          <!-- <div class="middle">
             <p>Or Sign Up Using</p>
             <div class="icons">
@@ -40,7 +44,7 @@
 
         <div class="bottom" type='submit'>
             <p>Join Icarus Today!</p><br>
-            <span id="span"><a class="ml-2" style="text-decoration: none;color:white;" href="/register/?session={{app}}">Register now!</a></span>
+            <span id="span"><a class="ml-2" style="text-decoration: none;color:white;" href="/register/?session={{app}}">Register</a></span>
         </div>
     </div>
   </form>

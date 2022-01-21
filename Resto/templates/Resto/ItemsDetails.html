@@ -108,22 +108,23 @@
               <script>
                 function getSelected() {
                   // Get all the child elements inside the DIV.
-
-                  var ingredients = document.getElementsByName('ingredient')
+                  var ingredients = document.querySelectorAll('input')
+                  
                   var ingre = new Array()
                   var sea = new Array()
                   var cui = new Array()
-                  
 
-                  for(let i=0; i<ingredient.length; i++){
-                    if(ingredient[i].checked){
-                      ingre.push(ingredient[i])
-                    }
-                  }
-                    console.log(ingre)
-                  
-
+                  ingredient.forEach((check)=>{
+                    check.addEventListner('click',(e)=>{
+                      if(check.checked){
+                        ingre.push(check.name)
+                        console.log(ingre)
+                      }
+                    })
+                  })
                 }
+
+                
               </script>
             
             <hr>
