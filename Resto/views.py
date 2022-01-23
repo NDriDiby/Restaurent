@@ -84,10 +84,9 @@ def MenuDetails(request,menu_id):
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            # cust.name = f'{username.first_name} {username.last_name}'
-            # cust.save()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
+            
         except:
             pass
             
@@ -129,50 +128,102 @@ def ItemDetails(request,item_id):
     
     item = Item.objects.get(id=item_id)
     cartItem = 0
-    
-    cust,created = Customer.objects.get_or_create(user =request.user)
-    myItem,created = OrderItem.objects.get_or_create(customer = cust)
+    myItem = None
     
     if request.user.is_authenticated:
         try:
             username = User.objects.get(id=request.user.id)
             cust,created = Customer.objects.get_or_create(user =request.user)
-            order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-            cartItem = order.get_order_quantity()
-        except:
-            messages.warning(request,"Can't pass order on multiple table")
-            messages.success(request,f"Your new table number is {table}")
-            pending_order = Order.objects.filter(customer=cust,status='Pending')
-            pending_order.delete()
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
-            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
+            
+            print('ORDER_ID IS BACK',order.id)
+            print('ORDER IS BACK',order)
+            print('ORDER_TABLE IS BACK',order.table)
+            
+            pending_order = Order.objects.filter(customer=cust,status='Pending')
+            
+            if len(pending_order) > 1:
+                print(pending_order)
+                pending_order.delete()
+                messages.warning(request,"Can't pass order on multiple table")
+                messages.success(request,f"Your new table number is {table}")
+                order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+            
+            
+        
+        except:
+            pass
+            
+            # if request.method == 'POST':
+            #     order_table = request.POST.get('item')
+            #     order_item_id = request.POST.get('orderItemId')
+            #     ingre = request.POST.get('ingredient')
+            #     saiss = request.POST.get('assaisonement')
+            #     cuiss = request.POST.get('cuisson')
+                
+            #     choice = ingre,saiss,cuiss
+                
+                
+            #     orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id,ingredient=choice)
+            #     myItem = OrderItem.objects.get(id=orderitem.id)
+                #my_order_item,created= OrderItem.objects.get_or_create(id=orderitem.id)
+                # my_order_item.ingredient = ingre,saiss,cuiss
+                # # my_order_item.seasoning = saiss
+                # # my_order_item.cuisson = cuiss
+                # my_order_item.save()
+            
+
+        
+        # messages.warning(request,"Can't pass order on multiple table")
+        # messages.success(request,f"Your new table number is {table}")
+        # pending_order = Order.objects.filter(customer=cust,status='Pending')
+        # print(pending_order)
+        # pending_order.delete()
+        # order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+        # cartItem = order.get_order_quantity()
+        # return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
            
     
     else:
         return HttpResponseRedirect(f'/register/?session={targetApp}')
         
             
-    if request.method == 'POST':
-        order_table = request.POST.get('item')
-        custitem = request.POST.get('variable')
+    # if request.method == 'POST':
+    #     order_table = request.POST.get('item')
+    #     order_item_id = request.POST.get('orderItemId')
+    #     ingre = request.POST.get('ingredient')
+    #     saiss = request.POST.get('assaisonement')
+    #     cuiss = request.POST.get('cuisson')
+        
+    #     my_order_item,created= OrderItem.objects.get_or_create(id=orderitem.id)
+    #     my_order_item.ingredient = ingre,saiss,cuiss
+    #     # my_order_item.seasoning = saiss
+    #     # my_order_item.cuisson = cuiss
+    #     my_order_item.save()
         
         
-        print(custitem)
-        order_table = Item.objects.filter(id=order_table)
-        order_table = order_table[0]
-        cust,created = Customer.objects.get_or_create(user =request.user)
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-        try:
-            orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id)
-            myItem = OrderItem.objects.get(id=orderitem.id)
-            print('THIS IS MY ITEM',myItem.id,myItem)
-            #print("ORDER_ITEM",orderitem.id)
-            orderitem_quantity = orderitem.quantity
-            orderitem.save()
-            messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
-        except:
-            return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
+        
+    
+    #     choice = ingre,saiss,cuiss 
+    #     print('THIS IS MY CHOICE BRO',choice)
+        
+        
+        
+    #     order_table = Item.objects.filter(id=order_table)
+    #     order_table = order_table[0]
+    #     cust,created = Customer.objects.get_or_create(user =request.user)
+    #     order,created= Order.objects.get_or_create(customer=cust,status='Pending')
+    #     try:
+    #         orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id)
+    #         myItem = OrderItem.objects.get(id=orderitem.id)
+    #         print('THIS IS MY ITEM',myItem.id,myItem)
+    #         #print("ORDER_ITEM",orderitem.id)
+    #         orderitem_quantity = orderitem.quantity
+    #         orderitem.save()
+    #         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
+    #     except:
+    #         return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
     
     context = {
         'items':item,
@@ -245,10 +296,12 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-    # orderItem = data['orderItem']
+    orderItem = data['orderItem']
     choice = data['choice']
     
-    print(choice)
+    print("I GUESS I FOUND YOU:",orderItem)
+    
+
     
     
     
@@ -257,26 +310,23 @@ def UpdatedItem(request):
     item = Item.objects.get(id=itemId)
     order= Order.objects.filter(customer=customer,status = 'Pending').last()
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
-    #myItem = OrderItem.objects.get(id=orderItem)
-    
-    #print("WHAT IS THAT:",myItem)
+    #orderItem= OrderItem.objects.get(id=orderItem)
     
     
-  
-    #Increase quantity
-    if action =='add':
-        orderItem.quantity = (orderItem.quantity + 1)
-        orderItem.save()
-        
+    if request.method == 'POST':
+        #Increase quantity
+        if action =='add':
+            orderItem.quantity = (orderItem.quantity + 1)
+            orderItem.save()
+            
+        #Decrese quantity
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - 1)
+            orderItem.save()
 
-    #Decrese quantity
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
-        orderItem.save()
-
-    #Delete item
-    if orderItem.quantity<=0:
-        orderItem.delete()
+        #Delete item
+        elif orderItem.quantity<=0:
+             orderItem.delete()
 
     return JsonResponse(f'Item was {action}',safe=False)
     
