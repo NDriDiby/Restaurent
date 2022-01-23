@@ -1,5 +1,6 @@
 
 from django.shortcuts import render,redirect
+from pyparsing import Or
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
@@ -14,6 +15,7 @@ import random
 from datetime import datetime,timedelta,time
 from django.utils import timezone
 from Bakerys.forms import OrderForm
+from django.db.models import F
  
 
  #App Name
@@ -132,37 +134,60 @@ def ItemDetails(request,item_id):
     
     if request.user.is_authenticated:
         try:
-            username = User.objects.get(id=request.user.id)
+            #Retrive the order
             cust,created = Customer.objects.get_or_create(user =request.user)
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             
-            print('ORDER_ID IS BACK',order.id)
-            print('ORDER IS BACK',order)
-            print('ORDER_TABLE IS BACK',order.table)
             
+    
+            # orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id)
+            # myItem,created = OrderItem.objects.get_or_create(id=orderitem.id)
+            
+            
+            
+            # #get the itemID
+            # myItem = OrderItem.objects.get(id=orderitem.id)
+            # print("THIS IS WHAT I GOT_ID:",myItem.id)
+            
+            
+            #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
-            
             if len(pending_order) > 1:
                 print(pending_order)
                 pending_order.delete()
                 messages.warning(request,"Can't pass order on multiple table")
                 messages.success(request,f"Your new table number is {table}")
                 order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+                
+                
             
-            
+            if request.method == 'POST':
+                order_table = request.POST.get('item')
+                order_item_id = request.POST.get('orderItemId')
+                ingre = request.POST.get('ingredient')
+                saiss = request.POST.get('assaisonement')
+                cuiss = request.POST.get('cuisson')
+                
+                choice = ingre,saiss,cuiss
+                
+                
+                
+                #Update item
+                # orderitem.ingredient = choice
+                # orderitem.save()
+                
+                #Update itemId
+                
+                
+                
+                
         
+                
         except:
             pass
             
-            # if request.method == 'POST':
-            #     order_table = request.POST.get('item')
-            #     order_item_id = request.POST.get('orderItemId')
-            #     ingre = request.POST.get('ingredient')
-            #     saiss = request.POST.get('assaisonement')
-            #     cuiss = request.POST.get('cuisson')
-                
-            #     choice = ingre,saiss,cuiss
+            
                 
                 
             #     orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id,ingredient=choice)
@@ -267,7 +292,6 @@ def MyOrder(request):
     if request.method == 'POST':
         #redirect to HomePage
         order_id= request.POST.get("order")
-        print(order_id)
         order= Order.objects.get(id = order_id)
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
@@ -296,21 +320,24 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-    orderItem = data['orderItem']
+    orderitem = data['orderItem']
     choice = data['choice']
     
-    print("I GUESS I FOUND YOU:",orderItem)
-    
 
-    
-    
-    
     #Update the Cart of the current user
-    customer, created= Customer.objects.get_or_create(user = request.user)
+    customer,created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
-    order= Order.objects.filter(customer=customer,status = 'Pending').last()
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
-    #orderItem= OrderItem.objects.get(id=orderItem)
+    order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = choice)
+    
+    
+    print("WHO ARE YOU:",orderItem.id)
+    print("WHAT DO YOU HAVE:",orderItem.ingredient)
+    
+    
+    # check = OrderItem.objects.get(id=orderitem)
+    # print("JUST CHECKING BRO:",check.ingredient)
+    
     
     
     if request.method == 'POST':
@@ -318,6 +345,7 @@ def UpdatedItem(request):
         if action =='add':
             orderItem.quantity = (orderItem.quantity + 1)
             orderItem.save()
+            
             
         #Decrese quantity
         elif action == 'remove':
