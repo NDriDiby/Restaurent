@@ -130,6 +130,9 @@ def ItemDetails(request,item_id):
     item = Item.objects.get(id=item_id)
     cartItem = 0
     
+    cust,created = Customer.objects.get_or_create(user =request.user)
+    myItem,created = OrderItem.objects.get_or_create(customer = cust)
+    
     if request.user.is_authenticated:
         try:
             username = User.objects.get(id=request.user.id)
@@ -152,12 +155,19 @@ def ItemDetails(request,item_id):
             
     if request.method == 'POST':
         order_table = request.POST.get('item')
+        custitem = request.POST.get('variable')
+        
+        
+        print(custitem)
         order_table = Item.objects.filter(id=order_table)
         order_table = order_table[0]
         cust,created = Customer.objects.get_or_create(user =request.user)
-        order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+        order,created= Order.objects.get_or_create(customer=cust,status='Pending')
         try:
-            orderitem= OrderItem.objects.filter(order_id = order.id,item_id = item_id)[0]
+            orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id)
+            myItem = OrderItem.objects.get(id=orderitem.id)
+            print('THIS IS MY ITEM',myItem.id,myItem)
+            #print("ORDER_ITEM",orderitem.id)
             orderitem_quantity = orderitem.quantity
             orderitem.save()
             messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
@@ -172,7 +182,9 @@ def ItemDetails(request,item_id):
         'form':form,
         'assaisonement':assaisonement,
         'cuisson':cuisson,
-        'ingredients':ingredients
+        'ingredients':ingredients,
+        'myitem':myItem
+        
     }
     
     return render (request,'Resto/ItemsDetails.html',context)
@@ -233,6 +245,7 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
+    # orderItem = data['orderItem']
     choice = data['choice']
     
     print(choice)
@@ -243,7 +256,11 @@ def UpdatedItem(request):
     customer, created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order= Order.objects.filter(customer=customer,status = 'Pending').last()
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = choice)
+    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+    #myItem = OrderItem.objects.get(id=orderItem)
+    
+    #print("WHAT IS THAT:",myItem)
+    
     
   
     #Increase quantity
@@ -312,7 +329,6 @@ def Cuisine(request):
     
     #Order of the day
    
-    
 
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
