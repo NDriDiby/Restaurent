@@ -28,10 +28,8 @@
           <p style="color: black;text-align: center"><b>{{x.ingredient}}</b></p>
           {% endif %}
           <p></p>
-          {% endfor %} {% if order.note != ' ' %}
-          <p id="customer_note" style="text-align: center"><b style="color: black">Note:</b> {{order.note}}</p>
-          
-          {% endif %}
+          {% endfor %} 
+
           <div class="mt-4" style="text-align: center">
             <form method="POST">
               {% csrf_token %}

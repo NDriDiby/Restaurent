@@ -50,7 +50,7 @@ def HomePage(request):
         cust.save()
     
         #Show order to customer
-        order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table).last()
+        order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table, date_ordered__date = today).last()
 
     context = {
         'category':category,
@@ -367,7 +367,7 @@ def SendOrder(request):
     data = json.loads(request.body)
     action = data['action']
     order_numb = data['order']
-    cust_note = data['note']
+    
     customer = request.user
     
     
@@ -379,7 +379,6 @@ def SendOrder(request):
         if item >0:
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
-            order.note = cust_note
             order.save()
             messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
