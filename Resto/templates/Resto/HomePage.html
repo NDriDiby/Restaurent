@@ -16,14 +16,11 @@
     <h6>Table: {{order.table}}</h6>
     <h6>Total: {{order.get_order_total}} F</h6>
     {% for order in order.orderitem_set.all%}
-    <h5 style="color: darkseagreen">* {{order}} ({{order.quantity}})</h5>
+    <h6 style="color: darkseagreen">* {{order}} ({{order.quantity}})</h6>
+    {% comment %} <small style="color: black"> [{{order.ingredient}}]</small> {% endcomment %}
   </div>
 
-  {% endfor %} {% if order.note != ' ' %}
-  <small>Note: {{order.note}}</small> {% endif %}
-
-  <!-- <small class='muted-text'>*Disapeard when order is completed</small> -->
-  {% endif %}
+  {% endfor %} {% endif %}
 </div>
 
 <div class="main-container">
