@@ -2,6 +2,8 @@
 var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 
+let custChoice = [];
+
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
@@ -10,7 +12,6 @@ for (var i = 0; i < updated_but.length; i++) {
 
     console.log(item_order_id);
 
-    let custChoice = [];
     for (let i = 1; i < ingredients.length; i++) {
       if (ingredients[i].checked === true) {
         custChoice.push(ingredients[i].value);
@@ -23,7 +24,7 @@ for (var i = 0; i < updated_but.length; i++) {
     } else {
       updateUserOrder(itemId, action, custChoice, orderItem);
       console.log(custChoice.toString());
-      location.reload();
+      console.log("WHAAAT");
     }
   });
 }

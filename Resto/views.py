@@ -139,18 +139,7 @@ def ItemDetails(request,item_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             
-            
     
-            # orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id)
-            # myItem,created = OrderItem.objects.get_or_create(id=orderitem.id)
-            
-            
-            
-            # #get the itemID
-            # myItem = OrderItem.objects.get(id=orderitem.id)
-            # print("THIS IS WHAT I GOT_ID:",myItem.id)
-            
-            
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
             if len(pending_order) > 1:
@@ -159,6 +148,7 @@ def ItemDetails(request,item_id):
                 messages.warning(request,"Can't pass order on multiple table")
                 messages.success(request,f"Your new table number is {table}")
                 order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+                return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
                 
                 
             
@@ -168,47 +158,18 @@ def ItemDetails(request,item_id):
                 ingre = request.POST.get('ingredient')
                 saiss = request.POST.get('assaisonement')
                 cuiss = request.POST.get('cuisson')
-                
                 choice = ingre,saiss,cuiss
                 
+    
+                myitem = Item.objects.get(id=order_table)
+                my_order_item = OrderItem.objects.filter(order= order, item = myitem)
+                tot_item = [sum(x.quantity for x in my_order_item)][0]
+                messages.success(request,f"({tot_item}) {myitem} ajouté votre table")
                 
-                
-                #Update item
-                # orderitem.ingredient = choice
-                # orderitem.save()
-                
-                #Update itemId
-                
-                
-                
-                
-        
                 
         except:
             pass
             
-            
-                
-                
-            #     orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id,ingredient=choice)
-            #     myItem = OrderItem.objects.get(id=orderitem.id)
-                #my_order_item,created= OrderItem.objects.get_or_create(id=orderitem.id)
-                # my_order_item.ingredient = ingre,saiss,cuiss
-                # # my_order_item.seasoning = saiss
-                # # my_order_item.cuisson = cuiss
-                # my_order_item.save()
-            
-
-        
-        # messages.warning(request,"Can't pass order on multiple table")
-        # messages.success(request,f"Your new table number is {table}")
-        # pending_order = Order.objects.filter(customer=cust,status='Pending')
-        # print(pending_order)
-        # pending_order.delete()
-        # order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-        # cartItem = order.get_order_quantity()
-        # return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
-           
     
     else:
         return HttpResponseRedirect(f'/register/?session={targetApp}')
@@ -289,6 +250,9 @@ def MyOrder(request):
         cartItem = order.get_order_quantity()
         
         
+            
+        
+        
     if request.method == 'POST':
         #redirect to HomePage
         order_id= request.POST.get("order")
@@ -328,15 +292,7 @@ def UpdatedItem(request):
     customer,created= Customer.objects.get_or_create(user = request.user)
     item = Item.objects.get(id=itemId)
     order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = choice)
-    
-    
-    print("WHO ARE YOU:",orderItem.id)
-    print("WHAT DO YOU HAVE:",orderItem.ingredient)
-    
-    
-    # check = OrderItem.objects.get(id=orderitem)
-    # print("JUST CHECKING BRO:",check.ingredient)
+    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
     
     
     
