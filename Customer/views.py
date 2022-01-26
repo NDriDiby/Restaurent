@@ -11,6 +11,7 @@ from Customer.utils import track_session,target_app,get_table_number
 from Bakerys.models import OrderBakerys
 from django.contrib.auth.models import User
 from django.utils import timezone
+from Resto.models import Customer
 
 
 
@@ -93,11 +94,13 @@ def RegisterCustomer(request):
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
             cust_email = form.cleaned_data.get('email')
+            cust_phone = form.cleaned_data.get('phone_number')
             form.save()
             user,created= User.objects.get_or_create(username = cust_name)
             user.first_name = cust_first_name
             user.last_name = cust_last_name 
             user.email = cust_name
+            user.phone_number = cust_phone
             user.save()
             messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
             return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')

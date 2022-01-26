@@ -48,6 +48,8 @@ def HomePage(request):
         username = User.objects.get(id=request.user.id)
         cust.name = f'{username.first_name} {username.last_name}'
         cust.save()
+        
+        
     
         #Show order to customer
         order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table, date_ordered__date = today).last()
@@ -139,6 +141,7 @@ def ItemDetails(request,item_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             
+            
     
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
@@ -160,7 +163,9 @@ def ItemDetails(request,item_id):
                 cuiss = request.POST.get('cuisson')
                 choice = ingre,saiss,cuiss
                 
-    
+            
+                
+              
                 myitem = Item.objects.get(id=order_table)
                 my_order_item = OrderItem.objects.filter(order= order, item = myitem)
                 tot_item = [sum(x.quantity for x in my_order_item)][0]
@@ -174,42 +179,6 @@ def ItemDetails(request,item_id):
     else:
         return HttpResponseRedirect(f'/register/?session={targetApp}')
         
-            
-    # if request.method == 'POST':
-    #     order_table = request.POST.get('item')
-    #     order_item_id = request.POST.get('orderItemId')
-    #     ingre = request.POST.get('ingredient')
-    #     saiss = request.POST.get('assaisonement')
-    #     cuiss = request.POST.get('cuisson')
-        
-    #     my_order_item,created= OrderItem.objects.get_or_create(id=orderitem.id)
-    #     my_order_item.ingredient = ingre,saiss,cuiss
-    #     # my_order_item.seasoning = saiss
-    #     # my_order_item.cuisson = cuiss
-    #     my_order_item.save()
-        
-        
-        
-    
-    #     choice = ingre,saiss,cuiss 
-    #     print('THIS IS MY CHOICE BRO',choice)
-        
-        
-        
-    #     order_table = Item.objects.filter(id=order_table)
-    #     order_table = order_table[0]
-    #     cust,created = Customer.objects.get_or_create(user =request.user)
-    #     order,created= Order.objects.get_or_create(customer=cust,status='Pending')
-    #     try:
-    #         orderitem,created= OrderItem.objects.get_or_create(order = order,item_id = item_id)
-    #         myItem = OrderItem.objects.get(id=orderitem.id)
-    #         print('THIS IS MY ITEM',myItem.id,myItem)
-    #         #print("ORDER_ITEM",orderitem.id)
-    #         orderitem_quantity = orderitem.quantity
-    #         orderitem.save()
-    #         messages.success(request,f'({orderitem_quantity}) {order_table} ajouté votre table')
-    #     except:
-    #         return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
     
     context = {
         'items':item,
@@ -250,9 +219,6 @@ def MyOrder(request):
         cartItem = order.get_order_quantity()
         
         
-            
-        
-        
     if request.method == 'POST':
         #redirect to HomePage
         order_id= request.POST.get("order")
@@ -280,6 +246,7 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
+    
     #Get the response from the backend
     data = json.loads(request.body)
     itemId = data['itemId']
@@ -293,6 +260,9 @@ def UpdatedItem(request):
     item = Item.objects.get(id=itemId)
     order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+    
+    print('myorder', orderitem)
+    
     
     
     
@@ -360,14 +330,14 @@ def SendOrder(request):
 @permission_required('Resto.view_order',login_url='/login/') #Permission required
 def Cuisine(request):
     
-    #Order of the day
+    
    
-
+    #Order of the day
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
 
-    
+    # Total order of the day
     total_completed_order = len(complete_order)
     total_uncompleted_order = len(all_order)
     
@@ -428,4 +398,7 @@ def IventorySystem(request):
     }
     
     return render(request,'Resto/IventorySystem.html',context)
+
+
+
 

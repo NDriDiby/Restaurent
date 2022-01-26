@@ -8,7 +8,6 @@ for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
-    var orderItem = item_order_id;
 
     console.log(item_order_id);
 
@@ -19,12 +18,19 @@ for (var i = 0; i < updated_but.length; i++) {
       }
     }
 
+    my_choice = localStorage.getItem("choice");
+    var orderItem = my_choice;
+
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      updateUserOrder(itemId, action, custChoice, orderItem);
-      console.log(custChoice.toString());
-      console.log("WHAAAT");
+      updateUserOrder(itemId, action, custChoice.toString(), orderItem);
+      localStorage.setItem("choice", custChoice);
+
+      location.reload();
+
+      // console.log(custChoice.toString());
+      // console.log(my_choice);
     }
   });
 }
@@ -40,7 +46,7 @@ async function updateUserOrder(itemId, action, custChoice, orderItem) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
-    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice.toString(), orderItem: orderItem }),
+    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice, orderItem: orderItem }),
   })
     .then((response) => {
       return response.json();
