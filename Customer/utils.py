@@ -32,27 +32,33 @@ def order_number(session):
 
 def target_app(request):
     ''' This function track the session and the table number '''
-    session_id = request.GET.get('session')
-    table = request.GET.get('table')
+    try:
+        session_id = request.GET.get('session')
+        table = request.GET.get('table')
 
-    if session_id == None or table == None:
-        targetApp = 'nosession'
-    else:
-        targetApp = session_id+'&table='+table
-        
-    return targetApp
+        if session_id == None or table == None:
+            targetApp = 'nosession'
+        else:
+            targetApp = session_id+'&table='+table
+            
+        return targetApp
+    except:
+        pass
 
 
 def get_table_number(request):
     ''' This function retrive the table number '''
-    table = str(request.GET.get('table'))
-    if table == None:
-        pass
-    else:
+    try:
         table = str(request.GET.get('table'))
-        if table is not None:
-            table = int(table)
-        return table
+        if table == None:
+            pass
+        else:
+            table = str(request.GET.get('table'))
+            if table is not None:
+                table = int(table)
+            return table
+    except:
+        pass
 
     
 

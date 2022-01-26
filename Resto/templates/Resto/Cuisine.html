@@ -14,7 +14,7 @@
     {% if all_order %}
     {% for order in all_order %}
     <div class="col-auto mt-3">
-      <div class="card" style="width: 12rem; height: auto; background-color: rgb(243, 166, 152)">
+      <div class="card" style="width:auto; height: auto; background-color: rgb(243, 166, 152)">
         <div class="card-body mb-1">
           <p class="card-text mb-1" style="color: black; text-align: center">Date: {{order.date_ordered}}</p>
           <p style="text-align: center"><b style="color: black">Table Number:</b> {{order.table}}</p>
@@ -24,14 +24,16 @@
           <hr style="color: black" />
           {% for x in order.orderitem_set.all %}
           <p class="card-text mb-2" style="color: black; text-align: center"><b>*</b> {{x}} ({{x.quantity}})</p>
-          {% endfor %} {% if order.note %}
-          <p id="customer_note" style="text-align: center"><b style="color: black">Note:</b> {{order.note}}</p>
-          
+          {% if x.ingredient %}
+          <p style="color: black;text-align: center"><b>{{x.ingredient}}</b></p>
           {% endif %}
+          <p></p>
+          {% endfor %} 
+
           <div class="mt-4" style="text-align: center">
             <form method="POST">
               {% csrf_token %}
-              <small class="text-muted mb-4" >{{order.date_ordered|naturaltime}}</small>
+              <small class="text-muted mb-4" >{{order.date_ordered|naturaltime}}</small><br>
               <button type="submit" data-action="completed" data-order="{{order.id}}" class="btn btn-outline-success mb-3 send-order">Complete</button>
             </form>
             

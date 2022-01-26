@@ -1,22 +1,41 @@
 // Add item to your cart
 var updated_but = document.getElementsByClassName("update-cart");
+var ingredients = document.querySelectorAll("input");
+
+let custChoice = [];
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
 
+    console.log(item_order_id);
+
+    for (let i = 1; i < ingredients.length; i++) {
+      if (ingredients[i].checked === true) {
+        custChoice.push(ingredients[i].value);
+        //console.log(custChoice.toString())
+      }
+    }
+
+    my_choice = localStorage.getItem("choice");
+    var orderItem = my_choice;
+
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      updateUserOrder(itemId, action, custChoice);
-      console.log(custChoice.toString());
+      updateUserOrder(itemId, action, custChoice.toString(), orderItem);
+      localStorage.setItem("choice", custChoice);
+
       location.reload();
+
+      // console.log(custChoice.toString());
+      // console.log(my_choice);
     }
   });
 }
 
-async function updateUserOrder(itemId, action, custChoice) {
+async function updateUserOrder(itemId, action, custChoice, orderItem) {
   console.log(user, "is logged in, sending data....");
 
   var url = "/texasgrillz/updateitem/";
@@ -27,7 +46,7 @@ async function updateUserOrder(itemId, action, custChoice) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
-    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice.toString() }),
+    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice, orderItem: orderItem }),
   })
     .then((response) => {
       return response.json();

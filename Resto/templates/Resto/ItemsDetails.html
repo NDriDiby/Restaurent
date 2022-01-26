@@ -61,13 +61,13 @@
       <div class="card-body" style="text-align: center">
         <h4 class="card-title" style="color:brown;">{{items.name}}</h4>
         <p class="card-text">{{ items.description }}</p>
-        <p class="card-text " style="color:rgb(59, 59, 59)"><strong>{{items.prix }} FCFA</strong></p>
+        <p class="card-text " style="color:rgb(59, 59, 59)"><strong>{{items.prix}} FCFA</strong></p>
 
 
-        <form method="POST">
-          <div style="display: flex; justify-content: center;align-items: center;">
+        
 
-        <form method="POST" id ='choiceOptions'>
+
+        <form  method="POST" id ='choiceOptions'>
           <div>
 
             {% csrf_token %} 
@@ -105,7 +105,7 @@
             <div>
             {% endif %}
 
-              <script>
+             <!-- <script>
                 //Let the user pick what they want
                 let custChoice = []
                 function selectedItem(){
@@ -113,20 +113,40 @@
                   for(let i=1;i<ingredients.length;i++){
                     if(ingredients[i].checked === true){
                       custChoice.push(ingredients[i].value)
-                      //console.log(custChoice.toString())
+                      console.log(custChoice.toString())
+
+                      localStorage.setItem("choice", custChoice);
+                     
                     }
                   }
+
+                 
                 }
+                
+                
+              </script>  -->
+
+             
+
+              <script>
+                var item_order_id = '{{myitem.id}}'
               </script>
+
+             
+              
+              
+                
+             
+              
             
             <hr>
+           
             <div class ='d-flex justify-content-center'>
-              <i id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mt-1 p-2 update-cart"></i>
-            <button onclick="selectedItem()" data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+            <i  id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mt-1 p-2 update-cart"></i>
+            <button  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
             <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mt-1 p-2 update-cart"></i>
             </div>
-            
-
+           
           </div>
         </form>
         {% endif %}
