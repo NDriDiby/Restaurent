@@ -1,5 +1,6 @@
 
 from django.shortcuts import render,redirect
+from django.test import ignore_warnings
 from pyparsing import Or
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
@@ -261,7 +262,11 @@ def UpdatedItem(request):
     order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
     
-    print('myorder', orderitem)
+    if orderitem:
+        print('myorder', orderitem)
+        for i in range(0,len(orderitem)):
+            print(orderitem[i])
+            # print(OrderItem.objects.get(order = order, item = item, ingredient__iexact = orderitem[0]))
     
     
     

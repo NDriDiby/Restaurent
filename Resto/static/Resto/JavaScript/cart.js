@@ -3,13 +3,13 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 
 let custChoice = [];
+var my_choice;
+var give_me;
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
-
-    console.log(item_order_id);
 
     for (let i = 1; i < ingredients.length; i++) {
       if (ingredients[i].checked === true) {
@@ -18,15 +18,15 @@ for (var i = 0; i < updated_but.length; i++) {
       }
     }
 
-    my_choice = localStorage.getItem("choice");
-    var orderItem = my_choice;
+    console.log("fromOrdePage:", my_choice);
 
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      updateUserOrder(itemId, action, custChoice.toString(), orderItem);
       localStorage.setItem("choice", custChoice);
-
+      my_choice = localStorage.getItem("choice");
+      var orderItem = give_me;
+      updateUserOrder(itemId, action, custChoice.toString(), orderItem);
       location.reload();
 
       // console.log(custChoice.toString());

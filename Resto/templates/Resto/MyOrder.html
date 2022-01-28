@@ -45,13 +45,13 @@
             </p>
             <h1><strong>{{item.item.description}}</strong></h1>
             {% if item.ingredient %}
-            <h1 class="mt-1" style="color: rgb(209, 112, 131)"><strong>{{item.ingredient}}</strong></h1>
+            <h1 class="mt-1 my_ingredient" style="color: rgb(209, 112, 131)"><strong>{{item.ingredient}}</strong></h1>
             {% endif %}
           </div>
         </div>
         <div class="price">{{item.item.prix}} FCFA</div>
         <div class="quantity">
-          <i data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
+          <i onclick="check()" data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
           <i data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
           <br />
           <input value="{{item.quantity}}" class="quantity-field" name="quantity" />
@@ -99,6 +99,18 @@
 
             <script>
               var item_order_id = "{{myitem.id}}";
+              var give_me = [];
+
+              function check() {
+                var my_ingredient = document.getElementsByClassName("my_ingredient");
+                for (let i = 0; i < my_ingredient.length; i++) {
+                  console.log("My_Ingredient", my_ingredient[i].innerText);
+                  localStorage.setItem("choix", my_ingredient[i].innerText);
+                  my_choice = localStorage.getItem("choix");
+                  give_me.push(my_ingredient[i].innerText);
+                  console.log("NEW ARRAY", give_me);
+                }
+              }
             </script>
 
             <div style="padding-left: 20px">
