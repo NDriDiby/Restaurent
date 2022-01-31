@@ -1,5 +1,6 @@
 
 from django.shortcuts import render,redirect
+from django.test import ignore_warnings
 from pyparsing import Or
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
@@ -251,7 +252,6 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-    orderitem = data['orderItem']
     choice = data['choice']
     
 
@@ -261,7 +261,6 @@ def UpdatedItem(request):
     order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
     
-    print('myorder', orderitem)
     
     
     
