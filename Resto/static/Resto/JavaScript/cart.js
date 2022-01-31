@@ -10,14 +10,14 @@ for (var i = 0; i < updated_but.length; i++) {
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
 
+    //Customer ingredient choice
     for (let i = 1; i < ingredients.length; i++) {
       if (ingredients[i].checked === true) {
         custChoice.push(ingredients[i].value);
-        //console.log(custChoice.toString())
       }
     }
 
-    //From order page
+    //From order page (ingredient)
     if (custChoice[0] == null) {
       custChoice = ingre;
     }
@@ -25,13 +25,8 @@ for (var i = 0; i < updated_but.length; i++) {
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      localStorage.setItem("choice", custChoice);
-      my_choice = localStorage.getItem("choice");
       updateUserOrder(itemId, action, custChoice.toString());
       location.reload();
-
-      // console.log(custChoice.toString());
-      // console.log(my_choice);
     }
   });
 }

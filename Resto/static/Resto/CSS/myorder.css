@@ -402,3 +402,73 @@ aside {
   border-radius: 50%;
   font-size: 14px;
 }
+
+.send_order {
+  padding-left: 30px;
+}
+
+@media screen and (max-width: 414px) {
+  .send_order {
+    padding-left: 55px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .send_order {
+    padding-left: 40px;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .send_order {
+    padding-left: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .send_order {
+    padding-left: 2px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .send_order {
+    padding-left: 120px;
+  }
+}
+
+@media screen and (max-width: 280px) {
+  .send_order {
+    padding-left: 2px;
+  }
+}
+
+@media screen and (max-width: 412px) {
+  .send_order {
+    padding-left: 43px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .send_order {
+    padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .send_order {
+    padding-left: 16px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .send_order {
+    padding-left: 45px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .send_order {
+    padding-left: 1px;
+  }
+}
