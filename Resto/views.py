@@ -1,7 +1,6 @@
 
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
-from pyparsing import Or
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
