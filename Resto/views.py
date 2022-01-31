@@ -280,7 +280,7 @@ def UpdatedItem(request):
             orderItem.save()
 
         #Delete item
-        elif orderItem.quantity<=0:
+        if orderItem.quantity<=0:
              orderItem.delete()
 
     return JsonResponse(f'Item was {action}',safe=False)
