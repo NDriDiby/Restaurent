@@ -22,7 +22,7 @@ img {
   border-radius: 5px;
   padding-top: 10px;
   margin-top: 90px;
-  animation: slide 0.5s forwards;
+  animation: slide 1s forwards;
 }
 @keyframes slide {
   0% {

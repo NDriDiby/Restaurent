@@ -3,13 +3,12 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 
 let custChoice = [];
-var my_choice;
-var give_me;
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
+    var ingre = this.dataset.ingredient;
 
     for (let i = 1; i < ingredients.length; i++) {
       if (ingredients[i].checked === true) {
@@ -18,15 +17,17 @@ for (var i = 0; i < updated_but.length; i++) {
       }
     }
 
-    console.log("fromOrdePage:", my_choice);
+    //From order page
+    if (custChoice[0] == null) {
+      custChoice = ingre;
+    }
 
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
       localStorage.setItem("choice", custChoice);
       my_choice = localStorage.getItem("choice");
-      var orderItem = give_me;
-      updateUserOrder(itemId, action, custChoice.toString(), orderItem);
+      updateUserOrder(itemId, action, custChoice.toString());
       location.reload();
 
       // console.log(custChoice.toString());
@@ -35,7 +36,7 @@ for (var i = 0; i < updated_but.length; i++) {
   });
 }
 
-async function updateUserOrder(itemId, action, custChoice, orderItem) {
+async function updateUserOrder(itemId, action, custChoice) {
   console.log(user, "is logged in, sending data....");
 
   var url = "/texasgrillz/updateitem/";
@@ -46,7 +47,7 @@ async function updateUserOrder(itemId, action, custChoice, orderItem) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
-    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice, orderItem: orderItem }),
+    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice }),
   })
     .then((response) => {
       return response.json();

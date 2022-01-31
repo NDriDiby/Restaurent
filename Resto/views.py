@@ -252,7 +252,6 @@ def UpdatedItem(request):
     data = json.loads(request.body)
     itemId = data['itemId']
     action = data['action']
-    orderitem = data['orderItem']
     choice = data['choice']
     
 
@@ -262,11 +261,6 @@ def UpdatedItem(request):
     order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
     
-    if orderitem:
-        print('myorder', orderitem)
-        for i in range(0,len(orderitem)):
-            print(orderitem[i])
-            # print(OrderItem.objects.get(order = order, item = item, ingredient__iexact = orderitem[0]))
     
     
     
