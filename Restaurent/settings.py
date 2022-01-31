@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'storages',
-    'django_extensions',
+    # 'django_extensions',
     'django.contrib.humanize',
    
 
