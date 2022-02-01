@@ -266,22 +266,19 @@ def UpdatedItem(request):
     
     
     
-    
-    if request.method == 'POST':
-        #Increase quantity
-        if action =='add':
-            orderItem.quantity = (orderItem.quantity + 1)
-            orderItem.save()
-            
-            
-        #Decrese quantity
-        elif action == 'remove':
-            orderItem.quantity = (orderItem.quantity - 1)
-            orderItem.save()
+    #Increase item
+    if action =='add':
+        orderItem.quantity = (orderItem.quantity + 1)
+        orderItem.save()
 
-        #Delete item
-        if orderItem.quantity<=0:
-             orderItem.delete()
+    #Decrease item
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+        orderItem.save()
+
+    #Delete item
+    if orderItem.quantity<=0:
+        orderItem.delete()
 
     return JsonResponse(f'Item was {action}',safe=False)
     
