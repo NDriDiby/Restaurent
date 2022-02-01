@@ -65,7 +65,9 @@
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1 d-flex justify-content-none">
+                    {% if user.is_authenticated  %}
                     <a class="form" href="#" style='text-align:center;text-decoration: none; border-radius:5px; padding:7px 3px 7px 3px; font-size:15px;color:seashell;font-family:BlinkMacSystemFont'>{{request.user.first_name}} {{request.user.last_name}}</a>
+                    {% endif %}
                 </div>
                 <div class="col text-center">
                     <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 80px;  object-fit: scale-down;image-rendering: auto;
@@ -88,7 +90,7 @@
         <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
             <div class="col-md-6 px-0">
                 <h1 class="display-4 font-italic">Texas GrillZ</h1>
-                <p class="lead my-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours</p>
+                <p class="lead my-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours.</p>
             </div>
         </div>
 
