@@ -20,12 +20,14 @@ for (var i = 0; i < updated_but.length; i++) {
     //From order page (ingredient)
     if (custChoice[0] == null) {
       custChoice = ingre;
+    } else {
+      custChoice = custChoice.toString();
     }
 
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      updateUserOrder(itemId, action, custChoice.toString());
+      updateUserOrder(itemId, action, custChoice);
       location.reload();
     }
   });
