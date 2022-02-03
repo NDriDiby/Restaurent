@@ -44,6 +44,7 @@ img,
 .basket-labels,
 .basket-product {
   width: 100%;
+  position: absolute;
 }
 
 input,
