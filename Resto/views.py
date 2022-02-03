@@ -256,6 +256,7 @@ def UpdatedItem(request):
     action = data['action']
     choice = data['choice']
     
+    
 
     #Update the Cart of the current user
     customer,created= Customer.objects.get_or_create(user = request.user)
