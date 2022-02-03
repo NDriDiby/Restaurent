@@ -3,7 +3,7 @@ body {
   background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 110vh;
+  height: 120vh;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 img {
@@ -22,7 +22,7 @@ img {
   border-radius: 5px;
   padding-top: 10px;
   margin-top: 90px;
-  animation: slide 0.5s forwards;
+  animation: slide 1s forwards;
 }
 @keyframes slide {
   0% {

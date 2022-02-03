@@ -472,3 +472,9 @@ aside {
     padding-left: 1px;
   }
 }
+
+@media screen and (max-width: 390px) {
+  .send_order {
+    padding-left: 38px;
+  }
+}

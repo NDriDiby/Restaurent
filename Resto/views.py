@@ -1,7 +1,6 @@
 
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
-from pyparsing import Or
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
@@ -17,6 +16,7 @@ from datetime import datetime,timedelta,time
 from django.utils import timezone
 from Bakerys.forms import OrderForm
 from django.db.models import F
+from django.db.models import Max,Sum
  
 
  #App Name
@@ -266,22 +266,19 @@ def UpdatedItem(request):
     
     
     
-    
-    if request.method == 'POST':
-        #Increase quantity
-        if action =='add':
-            orderItem.quantity = (orderItem.quantity + 1)
-            orderItem.save()
-            
-            
-        #Decrese quantity
-        elif action == 'remove':
-            orderItem.quantity = (orderItem.quantity - 1)
-            orderItem.save()
+    #Increase item
+    if action =='add':
+        orderItem.quantity = (orderItem.quantity + 1)
+        orderItem.save()
 
-        #Delete item
-        if orderItem.quantity<=0:
-             orderItem.delete()
+    #Decrease item
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+        orderItem.save()
+
+    #Delete item
+    if orderItem.quantity<=0:
+        orderItem.delete()
 
     return JsonResponse(f'Item was {action}',safe=False)
     
@@ -337,6 +334,15 @@ def Cuisine(request):
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    
+    # order_item = OrderItem.objects.all()
+    # top_item_number = order_item.aggregate(Sum('quantity'))
+    # top_item_number = top_item_number['quantity__sum']
+    # top_item =order_item.get(quantity = top_item_number)
+    
+    
+    # print("MOST ORDERED",top_item)
+    # print('TOP ITEM',top_item_number)
 
     # Total order of the day
     total_completed_order = len(complete_order)
@@ -347,6 +353,8 @@ def Cuisine(request):
         'complete':complete_order,
         'total_completed_order':total_completed_order,
         'total_uncompleted_order':total_uncompleted_order,
+        # 'top_item':top_item,
+        # 'top_item_number':top_item_number,
         'today':today
     }
     return render(request,'Resto/Cuisine.html',context)

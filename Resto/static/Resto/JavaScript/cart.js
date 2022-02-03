@@ -8,7 +8,7 @@ for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function () {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
-    var ingre = this.dataset.ingredient;
+    var ingre = this.dataset.ingredient; //From order page
 
     //Customer ingredient choice
     for (let i = 1; i < ingredients.length; i++) {
@@ -22,10 +22,21 @@ for (var i = 0; i < updated_but.length; i++) {
       custChoice = ingre;
     }
 
+    //No ingredient item (choice)
+    if (custChoice == undefined) {
+      custChoice = " ";
+    }
+
+    //From order page (ingredient) - (no choice)
+    if (ingre == "None") {
+      ingre = " ";
+      custChoice = ingre;
+    }
+
     if (user === "AnonymousUser") {
       console.log("not logged in");
     } else {
-      updateUserOrder(itemId, action, custChoice.toString());
+      updateUserOrder(itemId, action, custChoice);
       location.reload();
     }
   });
