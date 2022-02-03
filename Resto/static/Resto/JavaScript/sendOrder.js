@@ -1,4 +1,4 @@
-// // send order to the kitchon
+// // send order to the kitchen
 var sendOrder = document.getElementsByClassName("send-order");
 // var cust_note = document.getElementById("customer_note");
 
@@ -6,8 +6,6 @@ for (let i = 0; i < sendOrder.length; i++) {
   sendOrder[i].addEventListener("click", function () {
     var action = this.dataset.action;
     var order = this.dataset.order;
-    console.log("LETGO");
-
     cuisine(action, order);
   });
 }

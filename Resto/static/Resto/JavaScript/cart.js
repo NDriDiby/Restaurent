@@ -20,20 +20,17 @@ for (var i = 0; i < updated_but.length; i++) {
     //From order page (ingredient)
     if (custChoice[0] == null) {
       custChoice = ingre;
-      console.log("ingre", ingre);
     }
 
     //No ingredient item (choice)
     if (custChoice == undefined) {
-      custChoice = null;
-      console.log("no choice", custChoice);
+      custChoice = " ";
     }
 
     //From order page (ingredient) - (no choice)
     if (ingre == "None") {
-      ingre = null;
+      ingre = " ";
       custChoice = ingre;
-      console.log("I am here");
     }
 
     if (user === "AnonymousUser") {

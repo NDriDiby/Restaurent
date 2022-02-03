@@ -13,11 +13,10 @@
     <h6 style="color: rgb(209, 112, 131)">My Order - ({{order.date_ordered}})</h6>
     <h6>Reference ID: <small>{{order.transaction_id}}</small></h6>
     <h6>Table: {{order.table}}</h6>
-    <h6>Total: {{order.get_order_total}} F</h6>
+    <h6>Total: {{order.get_order_total}} FCFA</h6>
     {% for order in order.orderitem_set.all%}
     <h6 style="color: darkseagreen">* {{order}} ({{order.quantity}})</h6>
-    <p style="color: black">[{{order.ingredient}}]</p>
-
+    <p style="color: black">{{order.ingredient}}</p>
     {% endfor %}
   </div>
   {% endif %}
