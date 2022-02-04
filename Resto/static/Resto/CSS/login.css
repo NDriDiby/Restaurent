@@ -172,9 +172,8 @@ a {
   }
 }
 
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 375px) {
   .login-container {
-    width: 350px;
     height: 750px;
   }
 }
