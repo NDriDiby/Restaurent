@@ -29,6 +29,10 @@ today = timezone.localtime(timezone.now()).date()
 #HomePage
 # @permission_required('Resto.view_category')
 def HomePage(request):
+    
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+    print(num_visits)
 
     
     #Table Number
