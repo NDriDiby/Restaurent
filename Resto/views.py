@@ -217,6 +217,7 @@ def MyOrder(request):
 
     order = None
     items = None
+    cartItem = 0
     
     #get the Order and  items
     if request.user.is_authenticated:
