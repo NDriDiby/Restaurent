@@ -103,6 +103,28 @@
             <div>
             {% endif %}
 
+            {% if eau_mineral %}
+            <div class = 'eau_mineral'>
+              <h5 style="color: black;">Cuisson</h5>
+              {% for eau in eau_mineral %}
+              <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral" value="{{eau.name}}" />
+              <label>{{eau.name}}</label><br />
+              {% endfor %}<br /> 
+            <div>
+            {% endif %}
+
+            {% if coca_cola_produit %}
+            <div class = 'coca_cola_produit'>
+              <h5 style="color: black;">Eau Mineral</h5>
+              {% for coca in coca_cola_produit %}
+              <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit" value="{{coca.name}}" />
+              <label>{{coca.name}}</label><br />
+              {% endfor %}<br /> 
+            <div>
+            {% endif %}
+
+
+
              <!-- <script>
                 //Let the user pick what they want
                 let custChoice = []

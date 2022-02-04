@@ -124,6 +124,8 @@ def ItemDetails(request,item_id):
     assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
     cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
     ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
+    eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
+    coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca cola produit')
     
     
     #Get Table Number
@@ -192,6 +194,8 @@ def ItemDetails(request,item_id):
         'assaisonement':assaisonement,
         'cuisson':cuisson,
         'ingredients':ingredients,
+        'eau_mineral':eau_mineral,
+        'coca_cola_produit':coca_cola_produit,
         'myitem':myItem
         
     }
