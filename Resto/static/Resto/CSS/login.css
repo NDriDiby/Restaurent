@@ -17,7 +17,7 @@ img {
   text-align: center;
   background-color: white;
   width: 350px;
-  /* height: 100%; new */
+  height: auto;
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
