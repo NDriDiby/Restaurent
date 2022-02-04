@@ -85,25 +85,36 @@ def RegisterCustomer(request):
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
+    
+    
+    #My Testeur
+    testeur = User.objects.all()
+    print(testeur)
+    
+    
 
     #Create new account for current user then redict to current session
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
-            cust_name = form.cleaned_data.get('username')
+            cust_log_email = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
-            cust_email = form.cleaned_data.get('email')
+            #cust_email = form.cleaned_data.get('email')
             cust_phone = form.cleaned_data.get('phone_number')
-            form.save()
-            user,created= User.objects.get_or_create(username = cust_name)
-            user.first_name = cust_first_name
-            user.last_name = cust_last_name 
-            user.email = cust_name
-            user.phone_number = cust_phone
-            user.save()
-            messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
-            return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+            
+            if cust_log_email not in testeur:
+                return HttpResponseRedirect(f'/noaccess/')
+            else:
+                # form.save()
+                # user,created= User.objects.get_or_create(username = cust_log_email)
+                # user.first_name = cust_first_name
+                # user.last_name = cust_last_name 
+                # user.email = cust_log_email
+                # user.phone_number = cust_phone
+                # user.save()
+                messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
             messages.warning(request,f"The two password fields didn’t match")
             
@@ -124,6 +135,26 @@ def RegisterCustomer(request):
 @login_required(login_url='/login/')
 def Profile(request):
     return render(request,'Customer/Profile.html')
+
+
+
+def NoAccess(request):
+    
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
+    
+    #Tracking user session
+    targetApp = target_app(request)
+    session = track_session(request)
+    
+    context={
+        'session':session,
+        'app':targetApp
+    }
+    
+    return render(request,'Customer/No_access.html',context)
 
 
 

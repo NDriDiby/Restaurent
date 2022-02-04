@@ -27,7 +27,9 @@ today = timezone.localtime(timezone.now()).date()
 
 
 #HomePage
+# @permission_required('Resto.view_category')
 def HomePage(request):
+
     
     #Table Number
     table = get_table_number(request)

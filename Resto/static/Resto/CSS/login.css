@@ -17,6 +17,7 @@ img {
   text-align: center;
   background-color: white;
   width: 350px;
+  height: auto;
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
@@ -172,8 +173,7 @@ a {
   }
 }
 
-@media screen and (min-width: 375px) {
+/* @media screen and (min-width: 375px) {
   .login-container {
-    height: 1000px;
   }
-}
+} */
