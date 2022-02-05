@@ -103,8 +103,24 @@ def RegisterCustomer(request):
             #cust_email = form.cleaned_data.get('email')
             cust_phone = form.cleaned_data.get('phone_number')
             
-            if cust_log_email not in testeur:
+            print(cust_log_email)
+            
+           
+            if (cust_log_email == 'idatis@gmail.com'):
+                form.save()
+                user,created= User.objects.get_or_create(username = cust_log_email)
+                user.first_name = cust_first_name
+                user.last_name = cust_last_name 
+                user.email = cust_log_email
+                user.phone_number = cust_phone
+                user.save()
+                
+                messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+            
+            elif (cust_log_email not in testeur):
                 return HttpResponseRedirect(f'/noaccess/')
+            
             else:
                 # form.save()
                 # user,created= User.objects.get_or_create(username = cust_log_email)
