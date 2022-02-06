@@ -188,15 +188,15 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 # #STORAGE - DEVELOPMENT
-STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
-STATIC_URL = 'static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
+# STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "Resto/static"),
-   ]
+# STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, "Resto/static"),
+#    ]
 
-#MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# #MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
