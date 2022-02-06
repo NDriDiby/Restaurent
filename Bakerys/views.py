@@ -34,13 +34,13 @@ def HomePageBakerys(request):
     
     #Category to choose from
     order_sent = None
-    category = Category.objects.all().order_by("name")
+    category = CategoryBakerys.objects.all().order_by("name")
 
     
     if request.user.is_authenticated:
        
         #Create a customer object
-        cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
+        cust,created = CustomerBakerys.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = username.username
         cust.save()
@@ -74,8 +74,8 @@ def MenuDetailsBakerys(request,menu_id):
     targetApp = target_app(request)
 
     #Get and show the item in each category
-    menu = Category.objects.get(id = menu_id)
-    category = Category.objects.all().order_by("name")
+    menu = CategoryBakerys.objects.get(id = menu_id)
+    category = CategoryBakerys.objects.all().order_by("name")
     item = ItemBakerys.objects.filter(category__id = menu_id)
     
     
@@ -86,7 +86,7 @@ def MenuDetailsBakerys(request,menu_id):
     if request.user.is_authenticated:
         try:
             username = User.objects.get(id=request.user.id)
-            cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
+            cust,created = CustomerBakerys.objects.get_or_create(user =request.user)
             cust.name = username.username
             cust.save()
             order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending')
@@ -138,7 +138,7 @@ def MyOrderBakerys(request):
 
     #Get Order
     if request.user.is_authenticated:
-        cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
+        cust,created = CustomerBakerys.objects.get_or_create(user =request.user)
         order,created= OrderBakerys.objects.get_or_create(customer=cust,status='Pending',table=table)
         items = order.orderitembakerys_set.all()
         cartItem = order.get_order_quantity()
@@ -174,7 +174,7 @@ def UpdatedItemBakerys(request):
     print('action:',action)
 
     #Retrive the order
-    cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
+    cust,created = CustomerBakerys.objects.get_or_create(user =request.user)
     item = ItemBakerys.objects.get(id=itemId)
     order= OrderBakerys.objects.get(customer=cust,status = 'Pending')
     orderItem,created= OrderItemBakerys.objects.get_or_create(order = order,item = item )
@@ -209,7 +209,7 @@ def SendOrderBakerys(request):
     if request.method == 'POST' and action == 'sent':
         #Retrieve the order then send to the kitchen
         customer = request.user
-        cust,created = CustomerBekerys.objects.get_or_create(user =request.user)
+        cust,created = CustomerBakerys.objects.get_or_create(user =request.user)
         order,created = OrderBakerys.objects.get_or_create(id=order_numb, customer = cust)
         item = order.get_order_quantity()
         if item >0:
