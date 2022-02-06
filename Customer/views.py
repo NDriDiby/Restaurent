@@ -132,7 +132,7 @@ def RegisterCustomer(request):
                 # user.email = cust_log_email
                 # user.phone_number = cust_phone
                 # user.save()
-                messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
+                messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
                 return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
             messages.warning(request,f"The two password fields didn’t match")

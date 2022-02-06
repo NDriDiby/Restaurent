@@ -159,8 +159,8 @@ def ItemDetails(request,item_id):
             if len(pending_order) > 1:
                 print(pending_order)
                 pending_order.delete()
-                messages.warning(request,"Can't pass order on multiple table")
-                messages.success(request,f"Your new table number is {table}")
+                messages.warning(request,"Vous ne pouvez pas passer de commande sur plusieurs tables")
+                messages.success(request,f"Votre nouveau numéro de table est {table}")
                 order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
                 return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
                 
@@ -242,7 +242,7 @@ def MyOrder(request):
         if cartItem > 0:
             messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
-            messages.warning(request,"Your cart is empty")
+            messages.warning(request,"Votre panier est vide")
             
         return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
@@ -318,7 +318,7 @@ def SendOrder(request):
             order.save()
             messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
-            messages.warning(request,"Your cart is empty")
+            messages.warning(request,"Votre panier est vide")
 
     
     elif action =='completed':
@@ -327,7 +327,7 @@ def SendOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
-        messages.success(request,f"{order.customer.user.first_name}, your order is completed")
+        messages.success(request,f"{order.customer.user.first_name}, votre commande est terminée")
         print("Order Completed at:",timezone.localtime())
 
     order.save()
