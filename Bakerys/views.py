@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from Resto.models import Customer
-from .models import Category,OrderBakerys,ItemBakerys,OrderItemBakerys,CustomerBekerys
+from .models import CategoryBakerys,OrderBakerys,ItemBakerys,OrderItemBakerys,CustomerBakerys
 import json
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
