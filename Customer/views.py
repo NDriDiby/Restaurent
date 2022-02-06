@@ -109,7 +109,8 @@ def RegisterCustomer(request):
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
            
-        
+            
+            
             if (cust_log_email == 'idatis@gmail.com' or cust_log_email == 'frejusmactaylor@gmail.com'):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)

@@ -7,7 +7,7 @@
   >
 </h4>
 
-<small class="text-muted" style="padding-left: 10px">We're almost done.Before using our services you need to create an account.</small>
+<small class="text-muted" style="padding-left: 10px">Nous avons presque terminé. Avant d'utiliser nos services, vous devez créer un compte.</small>
 
 <form method="POST" class="mt-5">
   {% csrf_token %}
@@ -38,20 +38,20 @@
 
   <div class="one">
     <i class="fas fa-lock"></i>
-    <label style="padding-right: 190px" for="Email">Password</label><br />
+    <label style="padding-right: 163px" for="Email">Mot de passe</label><br />
     <input type="password" placeholder="Type your password" {{form.password1}} <br />
   </div>
 
   <div class="two">
     <i class="fas fa-lock"></i>
-    <label style="padding-right: 125px" for="Password">Confirm Password</label><br />
+    <label style="padding-right: 76px" for="Password">Confirmez mot de passe</label><br />
     <input type="password" placeholder="Confirm your password" {{form.password2}}
   </div>
 
-  <button class="mt-2" type="submit">Sign up</button>
+  <button class="mt-2" type="submit">S'inscrire</button>
 
   <div style="text-align: center">
-    <small class="text-muted">Already Have An Account? <a class="ml-2" href="/login/?session={{app}}"> Sign in </a> </small>
+    <small class="text-muted">Vous avez déjà un compte? <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
   </div>
 </form>
 

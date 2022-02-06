@@ -7,9 +7,9 @@
   >
 </h4>
 
-<small class="text-muted" style="padding-left: 10px">Thank you for using our service.</small>
+<small class="text-muted" style="padding-left: 10px">Merci d'utiliser notre service.</small>
 
-<h1>Login</h1>
+<h1>Connexion</h1>
 
 <form method="POST" id="login">
   {% csrf_token %}
@@ -20,11 +20,11 @@
   </div>
   <div class="two">
     <i class="fas fa-lock"></i>
-    <label style="padding-right: 195px" for="Password">Password</label><br />
+    <label style="padding-right: 165px" for="Password">Mot de passe</label><br />
     <input type="password" placeholder="Type your password" {{form.password}}<br />
   </div>
 
-  <a href="#"><p id="forget">Forgot password?</p></a>
+  <a href="#"><p id="forget">Mot de passe oublié?</p></a>
 
   <button type="submit">Login</button>
 
@@ -40,7 +40,7 @@
         </div>  -->
 
   <div>
-    <p class="mt-3">Join Icarus Today!</p>
+    <p class="mt-3">Rejoignez Icarus aujourd'hui!</p>
     <br />
     <small class="text-muted">
       <a
@@ -52,6 +52,7 @@
           margin-right: 10px;
           padding: 5px;
           border-radius: 20px;
+          font-weight: bold;
         "
       >
         Register
