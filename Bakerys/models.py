@@ -10,7 +10,7 @@ class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=100,blank=True)
-    img = models.ImageField(upload_to='images/')
+    img = models.ImageField(upload_to='images/Bakerys')
     date_created = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -37,7 +37,7 @@ class ItemBakerys(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField()
     description = models.TextField(max_length=150,blank=True)
-    img = models.ImageField(upload_to='images/')
+    img = models.ImageField(upload_to='images/Bakerys')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
     class Meta:
