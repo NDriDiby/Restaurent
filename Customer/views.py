@@ -47,10 +47,10 @@ def Login(request):
                 if user.has_perm('resto.view_order'):
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
-                    messages.info(request, f"You are now logged in as {user.first_name}")
+                    messages.info(request, f"Vous êtes maintenant connecté en tant que {user.first_name}")
                     return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
-            messages.warning(request, f"Username and password didn't match")
+            messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
                 
                
     else:
@@ -135,7 +135,7 @@ def RegisterCustomer(request):
                 messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
                 return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
-            messages.warning(request,f"The two password fields didn’t match")
+            messages.warning(request,f"Les deux champs de mot de passe ne correspondaient pas")
             
     else:
         form = CustomerForm()
