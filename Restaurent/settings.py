@@ -93,16 +93,16 @@ WSGI_APPLICATION = 'Restaurent.wsgi.application'
 
 
 # #DATA BASE - PRODUCTION 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
-#         'USER': 'yvlsowwfcscpsj', # The username from 1.6
-#         'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
-#         'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com', # Host name/address from 1.6,
-#         'PORT': '5432' # Port from 1.6
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
+        'USER': 'yvlsowwfcscpsj', # The username from 1.6
+        'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
+        'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com', # Host name/address from 1.6,
+        'PORT': '5432' # Port from 1.6
+    }
+}
 
 #DATA BASE - DEVELOPMENT
 DATABASES = {
