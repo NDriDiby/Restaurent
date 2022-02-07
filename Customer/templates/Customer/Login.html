@@ -24,7 +24,7 @@
     <input type="password" placeholder="Tapez votre mot de passe" {{form.password}}<br />
   </div>
 
-  <a href="#"><p id="forget">Mot de passe oublié?</p></a>
+  <a href="{% url 'password_reset' %}"><p id="forget">Mot de passe oublié?</p></a>
 
   <button type="submit">Connexion</button>
 
