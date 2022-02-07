@@ -20,7 +20,7 @@
   <main>
     <div class="basket">
       <div class="basket-module mb-3">
-        <label for="promo-code">Enter a promotional code</label>
+        <label for="promo-code">Entrez un code promotionnel</label>
         <input id="promo-code" type="text" name="promo-code" maxlength="5" class="promo-code-field" />
         <button class="promo-code-cta">Apply</button>
       </div>
@@ -28,9 +28,9 @@
       <div class="basket-labels">
         <ul>
           <li class="item item-heading">Item</li>
-          <li class="price">Price</li>
-          <li class="quantity">Quantity</li>
-          <li class="subtotal">Subtotal</li>
+          <li class="price">Prix</li>
+          <li class="quantity">Quantité</li>
+          <li class="subtotal">Sous-total</li>
         </ul>
       </div>
       {% for item in items %}
@@ -70,9 +70,9 @@
 
     <aside>
       <div class="summary">
-        <div class="summary-total-items"><span class="total-items"></span> Items in your Bag ({{cart_quantity}})</div>
+        <div class="summary-total-items"><span class="total-items"></span> Menu dans votre panier ({{cart_quantity}})</div>
         <div class="summary-subtotal">
-          <div class="subtotal-title">Subtotal</div>
+          <div class="subtotal-title">Sous-total</div>
           <div class="subtotal-value final-value" id="basket-subtotal">{{order.get_order_total}} FCFA</div>
           <div class="summary-promo hide">
             <div class="promo-title">Promotion</div>

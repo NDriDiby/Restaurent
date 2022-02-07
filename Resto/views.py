@@ -27,7 +27,13 @@ today = timezone.localtime(timezone.now()).date()
 
 
 #HomePage
+# @permission_required('Resto.view_category')
 def HomePage(request):
+    
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+    print(num_visits)
+
     
     #Table Number
     table = get_table_number(request)
@@ -121,9 +127,11 @@ def ItemDetails(request,item_id):
     form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
     
     #Choice Category
-    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonement')
+    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonnement')
     cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
     ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
+    eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
+    coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     
     
     #Get Table Number
@@ -151,8 +159,8 @@ def ItemDetails(request,item_id):
             if len(pending_order) > 1:
                 print(pending_order)
                 pending_order.delete()
-                messages.warning(request,"Can't pass order on multiple table")
-                messages.success(request,f"Your new table number is {table}")
+                messages.warning(request,"Vous ne pouvez pas passer de commande sur plusieurs tables")
+                messages.success(request,f"Votre nouveau numéro de table est {table}")
                 order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
                 return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
                 
@@ -192,6 +200,8 @@ def ItemDetails(request,item_id):
         'assaisonement':assaisonement,
         'cuisson':cuisson,
         'ingredients':ingredients,
+        'eau_mineral':eau_mineral,
+        'coca_cola_produit':coca_cola_produit,
         'myitem':myItem
         
     }
@@ -213,6 +223,7 @@ def MyOrder(request):
 
     order = None
     items = None
+    cartItem = 0
     
     #get the Order and  items
     if request.user.is_authenticated:
@@ -231,7 +242,7 @@ def MyOrder(request):
         if cartItem > 0:
             messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
-            messages.warning(request,"Your cart is empty")
+            messages.warning(request,"Votre panier est vide")
             
         return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
@@ -255,6 +266,7 @@ def UpdatedItem(request):
     itemId = data['itemId']
     action = data['action']
     choice = data['choice']
+    
     
 
     #Update the Cart of the current user
@@ -306,7 +318,7 @@ def SendOrder(request):
             order.save()
             messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
         else:
-            messages.warning(request,"Your cart is empty")
+            messages.warning(request,"Votre panier est vide")
 
     
     elif action =='completed':
@@ -315,7 +327,7 @@ def SendOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
-        messages.success(request,f"{order.customer.user.first_name}, your order is completed")
+        messages.success(request,f"{order.customer.user.first_name}, votre commande est terminée")
         print("Order Completed at:",timezone.localtime())
 
     order.save()

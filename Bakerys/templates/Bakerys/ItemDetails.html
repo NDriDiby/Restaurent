@@ -1,0 +1,174 @@
+{% extends "Resto/base_items.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if items %}
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+  </symbol>
+  <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path
+      d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+    />
+  </symbol>
+  <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path
+      d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+    />
+  </symbol>
+</svg>
+
+<div class="container">
+  <header class="blog-header py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+      </div>
+
+      <div class="col-4 text-center" style="display: inline-flex; flex-direction: column;align-items: center;">
+        <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 100px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center" />
+        <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <a href="/texasgrillz/myorder/?session={{app}}">
+          <img id="cart-icon" src='{% static "Resto/cart.png" %}' style="width: 70px; height: 70px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center"
+        /></a>
+        <div id="cart-total">
+          <p class="mt-2">{{cart_quantity}}</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="col-12">
+    {% if messages %} {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+        <use xlink:href="#check-circle-fill" />
+      </svg>
+      {{message}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+
+  <!-- get user table -->
+  
+  
+
+  <!-- display menu info -->
+  <div class="col-sm-12 col-md-6 col-lg-3 pb-4">
+    <div class="card h-100" style="border: none">
+      <img src="{{items.img.url }}" class="card-img-top" alt="{{items.name}}" />
+      <div class="card-body" style="text-align: center">
+        <h4 class="card-title" style="color:brown;">{{items.name}}</h4>
+        <p class="card-text">{{ items.description }}</p>
+        <p class="card-text " style="color:rgb(59, 59, 59)"><strong>{{items.prix}} FCFA</strong></p>
+
+
+    
+        <form  method="POST" id ='choiceOptions'>
+          <div>
+
+            {% csrf_token %} 
+            {% comment %} ingredients {% endcomment %}
+            {% if ingredients %}
+            <div class="ingredient">
+              <h5 style="color:black;"><strong>Ingredients</strong></h5>
+              {% for ingredient in ingredients %}
+              <input id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+              <label>{{ingredient.name}}</label><br />
+              {% endfor %} <br />
+            </div>
+            {% endif %}
+
+            
+            {% comment %} seasoning {% endcomment %}
+            {% if assaisonement %}
+            <div class="saissoning">
+              <h5 style="color: black">Assaisonnement</h5>
+              {% for saissoning in assaisonement %}
+              <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
+              <label>{{saissoning.name}}</label><br />
+              {% endfor %}<br /> 
+            </div>
+            {% endif %}
+
+            {% comment %} cuisson {% endcomment %}
+            {% if cuisson %}
+            <div class = 'cuisson'>
+              <h5 style="color: black;">Cuisson</h5>
+              {% for cuiss in cuisson %}
+              <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
+              <label>{{cuiss.name}}</label><br />
+              {% endfor %}<br /> 
+            <div>
+            {% endif %}
+
+            {% if eau_mineral %}
+            <div class = 'eau_mineral'>
+              <h5 style="color: black;">Eau Mineral</h5>
+              {% for eau in eau_mineral %}
+              <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral" value="{{eau.name}}" />
+              <label>{{eau.name}}</label><br />
+              {% endfor %}<br /> 
+            <div>
+            {% endif %}
+
+            {% if coca_cola_produit %}
+            <div class = 'coca_cola_produit'>
+              <h5 style="color: black;">Coca-cola Produit</h5>
+              {% for coca in coca_cola_produit %}
+              <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit" value="{{coca.name}}" />
+              <label>{{coca.name}}</label><br />
+              {% endfor %}<br /> 
+            <div>
+            {% endif %}
+
+
+
+             <!-- <script>
+                //Let the user pick what they want
+                let custChoice = []
+                function selectedItem(){
+                  var ingredients = document.querySelectorAll('input');
+                  for(let i=1;i<ingredients.length;i++){
+                    if(ingredients[i].checked === true){
+                      custChoice.push(ingredients[i].value)
+                      console.log(custChoice.toString())
+
+                      localStorage.setItem("choice", custChoice);
+                     
+                    }
+                  }
+
+                 
+                }
+                
+                
+              </script>  -->
+
+             
+
+              
+
+      
+              
+                
+             
+              
+            
+            <hr>
+           
+            <div class ='d-flex justify-content-center'>
+            {% comment %} <i  id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mt-1 p-2 update-cart"></i> {% endcomment %}
+            <button  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
+            {% comment %} <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mt-1 p-2 update-cart"></i> {% endcomment %}
+            </div>
+           
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

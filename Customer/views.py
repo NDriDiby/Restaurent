@@ -12,6 +12,14 @@ from Bakerys.models import OrderBakerys
 from django.contrib.auth.models import User
 from django.utils import timezone
 from Resto.models import Customer
+from django.core.mail import send_mail, BadHeaderError
+from django.contrib.auth.forms import PasswordResetForm
+from django.db.models.query_utils import Q
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 
 
 
@@ -39,10 +47,10 @@ def Login(request):
                 if user.has_perm('resto.view_order'):
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
-                    messages.info(request, f"You are now logged in as {user.first_name}")
+                    messages.info(request, f"Vous êtes maintenant connecté en tant que {user.first_name}")
                     return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
-            messages.warning(request, f"Username and password didn't match")
+            messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
                 
                
     else:
@@ -85,27 +93,49 @@ def RegisterCustomer(request):
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
+    
+    
+    #My Testeur
+    testeur = User.objects.all()
+    print(testeur)
+    
+    
 
     #Create new account for current user then redict to current session
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
-            cust_name = form.cleaned_data.get('username')
+            cust_log_email = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
-            cust_email = form.cleaned_data.get('email')
-            cust_phone = form.cleaned_data.get('phone_number')
-            form.save()
-            user,created= User.objects.get_or_create(username = cust_name)
-            user.first_name = cust_first_name
-            user.last_name = cust_last_name 
-            user.email = cust_name
-            user.phone_number = cust_phone
-            user.save()
-            messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
-            return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+           
+            
+            
+            if (cust_log_email == 'idatis@gmail.com' or cust_log_email == 'frejusmactaylor@gmail.com'):
+                form.save()
+                user,created= User.objects.get_or_create(username = cust_log_email)
+                user.first_name = cust_first_name
+                user.last_name = cust_last_name 
+                user.email = cust_log_email
+                user.save()
+                messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+            
+            elif (cust_log_email not in testeur):
+                return HttpResponseRedirect(f'/noaccess/')
+            
+            else:
+                # form.save()
+                # user,created= User.objects.get_or_create(username = cust_log_email)
+                # user.first_name = cust_first_name
+                # user.last_name = cust_last_name 
+                # user.email = cust_log_email
+                # user.phone_number = cust_phone
+                # user.save()
+                messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
-            messages.warning(request,f"The two password fields didn’t match")
+            messages.warning(request,f"Les deux champs de mot de passe ne correspondaient pas")
             
     else:
         form = CustomerForm()
@@ -124,6 +154,55 @@ def RegisterCustomer(request):
 @login_required(login_url='/login/')
 def Profile(request):
     return render(request,'Customer/Profile.html')
+
+
+
+def NoAccess(request):
+    
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
+    
+    #Tracking user session
+    targetApp = target_app(request)
+    session = track_session(request)
+    
+    context={
+        'session':session,
+        'app':targetApp
+    }
+    
+    return render(request,'Customer/No_access.html',context)
+
+
+def PasswordResetRequest(request):
+	if request.method == "POST":
+		password_reset_form = PasswordResetForm(request.POST)
+		if password_reset_form.is_valid():
+			data = password_reset_form.cleaned_data['email']
+			associated_users = User.objects.filter(Q(email=data))
+			if associated_users.exists():
+				for user in associated_users:
+					subject = "Password Reset Requested"
+					email_template_name = "Customer/password_reset_email.txt"
+					c = {
+					"email":user.email,
+					'domain':'127.0.0.1:8000',
+					'site_name': 'Website',
+					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
+					"user": user.first_name,
+					'token': default_token_generator.make_token(user),
+					'protocol': 'http',
+					}
+					email = render_to_string(email_template_name, c)
+					try:
+						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+					except BadHeaderError:
+						return HttpResponse('Invalid header found.')
+					return redirect ("/password_reset/done/")
+	password_reset_form = PasswordResetForm()
+	return render(request,"Customer/password_reset.html", context={"password_reset_form":password_reset_form})
 
 
 

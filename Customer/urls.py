@@ -7,7 +7,12 @@ from django.contrib.auth import views as auth_view
 urlpatterns = [
     path('register/', cust_view.RegisterCustomer,name='register'),
     path('login/',cust_view.Login,name = 'login'),
-    path('logout/',cust_view.Logout,name = 'logout')
+    path('logout/',cust_view.Logout,name = 'logout'),
+    path('password_reset/',cust_view.PasswordResetRequest,name = 'password_reset'),
+    path('password_reset/done/', auth_view.PasswordResetDoneView.as_view(template_name='Customer/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_view.PasswordResetConfirmView.as_view(template_name="Customer/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('reset/done/', auth_view.PasswordResetCompleteView.as_view(template_name='Customer/password_reset_complete.html'), name='password_reset_complete'),   
+    path('noaccess/',cust_view.NoAccess,name = 'no_access')
 
 
 ]
