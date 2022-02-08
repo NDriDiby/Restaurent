@@ -23,6 +23,7 @@ from django.http import HttpResponse
 
 
 
+
 def Login(request):
     
     #Table Number
