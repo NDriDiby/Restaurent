@@ -111,7 +111,7 @@ def RegisterCustomer(request):
            
             
             
-            if (cust_log_email == 'idatis@gmail.com' or cust_log_email == 'frejusmactaylor@gmail.com'):
+            if (cust_log_email == 'juliediby@yahoo.com' or cust_log_email == 'pousdylan33@gmail.com'):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
