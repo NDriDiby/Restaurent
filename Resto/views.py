@@ -224,6 +224,7 @@ def MyOrder(request):
     order = None
     items = None
     cartItem = 0
+    order_id = 0
     
     #get the Order and  items
     if request.user.is_authenticated:
@@ -234,15 +235,15 @@ def MyOrder(request):
         
         
     if request.method == 'POST':
-        #redirect to HomePage
-        order_id= request.POST.get("order")
-        order= Order.objects.get(id = order_id)
-        items = order.orderitem_set.all()
-        cartItem = order.get_order_quantity()
-        if cartItem > 0:
-            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        else:
-            messages.warning(request,"Votre panier est vide")
+    #     #redirect to HomePage
+    #     order_id= request.POST.get("order")
+    #     order= Order.objects.get(id = order_id)
+    #     items = order.orderitem_set.all()
+    #     cartItem = order.get_order_quantity()
+        # if cartItem > 0:
+        #     messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
+        # else:
+        #     messages.warning(request,"Votre panier est vide")
             
         return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 

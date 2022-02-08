@@ -20,6 +20,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.core.mail import send_mail
 
 
 
@@ -110,9 +111,9 @@ def RegisterCustomer(request):
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
            
+            # 'pousdylan33@gmail.com'
             
-            
-            if (cust_log_email == 'juliediby@yahoo.com' or cust_log_email == 'pousdylan33@gmail.com'):
+            if (cust_log_email == 'juliediby@yahoo.com' or cust_log_email == 'ndiby65@gmail.com'):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
@@ -120,7 +121,15 @@ def RegisterCustomer(request):
                 user.email = cust_log_email
                 user.save()
                 messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
+                
+                #send email after registration
+                send_mail("Bienvenue sur Icarus",
+                          f"Salut {cust_first_name}, Merci d'utiliser notre service. Nous sommes heureux de vous compter parmis nos utilisateur.",
+                          settings.EMAIL_HOST_USER,
+                          [cust_log_email],fail_silently=False,)
+                
                 return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+                
             
             elif (cust_log_email not in testeur):
                 return HttpResponseRedirect(f'/noaccess/')
