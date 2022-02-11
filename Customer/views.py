@@ -108,12 +108,13 @@ def RegisterCustomer(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             cust_log_email = form.cleaned_data.get('username')
+            cust_log_email = cust_log_email.lower()
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
            
             # 'pousdylan33@gmail.com'
             
-            if (cust_log_email == 'Juniorsoulama@yahoo.fr' or cust_log_email == 'pousdylan33@gmail.com'):
+            if (cust_log_email == 'juniorsoulama@yahoo.fr' or cust_log_email == 'pousdylan33@gmail.com'):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
@@ -122,9 +123,10 @@ def RegisterCustomer(request):
                 user.save()
                 messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
                 
+                newline = "\n"
                 #send email after registration
                 send_mail("Bienvenue sur Icarus",
-                          f"Salut {cust_first_name}'/n', Merci d'utiliser notre service. Nous sommes heureux de vous compter parmis nos utilisateur.",
+                          f"Salut {cust_first_name},{newline}{newline}Merci d'utiliser notre service. Nous sommes heureux de vous compter parmis nos utilisateurs.",
                           settings.EMAIL_HOST_USER,
                           [cust_log_email],fail_silently=False,)
                 

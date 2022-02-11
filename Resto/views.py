@@ -1,4 +1,4 @@
-
+import re
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
@@ -17,6 +17,9 @@ from django.utils import timezone
 from Bakerys.forms import OrderForm
 from django.db.models import F
 from django.db.models import Max,Sum
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
  
 
  #App Name
@@ -235,15 +238,15 @@ def MyOrder(request):
         
         
     if request.method == 'POST':
-    #     #redirect to HomePage
-    #     order_id= request.POST.get("order")
-    #     order= Order.objects.get(id = order_id)
-    #     items = order.orderitem_set.all()
-    #     cartItem = order.get_order_quantity()
-        # if cartItem > 0:
-        #     messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        # else:
-        #     messages.warning(request,"Votre panier est vide")
+        #redirect to HomePage
+        order_id= request.POST.get("order")
+        order= Order.objects.get(id = order_id)
+        items = order.orderitem_set.all()
+        cartItem = order.get_order_quantity()
+        if cartItem > 0:
+            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
+        else:
+            messages.warning(request,"Votre panier est vide")
             
         return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
@@ -308,6 +311,8 @@ def SendOrder(request):
     customer = request.user
     
     
+
+    
     #Process the order
     if request.method == 'POST' and action == 'sent':
         
@@ -317,9 +322,9 @@ def SendOrder(request):
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
             order.save()
-            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        else:
-            messages.warning(request,"Votre panier est vide")
+        #     messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
+        # else:
+        #     messages.warning(request,"Votre panier est vide")
 
     
     elif action =='completed':
@@ -328,11 +333,20 @@ def SendOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
-        messages.success(request,f"{order.customer.user.first_name}, votre commande est terminée")
-        print("Order Completed at:",timezone.localtime())
+        
+        
+        subject = f"Commande: {order.transaction_id}"
+        newline = "\n"
+        message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete.Vous recevrez votre commande sous peu ci-dessous est votre reçu de votre commande.{newline}\
+            {newline}Order Number: {order.transaction_id} \
+            {newline}Order Total: {order.get_order_total()} FCFA\
+            {newline}"
+            
+        send_mail(subject,message,
+                          settings.EMAIL_HOST_USER,
+                          [order.customer.user.email],fail_silently=False,)
+        
 
-    order.save()
-    
     return JsonResponse("Order Sent",safe=False)
 
 
