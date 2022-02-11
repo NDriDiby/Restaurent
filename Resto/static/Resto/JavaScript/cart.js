@@ -53,6 +53,7 @@ async function updateUserOrder(itemId, action, custChoice) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
+    credentials = 'include',
     body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice }),
   })
     .then((response) => {

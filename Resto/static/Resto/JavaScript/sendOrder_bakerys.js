@@ -34,6 +34,7 @@ function cuisine(act, ord, note) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
+    credentials = 'include',
     body: JSON.stringify({ action: act, order: ord, note: note }),
   })
     .then((response) => {

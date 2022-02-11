@@ -26,6 +26,7 @@ function updateUserOrder(itemId, action) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
+            credentials = 'include',
             body: JSON.stringify({ "itemId": itemId, 'action': action })
         })
         .then((response) => {
