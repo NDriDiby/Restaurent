@@ -33,7 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
+
+CSRF_COOKIE_DOMAIN =['.novacloudlab.com']
 
 
 # Application definition
@@ -211,10 +213,10 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+#Email Auth
 AUTHENTICATION_BACKENDS =['Customer.EmailAuth.EmailAuthBackend']
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

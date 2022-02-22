@@ -337,7 +337,7 @@ def SendOrder(request):
         
         subject = f"Commande: {order.transaction_id}"
         newline = "\n"
-        message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete.Vous recevrez votre commande sous peu ci-dessous est votre reçu de votre commande.{newline}\
+        message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
             {newline}Order Number: {order.transaction_id} \
             {newline}Order Total: {order.get_order_total()} FCFA\
             {newline}"
