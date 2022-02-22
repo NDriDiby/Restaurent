@@ -7,7 +7,7 @@ from.models import (Category,Item,Order,OrderItem,
 # Register your models here.
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('user','name','email')
+    list_display = ('user','name','email','phone')
 admin.site.register(Customer,CustomerAdmin)
 
 
