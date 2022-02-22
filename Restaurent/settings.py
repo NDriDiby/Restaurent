@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 
 CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
 
-CSRF_COOKIE_DOMAIN =['novacloudlab.com']
+# CSRF_COOKIE_DOMAIN =['novacloudlab.com']
 
 
 # Application definition
