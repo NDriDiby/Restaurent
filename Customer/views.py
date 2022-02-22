@@ -35,7 +35,9 @@ def Login(request):
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
+    phone = request.GET.get('phone')
     print('my current sess:',session)
+    
 
     #Authenticate user then redict to their session
     if request.method == "POST":
@@ -50,7 +52,7 @@ def Login(request):
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
                     messages.info(request, f"Vous êtes maintenant connecté en tant que {user.first_name}")
-                    return HttpResponseRedirect(f'/{session}/?session={targetApp}')
+                    return HttpResponseRedirect(f'/{session}/?session={targetApp}&phone={phone}')
         else:
             messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
                 
@@ -111,10 +113,12 @@ def RegisterCustomer(request):
             cust_log_email = cust_log_email.lower()
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
+            cust_phone = form.cleaned_data.get('phone_number')
+            
            
             # 'pousdylan33@gmail.com'
             
-            if (cust_log_email == 'juniorsoulama@yahoo.fr' or cust_log_email == 'pousdylan33@gmail.com'):
+            if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com']):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
@@ -130,7 +134,7 @@ def RegisterCustomer(request):
                           settings.EMAIL_HOST_USER,
                           [cust_log_email],fail_silently=False,)
                 
-                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}&phone={cust_phone}')
                 
             
             elif (cust_log_email not in testeur):

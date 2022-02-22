@@ -57,7 +57,10 @@ def HomePage(request):
         cust,created = Customer.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = f'{username.first_name} {username.last_name}'
+        cust.phone = request.GET.get('phone')
         cust.save()
+        
+        print("THIS MY PHONE NUMBER",cust.phone)
         
         
     
