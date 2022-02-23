@@ -35,7 +35,7 @@ def Login(request):
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
-    phone = request.GET.get('phone')
+    # phone = request.GET.get('phone')
     print('my current sess:',session)
     
 
@@ -52,7 +52,7 @@ def Login(request):
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
                     messages.info(request, f"Vous êtes maintenant connecté en tant que {user.first_name}")
-                    return HttpResponseRedirect(f'/{session}/?session={targetApp}&phone={phone}')
+                    return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
             messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
                 
@@ -134,7 +134,7 @@ def RegisterCustomer(request):
                           settings.EMAIL_HOST_USER,
                           [cust_log_email],fail_silently=False,)
                 
-                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}&phone={cust_phone}')
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
                 
             
             elif (cust_log_email not in testeur):
