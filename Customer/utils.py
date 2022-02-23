@@ -35,6 +35,7 @@ def target_app(request):
     try:
         session_id = request.GET.get('session')
         table = request.GET.get('table')
+        phone = request.GET.get('phone')
 
         if session_id == None or table == None:
             targetApp = 'nosession'

@@ -20,6 +20,8 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.core.mail import send_mail
+
 
 
 
@@ -33,7 +35,9 @@ def Login(request):
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
+    phone = request.GET.get('phone')
     print('my current sess:',session)
+    
 
     #Authenticate user then redict to their session
     if request.method == "POST":
@@ -48,7 +52,7 @@ def Login(request):
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
                     messages.info(request, f"Vous êtes maintenant connecté en tant que {user.first_name}")
-                    return HttpResponseRedirect(f'/{session}/?session={targetApp}')
+                    return HttpResponseRedirect(f'/{session}/?session={targetApp}&phone={phone}')
         else:
             messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
                 
@@ -106,12 +110,15 @@ def RegisterCustomer(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             cust_log_email = form.cleaned_data.get('username')
+            cust_log_email = cust_log_email.lower()
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
+            cust_phone = form.cleaned_data.get('phone_number')
+            
            
+            # 'pousdylan33@gmail.com'
             
-            
-            if (cust_log_email == 'idatis@gmail.com' or cust_log_email == 'frejusmactaylor@gmail.com'):
+            if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com']):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
@@ -119,7 +126,16 @@ def RegisterCustomer(request):
                 user.email = cust_log_email
                 user.save()
                 messages.success(request,f'Account Created for {cust_first_name} {cust_last_name}')
-                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
+                
+                newline = "\n"
+                #send email after registration
+                send_mail("Bienvenue sur Icarus",
+                          f"Salut {cust_first_name},{newline}{newline}Merci d'utiliser notre service. Nous sommes heureux de vous compter parmis nos utilisateurs.",
+                          settings.EMAIL_HOST_USER,
+                          [cust_log_email],fail_silently=False,)
+                
+                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}&phone={cust_phone}')
+                
             
             elif (cust_log_email not in testeur):
                 return HttpResponseRedirect(f'/noaccess/')
@@ -176,33 +192,33 @@ def NoAccess(request):
     return render(request,'Customer/No_access.html',context)
 
 
-def PasswordResetRequest(request):
-	if request.method == "POST":
-		password_reset_form = PasswordResetForm(request.POST)
-		if password_reset_form.is_valid():
-			data = password_reset_form.cleaned_data['email']
-			associated_users = User.objects.filter(Q(email=data))
-			if associated_users.exists():
-				for user in associated_users:
-					subject = "Password Reset Requested"
-					email_template_name = "Customer/password_reset_email.txt"
-					c = {
-					"email":user.email,
-					'domain':'127.0.0.1:8000',
-					'site_name': 'Website',
-					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
-					"user": user.first_name,
-					'token': default_token_generator.make_token(user),
-					'protocol': 'http',
-					}
-					email = render_to_string(email_template_name, c)
-					try:
-						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
-					except BadHeaderError:
-						return HttpResponse('Invalid header found.')
-					return redirect ("/password_reset/done/")
-	password_reset_form = PasswordResetForm()
-	return render(request,"Customer/password_reset.html", context={"password_reset_form":password_reset_form})
+# def PasswordResetRequest(request):
+# 	if request.method == "POST":
+# 		password_reset_form = PasswordResetForm(request.POST)
+# 		if password_reset_form.is_valid():
+# 			data = password_reset_form.cleaned_data['email']
+# 			associated_users = User.objects.filter(Q(email=data))
+# 			if associated_users.exists():
+# 				for user in associated_users:
+# 					subject = "Password Reset Requested"
+# 					email_template_name = "Customer/password_reset_email.txt"
+# 					c = {
+# 					"email":user.email,
+# 					'domain':'127.0.0.1:8000',
+# 					'site_name': 'Website',
+# 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
+# 					"user": user.first_name,
+# 					'token': default_token_generator.make_token(user),
+# 					'protocol': 'http',
+# 					}
+# 					email = render_to_string(email_template_name, c)
+# 					try:
+# 						send_mail(subject, email, 'prudencediby@gmail.com' , [user.email], fail_silently=False)
+# 					except BadHeaderError:
+# 						return HttpResponse('Invalid header found.')
+# 					return redirect ("/password_reset/done/")
+# 	password_reset_form = PasswordResetForm()
+# 	return render(request,"Customer/password_reset.html", context={"password_reset_form":password_reset_form})
 
 
 
