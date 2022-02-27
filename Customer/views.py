@@ -196,6 +196,26 @@ def NoAccess(request):
     return render(request,'Customer/No_access.html',context)
 
 
+
+def csrf_failure(request,reason=" no token"):
+    
+    #Table Number
+    table = get_table_number(request)
+    if table == None:
+        pass
+    
+    #Tracking user session
+    targetApp = target_app(request)
+    session = track_session(request)
+    
+    context={
+        'session':session,
+        'app':targetApp
+    }
+    
+    return render(request,'csrf_token_error.html',context)
+
+
 # def PasswordResetRequest(request):
 # 	if request.method == "POST":
 # 		password_reset_form = PasswordResetForm(request.POST)
