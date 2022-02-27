@@ -44,6 +44,7 @@ def Login(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
+            print("USERNAME",username)
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
@@ -109,8 +110,8 @@ def RegisterCustomer(request):
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
-            cust_log_email = form.cleaned_data.get('username')
-            cust_log_email = cust_log_email.lower()
+            cust_log_email = form.cleaned_data.get('username').lower()
+            print("USERNAME",cust_log_email)
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
             cust_phone = form.cleaned_data.get('phone_number')
@@ -118,7 +119,10 @@ def RegisterCustomer(request):
            
             # 'pousdylan33@gmail.com'
             
-            if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com']):
+            if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com','kaxharel@gmail.com','felinspiritual508@gmail.com',
+                                   'zeynabfdg02@gmail.com','sostheneange@gmail.com','wogninroger86@gmail.com','ohachosimjennifer@gmail.com',
+                                   'htehua07@gmail.com','rickysilencieux@gmail.com','sinoussouc@gmail.com','tkfatim@gmail.com','bakayokohassan112@gmail.com',
+                                   'cedric.acho@gmail.com','yedofficiel@gmail.com','yannis_kodjo@yahoo.com','cyrayacine@gmail.com']):
                 form.save()
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
@@ -151,7 +155,7 @@ def RegisterCustomer(request):
                 messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
                 return HttpResponseRedirect(f'/login/?register=true&session={targetApp}')
         else:
-            messages.warning(request,f"Les deux champs de mot de passe ne correspondaient pas")
+            messages.warning(request,f"Les deux champs de mot de passe ne correspondent pas")
             
     else:
         form = CustomerForm()

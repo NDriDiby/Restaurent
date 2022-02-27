@@ -64,7 +64,6 @@ def HomePage(request):
         # cust.phone = phone
         cust.save()
         
-        print("THIS MY PHONE NUMBER",cust.phone)
         
         
     

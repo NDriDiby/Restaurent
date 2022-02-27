@@ -14,8 +14,9 @@ from django.contrib.auth import get_user_model
 
 class CustomerForm(UserCreationForm):
    nom = forms.CharField(label = 'Nom')
-   prenom = forms.CharField(label = 'Prenom')
+   prenom = forms.CharField(label = 'Prenom',help_text='Checking')
    phone_number = forms.CharField(label = 'Phone Number')
+   
    
    class Meta:
     model = User
