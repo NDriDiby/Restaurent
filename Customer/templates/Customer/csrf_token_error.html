@@ -11,8 +11,23 @@
 
     <h4 class="mt-3 p-3" style="color: black; text-align: center">Votre session a expiré. Veuillez vous reconnecter.</h4>
 
-    <div style="text-align: center">
-      <small class="text-muted">Vous avez déjà un compte? <a class="ml-2" href="/login/?session={{app}}"> Connection </a> </small>
+    <div class="border-top pt-4" style="text-align: center">
+      <small class="text-muted">
+        <a
+          class="btn btn-success mb-3"
+          href="/login/?session={{app}}"
+          style="
+            background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
+            text-decoration: none;
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 20px;
+            font-weight: bold;
+          "
+        >
+          Connexion
+        </a>
+      </small>
     </div>
   </div>
 </div>

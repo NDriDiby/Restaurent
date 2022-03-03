@@ -35,7 +35,8 @@
                 <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
                     {% if message.tags == 'success' %}
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="{{message.tags}}:"><use xlink:href="#check-circle-fill"/></svg> {{message}} {% else %}
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} {% endif %}
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} 
+                    {% endif %}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 {% endfor %}
