@@ -140,8 +140,8 @@ def RegisterCustomer(request):
                 newline = "\n"
                 #send email after registration
                 send_mail("Bienvenue sur Icarus",
-                          f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes tres heureux de vous compter parmis nos utilisateurs.\
-                          {newline}{newline} Meilleurs Salutations.{newline}Nova Cloud AI Team",
+                          f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes très heureux de vous compter parmis nos utilisateurs.\
+                          {newline}{newline}Meilleurs Salutations.{newline}Nova Cloud Team",
                           settings.EMAIL_HOST_USER,
                           [cust_log_email],fail_silently=False,)
                 
