@@ -113,6 +113,7 @@ def RegisterCustomer(request):
         form = CustomerForm(request.POST or None)
         print(form.errors)
         
+        
         if 'ndiby65@gmail.com' in testeur:
             print("YES")
         
@@ -139,7 +140,7 @@ def RegisterCustomer(request):
                 newline = "\n"
                 #send email after registration
                 send_mail("Bienvenue sur Icarus",
-                          f"Salut {cust_first_name},{newline}{newline}Merci d'utiliser notre service. Nous sommes heureux de vous compter parmis nos utilisateurs.",
+                          f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes heureux de vous compter parmis nos utilisateurs.",
                           settings.EMAIL_HOST_USER,
                           [cust_log_email],fail_silently=False,)
                 
@@ -150,10 +151,6 @@ def RegisterCustomer(request):
             elif (cust_log_email not in testeur): #retrict access
                 return HttpResponseRedirect(f'/noaccess/')
             
-                
-        else:
-            #messages.warning(request,f"Les deux champs de mot de passe ne correspondent pas")
-            messages.warning(request,form.errors)
             
             
     else:

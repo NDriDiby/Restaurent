@@ -15,31 +15,41 @@ from django.core.exceptions import ValidationError
 
 
 class CustomerForm(UserCreationForm):
+   
+   
+   
    nom = forms.CharField(label = 'Nom')
    prenom = forms.CharField(label = 'Prenom')
    phone_number = forms.CharField(label = 'Phone Number')
    
+   
    class Meta:
     model = User
     fields = ['username','phone_number','nom','prenom']
+
+    labels = {
+            'username': _('Email'),
+         }
+    error_messages={
+       'phone_number':{
+          'required': _("You need an email bro")
+       }
+    }
     
     
     
-    
-   
-    
-   # def clean_username(self):
-   #    email = self.cleaned_data.get('username')
-   #    allUser= User.objects.values_list('username',flat=True)
+   def clean_username(self):
+      email = self.cleaned_data.get('username')
+      allUser= User.objects.values_list('username',flat=True)
       
-   #    # self._errors["Email"] = self._errors.get("username", self.error_class())
-   #    # self._errors["Email"].append("This is my error Message")
       
-   #    if email in allUser:
-   #       # self._errors['Email'] = self.error_class([
-   #       #        'Minimum 5 characters required'])
-   #       raise forms.ValidationError(f"{email} exist deja. Veuillez choisir une autre addresse email.")
-   #    return email
+      if email in allUser:
+         raise forms.ValidationError(f"{email} exist deja. Veuillez choisir une autre addresse e-mail.")
+      
+      elif "@" not in email:
+         raise forms.ValidationError(f"Veillez entrez une adresse e-mail valide.")
+      
+      return email
    
    def clean_password2(self):
       
@@ -59,7 +69,7 @@ class CustomerForm(UserCreationForm):
       
       if not phone.startswith("+225"):
          print(phone)
-         raise forms.ValidationError("Veiller entrer votre numero de telephone avec +255")
+         raise forms.ValidationError("Veillez entrer votre numero de telephone avec +225")
       return phone
       
     

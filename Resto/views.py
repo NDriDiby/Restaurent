@@ -65,11 +65,9 @@ def HomePage(request):
         cust.save()
         
         
-        
-    
         #Show order to customer
         order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table, date_ordered__date = today).last()
-        
+
         
 
     context = {

@@ -25,18 +25,23 @@
   </div>
 
   <div class="two">
+    <div class="message p-2" style="color: brown">{{form.username.errors}}</div>
+
     <i class="fas fa-envelope"></i>
-    <label style="padding-right: 225px" for="username">Email</label><br />
+    <label style="padding-right: 225px" for="username">{{form.username.label}}</label><br />
     <input type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
   </div>
 
   <div class="two">
+    <div class="message p-2" style="color: brown">{{form.phone_number.errors}}</div>
+
     <i class="fas fa-phone-square-alt"></i>
     <label style="padding-right: 100px" for="phone_number">Numéro de téléphone</label><br />
-    <input type="text" placeholder="Tapez votre numéro de téléphone" {{form.phone_number}} <br />
+    <input type="text" placeholder="+225" {{form.phone_number}} <br />
   </div>
 
   <div class="two">
+    <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
     <i class="fas fa-lock"></i>
     <label style="padding-right: 163px" for="Password1">Mot de passe</label><br />
     <input type="password" placeholder="Tapez votre mot de passe" {{form.password1}} <br />
