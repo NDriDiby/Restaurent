@@ -43,6 +43,10 @@ def HomePage(request):
     if table == None:
         pass
     
+    # phone = request.GET.get('phone')
+    # if phone == None:
+    #     pass
+    
     #Track user
     session = track_session(request)
     targetApp = target_app(request) #session=bakerys/?table=x
@@ -57,16 +61,13 @@ def HomePage(request):
         cust,created = Customer.objects.get_or_create(user =request.user)
         username = User.objects.get(id=request.user.id)
         cust.name = f'{username.first_name} {username.last_name}'
-        cust.phone = request.GET.get('phone')
+        # cust.phone = phone
         cust.save()
         
-        print("THIS MY PHONE NUMBER",cust.phone)
         
-        
-    
         #Show order to customer
         order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table, date_ordered__date = today).last()
-        
+
         
 
     context = {
