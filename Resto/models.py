@@ -3,27 +3,16 @@ from ast import AugLoad
 from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
-from django.contrib.auth.models import Permission, User
-
-
-steak_choice = [('Rare','Rare'),
-                ('Medium','Medium'),
-                ('Medium Rare','Medium Rare'),
-                 ('Medium Well','Medium Well'),
-                ('Well Done','Well Done')]
-
-
-coca_cola_product = [('Coca-Cola','Coca-Cola'),
-                     ('Fanta','Fanta'),
-                     ('Sprite','Sprite')]
-
-
-assaisonement = [('Avec Piment','Avec Piment'),
-                 ('Sans Piment','Sans Piment')]
+from django.contrib.auth.models import AbstractUser,User,AbstractBaseUser,BaseUserManager,PermissionsMixin
+# from django.utils.translation import ugettext, ugettext_lazy as _
+from django.conf import settings
 
 
 
-# Create your models here.
+
+    
+
+#Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
@@ -42,9 +31,13 @@ class Customer(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
+    phone = models.CharField(max_length=10,null=True, blank=True,default=1)
+    
 
     def __str__(self):
         return self.name
+    
+    
 
 
 
@@ -94,7 +87,7 @@ class Order(models.Model):
     complete = models.BooleanField(default=False,null=True,blank=False)
     status = models.CharField(max_length=20,default = 'Pending')
     date_ordered = models.DateTimeField(auto_now=True)
-    date_completed = models.DateTimeField(auto_now=True)
+    date_completed = models.DateTimeField(auto_now_add=True)
     table = models.IntegerField(default=1)
     note = models.TextField(blank=True,max_length=50)
 
@@ -102,7 +95,7 @@ class Order(models.Model):
         permissions = (("can view orders"))
 
     def __str__(self):
-        return str(self.customer.name)
+        return str(self.customer)
 
     #Total value of cart
     def get_order_total(self):

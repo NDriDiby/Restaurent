@@ -14,3 +14,5 @@ urlpatterns = [
     path('texasgrillz/inventory/',views.IventorySystem, name='inventory-texasgrillz'),
 
 ]
+
+

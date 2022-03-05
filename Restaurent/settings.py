@@ -33,15 +33,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
+
+# CSRF_COOKIE_DOMAIN =['novacloudlab.com']
+
+CSRF_FAILURE_VIEW = 'Customer.views.csrf_failure'
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'Resto.apps.RestoConfig',
-    'Customer.apps.CustomerConfig',
-    'Bakerys.apps.BakerysConfig',
+    'Resto.apps.RestoConfig', #TexasGrillz
+    'Customer.apps.CustomerConfig', #Customer
+    'Bakerys.apps.BakerysConfig', #Bakerys
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'storages',
-    'django_extensions',
+    # 'django_extensions',
+    'django.contrib.humanize',
+   
 
 ]
 
@@ -90,17 +96,17 @@ WSGI_APPLICATION = 'Restaurent.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-#DATA BASE - PRODUCTION 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
-#         'USER': 'yvlsowwfcscpsj', # The username from 1.6
-#         'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
-#         'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com', # Host name/address from 1.6,
-#         'PORT': '5432' # Port from 1.6
-#     }
-# }
+# #DATA BASE - PRODUCTION 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
+        'USER': 'yvlsowwfcscpsj', # The username from 1.6
+        'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
+        'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com', # Host name/address from 1.6,
+        'PORT': '5432' # Port from 1.6
+    }
+}
 
 #DATA BASE - DEVELOPMENT
 DATABASES = {
@@ -158,50 +164,48 @@ USE_TZ = True
 LOGIN_URL = 'login'
 
 
-# # AWS S3 SETTINGS  - STORAGE PRODUCTION
+# AWS S3 SETTINGS  - STORAGE PRODUCTION
 
-# AWS_ACCESS_KEY_ID = 'AKIAT454HLON6TTI5DZF'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_STORAGE_BUCKET_NAME = 'icarus-restaurant'
-# AWS_URL='https://icarus-restaurant.s3.amazonaws.com/'
+AWS_ACCESS_KEY_ID = 'AKIAT454HLON6TTI5DZF'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'icarus-restaurant'
+AWS_URL='https://icarus-restaurant.s3.amazonaws.com/'
 
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
-# AWS_DEFAULT_ACL = None
-# AWS_S3_REGION_NAME = 'us-east-2'
-# AWS_S3_SIGNATURE_VERSION = 's3v4'
-
-
-
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
-
-# STATIC_URL = AWS_URL + 'static/'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# MEDIA_URL = AWS_URL + '/media/'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_DEFAULT_ACL = None
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 
-#STORAGE - DEVELOPMENT
-STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
-STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
-   ]
+    os.path.join(BASE_DIR, 'Resto/static'),
+]
+
+STATIC_URL = AWS_URL + 'static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = AWS_URL + '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+# #STORAGE - DEVELOPMENT
+# STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
+# STATIC_URL = 'static/'
+
+# STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, "Resto/static"),
+#    ]
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
-#MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-
-
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
@@ -210,6 +214,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Email Auth
+AUTHENTICATION_BACKENDS =['Customer.EmailAuth.EmailAuthBackend']
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'prudencediby@gmail.com'
+EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
+
+
 
 
 

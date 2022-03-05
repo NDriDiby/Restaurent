@@ -64,11 +64,13 @@
     <div class="container">
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
-                <div class="col-4 pt-1">
-                    <a class="form" href="#" style='text-decoration: none; font-size:28px;color:seashell;font-family:BlinkMacSystemFont'>{{request.user.username}}</a>
+                {% if user.is_authenticated  %}
+                <div class="col-4 pt-1 d-flex justify-content-none">
+                    <a class="form" href="#" style='text-align:center;text-decoration: none; border-radius:5px; padding:7px 3px 7px 3px; font-size:15px;color:seashell;font-family:BlinkMacSystemFont'>{{request.user.first_name}} {{request.user.last_name}}</a>
                 </div>
+                {% endif %}
                 <div class="col text-center">
-                    <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 80px; object-fit: scale-down;image-rendering: auto;
+                    <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 80px;  object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;">
                     <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
                 </div>

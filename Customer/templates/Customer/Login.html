@@ -1,34 +1,65 @@
-{% extends 'Customer/base_login.html' %} {% load static %}{% block content %} {% load crispy_forms_tags %}
+{% extends "Customer/base_login.html" %}{% load static %} {% load crispy_forms_tags %}{% block content %}
 
-<div class="container">
-  <div class="product" style="text-align: center">
-    <h4 style="color: sandybrown">
-      Icarus
-      <small class="text-muted"
-        ><i> <strong> Bar & Restaurant</strong> </i></small
-      >
-    </h4>
-    <small class="text-muted">Welcome back, we're happy to serve you.</small>
+<h4 class="mt-2" style="color: sandybrown">
+  Icarus
+  <small class="text-muted"
+    ><i> <strong> Bar & Restaurant</strong> </i></small
+  >
+</h4>
 
-    <div class="input-fields mt-5">
-      <form method="POST" style="text-align: center" novalidate>
-        {% csrf_token %}
-        <fieldset class="form-group mt-2">
-          <legend class="border-bottom mb-lg-5;" style="text-align: center">Connexion</legend>
+<small class="text-muted" style="padding-left: 10px">Merci d'utiliser notre service.</small>
 
-          {{form.username|as_crispy_field}}
-          <br />
-          {{form.password|as_crispy_field}}
-        </fieldset>
-        <div class="mt-5"><button type="submit" class="ghost-round full-width">Connect</button></div>
+<h1>Connexion</h1>
 
-        <div style="text-align: center" class="mx-5">
-          <small><a href="#">Lost password?</a></small
-          ><br />
-          <small class="text-muted">Join Today! <a class="ml-2" href="/register/?session={{app}}"> Sign up </a> </small>
-        </div>
-      </form>
-    </div>
+<form method="POST" id="login">
+  {% csrf_token %}
+  <div class="one">
+    <i class="fas fa-envelope"></i>
+    <label style="padding-right: 225px" for="Email">Email</label><br />
+    <input type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
   </div>
-</div>
+  <div class="two">
+    <i class="fas fa-lock"></i>
+    <label style="padding-right: 165px" for="Password">Mot de passe</label><br />
+    <input type="password" placeholder="Tapez votre mot de passe" {{form.password}}<br />
+  </div>
+
+  <a href="{% url 'password_reset' %}"><p id="forget">Mot de passe oublié?</p></a>
+
+  <button type="submit">Connexion</button>
+
+  <!-- <div class="middle">
+            <p>Or Sign Up Using</p>
+            <div class="icons">
+                <a href="google.com"><i class="fab fa-facebook"></i></a>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-google"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-linkedin"></i>
+            </div>
+        </div>  -->
+
+  <div>
+    <p class="mt-3">Rejoignez Icarus aujourd'hui!</p>
+    <br />
+    <small class="text-muted">
+      <a
+        class="btn btn-success mb-2"
+        href="/register/?session={{app}}"
+        style="
+          background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
+          text-decoration: none;
+          margin-right: 10px;
+          padding: 5px;
+          border-radius: 20px;
+          font-weight: bold;
+        "
+      >
+        S'inscrire
+      </a>
+    </small>
+    {% comment %} <span id="span"><a class="ml-2" style="text-decoration: none; color: white" href="/register/?session={{app}}">Register</a></span> {% endcomment %}
+  </div>
+</form>
+
 {% endblock content %}

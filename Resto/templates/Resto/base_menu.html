@@ -39,8 +39,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/main.css' %}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="shortcut icon" href="{% static 'Resto/favicon.ico' %}" />
 
     <!-- Custom styles for this template -->
@@ -57,7 +57,7 @@
                     <a class="btn btn-sm btn-outline-secondary " href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
                 </div>
 
-                <div class="col-4 text-center">
+                <div class="col-4 text-center" id="heading_logo">
                     <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 100px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;">
                     <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
@@ -84,15 +84,12 @@
                     <p style="color:skyblue;font-size: large; ">Cuisine</p>
                 </a>
                 {% endif %}
-
-
             </nav>
         </div>
 
 
         <main role="main " class="container ">
-            <div class="row ">
-
+            <div class="row">
 
                 {% block content %} {% endblock content %}
             </div>

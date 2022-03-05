@@ -3,10 +3,11 @@ from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
                     ItemChoiceCategory,IventoryItemCategory,IventoryItem)
 
+
 # Register your models here.
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('user','name','email')
+    list_display = ('user','name','email','phone')
 admin.site.register(Customer,CustomerAdmin)
 
 
@@ -46,3 +47,5 @@ admin.site.register(IventoryItemCategory,IventoryItemCategoryAdmin)
 class IventoryItemAdmin(admin.ModelAdmin):
     list_display = ('name','prix','quantity' ,'category','description','date_created')
 admin.site.register(IventoryItem,IventoryItemAdmin)
+
+

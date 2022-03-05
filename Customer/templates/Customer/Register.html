@@ -1,40 +1,63 @@
- {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
+{% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
 
+<h4 class="mt-2" style="color: sandybrown">
+  Icarus
+  <small class="text-muted"
+    ><i> <strong> Bar & Restaurant</strong> </i></small
+  >
+</h4>
 
- <div class = 'container'>
+<small class="text-muted" style="padding-left: 10px">Nous avons presque terminé. Avant d'utiliser nos services, vous devez créer un compte.</small>
 
-  <div class = 'product' style = 'text-align:center'>
+<form method="POST" class="mt-5">
+  {% csrf_token %}
 
-        <h4 style='color:sandybrown'> Icarus <small class='text-muted' ><i> <strong> Restaurant</strong> </i></small></h4>
-        <small class='text-muted' >We're almost done.Before using our services you need to create an account.</small> 
+  <div class="one">
+    <i class="fas fa-user-circle"></i>
+    <label style="padding-right: 230px" for="Email">Nom</label><br />
+    <input type="text" placeholder="Tapez votre nom de famille" {{form.nom}} <br />
+  </div>
 
-    <form method='POST' class = 'mt-5' novalidate>
-        {% csrf_token %}
-       
-        <fieldset class='form-group ' style='text-align:center'>
-            <legend class='border-bottom mb-lg-5;' style="text-align:center ;">Join Today</legend>
-            {{form.username|as_crispy_field}}
-            <br>
-            {{form.nom|as_crispy_field}}<br>
-            {{form.prenom|as_crispy_field}}<br>
-            {{form.email|as_crispy_field}}<br> 
-            {{form.phone_number|as_crispy_field}}<br>
-            {{form.password1|as_crispy_field}}<br>
-            {{form.password2|as_crispy_field}}
-        </fieldset> 
+  <div class="two">
+    <i class="fas fa-user-circle"></i>
+    <label style="padding-right: 210px" for="Password">Prenom</label><br />
+    <input type="text" placeholder="Tapez votre prénom" {{form.prenom}} <br />
+  </div>
 
-        <div class='form-group mt-5'>
-            <button type="submit" class='ghost-round full-width'> Sign up</button>
-        </div>
+  <div class="two">
+    <div class="message p-2" style="color: brown">{{form.username.errors}}</div>
 
-        <div class='border-top pt-3' style='text-align:center'>
+    <i class="fas fa-envelope"></i>
+    <label style="padding-right: 225px" for="username">{{form.username.label}}</label><br />
+    <input type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
+  </div>
 
-            <small class='text-muted'>Already Have An Account? <a class = 'ml-2' href="/login/?session={{app}}"> Sign in </a>
-                             </small>
-        </div>
-    </form>
-</div>
-</div>
-</div>
-</div>
+  <div class="two">
+    <div class="message p-2" style="color: brown">{{form.phone_number.errors}}</div>
+
+    <i class="fas fa-phone-square-alt"></i>
+    <label style="padding-right: 100px" for="phone_number">Numéro de téléphone</label><br />
+    <input type="text" placeholder="+225" {{form.phone_number}} <br />
+  </div>
+
+  <div class="two">
+    <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
+    <i class="fas fa-lock"></i>
+    <label style="padding-right: 163px" for="Password1">Mot de passe</label><br />
+    <input type="password" placeholder="Tapez votre mot de passe" {{form.password1}} <br />
+  </div>
+
+  <div class="two">
+    <i class="fas fa-lock"></i>
+    <label style="padding-right: 76px" for="Password2">Confirmez mot de passe</label><br />
+    <input type="password" placeholder="Confirmer votre mot de passe" {{form.password2}}
+  </div>
+
+  <button class="mt-2" type="submit">S'inscrire</button>
+
+  <div style="text-align: center">
+    <small class="text-muted">Vous avez déjà un compte? <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
+  </div>
+</form>
+
 {% endblock content %}

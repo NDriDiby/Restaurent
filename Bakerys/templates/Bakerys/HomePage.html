@@ -1,5 +1,4 @@
-{% extends "Bakerys/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %}
-{% if order %}
+{% extends "Resto/base.html" %} {% block content %} {% load static %} {% load crispy_forms_tags %} {% if order %}
 
 <div class="showOrder mt-3">
   <div class="spinner-grow text-muted"></div>
@@ -11,58 +10,37 @@
   <div class="spinner-grow text-secondary"></div>
 
   <div class="mt-4">
-    <h6>My Order - ({{order.date_ordered}})</h6>
+    <h6 style="color: rgb(209, 112, 131)">My Order - ({{order.date_ordered}})</h6>
     <h6>Reference ID: <small>{{order.transaction_id}}</small></h6>
-
     <h6>Table: {{order.table}}</h6>
-    <h6>Total: {{order.get_order_total}} F</h6>
-    {% for order in order.orderitembakerys_set.all%}
-    <h5 style="color: darkseagreen">* {{order}} ({{order.quantity}})</h5>
+    <h6>Total: {{order.get_order_total}} FCFA</h6>
+    {% for order in order.orderitem_set.all%}
+    <h6 style="color: darkseagreen">* {{order}} ({{order.quantity}})</h6>
+    <p style="color: black">{{order.ingredient}}</p>
+    {% endfor %}
   </div>
-
-  {% endfor %} {% if order.note != ' ' %}
-  <small>Note: {{order.note}}</small> {% endif %}
-
-  <!-- <small class='muted-text'>*Disapeard when order is completed</small> -->
   {% endif %}
 </div>
 
 <div class="main-container">
   <div class="heading">
     <!-- <h1 class="heading__title">Texas GrillZ Menu</h1> -->
-    <img
-      class="mt-3"
-      src="{% static 'Resto/Bakerys Logo.JPG' %}"
-      style="
-        width: 300px;
-        height: 300px;
-        object-fit: scale-down;
-        image-rendering: auto;
-        flex: auto;
-        text-align: center;
-      "
-    />
-    <h1 class="heading__title">Menu</h1>
+    <img class="mt-3" src="{% static 'Resto/Bakerys Logo.JPG' %}" style="width: 200px; height: 200px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center" />
+    <h1 class="heading__title mt-2">Menu</h1>
   </div>
-  <div class="cards mt-5">
+  <div class="cards mt-1">
     {% for cat in category %}
-    <a href="/bakerys/menudetails/{{cat.cat_id}}/?session={{app}}" style="text-decoration: none">
-      <div class="card card-{{cat.cat_id}}">
-        <div style="text-align: center" class="mt-3">
+    <a href="/texasgrillz/menudetails/{{cat.cat_id}}/?session={{app}}" style="text-decoration: none">
+      <div class="card">
+        <div class="card card-6" style="text-align: center">
           <img
+            style="padding-bottom: 0px; margin: 0px; width: 250px; height: 250px; object-fit: cover; image-rendering: auto; text-align: center; border-radius: 5%"
             src="{{cat.img.url}}"
-            alt="{{i.name}}"
-            style="
-              width: 300px;
-              height: 300px;
-              object-fit: scale-down;
-              image-rendering: auto;
-              text-align: center;
-            "
+            alt="{{cat.name}}"
           />
+          <h2 class="card__title" style="margin: 0px; padding-bottom: 0px; text-align: center">{{cat.name}}</h2>
+          <p class="card-text" style="text-align: center; color: black"><strong>{{cat.description}}</strong></p>
         </div>
-        <h2 class="card__title" style="text-align: center">{{cat.name}}</h2>
-        <p class="card-text" style="text-align: center">{{cat.description}}</p>
       </div>
       {% endfor %}
     </a>

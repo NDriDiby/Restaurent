@@ -1,10 +1,8 @@
-{% extends "Bakerys/base_checkout.html" %} {% block content %} {% load static %}
+{% extends "Resto/base_checkout.html" %} {% block content %} {% load static %}
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
   <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-    <path
-      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-    />
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
   </symbol>
   <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
     <path
@@ -23,21 +21,15 @@
     <div class="basket">
       <div class="basket-module mb-3">
         <label for="promo-code">Enter a promotional code</label>
-        <input
-          id="promo-code"
-          type="text"
-          name="promo-code"
-          maxlength="5"
-          class="promo-code-field"
-        />
+        <input id="promo-code" type="text" name="promo-code" maxlength="5" class="promo-code-field" />
         <button class="promo-code-cta">Apply</button>
       </div>
 
       <div class="basket-labels">
         <ul>
           <li class="item item-heading">Item</li>
-          <li class="price">Prix</li>
-          <li class="quantity">Quantité</li>
+          <li class="price">Price</li>
+          <li class="quantity">Quantity</li>
           <li class="subtotal">Subtotal</li>
         </ul>
       </div>
@@ -49,25 +41,18 @@
           </div>
           <div class="product-details">
             <p>
-              <strong
-                ><span class="item-quantity">{{item.quantity}}</span>-{{item.item.name}}</strong
-              >
+              <strong><span class="item-quantity">{{item.quantity}}</span>-{{item.item.name}}</strong>
             </p>
             <h1><strong>{{item.item.description}}</strong></h1>
+            {% if item.ingredient %}
+            <h1 class="mt-1" style="color: rgb(209, 112, 131)"><strong>{{item.ingredient}}</strong></h1>
+            {% endif %}
           </div>
         </div>
         <div class="price">{{item.item.prix}} FCFA</div>
         <div class="quantity">
-          <i
-            data-product="{{item.item.id}}"
-            data-action="add"
-            class="fas fa-caret-square-up update-cartBakerys"
-          ></i>
-          <i
-            data-product="{{item.item.id}}"
-            data-action="remove"
-            class="fas fa-caret-square-down update-cartBakerys"
-          ></i>
+          <i data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
+          <i data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
           <br />
           <input value="{{item.quantity}}" class="quantity-field" name="quantity" />
         </div>
@@ -75,11 +60,7 @@
         <form method="POST">
           {% csrf_token %}
           <div>
-            <a
-              class="btn btn-outline-danger mt-2"
-              href="/bakerys/deleteorder/{{item.id}}/?session={{app}}"
-              >Supprimer</a
-            >
+            <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{item.id}}/?session={{app}}">Supprimer</a>
           </div>
         </form>
       </div>
@@ -89,58 +70,41 @@
 
     <aside>
       <div class="summary">
-        <div class="summary-total-items">
-          <span class="total-items"></span> Items in your Bag ({{cart_quantity}})
-        </div>
+        <div class="summary-total-items"><span class="total-items"></span> Items in your Bag ({{cart_quantity}})</div>
         <div class="summary-subtotal">
           <div class="subtotal-title">Subtotal</div>
-          <div class="subtotal-value final-value" id="basket-subtotal">
-            {{order.get_order_total}} FCFA
-          </div>
+          <div class="subtotal-value final-value" id="basket-subtotal">{{order.get_order_total}} FCFA</div>
           <div class="summary-promo hide">
             <div class="promo-title">Promotion</div>
             <div class="promo-value final-value" id="basket-promo"></div>
           </div>
         </div>
 
-        <!-- mode de payment -->
-        <!-- <div class="summary-delivery">
-                    <select name="delivery-collection" class="summary-delivery-selection">
-                  <option value="0" selected="selected">Payment</option>
-                 <option value="collection">Cash</option>
-                 <option value="first-class">Orange Money</option>
-                 <option value="second-class">Wave</option>
-                 <option value="signed-for">Visa Card</option>
-              </select>
-                </div> -->
+        <!-- mode de payment
+        <div class="summary-delivery">
+          <select name="delivery-collection" class="summary-delivery-selection">
+            <option value="0" selected="selected">Payment</option>
+            <option value="collection">Cash</option>
+            <option value="first-class">Orange Money</option>
+            <option value="second-class">Wave</option>
+            <option value="signed-for">Visa Card</option>
+          </select>
+        </div> -->
 
         <div class="summary-total">
           <div class="total-title">Total</div>
-          <div class="total-value final-value" id="basket-total">
-            {{order.get_order_total}} FCFA
-          </div>
-
+          <div class="total-value final-value" id="basket-total">{{order.get_order_total}} FCFA</div>
           <form id="confirm_order" method="POST" class="mt-3">
             {% csrf_token %}
 
-            <div style="text-align: center">
-              <label for="w3review">Additional Note:</label>
-              <textarea id="customer_note" type="text" name="cust_note"> </textarea>
+            <div class="send_order">
+              <button type="submit" data-action="sent" data-order="{{order.id}}" class="btn btn-outline-success add-btn mt-3 send-order" name="order" value="{{order.id}}">Envoyer A La Cuisine</button>
             </div>
-
-            <button
-              style="text-align: center"
-              type="submit"
-              data-action="sent"
-              data-order="{{order.id}}"
-              class="btn btn-outline-success add-btn mt-3 send-orderBakerys"
-            >
-              Envoyer A La Cuisine
-            </button>
           </form>
         </div>
       </div>
     </aside>
   </main>
 </div>
+
 {% endblock content %}
