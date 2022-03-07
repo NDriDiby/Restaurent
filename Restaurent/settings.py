@@ -184,7 +184,7 @@ AWS_S3_SIGNATURE_VERSION = 's3v4'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'Resto/static'),
 ]
 
 STATIC_URL = AWS_URL + 'static/'
