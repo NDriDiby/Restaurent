@@ -200,7 +200,7 @@ STATICFILES_FINDERS = (
 
 # #STORAGE - DEVELOPMENT
 #STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
-# STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, "Resto/static"),
