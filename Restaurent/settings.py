@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
 
@@ -187,6 +187,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Resto/static'),
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 STATIC_URL = AWS_URL + 'static/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = AWS_URL + '/media/'
@@ -212,7 +214,7 @@ STATIC_URL = '/static/'
 
 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 
 
@@ -239,5 +241,5 @@ EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 
 import django_heroku
-django_heroku.settings(locals())
+django_heroku.settings(locals(),staticfiles=False)
 
