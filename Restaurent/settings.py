@@ -182,6 +182,7 @@ AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Resto/static'),
 ]
@@ -191,6 +192,11 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = AWS_URL + '/media/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
 
 # #STORAGE - DEVELOPMENT
 #STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
