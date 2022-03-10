@@ -16,8 +16,7 @@ from django.core.exceptions import ValidationError
 
 class CustomerForm(UserCreationForm):
    
-   
-   
+
    nom = forms.CharField(label = 'Nom')
    prenom = forms.CharField(label = 'Prenom')
    phone_number = forms.CharField(label = 'Phone Number')
@@ -86,6 +85,13 @@ class AddProducts(forms.ModelForm):
    class Meta:
       model = IventoryItem
       exclude = ['date_created','description']
+      
+
+class AddItem(forms.ModelForm):
+   
+   class Meta:
+      model = Item
+      exclude = ['itm_id']
       
    
 

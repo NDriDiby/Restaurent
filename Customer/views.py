@@ -122,7 +122,8 @@ def RegisterCustomer(request):
                                    'zeynabfdg02@gmail.com','sostheneange@gmail.com','wogninroger86@gmail.com','ohachosimjennifer@gmail.com',
                                    'htehua07@gmail.com','rickysilencieux@gmail.com','sinoussouc@gmail.com','tkfatim@gmail.com','bakayokohassan112@gmail.com',
                                    'cedric.acho@gmail.com','yedofficiel@gmail.com','yannis_kodjo@yahoo.com','cyrayacine@gmail.com','seydinaibrahim16@gmail.com',
-                                   'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr']):
+                                   'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr','frejusmactaylor@gmail.com','juliediby@yahoo.fr',
+                                   'juniorsoulama@yahho.fr']):
                 form.save() #User created 
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name

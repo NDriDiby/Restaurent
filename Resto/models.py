@@ -8,10 +8,6 @@ from django.contrib.auth.models import AbstractUser,User,AbstractBaseUser,BaseUs
 from django.conf import settings
 
 
-
-
-    
-
 #Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
@@ -38,9 +34,6 @@ class Customer(models.Model):
         return self.name
     
     
-
-
-
 class Item(models.Model):
     itm_id = models.IntegerField()
     name = models.CharField(max_length = 150)

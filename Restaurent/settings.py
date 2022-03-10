@@ -187,7 +187,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Resto/static'),
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = AWS_URL + 'static/'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -201,12 +201,12 @@ STATICFILES_FINDERS = (
 )
 
 # #STORAGE - DEVELOPMENT
-#STATIC_ROOT = os.path.join(BASE_DIR, 'Resto/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, "Resto/static"),
-#    ]
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, "Resto/static"),
+   ]
 
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

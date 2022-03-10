@@ -4,7 +4,7 @@ from django.test import ignore_warnings
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm,AddProducts
+from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app
@@ -107,9 +107,19 @@ def MenuDetails(request,menu_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             
+            print('My next order',order.date_ordered)
+            current_time = timezone.localtime(timezone.now())
+            if (order.date_ordered < current_time):
+                time_diff = (current_time - order.date_ordered)
+                print('it is been',round(time_diff.seconds/60))
+                if ((time_diff.seconds/60) >= 10):
+                    order.delete()
+                    print("ORDER DELETED")
+            
         except:
             pass
-            
+        
+        
     
     context = {
         'menu':menu,
@@ -175,15 +185,8 @@ def ItemDetails(request,item_id):
             
             if request.method == 'POST':
                 order_table = request.POST.get('item')
-                order_item_id = request.POST.get('orderItemId')
-                ingre = request.POST.get('ingredient')
-                saiss = request.POST.get('assaisonement')
-                cuiss = request.POST.get('cuisson')
-                choice = ingre,saiss,cuiss
                 
-            
                 
-              
                 myitem = Item.objects.get(id=order_table)
                 my_order_item = OrderItem.objects.filter(order= order, item = myitem)
                 tot_item = [sum(x.quantity for x in my_order_item)][0]
@@ -440,5 +443,28 @@ def IventorySystem(request):
     return render(request,'Resto/IventorySystem.html',context)
 
 
+def CuisineSettings(request):
+    
+    
+    categories = IventoryItemCategory.objects.all()
+    
+    if request.method == 'POST':
+        form = AddItem(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data.get('name')
+            category = form.cleaned_data.get('category')
+            #form.save()
+            messages.success(request,f'{product} added to your inventory')
+            return HttpResponseRedirect(f'/texasgrillz/inventory/')
+    else:
+        form = AddItem()
+
+    context = {
+        'categorie': categories,
+        'form':form
+    }
+    
+    
+    return render(request,'Resto/CuisineSettings.html',context)
 
 
