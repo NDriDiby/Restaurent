@@ -4,7 +4,7 @@ from django.test import ignore_warnings
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem
+from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app
@@ -444,24 +444,36 @@ def IventorySystem(request):
 
 
 def CuisineSettings(request):
-    
-    
     categories = IventoryItemCategory.objects.all()
     
     if request.method == 'POST':
-        form = AddItem(request.POST)
-        if form.is_valid():
-            product = form.cleaned_data.get('name')
-            category = form.cleaned_data.get('category')
-            #form.save()
-            messages.success(request,f'{product} added to your inventory')
-            return HttpResponseRedirect(f'/texasgrillz/inventory/')
+        
+        # form = AddItem(request.POST)
+        form_menu = AddMenu(request.POST)
+        
+        # if form.is_valid():
+        #     item = form.cleaned_data.get('name')
+        #     category = form.cleaned_data.get('category')
+        #     #form.save()
+        #     messages.success(request,f'{item} added to your cuisine')
+        #     return HttpResponseRedirect(f'/texasgrillz/settings/')
+            
+            
+        if form_menu.is_valid():
+            
+            menu = form_menu.cleaned_data.get('name')
+            messages.success(request,f'{menu} added to your menu')
+            print('MY MENU',menu)
+            return HttpResponseRedirect(f'/texasgrillz/settings/')
+    
     else:
-        form = AddItem()
+        # form = AddItem()
+        form_menu = AddMenu()
 
     context = {
         'categorie': categories,
-        'form':form
+        # 'form':form,
+        'form_menu':form_menu
     }
     
     
