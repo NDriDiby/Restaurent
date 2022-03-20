@@ -49,6 +49,22 @@
     {% endif %} 
   </div>
 
+  <script>
+
+
+  var sendOrder = document.getElementsByClassName("send-order");
+// var cust_note = document.getElementById("customer_note");
+
+for (let i = 0; i < sendOrder.length; i++) {
+  sendOrder[i].addEventListener("click", function () {
+    var action = this.dataset.action;
+    var order = this.dataset.order;
+    console.log("sendOrder.js");
+    console.log()
+  });
+}
+  </script>
+
  
 
 
@@ -85,6 +101,9 @@
      <h1 style='color:orange;text-align:center'>All orders have been completed</h1>
      {% endif %} 
   </div>
+
+
+  
 
 </div>
     {% endblock content %}

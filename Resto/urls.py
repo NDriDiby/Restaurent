@@ -13,6 +13,10 @@ urlpatterns = [
     path('texasgrillz/deleteorder/<item_id>/',views.DeleteOrder, name='delete_order-texasgrillz'),
     path('texasgrillz/inventory/',views.IventorySystem, name='inventory-texasgrillz'),
     path('texasgrillz/settings/',views.CuisineSettings, name='settings-texasgrillz'),
+    path('texasgrillz/GetOrderCuisine/',views.GetOrderCuisine, name='GetOrderCuisine'),
+    path('texasgrillz/CompletedOrder/',views.CompletedOrder, name='completed_order'),
+    path('texasgrillz/cuisineOptimize/', views.CuisineOptimize, name='cuisine-texasgrillz-optimize'),
+    
 
 ]
 

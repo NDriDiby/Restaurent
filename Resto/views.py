@@ -1,4 +1,5 @@
 import re
+from django.db import reset_queries
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
@@ -20,6 +21,9 @@ from django.db.models import Max,Sum
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.core.exceptions import PermissionDenied
+from django.core import serializers
+from django.forms.models import model_to_dict
  
 
  #App Name
@@ -64,6 +68,19 @@ def HomePage(request):
         # cust.phone = phone
         cust.save()
         
+        
+        #odd_even = Permission.objects.get(name='can_view_even_ids')
+        
+        if username.email == 'ndiby65@gmail.com':
+            if username.has_perm("resto.view_iventory_item"):
+                print("PERMISSONS")
+            elif username.has_perm("resto.view_order"):
+                print("I CAN SEE ORDERS")
+            else:
+                print('NO PERMISSIONS',username.email)
+        # return HttpResponseRedirect(f'/noaccess/')
+        else:
+            print("NOT ME",username.email)
         
         #Show order to customer
         order_sent = Order.objects.filter(customer=cust, status = 'Sent', table =table, date_ordered__date = today).last()
@@ -174,7 +191,6 @@ def ItemDetails(request,item_id):
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
             if len(pending_order) > 1:
-                print(pending_order)
                 pending_order.delete()
                 messages.warning(request,"Vous ne pouvez pas passer de commande sur plusieurs tables")
                 messages.success(request,f"Votre nouveau numéro de table est {table}")
@@ -304,7 +320,101 @@ def UpdatedItem(request):
         orderItem.delete()
 
     return JsonResponse(f'Item was {action}',safe=False)
+
+
+
+def GetOrderCuisine(request):
     
+    #Uncompleted Order
+    order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
+    #Uncompleted Order Item
+    item_selected = list()
+    for ord in range(0,len(order)):
+        item = order[ord].orderitem_set.all()
+        for i in range(0,len(item)): 
+            data = { 
+                    'order_id':item[i].order.id,
+                    'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+                    'item':item[i].item.name,
+                    'quantity':item[i].quantity,
+                    'ingredient':item[i].ingredient,
+                    }
+            item_selected.append(data)
+    
+    
+    #Completed order
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('-id')
+    #Completed order item
+    completed_order_item = list()
+    for ord in range(0,len(complete_order)):
+        item = complete_order[ord].orderitem_set.all()
+        for i in range(0,len(item)): 
+            data = { 
+                    'order_id':item[i].order.id,
+                    'order':complete_order[ord].customer.user.first_name +" "+ complete_order[ord].customer.user.last_name,
+                    'item':item[i].item.name,
+                    'quantity':item[i].quantity,
+                    'ingredient':item[i].ingredient,
+                    }
+            completed_order_item.append(data)
+    
+    total_uncompleted_order = {
+        'total_uncomplete' : order.count()
+    }
+    
+    total_completed_order = {
+        'total_complete' : complete_order.count()
+    }
+    
+    
+    return JsonResponse({"order":list(order.values()),
+                         'myorder':list(item_selected),
+                         'total_uncompleted_order':list(total_uncompleted_order.values()),
+                         'total_completed_order':list(total_completed_order.values()),
+                         'completed_order':list(complete_order.values()),
+                         'completed_order_item':list(completed_order_item),})
+
+
+
+
+def CuisineOptimize(request):
+    
+    all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    
+    total_completed_order = len(complete_order)
+    total_uncompleted_order = len(all_order)
+    
+   
+    
+    context ={
+        'all_order':all_order,
+        'complete':complete_order,
+         'total_completed_order':total_completed_order,
+         'total_uncompleted_order':total_uncompleted_order,
+    }
+    
+   
+    
+    return render(request,"Resto/CuisineOptimize.html",context)
+
+
+@csrf_exempt
+def CompletedOrder(request):
+    
+    if request.method == 'POST':
+        order_numb = request.POST.get('id')
+        order = Order.objects.get(id = order_numb)
+        item = order.orderitem_set.all()
+        order.status = 'Completed'
+        order.complete = True
+        order.date_completed = timezone.localtime()
+        order.save()
+        order = model_to_dict(order)
+        
+        
+    return JsonResponse("Order Completed",safe=False)
+
 
 
 #BackEnd process of Order
@@ -317,8 +427,6 @@ def SendOrder(request):
     
     customer = request.user
     
-    
-
     
     #Process the order
     if request.method == 'POST' and action == 'sent':
@@ -421,6 +529,8 @@ def DeleteOrder(request,item_id):
 
 
 #Inventory Management System
+@login_required
+@permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
 def IventorySystem(request):
     categories = IventoryItemCategory.objects.all()
     
@@ -448,34 +558,34 @@ def CuisineSettings(request):
     
     if request.method == 'POST':
         
-        # form = AddItem(request.POST)
-        form_menu = AddMenu(request.POST)
+        form = AddItem(request.POST,request.FILES or None)
+        form_menu = AddMenu(request.POST,request.FILES or None)
         
-        # if form.is_valid():
-        #     item = form.cleaned_data.get('name')
-        #     category = form.cleaned_data.get('category')
-        #     #form.save()
-        #     messages.success(request,f'{item} added to your cuisine')
-        #     return HttpResponseRedirect(f'/texasgrillz/settings/')
+        if form.is_valid():
+            item = form.cleaned_data.get('name')
+            category = form.cleaned_data.get('category')
+            #form.save()
+            messages.success(request,f'{item} added to your recette list')
+            return HttpResponseRedirect(f'/texasgrillz/settings/')
             
             
-        if form_menu.is_valid():
+        elif form_menu.is_valid():
             
             menu = form_menu.cleaned_data.get('name')
+            #form_menu.save()
             messages.success(request,f'{menu} added to your menu')
             print('MY MENU',menu)
             return HttpResponseRedirect(f'/texasgrillz/settings/')
     
     else:
-        # form = AddItem()
+        form = AddItem()
         form_menu = AddMenu()
 
     context = {
         'categorie': categories,
-        # 'form':form,
+        'form':form,
         'form_menu':form_menu
     }
-    
     
     return render(request,'Resto/CuisineSettings.html',context)
 

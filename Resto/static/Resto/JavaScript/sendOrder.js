@@ -10,6 +10,8 @@ for (let i = 0; i < sendOrder.length; i++) {
   });
 }
 
+console.log("sendOrder.js");
+
 function cuisine(act, ord) {
   var url = "/texasgrillz/sendorder/";
 
