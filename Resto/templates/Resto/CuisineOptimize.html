@@ -5,12 +5,26 @@
 
 
 
+
 <div class="container py-5">
+
+
 
     <div class="mt-3" style="text-align: center">
         <h1 style="color: black">Uncompleted Orders</h1>
         <small class="text-muted" > Date: {{today}}</small>
         <hr />
+    </div>
+    <div id="message" class="col-12">
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+          <use xlink:href="#check-circle-fill" />
+        </svg>
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %} {% endif %}
     </div>
 
     <!-- Display uncompleted order Real Time -->
@@ -39,6 +53,9 @@
 
      <!-- AJAX -->
   <script>
+
+
+
     $(document).ready(function () {
 
     var csrfToken = $("input[name=csrfmiddlewaretoken]").val()
@@ -76,11 +93,18 @@
 
           
 
-          
-
-
           $("#totalUncompleted").append(response.total_uncompleted_order)
           $("#totalcompleted").append(response.total_completed_order)
+
+          total_uncomp = response.total_uncompleted_order
+          total_uncomp = total_uncomp[0]
+
+          total_comp = response.total_completed_order
+          total_comp = total_comp[0]
+
+          perCompleted = 100 - Math.round((total_uncomp/total_comp)*100,0)
+          console.log(perCompleted)
+          
 
           order_uncomp = response.order
          
@@ -187,6 +211,21 @@
               check = myorderitem.join(" ");
             }
 
+            msg = document.getElementById('message')
+
+            msg.innerHTML= ` <div id="message" class="col-12">
+              <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                  <use xlink:href="#check-circle-fill" />
+                </svg>
+                <h4 style="color:black"> <b>${perCompleted}%</b> completed </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            </div>`
+
+
+
+
           $("#accordion").append(`<span  data-bs-target='#order-${ordernumber}' data-bs-toggle="collapse" data-order ={{order.id}} >
             <div id ='cardnum-${active_order}' class="card">
               <div class="card-header">
@@ -201,29 +240,33 @@
                   </div>
                 </div>
               </div>
-              <button style='color:red' class="close float-right" id="order_completed-${ordernumber}"><span aria-hiden = 'true'>&times; Cancel </span></button>
              </div>
              
           `)
 
           
 
-          order_comp = document.getElementById(`order_completed-${ordernumber}`)
+          
+
+          //order_comp = document.getElementById(`order_completed-${ordernumber}`)
           cardnum = document.getElementById(`cardnum-${active_order}`)
 
           //SHOW CARD COLOR FLASHING
           cardnum.style.backgroundColor = 'rgb(54, 126, 54)'
           setInterval(function(){
             cardnum.style.backgroundColor = 'white'
-          },2000)
+          },3000)
           
 
-          order_comp.addEventListener('click',function(e){
-            order_id(cardnum)
-            e.stopPropagation();
+          //order_comp.addEventListener('click',function(e){
+           // order_id(cardnum)
+           // e.stopPropagation();
             
 
-          })
+         // })
+
+
+
           
          
         }
@@ -258,7 +301,8 @@ var csrfToken = $("input[name=csrfmiddlewaretoken]").val()
         },
         dataType: 'json',
         success: function(response){
-          getdata()
+         
+          getdata();
 
         
         }

@@ -32,13 +32,13 @@
           <img id="cart-icon" src='{% static "Resto/cart.png" %}' style="width: 70px; height: 70px; object-fit: scale-down; image-rendering: auto; flex: auto; text-align: center"
         /></a>
         <div id="cart-total">
-          <p class="mt-2">{{cart_quantity}}</p>
+          <p id='total-item' class="mt-2">{{cart_quantity}}</p>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="col-12">
+  <div id="message" class="col-12">
     {% if messages %} {% for message in messages %}
     <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
@@ -49,9 +49,9 @@
     </div>
     {% endfor %} {% endif %}
   </div>
-
   <!-- get user table -->
   
+
   
 
   <!-- display menu info -->
@@ -123,47 +123,12 @@
             <div>
             {% endif %}
 
-
-
-             <!-- <script>
-                //Let the user pick what they want
-                let custChoice = []
-                function selectedItem(){
-                  var ingredients = document.querySelectorAll('input');
-                  for(let i=1;i<ingredients.length;i++){
-                    if(ingredients[i].checked === true){
-                      custChoice.push(ingredients[i].value)
-                      console.log(custChoice.toString())
-
-                      localStorage.setItem("choice", custChoice);
-                     
-                    }
-                  }
-
-                 
-                }
-                
-                
-              </script>  -->
-
-             
-
-              
-
-      
-              
-                
-             
-              
             
             <hr>
            
             <div class ='d-flex justify-content-center'>
-            {% comment %} <i  id="minus" data-product="{{items.id}}" data-action="remove" class="fas fa-minus-circle mt-1 p-2 update-cart"></i> {% endcomment %}
-            <button  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
-            {% comment %} <i id="plus" data-product="{{items.id}}" data-action="add" class="fas fa-plus-circle mt-1 p-2 update-cart"></i> {% endcomment %}
+            <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Commander</button>
             </div>
-           
           </div>
         </form>
         {% endif %}
@@ -171,4 +136,7 @@
     </div>
   </div>
 </div>
+
+
+
 {% endblock content %}

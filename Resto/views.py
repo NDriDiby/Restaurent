@@ -251,7 +251,8 @@ def MyOrder(request):
     items = None
     cartItem = 0
     order_id = 0
-    
+
+
     #get the Order and  items
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -259,21 +260,7 @@ def MyOrder(request):
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
         
-        
-    if request.method == 'POST':
-        #redirect to HomePage
-        order_id= request.POST.get("order")
-        order= Order.objects.get(id = order_id)
-        items = order.orderitem_set.all()
-        cartItem = order.get_order_quantity()
-        if cartItem > 0:
-            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        else:
-            messages.warning(request,"Votre panier est vide")
-            
-        return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
-   
         
     context = {
         'order':order,
@@ -287,39 +274,78 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
+    customer = request.user
+    order = Order.objects.filter(customer__id = customer.customer.id).last()
+ 
     
-    #Get the response from the backend
-    data = json.loads(request.body)
-    itemId = data['itemId']
-    action = data['action']
-    choice = data['choice']
+    item_name = None
+    total_cart = None
+    tot_item= None
     
     
+    if request.method == 'POST':
+        
+        itemId = request.POST['itemId']
+        action = request.POST['action']
+        choice = request.POST.get('choice')
+        
+        #Update the Cart of the current user
+        customer,created= Customer.objects.get_or_create(user = request.user)
+        item = Item.objects.get(id=itemId)
+        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        item_name = item.name
+        
+        
+        #Increase item
+        if action =='add':
+            orderItem.quantity = (orderItem.quantity + 1)
+            orderItem.save()
+            
+            
+        #Decrease item
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - 1)
+            orderItem.save()
 
-    #Update the Cart of the current user
-    customer,created= Customer.objects.get_or_create(user = request.user)
-    item = Item.objects.get(id=itemId)
-    order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-    
-    
-    
-    
-    #Increase item
-    if action =='add':
-        orderItem.quantity = (orderItem.quantity + 1)
-        orderItem.save()
+        #Delete item
+        elif orderItem.quantity<=0:
+             orderItem.delete()
+            
+            
+        my_order_item = OrderItem.objects.filter(order= order, item = item)
+        #my_order_item = model_to_dict(my_order_item)
+        tot_item = [sum(x.quantity for x in my_order_item)][0]
+        tot_ind_item = orderItem.quantity
+        total_cart = order.get_order_quantity()
+        total= order.get_order_total()
+        
+        item_selected = list()
+        item = order.orderitem_set.all()
+        for i in range(0,len(item)): 
+            data = { 
+                    'orderItem_id':item[i].id,
+                    'order_id':item[i].order.id,
+                    'description':item[i].item.description,
+                    #'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+                    'item':item[i].item.name,
+                    'quantity':item[i].quantity,
+                    'ingredient':item[i].ingredient,
+                    'total':item[i].get_total()
+                    }
+            item_selected.append(data)
+            print(item_selected)
+        
 
-    #Decrease item
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
-        orderItem.save()
 
-    #Delete item
-    if orderItem.quantity<=0:
-        orderItem.delete()
-
-    return JsonResponse(f'Item was {action}',safe=False)
+    return JsonResponse({"item_name":item_name,
+                         'total_cart':total_cart,
+                         'tot_item':tot_item,
+                         'tot_ind_item':tot_ind_item,
+                         'total':total,
+                         'orderItem':item_selected,
+                    
+                         },safe=False)
 
 
 
@@ -333,6 +359,7 @@ def GetOrderCuisine(request):
         item = order[ord].orderitem_set.all()
         for i in range(0,len(item)): 
             data = { 
+                    'orderItem_id':item[i].id,
                     'order_id':item[i].order.id,
                     'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
                     'item':item[i].item.name,
@@ -401,7 +428,6 @@ def CuisineOptimize(request):
 
 @csrf_exempt
 def CompletedOrder(request):
-    
     if request.method == 'POST':
         order_numb = request.POST.get('id')
         order = Order.objects.get(id = order_numb)
@@ -411,58 +437,66 @@ def CompletedOrder(request):
         order.date_completed = timezone.localtime()
         order.save()
         order = model_to_dict(order)
-        
-        
+
     return JsonResponse("Order Completed",safe=False)
 
 
 
 #BackEnd process of Order
 def SendOrder(request):
-
-    #get the data from the BackEnd
-    data = json.loads(request.body)
-    action = data['action']
-    order_numb = data['order']
     
     customer = request.user
+    order = Order.objects.filter(customer__id = customer.customer.id).last()
+    total_item = order.get_order_quantity()
+    item_selected = list()
+    item = order.orderitem_set.all()
+    for i in range(0,len(item)): 
+        data = { 
+                'orderItem_id':item[i].id,
+                'order_id':item[i].order.id,
+                'description':item[i].item.description,
+                #'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+                'item':item[i].item.name,
+                'quantity':item[i].quantity,
+                'ingredient':item[i].ingredient,
+                }
+        item_selected.append(data)
+    print(item_selected)
     
     
-    #Process the order
-    if request.method == 'POST' and action == 'sent':
-        
-        order = Order.objects.filter(customer__id = customer.customer.id).last()
+    
+    #get the data from the BackEnd
+    if request.method == 'POST':
+        action = request.POST['action']
+        order_numb = request.POST['order']
+
+        customer = request.user
+        cust,created = Customer.objects.get_or_create(user =request.user)
+        order,created = Order.objects.get_or_create(id=order_numb, customer = cust)
+
+    
+        #Process the order
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
             order.save()
-        #     messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        # else:
-        #     messages.warning(request,"Votre panier est vide")
-
-    
-    elif action =='completed':
-        order = Order.objects.get(id = order_numb)
-        order.status = 'Completed'
-        order.complete = True
-        order.date_completed = timezone.localtime()
-        order.save()
         
-        
-        subject = f"Commande: {order.transaction_id}"
-        newline = "\n"
-        message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
-            {newline}Order Number: {order.transaction_id} \
-            {newline}Order Total: {order.get_order_total()} FCFA\
-            {newline}"
+    #     subject = f"Commande: {order.transaction_id}"
+    #     newline = "\n"
+    #     message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
+    #         {newline}Order Number: {order.transaction_id} \
+    #         {newline}Order Total: {order.get_order_total()} FCFA\
+    #         {newline}"
             
-        send_mail(subject,message,
-                          settings.EMAIL_HOST_USER,
-                          [order.customer.user.email],fail_silently=False,)
+    #     send_mail(subject,message,
+    #                       settings.EMAIL_HOST_USER,
+    #                       [order.customer.user.email],fail_silently=False,)
+    order = model_to_dict(order)
+    print('I GOT YOUR ORDER',order)
         
 
-    return JsonResponse("Order Sent",safe=False)
+    return JsonResponse({'order':10,'total_item':total_item,'orderItem':item_selected})
 
 
 #Cuisine (Owner access Only)
@@ -471,7 +505,6 @@ def SendOrder(request):
 def Cuisine(request):
     
     
-   
     #Order of the day
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)

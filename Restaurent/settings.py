@@ -189,8 +189,8 @@ STATICFILES_DIRS = [
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_URL = AWS_URL + 'static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATIC_URL = AWS_URL + 'static/'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = AWS_URL + '/media/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
