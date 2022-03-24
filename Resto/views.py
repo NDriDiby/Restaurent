@@ -289,6 +289,7 @@ def UpdatedItem(request):
         action = request.POST['action']
         choice = request.POST.get('choice')
         
+        
         #Update the Cart of the current user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
@@ -319,6 +320,7 @@ def UpdatedItem(request):
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
         total= order.get_order_total()
+        active_orderItem = orderItem.id
         
         item_selected = list()
         item = order.orderitem_set.all()
@@ -344,6 +346,8 @@ def UpdatedItem(request):
                          'tot_ind_item':tot_ind_item,
                          'total':total,
                          'orderItem':item_selected,
+                         'active_orderItem':active_orderItem,
+                         
                     
                          },safe=False)
 
