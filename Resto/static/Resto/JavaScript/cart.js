@@ -49,7 +49,6 @@ for (var i = 0; i < updated_but.length; i++) {
       },
       dataType: "json",
       success: function (response) {
-        console.log(response);
         orderItem = response.orderItem;
         total_cart = response.total_cart;
         item_name = response.item_name;
@@ -69,11 +68,6 @@ for (var i = 0; i < updated_but.length; i++) {
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
-
-        // $("#total-item").css({
-        //  backgroundColor: "green",
-        // });
-
         total_item_box.innerHTML = total_cart;
       },
 

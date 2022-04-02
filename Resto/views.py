@@ -1,3 +1,7 @@
+from cProfile import label
+from cgitb import text
+from itertools import count
+from multiprocessing import context
 import re
 from django.db import reset_queries
 from django.shortcuts import render,redirect
@@ -8,7 +12,7 @@ from django.contrib import messages
 from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
 import json
-from Customer.utils import track_session,order_number,get_table_number,target_app
+from Customer.utils import track_session,order_number,get_table_number,target_app,get_month
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.decorators import permission_required,login_required
@@ -17,19 +21,24 @@ from datetime import datetime,timedelta,time
 from django.utils import timezone
 from Bakerys.forms import OrderForm
 from django.db.models import F
-from django.db.models import Max,Sum
+from django.db.models import Max,Sum,Count
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.exceptions import PermissionDenied
 from django.core import serializers
 from django.forms.models import model_to_dict
- 
+from plotly.offline import plot
+import plotly.express as px
+import pandas as pd
+import calendar
+
 
  #App Name
 app = Order._meta.app_label
 
 today = timezone.localtime(timezone.now()).date()
+visit_number = None
 
 
 
@@ -40,6 +49,8 @@ def HomePage(request):
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
+    visit_number = num_visits
+    
 
     
     #Table Number
@@ -336,7 +347,7 @@ def UpdatedItem(request):
                     'total':item[i].get_total()
                     }
             item_selected.append(data)
-            print(item_selected)
+            
         
 
 
@@ -465,7 +476,7 @@ def SendOrder(request):
                 'ingredient':item[i].ingredient,
                 }
         item_selected.append(data)
-    print(item_selected)
+    
     
     
     
@@ -497,7 +508,7 @@ def SendOrder(request):
     #                       settings.EMAIL_HOST_USER,
     #                       [order.customer.user.email],fail_silently=False,)
     order = model_to_dict(order)
-    print('I GOT YOUR ORDER',order)
+    
         
 
     return JsonResponse({'order':10,'total_item':total_item,'orderItem':item_selected})
@@ -508,33 +519,118 @@ def SendOrder(request):
 @permission_required('Resto.view_order',login_url='/login/') #Permission required
 def Cuisine(request):
     
-    
     #Order of the day
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
     
-    # order_item = OrderItem.objects.all()
-    # top_item_number = order_item.aggregate(Sum('quantity'))
-    # top_item_number = top_item_number['quantity__sum']
-    # top_item =order_item.get(quantity = top_item_number)
+    #Top 5 Meals
+    orderItem = OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
     
     
-    # print("MOST ORDERED",top_item)
-    # print('TOP ITEM',top_item_number)
+    #viz Top 5 meals
+    df = pd.DataFrame(orderItem)
+    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    plt = plot(fig,output_type='div')
+    
+    # continuous
+    ['aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance',
+             'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg',
+             'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl',
+             'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric',
+             'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys',
+             'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet',
+             'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges',
+             'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl',
+             'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn',
+             'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu',
+             'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar',
+             'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn',
+             'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid',
+             'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr',
+             'ylorrd']
+    
+    #descrete
+    # [aliceblue, antiquewhite, aqua, aquamarine, azure,
+    #         beige, bisque, black, blanchedalmond, blue,
+    #         blueviolet, brown, burlywood, cadetblue,
+    #         chartreuse, chocolate, coral, cornflowerblue,
+    #         cornsilk, crimson, cyan, darkblue, darkcyan,
+    #         darkgoldenrod, darkgray, darkgrey, darkgreen,
+    #         darkkhaki, darkmagenta, darkolivegreen, darkorange,
+    #         darkorchid, darkred, darksalmon, darkseagreen,
+    #         darkslateblue, darkslategray, darkslategrey,
+    #         darkturquoise, darkviolet, deeppink, deepskyblue,
+    #         dimgray, dimgrey, dodgerblue, firebrick,
+    #         floralwhite, forestgreen, fuchsia, gainsboro,
+    #         ghostwhite, gold, goldenrod, gray, grey, green,
+    #         greenyellow, honeydew, hotpink, indianred, indigo,
+    #         ivory, khaki, lavender, lavenderblush, lawngreen,
+    #         lemonchiffon, lightblue, lightcoral, lightcyan,
+    #         lightgoldenrodyellow, lightgray, lightgrey,
+    #         lightgreen, lightpink, lightsalmon, lightseagreen,
+    #         lightskyblue, lightslategray, lightslategrey,
+    #         lightsteelblue, lightyellow, lime, limegreen,
+    #         linen, magenta, maroon, mediumaquamarine,
+    #         mediumblue, mediumorchid, mediumpurple,
+    #         mediumseagreen, mediumslateblue, mediumspringgreen,
+    #         mediumturquoise, mediumvioletred, midnightblue,
+    #         mintcream, mistyrose, moccasin, navajowhite, navy,
+    #         oldlace, olive, olivedrab, orange, orangered,
+    #         orchid, palegoldenrod, palegreen, paleturquoise,
+    #         palevioletred, papayawhip, peachpuff, peru, pink,
+    #         plum, powderblue, purple, red, rosybrown,
+    #         royalblue, rebeccapurple, saddlebrown, salmon,
+    #         sandybrown, seagreen, seashell, sienna, silver,
+    #         skyblue, slateblue, slategray, slategrey, snow,
+    #         springgreen, steelblue, tan, teal, thistle, tomato,
+    #         turquoise, violet, wheat, white, whitesmoke,
+    #         yellow, yellowgreen]
+    
 
     # Total order of the day
-    total_completed_order = len(complete_order)
-    total_uncompleted_order = len(all_order)
+    total_completed_order = complete_order.count()
+    total_uncompleted_order = all_order.count()
+    total_order = total_completed_order + total_uncompleted_order
+    
+    #Order in an hour
+    orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
+    print(orderHour)
+    plt2 = "There is upcoming order"
+    if orderHour:
+        df2 = pd.DataFrame(orderHour)
+        fig2 = px.line(df2,x='date_ordered__hour', y='count_order',markers=True,text='count_order',
+                    color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
+        
+        fig2.update_traces(textposition="bottom right")
+        fig2.update_xaxes(
+        rangeslider_visible=False,
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1h", step="hour", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=1, label="1y", step="year", stepmode="backward"),
+                dict(step="all")
+            ])
+        )
+    )
+        plt2 = plot(fig2,output_type='div')
+        
+    
     
     context = {
         'all_order':all_order,
         'complete':complete_order,
         'total_completed_order':total_completed_order,
         'total_uncompleted_order':total_uncompleted_order,
-        # 'top_item':top_item,
-        # 'top_item_number':top_item_number,
-        'today':today
+        'total_order':total_order,
+        'vizTop5meals':plt,
+        'vizOrder':plt2,
+        'today':today,
+        'visit':visit_number,
+        
     }
     return render(request,'Resto/Cuisine.html',context)
 
@@ -625,5 +721,55 @@ def CuisineSettings(request):
     }
     
     return render(request,'Resto/CuisineSettings.html',context)
+
+
+
+def Analytics(request):
+    
+    context = {}
+    
+    return render(request, 'Resto/Analytics.html',context)
+
+
+def Revenues(request):
+    
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    total = [sum(x.get_order_total() for x in complete_order)]
+    
+    #REVENU OF THE DAY PER MENU
+    revPerMenu = OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
+        .annotate(my_sum = Sum(F("quantity")*F('item__prix')))
+    
+    
+    df = pd.DataFrame(revPerMenu)
+    fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    fig.update_traces(textposition='inside', textinfo='percent+value')
+    revPerMenuPlot = plot(fig,output_type='div')
+    
+    
+    #REVENUE PER MONTH
+    revPerMonth = OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
+        .annotate(my_sum= Sum(F("quantity")*F('item__prix')))
+    df = pd.DataFrame(revPerMonth)
+    get_month(df)
+    df = df.rename({'date_added__date__month':'Mois','my_sum':'Total'},axis=1)
+  
+    fig2 = px.bar(df,x='Mois', y='Total',hover_data=['Total'],text_auto='Total',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    fig2.update_traces(textposition='inside')
+    revPerMonthPlot = plot(fig2,output_type='div')
+    
+    
+    
+    
+    
+    context = {
+        'monthRev':total[0],
+        'revPerMenuPlot':revPerMenuPlot,
+        'revPerMonthPlot':revPerMonthPlot,
+    }
+    
+    return render(request, 'Resto/Revenues.html',context)
 
 

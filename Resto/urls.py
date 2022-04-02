@@ -16,8 +16,9 @@ urlpatterns = [
     path('texasgrillz/GetOrderCuisine/',views.GetOrderCuisine, name='GetOrderCuisine'),
     path('texasgrillz/CompletedOrder/',views.CompletedOrder, name='completed_order'),
     path('texasgrillz/cuisineOptimize/', views.CuisineOptimize, name='cuisine-texasgrillz-optimize'),
+    path('texasgrillz/analytics/', views.Analytics, name='texasgrillz-analytics'),
+    path('texasgrillz/revenues/', views.Revenues, name='texasgrillz-revenues'),
     
-
 ]
 
 
