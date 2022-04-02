@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django.db.models import fields
 from django.db.models.fields import DateTimeField
 from .forms import models
-from.models import Item,ItemChoices,ItemChoiceCategory,IventoryItem
+from.models import Category, Item,ItemChoices,ItemChoiceCategory,IventoryItem
 from django.contrib.auth.models import AbstractUser, User,AbstractBaseUser,BaseUserManager
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.utils.translation import ugettext, ugettext_lazy as _
@@ -16,8 +16,7 @@ from django.core.exceptions import ValidationError
 
 class CustomerForm(UserCreationForm):
    
-   
-   
+
    nom = forms.CharField(label = 'Nom')
    prenom = forms.CharField(label = 'Prenom')
    phone_number = forms.CharField(label = 'Phone Number')
@@ -86,6 +85,18 @@ class AddProducts(forms.ModelForm):
    class Meta:
       model = IventoryItem
       exclude = ['date_created','description']
+      
+
+class AddItem(forms.ModelForm):
+   class Meta:
+      model = Item
+      exclude = ['itm_id']
+      
+class AddMenu(forms.ModelForm):
+   
+   class Meta:
+      model = Category
+      exclude = ['cat_id','date_created']
       
    
 

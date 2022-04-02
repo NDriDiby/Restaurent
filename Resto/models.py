@@ -8,10 +8,6 @@ from django.contrib.auth.models import AbstractUser,User,AbstractBaseUser,BaseUs
 from django.conf import settings
 
 
-
-
-    
-
 #Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
@@ -38,9 +34,6 @@ class Customer(models.Model):
         return self.name
     
     
-
-
-
 class Item(models.Model):
     itm_id = models.IntegerField()
     name = models.CharField(max_length = 150)
@@ -92,7 +85,7 @@ class Order(models.Model):
     note = models.TextField(blank=True,max_length=50)
 
     class meta:
-        permissions = (("can view orders"))
+        permissions = [("view order","can view order")]
 
     def __str__(self):
         return str(self.customer)
@@ -135,6 +128,8 @@ class IventoryItemCategory(models.Model):
     description = models.CharField(max_length=150,null = True, blank = True)
     date_created = models.DateTimeField(auto_now=True)
     
+    
+    
     def __str__(self):
         return self.name
     
@@ -159,7 +154,9 @@ class IventoryItem(models.Model):
     category = models.ForeignKey(IventoryItemCategory,on_delete=CASCADE,blank=True,null=True)
     date_created = models.DateTimeField(auto_now=True)
     
-    
+    class meta:
+        permissions = [("view iventory item ","can view iventory item")]
+        
     def __str__(self):
         return self.name
     

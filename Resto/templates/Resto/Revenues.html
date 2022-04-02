@@ -1,0 +1,78 @@
+{% extends 'Resto/base_dashboard.html' %} {% block dashTitle %} Revenues {% endblock dashTitle%} {% block content %}
+
+<div class="overview-boxes">
+  <div class="box">
+    <div class="right-side">
+      <div class="box-topic">Revenue du jour</div>
+      <div class="number">{{monthRev}}</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">25%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from last month</span>
+      </div>
+    </div>
+    <i class="bx bx-cart-alt cart"></i>
+  </div>
+
+  <div class="box">
+    <div class="right-side">
+      <div class="box-topic">Revenue du mois</div>
+      <div class="number">35.000</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">50%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from month</span>
+      </div>
+    </div>
+    <i class="bx bx-cart-alt cart"></i>
+  </div>
+
+  <div class="box">
+    <div class="right-side">
+      <div class="box-topic">Profit</div>
+      <div class="number">115.000</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from last month</span>
+      </div>
+    </div>
+    <i class="bx bx-cart-alt cart"></i>
+  </div>
+
+  <div class="box">
+    <div class="right-side">
+      <div class="box-topic">Spending</div>
+      <div class="number">60.000</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">2%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
+    </div>
+    <i class="bx bx-cart-alt cart"></i>
+  </div>
+</div>
+
+<div class="dataviz">
+  <div class="dataviz-content">
+    <div class="topmeals">
+      <div class="title">
+        <h1>Revenue du jour par Menu</h1>
+      </div>
+
+      <div class="viz">{{revPerMenuPlot|safe}}</div>
+    </div>
+  </div>
+
+  <div class="dataviz-content">
+    <div class="topmeals">
+      <div class="title">
+        <h1>Revenue per Month</h1>
+        <div class="viz">{{revPerMonthPlot|safe}}</div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock content%}
+</div>
