@@ -38,6 +38,7 @@ import calendar
 app = Order._meta.app_label
 
 today = timezone.localtime(timezone.now()).date()
+yesterday = today - timedelta(days=1)
 visit_number = None
 
 
@@ -49,8 +50,14 @@ def HomePage(request):
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
-    visit_number = num_visits
     
+    visit = request.session.get('OMI',None)
+    request.session['OMI'] = visit
+    visit_number = visit
+    print('my visit',visit_number)
+    
+    
+   
 
     
     #Table Number
@@ -103,11 +110,13 @@ def HomePage(request):
         'order':order_sent,
         'app':targetApp
     }
-    return render(request,'Resto/HomePage.html',context)
+    return render(request,'Resto/HomePageNew.html',context)
 
 
 #Menu Details
 def MenuDetails(request,menu_id):
+    
+    
     
     #Get Table Number
     table = get_table_number(request)
@@ -524,6 +533,12 @@ def Cuisine(request):
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
     
+    #Show all order sent to the kitchen yesterday
+    all_order_ystd = Order.objects.filter(status='Sent',date_ordered__date = yesterday)
+    complete_order_ystd = Order.objects.filter(complete=True,date_completed__date = yesterday).order_by('date_completed')
+    
+    
+    
     #Top 5 Meals
     orderItem = OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
     
@@ -594,6 +609,15 @@ def Cuisine(request):
     total_uncompleted_order = all_order.count()
     total_order = total_completed_order + total_uncompleted_order
     
+    # Total order from the yesteray day
+    total_completed_order_ystd = complete_order_ystd.count()
+    total_uncompleted_order_ystd = all_order_ystd.count()
+    total_order_ystd = total_completed_order + total_uncompleted_order
+    
+    #Total customer
+    total_customer = Customer.objects.distinct().count()
+    print("MY CUST",total_customer)
+    
     #Order in an hour
     orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
     print(orderHour)
@@ -619,6 +643,13 @@ def Cuisine(request):
         plt2 = plot(fig2,output_type='div')
         
     
+    print("TOTAL  ORDER",total_order,total_completed_order_ystd)
+    print("TOTAL COMP ORDER",total_completed_order,total_completed_order_ystd)
+    
+    print(complete_order_ystd)
+   
+   
+    
     
     context = {
         'all_order':all_order,
@@ -630,6 +661,7 @@ def Cuisine(request):
         'vizOrder':plt2,
         'today':today,
         'visit':visit_number,
+        'total_customer':total_customer,
         
     }
     return render(request,'Resto/Cuisine.html',context)
@@ -726,7 +758,87 @@ def CuisineSettings(request):
 
 def Analytics(request):
     
-    context = {}
+    #Top 5 Meals
+    orderItem = OrderItem.objects.filter(date_added__date = today).values('item__name','item__category__name')\
+        .annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+    
+    df = pd.DataFrame(orderItem)
+    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    plt = plot(fig,output_type='div')
+    
+    #REVENU OF THE DAY PER MENU
+    revPerMenu = OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
+        .annotate(my_sum = Sum(F("quantity")*F('item__prix')))
+    revPerMonthPlot = 'There is no item'
+    if revPerMenu:
+        df = pd.DataFrame(revPerMenu)
+        fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
+                    color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+        fig.update_traces(textposition='inside', textinfo='percent+value')
+        revPerMenuPlot = plot(fig,output_type='div')
+    
+    
+    #REVENUE PER MONTH
+    revPerMonth = OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
+        .annotate(my_sum= Sum(F("quantity")*F('item__prix')))
+    df = pd.DataFrame(revPerMonth)
+    get_month(df)
+    df = df.rename({'date_added__date__month':'Mois','my_sum':'Total'},axis=1)
+  
+    fig2 = px.bar(df,x='Mois', y='Total',hover_data=['Total'],text_auto='Total',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7
+                 )
+    fig2.update_traces(textposition='inside')
+    revPerMonthPlot = plot(fig2,output_type='div')
+    
+    #Revenu per Month
+    complete_order = Order.objects.filter(complete=True,date_completed__date__month = today.month).order_by('date_completed')
+    revMonth = [sum(x.get_order_total() for x in complete_order)]
+    
+    #Revenu per Day
+    complete_order_day = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    revDay = [sum(x.get_order_total() for x in complete_order_day)]
+    
+    
+    #Order in an Month
+    orderMonth = Order.objects.filter(date_ordered__date__month__lte = today.month).values('date_ordered__month').annotate(count_order=Count('id'))
+    print(orderMonth)
+    plt2 = "There is upcoming order"
+    if orderMonth:
+        df2 = pd.DataFrame(orderMonth)
+        get_month(df2)
+        fig2 = px.line(df2,x='date_ordered__month', y='count_order',markers=True,text='count_order',
+                    color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
+        
+        fig2.update_traces(textposition="bottom right")
+        fig2.update_xaxes(
+        rangeslider_visible=False,
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1h", step="hour", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=1, label="1y", step="year", stepmode="backward"),
+                dict(step="all")
+            ])
+        )
+    )
+        plt2 = plot(fig2,output_type='div')
+        
+    
+    
+        
+    
+    context = {
+        'vizTop5meals':plt,
+        'revPerMenuPlot':revPerMenuPlot,
+        'revPerMonthPlot':revPerMonthPlot,
+        'vizOrderMonth':plt2,
+        'revMonth':revMonth[0],
+        'revDay':revDay[0],
+        
+    }
     
     return render(request, 'Resto/Analytics.html',context)
 

@@ -127,12 +127,15 @@ $(document).ready(function () {
         for (var i in response.completed_order) {
           myorderitem = [];
 
-          console.log(response.cpmpleted);
-
           for (var ord in response.completed_order_item) {
             if (response.completed_order[i]["id"] == response.completed_order_item[ord]["order_id"]) {
               orderName = response.completed_order_item[ord]["order"];
               ordernumber = response.completed_order[i]["id"];
+              table = response.completed_order[i]["table"];
+              transaction_id = response.completed_order[i]["transaction_id"];
+              date_completed = response.completed_order[i]["date_completed"];
+              orderStatus = response.completed_order[i]["status"];
+
               myorderitem.push(`
                  <p style = 'color:black'>${response.completed_order_item[ord]["item"]} (${response.completed_order_item[ord]["quantity"]})<p>`);
             }
@@ -160,8 +163,8 @@ $(document).ready(function () {
             <div id ='cardnum-${active_order}' class="card">
               <div class="card-header">
                 <h6 class="card-link"   href="#collapseOne">
-                  Table:${response.completed_order[i]["table"]}- Customer Name: <strong style="color:rgb(3, 131, 250);"> ${orderName}</strong>
-                  - Order Number:${ordernumber} - Ref: ${response.completed_order[i]["transaction_id"]} - Date: ${response.completed_order[i]["date_completed"]} - <strong style ='color:green' >${response.completed_order[i]["status"]}</strong>
+                  Table:${table}- Customer Name: <strong style="color:rgb(3, 131, 250);"> ${orderName}</strong>
+                  - Order Number:${ordernumber} - Ref: ${transaction_id} - Date: ${date_completed} - <strong style ='color:green' >${orderStatus}</strong>
                    <i style ='color:green' class="bi bi-check-square"></i>
                 </h6>
                 <div id="order-${ordernumber}" class="collapse show mt-2" data-parent="#accordion">
@@ -171,7 +174,6 @@ $(document).ready(function () {
                 </div>
               </div>
              </div>
-             
           `);
 
           //order_comp = document.getElementById(`order_completed-${ordernumber}`)
