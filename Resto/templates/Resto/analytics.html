@@ -4,7 +4,7 @@
   <div class="box">
     <div class="right-side">
       <div class="box-topic">Revenu du Jour</div>
-      <div class="number">{{total_order}}</div>
+      <div class="number">{{revDay}}</div>
       <div class="indicator">
         <i class="bx bx-up-arrow-alt"></i>
         <span class="text">Up from yesterday</span>
@@ -16,7 +16,7 @@
   <div class="box">
     <div class="right-side">
       <div class="box-topic">Revenu du mois</div>
-      <div class="number">{{total_order}}</div>
+      <div class="number">{{revMonth}}</div>
       <div class="indicator">
         <i class="bx bx-up-arrow-alt"></i>
         <span class="text">Up from yesterday</span>
@@ -48,6 +48,44 @@
     </div>
     <i class="bx bx-cart-alt cart"></i>
   </div>
-</div>
 
+  <div class="dataviz">
+    <div class="dataviz-content">
+      <div class="topmeals">
+        <div class="title">
+          <h1>Top 5 Meals</h1>
+        </div>
+
+        <div class="viz">{{vizTop5meals|safe}}</div>
+      </div>
+    </div>
+
+    <div class="dataviz-content">
+      <div class="topmeals">
+        <div class="title">
+          <h1>Revenue Per Menu</h1>
+          <div class="viz">{{revPerMenuPlot|safe}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dataviz-content">
+      <div class="topmeals">
+        <div class="title">
+          <h1>Revenue Per Month</h1>
+          <div class="viz">{{revPerMonthPlot|safe}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dataviz-content">
+      <div class="topmeals">
+        <div class="title">
+          <h1>Order Per Month</h1>
+          <div class="viz">{{vizOrderMonth|safe}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content%}

@@ -7,14 +7,20 @@ from django.contrib.auth.models import AbstractUser,User,AbstractBaseUser,BaseUs
 # from django.utils.translation import ugettext, ugettext_lazy as _
 from django.conf import settings
 
+from PIL import Image
+from pathlib import Path
+from django_resized import ResizedImageField
+
 
 #Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=100,blank=True)
-    img = models.ImageField(upload_to='images/')
+    img = ResizedImageField(size=[1280, 720],quality=99, upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
+    
+
 
     class Meta:
         verbose_name = 'Categorie'
@@ -43,7 +49,7 @@ class Item(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
     
-
+    
 
     def __str__(self):
         return self.name
