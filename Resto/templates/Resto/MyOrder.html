@@ -18,6 +18,8 @@
 
 <div class="container">
   <main>
+    <div id="process_order"></div>
+    <div id="success_transaction"></div>
     <div class="basket">
       <div class="basket-module mb-3">
         <label for="promo-code">Entrez un code promotionnel</label>
@@ -40,7 +42,7 @@
             <img src="{{item.item.img.url}}" alt="{{item.item.name}}" class="product-frame" />
           </div>
           <div class="product-details">
-            <p>
+            <p id="item-quantity-{{item.id}}">
               <strong><span class="item-quantity">{{item.quantity}}</span>-{{item.item.name}}</strong>
             </p>
             <h1><strong>{{item.item.description}}</strong></h1>
@@ -51,12 +53,12 @@
         </div>
         <div class="price">{{item.item.prix}} FCFA</div>
         <div class="quantity">
-          <i data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
+          <i data-ingredient="{{item.ingredient}}" data-orderItem="{{item.id}}" data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
           <i data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
           <br />
-          <input value="{{item.quantity}}" class="quantity-field" name="quantity" />
+          <input id="quantity" value="{{item.quantity}}" class="quantity-field" name="quantity" />
         </div>
-        <div class="subtotal">{{item.get_total}} FCFA</div>
+        <div id="item-subtotal" class="subtotals">{{item.get_total}} FCFA</div>
         <form method="POST">
           {% csrf_token %}
           <div>
@@ -70,7 +72,7 @@
 
     <aside>
       <div class="summary">
-        <div class="summary-total-items"><span class="total-items"></span> Menu dans votre panier ({{cart_quantity}})</div>
+        <div id="summary-total-items" class="summary-total-items"><span class="total-items"></span> Menu dans votre panier ({{cart_quantity}})</div>
         <div class="summary-subtotal">
           <div class="subtotal-title">Sous-total</div>
           <div class="subtotal-value final-value" id="basket-subtotal">{{order.get_order_total}} FCFA</div>

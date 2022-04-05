@@ -105,17 +105,11 @@ def RegisterCustomer(request):
     print(testeur)
     
     
-    
-    
-
     #Create new account for current user then redict to current session
     if request.method == 'POST':
         form = CustomerForm(request.POST or None)
-        print(form.errors)
         
         
-        if 'ndiby65@gmail.com' in testeur:
-            print("YES")
         
         if form.is_valid():
             cust_log_email = form.cleaned_data.get('username')
@@ -128,7 +122,8 @@ def RegisterCustomer(request):
                                    'zeynabfdg02@gmail.com','sostheneange@gmail.com','wogninroger86@gmail.com','ohachosimjennifer@gmail.com',
                                    'htehua07@gmail.com','rickysilencieux@gmail.com','sinoussouc@gmail.com','tkfatim@gmail.com','bakayokohassan112@gmail.com',
                                    'cedric.acho@gmail.com','yedofficiel@gmail.com','yannis_kodjo@yahoo.com','cyrayacine@gmail.com','seydinaibrahim16@gmail.com',
-                                   'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr']):
+                                   'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr','frejusmactaylor@gmail.com','juliediby@yahoo.com',
+                                   'juniorsoulama@yahoo.fr']):
                 form.save() #User created 
                 user,created= User.objects.get_or_create(username = cust_log_email)
                 user.first_name = cust_first_name
@@ -141,7 +136,7 @@ def RegisterCustomer(request):
                 #send email after registration
                 send_mail("Bienvenue sur Icarus",
                           f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes très heureux de vous compter parmis nos utilisateurs.\
-                          {newline}{newline}Meilleurs Salutations.{newline}Nova Cloud Team",
+                          {newline}{newline}Meilleurs salutations.{newline}Nova Cloud Team",
                           settings.EMAIL_HOST_USER,
                           [cust_log_email],fail_silently=False,)
                 

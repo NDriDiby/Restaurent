@@ -1,14 +1,19 @@
 // Add item to your cart
+var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+
+// Add item to your cart
 var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
-
-let custChoice = [];
+var form = document.getElementById("choiceOptions");
 
 for (var i = 0; i < updated_but.length; i++) {
-  updated_but[i].addEventListener("click", function () {
+  updated_but[i].addEventListener("click", function (e) {
+    var custChoice = [];
+
+    e.preventDefault();
     var itemId = this.dataset.product;
     var action = this.dataset.action;
-    var ingre = this.dataset.ingredient; //From order page
+    var ingre = this.dataset.ingredient;
 
     //Customer ingredient choice
     for (let i = 1; i < ingredients.length; i++) {
@@ -33,32 +38,42 @@ for (var i = 0; i < updated_but.length; i++) {
       custChoice = ingre;
     }
 
-    if (user === "AnonymousUser") {
-      console.log("not logged in");
-    } else {
-      updateUserOrder(itemId, action, custChoice);
-      location.reload();
-    }
-  });
-}
+    $.ajax({
+      url: "/texasgrillz/updateitem/",
+      method: "POST",
+      data: {
+        csrfmiddlewaretoken: csrfToken,
+        itemId: itemId,
+        action: action,
+        choice: custChoice.toString(),
+      },
+      dataType: "json",
+      success: function (response) {
+        orderItem = response.orderItem;
+        total_cart = response.total_cart;
+        item_name = response.item_name;
+        tot_item = response.tot_item;
 
-async function updateUserOrder(itemId, action, custChoice) {
-  console.log(user, "is logged in, sending data....");
+        msg = document.getElementById("message");
 
-  var url = "/texasgrillz/updateitem/";
+        msg.innerHTML = ` <div id="message" class="col-12">
+        <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
+          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+          </svg>
+          <p> (${response.tot_item}) ${item_name} ajouté(es) a votre table </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>`;
 
-  await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrftoken,
-    },
-    body: JSON.stringify({ itemId: itemId, action: action, choice: custChoice }),
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log("data:", data);
+        total_item_box = document.getElementById("total-item");
+        $("#cart-total").slideUp(100).slideDown(300);
+        total_item_box.innerHTML = total_cart;
+      },
+
+      error: function (error) {
+        console.log(error);
+      },
     });
+  });
 }

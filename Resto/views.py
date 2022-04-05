@@ -1,13 +1,18 @@
+from cProfile import label
+from cgitb import text
+from itertools import count
+from multiprocessing import context
 import re
+from django.db import reset_queries
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm,AddProducts
+from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
 import json
-from Customer.utils import track_session,order_number,get_table_number,target_app
+from Customer.utils import track_session,order_number,get_table_number,target_app,get_month
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.http.response import HttpResponseRedirect,JsonResponse
 from django.contrib.auth.decorators import permission_required,login_required
@@ -16,16 +21,25 @@ from datetime import datetime,timedelta,time
 from django.utils import timezone
 from Bakerys.forms import OrderForm
 from django.db.models import F
-from django.db.models import Max,Sum
+from django.db.models import Max,Sum,Count
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
- 
+from django.core.exceptions import PermissionDenied
+from django.core import serializers
+from django.forms.models import model_to_dict
+from plotly.offline import plot
+import plotly.express as px
+import pandas as pd
+import calendar
+
 
  #App Name
 app = Order._meta.app_label
 
 today = timezone.localtime(timezone.now()).date()
+yesterday = today - timedelta(days=1)
+visit_number = None
 
 
 
@@ -36,6 +50,14 @@ def HomePage(request):
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
+    
+    visit = request.session.get('OMI',None)
+    request.session['OMI'] = visit
+    visit_number = visit
+    print('my visit',visit_number)
+    
+    
+   
 
     
     #Table Number
@@ -65,8 +87,21 @@ def HomePage(request):
         cust.save()
         
         
+        #odd_even = Permission.objects.get(name='can_view_even_ids')
+        
+        if username.email == 'ndiby65@gmail.com':
+            if username.has_perm("resto.view_iventory_item"):
+                print("PERMISSONS")
+            elif username.has_perm("resto.view_order"):
+                print("I CAN SEE ORDERS")
+            else:
+                print('NO PERMISSIONS',username.email)
+        # return HttpResponseRedirect(f'/noaccess/')
+        else:
+            print("NOT ME",username.email)
+        
         #Show order to customer
-        order_sent = Order.objects.filter(customer = cust, status = 'Sent', table =table, date_ordered__date = today).last()
+        order_sent = Order.objects.filter(customer=cust, status = 'Sent', table =table, date_ordered__date = today).last()
 
         
 
@@ -75,11 +110,13 @@ def HomePage(request):
         'order':order_sent,
         'app':targetApp
     }
-    return render(request,'Resto/HomePage.html',context)
+    return render(request,'Resto/HomePageNew.html',context)
 
 
 #Menu Details
 def MenuDetails(request,menu_id):
+    
+    
     
     #Get Table Number
     table = get_table_number(request)
@@ -107,9 +144,19 @@ def MenuDetails(request,menu_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             
+            print('My next order',order.date_ordered)
+            current_time = timezone.localtime(timezone.now())
+            if (order.date_ordered < current_time):
+                time_diff = (current_time - order.date_ordered)
+                print('it is been',round(time_diff.seconds/60))
+                if ((time_diff.seconds/60) >= 10):
+                    order.delete()
+                    print("ORDER DELETED")
+            
         except:
             pass
-            
+        
+        
     
     context = {
         'menu':menu,
@@ -164,7 +211,6 @@ def ItemDetails(request,item_id):
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
             if len(pending_order) > 1:
-                print(pending_order)
                 pending_order.delete()
                 messages.warning(request,"Vous ne pouvez pas passer de commande sur plusieurs tables")
                 messages.success(request,f"Votre nouveau numéro de table est {table}")
@@ -175,15 +221,8 @@ def ItemDetails(request,item_id):
             
             if request.method == 'POST':
                 order_table = request.POST.get('item')
-                order_item_id = request.POST.get('orderItemId')
-                ingre = request.POST.get('ingredient')
-                saiss = request.POST.get('assaisonement')
-                cuiss = request.POST.get('cuisson')
-                choice = ingre,saiss,cuiss
                 
-            
                 
-              
                 myitem = Item.objects.get(id=order_table)
                 my_order_item = OrderItem.objects.filter(order= order, item = myitem)
                 tot_item = [sum(x.quantity for x in my_order_item)][0]
@@ -232,7 +271,8 @@ def MyOrder(request):
     items = None
     cartItem = 0
     order_id = 0
-    
+
+
     #get the Order and  items
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -240,21 +280,7 @@ def MyOrder(request):
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
         
-        
-    if request.method == 'POST':
-        #redirect to HomePage
-        order_id= request.POST.get("order")
-        order= Order.objects.get(id = order_id)
-        items = order.orderitem_set.all()
-        cartItem = order.get_order_quantity()
-        if cartItem > 0:
-            messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        else:
-            messages.warning(request,"Votre panier est vide")
-            
-        return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
 
-   
         
     context = {
         'order':order,
@@ -268,90 +294,245 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
-    
-    #Get the response from the backend
-    data = json.loads(request.body)
-    itemId = data['itemId']
-    action = data['action']
-    choice = data['choice']
-    
-    
-
-    #Update the Cart of the current user
-    customer,created= Customer.objects.get_or_create(user = request.user)
-    item = Item.objects.get(id=itemId)
-    order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-    orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-    
-    
-    
-    
-    #Increase item
-    if action =='add':
-        orderItem.quantity = (orderItem.quantity + 1)
-        orderItem.save()
-
-    #Decrease item
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
-        orderItem.save()
-
-    #Delete item
-    if orderItem.quantity<=0:
-        orderItem.delete()
-
-    return JsonResponse(f'Item was {action}',safe=False)
-    
-
-
-#BackEnd process of Order
-def SendOrder(request):
-
-    #get the data from the BackEnd
-    data = json.loads(request.body)
-    action = data['action']
-    order_numb = data['order']
-    
     customer = request.user
+    order = Order.objects.filter(customer__id = customer.customer.id).last()
+ 
+    
+    item_name = None
+    total_cart = None
+    tot_item= None
     
     
-
-    
-    #Process the order
-    if request.method == 'POST' and action == 'sent':
+    if request.method == 'POST':
         
-        order = Order.objects.filter(customer__id = customer.customer.id).last()
-        item = order.get_order_quantity()
-        if item >0:
-            order.status = 'Sent'
-            order.transaction_id = order_number('texasgrillz')
-            order.save()
-        #     messages.success(request,f"{order.customer.user.first_name}, votre commande a été bien réçu par notre cuisine!")
-        # else:
-        #     messages.warning(request,"Votre panier est vide")
+        itemId = request.POST['itemId']
+        action = request.POST['action']
+        choice = request.POST.get('choice')
+        
+        
+        #Update the Cart of the current user
+        customer,created= Customer.objects.get_or_create(user = request.user)
+        item = Item.objects.get(id=itemId)
+        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        item_name = item.name
+        
+        
+        #Increase item
+        if action =='add':
+            orderItem.quantity = (orderItem.quantity + 1)
+            orderItem.save()
+            
+            
+        #Decrease item
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - 1)
+            orderItem.save()
 
+        #Delete item
+        elif orderItem.quantity<=0:
+             orderItem.delete()
+            
+            
+        my_order_item = OrderItem.objects.filter(order= order, item = item)
+        #my_order_item = model_to_dict(my_order_item)
+        tot_item = [sum(x.quantity for x in my_order_item)][0]
+        tot_ind_item = orderItem.quantity
+        total_cart = order.get_order_quantity()
+        total= order.get_order_total()
+        active_orderItem = orderItem.id
+        
+        item_selected = list()
+        item = order.orderitem_set.all()
+        for i in range(0,len(item)): 
+            data = { 
+                    'orderItem_id':item[i].id,
+                    'order_id':item[i].order.id,
+                    'description':item[i].item.description,
+                    #'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+                    'item':item[i].item.name,
+                    'quantity':item[i].quantity,
+                    'ingredient':item[i].ingredient,
+                    'total':item[i].get_total()
+                    }
+            item_selected.append(data)
+            
+        
+
+
+    return JsonResponse({"item_name":item_name,
+                         'total_cart':total_cart,
+                         'tot_item':tot_item,
+                         'tot_ind_item':tot_ind_item,
+                         'total':total,
+                         'orderItem':item_selected,
+                         'active_orderItem':active_orderItem,
+                         
+                    
+                         },safe=False)
+
+
+
+def GetOrderCuisine(request):
     
-    elif action =='completed':
+    #Uncompleted Order
+    order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
+    #Uncompleted Order Item
+    item_selected = list()
+    for ord in range(0,len(order)):
+        item = order[ord].orderitem_set.all()
+        for i in range(0,len(item)): 
+            data = { 
+                    'orderItem_id':item[i].id,
+                    'order_id':item[i].order.id,
+                    'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+                    'item':item[i].item.name,
+                    'quantity':item[i].quantity,
+                    'ingredient':item[i].ingredient,
+                    }
+            item_selected.append(data)
+    
+    
+    #Completed order
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('-id')
+    #Completed order item
+    completed_order_item = list()
+    for ord in range(0,len(complete_order)):
+        item = complete_order[ord].orderitem_set.all()
+        for i in range(0,len(item)): 
+            data = { 
+                    'order_id':item[i].order.id,
+                    'order':complete_order[ord].customer.user.first_name +" "+ complete_order[ord].customer.user.last_name,
+                    'item':item[i].item.name,
+                    'quantity':item[i].quantity,
+                    'ingredient':item[i].ingredient,
+                    }
+            completed_order_item.append(data)
+    
+    total_uncompleted_order = {
+        'total_uncomplete' : order.count()
+    }
+    
+    total_completed_order = {
+        'total_complete' : complete_order.count()
+    }
+    
+    
+    return JsonResponse({"order":list(order.values()),
+                         'myorder':list(item_selected),
+                         'total_uncompleted_order':list(total_uncompleted_order.values()),
+                         'total_completed_order':list(total_completed_order.values()),
+                         'completed_order':list(complete_order.values()),
+                         'completed_order_item':list(completed_order_item),})
+
+
+
+
+def CuisineOptimize(request):
+    
+    all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    
+    total_completed_order = len(complete_order)
+    total_uncompleted_order = len(all_order)
+    
+   
+    
+    context ={
+        'all_order':all_order,
+        'complete':complete_order,
+         'total_completed_order':total_completed_order,
+         'total_uncompleted_order':total_uncompleted_order,
+    }
+    
+   
+    
+    return render(request,"Resto/CuisineOptimize.html",context)
+
+
+@csrf_exempt
+def CompletedOrder(request):
+    if request.method == 'POST':
+        order_numb = request.POST.get('id')
         order = Order.objects.get(id = order_numb)
+        item = order.orderitem_set.all()
         order.status = 'Completed'
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
         
-        
-        subject = f"Commande: {order.transaction_id}"
-        newline = "\n"
-        message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
-            {newline}Order Number: {order.transaction_id} \
-            {newline}Order Total: {order.get_order_total()} FCFA\
-            {newline}"
+        # subject = f"Commande: {order.transaction_id}"
+        # newline = "\n"
+        # message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
+        #         {newline}Order Number: {order.transaction_id} \
+        #         {newline}Order Total: {order.get_order_total()} FCFA\
+        #         {newline}"
             
-        send_mail(subject,message,
-                          settings.EMAIL_HOST_USER,
-                          [order.customer.user.email],fail_silently=False,)
+        # send_mail(subject,message,
+        #                   settings.EMAIL_HOST_USER,
+        #                   [order.customer.user.email],fail_silently=False,)
+        
         
 
-    return JsonResponse("Order Sent",safe=False)
+    return JsonResponse("Order Completed",safe=False)
+
+
+
+#BackEnd process of Order
+def SendOrder(request):
+    
+    customer = request.user
+    order = Order.objects.filter(customer__id = customer.customer.id).last()
+    total_item = order.get_order_quantity()
+    item_selected = list()
+    item = order.orderitem_set.all()
+    for i in range(0,len(item)): 
+        data = { 
+                'orderItem_id':item[i].id,
+                'order_id':item[i].order.id,
+                'description':item[i].item.description,
+                #'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+                'item':item[i].item.name,
+                'quantity':item[i].quantity,
+                'ingredient':item[i].ingredient,
+                }
+        item_selected.append(data)
+    
+    
+    
+    
+    #get the data from the BackEnd
+    if request.method == 'POST':
+        action = request.POST['action']
+        order_numb = request.POST['order']
+
+        customer = request.user
+        cust,created = Customer.objects.get_or_create(user =request.user)
+        order,created = Order.objects.get_or_create(id=order_numb, customer = cust)
+
+    
+        #Process the order
+        item = order.get_order_quantity()
+        if item >0:
+            order.status = 'Sent'
+            order.transaction_id = order_number('texasgrillz')
+            order.save()
+        
+    #     subject = f"Commande: {order.transaction_id}"
+    #     newline = "\n"
+    #     message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
+    #         {newline}Order Number: {order.transaction_id} \
+    #         {newline}Order Total: {order.get_order_total()} FCFA\
+    #         {newline}"
+            
+    #     send_mail(subject,message,
+    #                       settings.EMAIL_HOST_USER,
+    #                       [order.customer.user.email],fail_silently=False,)
+    order = model_to_dict(order)
+    
+        
+
+    return JsonResponse({'order':10,'total_item':total_item,'orderItem':item_selected})
 
 
 #Cuisine (Owner access Only)
@@ -359,34 +540,141 @@ def SendOrder(request):
 @permission_required('Resto.view_order',login_url='/login/') #Permission required
 def Cuisine(request):
     
-    
-   
     #Order of the day
     #Show all order sent to the kitchen
     all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
     
-    # order_item = OrderItem.objects.all()
-    # top_item_number = order_item.aggregate(Sum('quantity'))
-    # top_item_number = top_item_number['quantity__sum']
-    # top_item =order_item.get(quantity = top_item_number)
+    #Show all order sent to the kitchen yesterday
+    all_order_ystd = Order.objects.filter(status='Sent',date_ordered__date = yesterday)
+    complete_order_ystd = Order.objects.filter(complete=True,date_completed__date = yesterday).order_by('date_completed')
     
     
-    # print("MOST ORDERED",top_item)
-    # print('TOP ITEM',top_item_number)
+    
+    #Top 5 Meals
+    orderItem = OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+    
+    
+    #viz Top 5 meals
+    df = pd.DataFrame(orderItem)
+    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    plt = plot(fig,output_type='div')
+    
+    # continuous
+    ['aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance',
+             'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg',
+             'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl',
+             'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric',
+             'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys',
+             'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet',
+             'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges',
+             'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl',
+             'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn',
+             'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu',
+             'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar',
+             'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn',
+             'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid',
+             'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr',
+             'ylorrd']
+    
+    #descrete
+    # [aliceblue, antiquewhite, aqua, aquamarine, azure,
+    #         beige, bisque, black, blanchedalmond, blue,
+    #         blueviolet, brown, burlywood, cadetblue,
+    #         chartreuse, chocolate, coral, cornflowerblue,
+    #         cornsilk, crimson, cyan, darkblue, darkcyan,
+    #         darkgoldenrod, darkgray, darkgrey, darkgreen,
+    #         darkkhaki, darkmagenta, darkolivegreen, darkorange,
+    #         darkorchid, darkred, darksalmon, darkseagreen,
+    #         darkslateblue, darkslategray, darkslategrey,
+    #         darkturquoise, darkviolet, deeppink, deepskyblue,
+    #         dimgray, dimgrey, dodgerblue, firebrick,
+    #         floralwhite, forestgreen, fuchsia, gainsboro,
+    #         ghostwhite, gold, goldenrod, gray, grey, green,
+    #         greenyellow, honeydew, hotpink, indianred, indigo,
+    #         ivory, khaki, lavender, lavenderblush, lawngreen,
+    #         lemonchiffon, lightblue, lightcoral, lightcyan,
+    #         lightgoldenrodyellow, lightgray, lightgrey,
+    #         lightgreen, lightpink, lightsalmon, lightseagreen,
+    #         lightskyblue, lightslategray, lightslategrey,
+    #         lightsteelblue, lightyellow, lime, limegreen,
+    #         linen, magenta, maroon, mediumaquamarine,
+    #         mediumblue, mediumorchid, mediumpurple,
+    #         mediumseagreen, mediumslateblue, mediumspringgreen,
+    #         mediumturquoise, mediumvioletred, midnightblue,
+    #         mintcream, mistyrose, moccasin, navajowhite, navy,
+    #         oldlace, olive, olivedrab, orange, orangered,
+    #         orchid, palegoldenrod, palegreen, paleturquoise,
+    #         palevioletred, papayawhip, peachpuff, peru, pink,
+    #         plum, powderblue, purple, red, rosybrown,
+    #         royalblue, rebeccapurple, saddlebrown, salmon,
+    #         sandybrown, seagreen, seashell, sienna, silver,
+    #         skyblue, slateblue, slategray, slategrey, snow,
+    #         springgreen, steelblue, tan, teal, thistle, tomato,
+    #         turquoise, violet, wheat, white, whitesmoke,
+    #         yellow, yellowgreen]
+    
 
     # Total order of the day
-    total_completed_order = len(complete_order)
-    total_uncompleted_order = len(all_order)
+    total_completed_order = complete_order.count()
+    total_uncompleted_order = all_order.count()
+    total_order = total_completed_order + total_uncompleted_order
+    
+    # Total order from the yesteray day
+    total_completed_order_ystd = complete_order_ystd.count()
+    total_uncompleted_order_ystd = all_order_ystd.count()
+    total_order_ystd = total_completed_order + total_uncompleted_order
+    
+    #Total customer
+    total_customer = Customer.objects.distinct().count()
+    print("MY CUST",total_customer)
+    
+    #Order in an hour
+    orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
+    print(orderHour)
+    plt2 = "There is upcoming order"
+    if orderHour:
+        df2 = pd.DataFrame(orderHour)
+        fig2 = px.line(df2,x='date_ordered__hour', y='count_order',markers=True,text='count_order',
+                    color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
+        
+        fig2.update_traces(textposition="bottom right")
+        fig2.update_xaxes(
+        rangeslider_visible=False,
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1h", step="hour", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=1, label="1y", step="year", stepmode="backward"),
+                dict(step="all")
+            ])
+        )
+    )
+        plt2 = plot(fig2,output_type='div')
+        
+    
+    print("TOTAL  ORDER",total_order,total_completed_order_ystd)
+    print("TOTAL COMP ORDER",total_completed_order,total_completed_order_ystd)
+    
+    print(complete_order_ystd)
+   
+   
+    
     
     context = {
         'all_order':all_order,
         'complete':complete_order,
         'total_completed_order':total_completed_order,
         'total_uncompleted_order':total_uncompleted_order,
-        # 'top_item':top_item,
-        # 'top_item_number':top_item_number,
-        'today':today
+        'total_order':total_order,
+        'vizTop5meals':plt,
+        'vizOrder':plt2,
+        'today':today,
+        'visit':visit_number,
+        'total_customer':total_customer,
+        
     }
     return render(request,'Resto/Cuisine.html',context)
 
@@ -418,6 +706,8 @@ def DeleteOrder(request,item_id):
 
 
 #Inventory Management System
+@login_required
+@permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
 def IventorySystem(request):
     categories = IventoryItemCategory.objects.all()
     
@@ -440,5 +730,170 @@ def IventorySystem(request):
     return render(request,'Resto/IventorySystem.html',context)
 
 
+def CuisineSettings(request):
+    categories = IventoryItemCategory.objects.all()
+    
+    if request.method == 'POST':
+        
+        form = AddItem(request.POST,request.FILES or None)
+        form_menu = AddMenu(request.POST,request.FILES or None)
+        
+        if form.is_valid():
+            item = form.cleaned_data.get('name')
+            category = form.cleaned_data.get('category')
+            #form.save()
+            messages.success(request,f'{item} added to your recette list')
+            return HttpResponseRedirect(f'/texasgrillz/settings/')
+            
+            
+        elif form_menu.is_valid():
+            
+            menu = form_menu.cleaned_data.get('name')
+            #form_menu.save()
+            messages.success(request,f'{menu} added to your menu')
+            print('MY MENU',menu)
+            return HttpResponseRedirect(f'/texasgrillz/settings/')
+    
+    else:
+        form = AddItem()
+        form_menu = AddMenu()
+
+    context = {
+        'categorie': categories,
+        'form':form,
+        'form_menu':form_menu
+    }
+    
+    return render(request,'Resto/CuisineSettings.html',context)
+
+
+
+def Analytics(request):
+    
+    #Top 5 Meals
+    orderItem = OrderItem.objects.filter(date_added__date = today).values('item__name','item__category__name')\
+        .annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+    
+    df = pd.DataFrame(orderItem)
+    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    plt = plot(fig,output_type='div')
+    
+    #REVENU OF THE DAY PER MENU
+    revPerMenu = OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
+        .annotate(my_sum = Sum(F("quantity")*F('item__prix')))
+    revPerMonthPlot = 'There is no item'
+    if revPerMenu:
+        df = pd.DataFrame(revPerMenu)
+        fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
+                    color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+        fig.update_traces(textposition='inside', textinfo='percent+value')
+        revPerMenuPlot = plot(fig,output_type='div')
+    
+    
+    #REVENUE PER MONTH
+    revPerMonth = OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
+        .annotate(my_sum= Sum(F("quantity")*F('item__prix')))
+    df = pd.DataFrame(revPerMonth)
+    get_month(df)
+    df = df.rename({'date_added__date__month':'Mois','my_sum':'Total'},axis=1)
+  
+    fig2 = px.bar(df,x='Mois', y='Total',hover_data=['Total'],text_auto='Total',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7
+                 )
+    fig2.update_traces(textposition='inside')
+    revPerMonthPlot = plot(fig2,output_type='div')
+    
+    #Revenu per Month
+    complete_order = Order.objects.filter(complete=True,date_completed__date__month = today.month).order_by('date_completed')
+    revMonth = [sum(x.get_order_total() for x in complete_order)]
+    
+    #Revenu per Day
+    complete_order_day = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    revDay = [sum(x.get_order_total() for x in complete_order_day)]
+    
+    
+    #Order in an Month
+    orderMonth = Order.objects.filter(date_ordered__date__month__lte = today.month).values('date_ordered__month').annotate(count_order=Count('id'))
+    print(orderMonth)
+    plt2 = "There is upcoming order"
+    if orderMonth:
+        df2 = pd.DataFrame(orderMonth)
+        get_month(df2)
+        fig2 = px.line(df2,x='date_ordered__month', y='count_order',markers=True,text='count_order',
+                    color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
+        
+        fig2.update_traces(textposition="bottom right")
+        fig2.update_xaxes(
+        rangeslider_visible=False,
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1h", step="hour", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=1, label="1y", step="year", stepmode="backward"),
+                dict(step="all")
+            ])
+        )
+    )
+        plt2 = plot(fig2,output_type='div')
+        
+    
+    
+        
+    
+    context = {
+        'vizTop5meals':plt,
+        'revPerMenuPlot':revPerMenuPlot,
+        'revPerMonthPlot':revPerMonthPlot,
+        'vizOrderMonth':plt2,
+        'revMonth':revMonth[0],
+        'revDay':revDay[0],
+        
+    }
+    
+    return render(request, 'Resto/Analytics.html',context)
+
+
+def Revenues(request):
+    
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    total = [sum(x.get_order_total() for x in complete_order)]
+    
+    #REVENU OF THE DAY PER MENU
+    revPerMenu = OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
+        .annotate(my_sum = Sum(F("quantity")*F('item__prix')))
+    
+    
+    df = pd.DataFrame(revPerMenu)
+    fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    fig.update_traces(textposition='inside', textinfo='percent+value')
+    revPerMenuPlot = plot(fig,output_type='div')
+    
+    
+    #REVENUE PER MONTH
+    revPerMonth = OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
+        .annotate(my_sum= Sum(F("quantity")*F('item__prix')))
+    df = pd.DataFrame(revPerMonth)
+    get_month(df)
+    df = df.rename({'date_added__date__month':'Mois','my_sum':'Total'},axis=1)
+  
+    fig2 = px.bar(df,x='Mois', y='Total',hover_data=['Total'],text_auto='Total',
+                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    fig2.update_traces(textposition='inside')
+    revPerMonthPlot = plot(fig2,output_type='div')
+    
+    
+    
+    
+    
+    context = {
+        'monthRev':total[0],
+        'revPerMenuPlot':revPerMenuPlot,
+        'revPerMonthPlot':revPerMonthPlot,
+    }
+    
+    return render(request, 'Resto/Revenues.html',context)
 
 
