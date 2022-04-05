@@ -160,7 +160,7 @@ def MenuDetails(request,menu_id):
         'app':targetApp
         
     }
-    return render(request,'Resto/MenuDetails.html',context)
+    return render(request,'Resto/MenuDetailsNew.html',context)
 
 
 def ItemDetails(request,item_id):
