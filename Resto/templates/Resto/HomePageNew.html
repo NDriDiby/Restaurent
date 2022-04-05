@@ -232,6 +232,20 @@
         hideNotification();
 
         
+
+        $(document).ready(function(){
+      $('.notification-box').hide().delay(1000).fadeIn('slow');
+      });
+
+
+      $(".notification-box").click(function(){
+  $(this).hide();
+});
+
+        $(document).ready(function(){
+    $('.notification-box').delay(6000).fadeOut('slow');
+  });
+        
         //hide elements notification
        function hideNotification(){
          $(".notification-box").click(function(){
