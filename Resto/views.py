@@ -460,7 +460,19 @@ def CompletedOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
-        order = model_to_dict(order)
+        
+        # subject = f"Commande: {order.transaction_id}"
+        # newline = "\n"
+        # message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
+        #         {newline}Order Number: {order.transaction_id} \
+        #         {newline}Order Total: {order.get_order_total()} FCFA\
+        #         {newline}"
+            
+        # send_mail(subject,message,
+        #                   settings.EMAIL_HOST_USER,
+        #                   [order.customer.user.email],fail_silently=False,)
+        
+        
 
     return JsonResponse("Order Completed",safe=False)
 
