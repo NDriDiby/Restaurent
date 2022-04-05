@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      div.gallery {
+        border-radius: 10px;
+        width: 180px;
+        margin: 2px;
+        box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
+        border: 1px solid rgb(163, 159, 159);
+
+        /*background: radial-gradient(#eee5e6, rgb(214, 139, 155));*/
+      }
+
+      div.gallery:hover {
+        border: 2px solid #777;
+      }
+
+      div.gallery img {
+        border-radius: 5px 5px 0 0px;
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+      }
+
+      div.desc {
+        padding: 15px;
+        text-align: center;
+        animation-name: example;
+        animation-duration: 2s;
+      }
+
+      .username {
+        background-color: aqua;
+        padding: 0px 4px 0px 4px;
+      }
+
+      .menu {
+        padding-right: 25px;
+      }
+
+      @keyframes example {
+        0% {
+          background-color: red;
+        }
+        50% {
+          background-color: rgb(238, 151, 22);
+        }
+
+        100% {
+          background-color: rgb(77, 173, 77);
+        }
+      }
+
+      .info {
+        margin-top: 25px;
+        width: 100%;
+        border: 2px solid green;
+        height: 170px;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .logofield .businesslogo img {
+        margin-left: 70px;
+      }
+
+      .logofield .businessName {
+        font-size: 25px;
+        margin-left: 35px;
+      }
+
+      .blog-footer {
+        padding: 2.5rem 0;
+        color: #999;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-top: 0.05rem solid #e5e5e5;
+      }
+
+      .blog-footer p:last-child {
+        margin-bottom: 0;
+      }
+    </style>
+
+    <div class="container py-3">
+      <!-- UserBox -->
+      <div class="d-flex justify-content-between userBox">
+        <div class="userfield">
+          <div class="username">OMI</div>
+        </div>
+
+        <div class="logofield">
+          <span class="businesslogo"> <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></span>
+          <div class="businessName">Texas Grillz</div>
+        </div>
+
+        <div class="logOutfield">
+          <div class="logOutlogo">
+            {% if user.is_authenticated %}
+            <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
+            <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- UserBox -->
+
+      <!-- Image Slider -->
+
+      <div class="info">
+        <div class="content">
+          <div class="col">
+            <h1 class="display-4 font-italic">Texas GrillZ</h1>
+            <p class="lead my-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Slider -->
+
+      <!-- Menu -->
+
+      <div class="menuName mt-3" style="text-align: center">
+        <h1 class="text_leading">MENU</h1>
+      </div>
+
+      <div class="menu mt-3">
+        <div class="row row-cols-2">
+          {% for cat in category %}
+          <div class="col-6">
+            <div class="gallery">
+              <a href="/texasgrillz/menudetails/{{cat.cat_id}}/?session={{app}}">
+                <img src="{{cat.img.url}}" alt="Cinque Terre" width="600" height="400" />
+              </a>
+              <div class="desc">{{cat.name}}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="blog-footer mt-2">
+        <p class="text-muted">Powered by Nova Cloud Artificial Intelligence</p>
+        <small class="text-muted"> All Rights Reserved 2021 </small>
+        <p>
+          <a href="#">Back to top</a>
+        </p>
+      </footer>
+
+      <!-- Body End here -->
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -60,6 +60,35 @@ def get_table_number(request):
             return table
     except:
         pass
+    
+    
+def get_month(df):
+    for i in range(0,len(df)):
+        if df.iloc[i,0] == 1:
+            df.iloc[i,0] = 'Janvier'
+        elif df.iloc[i,0] == 2:
+            df.iloc[i,0] = 'Fevrier'
+        elif df.iloc[i,0] == 3:
+            df.iloc[i,0] = 'Mars'
+        elif df.iloc[i,0] == 4:
+            df.iloc[i,0] = 'Avril'
+        elif df.iloc[i,0] == 5:
+            df.iloc[i,0] = 'Mai'
+        elif df.iloc[i,0] == 6:
+            df.iloc[i,0] = 'Juin'
+        elif df.iloc[i,0] == 7:
+            df.iloc[i,0] = 'Juiellet'
+        elif df.iloc[i,0] == 8:
+            df.iloc[i,0] = 'Aout'
+        elif df.iloc[i,0] == 9:
+            df.iloc[i,0] = 'Septembre'
+        elif df.iloc[i,0] == 10:
+            df.iloc[i,0] = 'October'
+        elif df.iloc[i,0] == 11:
+            df.iloc[i,0] = 'Novembre'
+        elif df.iloc[i,0] == 12:
+            df.iloc[i,0] = 'December'
+    return df
 
     
 
