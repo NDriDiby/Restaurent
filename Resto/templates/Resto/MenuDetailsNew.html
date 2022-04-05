@@ -1,9 +1,7 @@
 {% extends "Resto/base.html" %} {% load static %} {% block content %}
-
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-  .menudetails {
-    padding: 10px;
-  }
+
 </style>
 
 <div class="p-3">
@@ -42,16 +40,23 @@
 </div>
 
 <div class="menudetails">
-  <div class="menudetails-content">
+  <div class="menudetails-content py-10 sm:pt-32">
     {% for i in item %}
-    <div class="menudetails-items">
-      <div class="item-name">{{i.name}}</div>
-      <div class="item-price">{{i.prix}}</div>
-      <div class="item-description">{{i.description}}</div>
-      <div class="item-image">
-        <img src="{{i.img.url}}" />
+    <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2">
+      <div class="menu-leftside  w-80 sm:w-1/2 leading-10">
+        <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
+        <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
+        <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description}}</div>
+      </div>
+      <div class="item-image w-44 sm:w-60">
+        <img class="w-full p-2" src="{{i.img.url}}" />
       </div>
     </div>
+    <hr class="mx-4">
+  <script>
+    const trunc = document.querySelector('.trunc');
+    trunc.innerHTML = trunc.innerHTML.substring(0, 150) + '...'
+  </script>
     {% endfor %}
   </div>
   {% endblock content %}
