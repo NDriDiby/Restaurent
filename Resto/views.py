@@ -51,14 +51,7 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
-    visit = request.session.get('OMI',None)
-    request.session['OMI'] = visit
-    visit_number = visit
-    print('my visit',visit_number)
     
-    
-   
-
     
     #Table Number
     table = get_table_number(request)

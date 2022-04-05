@@ -179,8 +179,8 @@
 
       <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md">
         <div class="notification-content">
-          <div class="notification-message">
-            Welcome Win Aung, you are now connected!
+          <div id="notification-message">
+            <p class="text-md">Win Aung, you are now connected!</p> 
           </div>
         </div>
       </div>
@@ -243,20 +243,24 @@
         }
 
         imageSlider();
+
+        //$('.notification-box').show()
+
+        hideNotification();
+
         
-        // function welcomeNotification(){
-        //   setInterval(showNotification, 5000)
-        // }
+        //hide elements notification
+       function hideNotification(){
+         $(".notification-box").click(function(){
+            $(this).hide();
+         });
+        }
+
         
-        // function showNotification(){
-        //   $(".notification-box").show();
-        // }
-        
-        // // hide elements 
-        // function hideNotification(){
-        //   $(".notification-box").click(function(){
-        //     $(this).hide();
-        //   });
+
+
+          
+
         // }
         // welcomeNotification();
         // hideNotification()
