@@ -1,153 +1,172 @@
+<!DOCTYPE html>
+
 {% load static %}
-<!doctype html>
-
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico"> {% if title %}
-    <title>{{title}}</title>
-    {% endif %}
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="{% static 'Resto/CSS/main.css' %}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <link rel="shortcut icon" href="{% static 'Resto/favicon.ico' %}" />
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <title>Menu</title>
+  </head>
+  <body>
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-    <script type="text/javascript">
-        //Get current user
+       div.gallery {
+        border-radius: 10px;
+        margin: 2px;
+        box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
+        border: 1px solid rgb(163, 159, 159);
+      }
+    
+      
+      div.gallery:hover {
+        border: 2px solid #777;
+      }
 
-        //CSRF TOKEN
-        function getToken(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
+      div.gallery img {
+        border-radius: 5px 5px 0 0px;
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+      } 
+
+      div.desc {
+        padding: 15px;
+        text-align: center;
+      }
+
+      .username {
+        background-color: gray;
+        border-radius: 3px;
+        color: white;
+        padding: 5px 10px;
+      }
+ 
+      .info {
+        margin-top: 25px;
+        width: 100%;
+        height: 170px;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 12px;
+      } 
+
+
+      .logofield .businessName {
+        font-size: 25px;
+        margin-left: 35px;
+      }
+
+      .blog-footer {
+        padding: 2.5rem 0;
+        color: #999;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-top: 0.05rem solid #e5e5e5;
+      }
+
+      .blog-footer p:last-child {
+        margin-bottom: 0;
+      }  
+      .mySlides{
+        background-color: black;
+        border-radius: 8px;
+        box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
+
+      }
+
+      .notification-message{
+        font-weight: bold;
+      }
+    </style>
+
+
+
+
+
+    {% block content%} {% endblock content %}
+     
+
+     
+
+      <!-- Footer -->
+      <footer class="blog-footer mt-2">
+        <p class="text-muted">Powered by Nova Cloud Artificial Intelligence</p>
+        <small class="text-muted"> All Rights Reserved 2021 </small>
+        <p>
+          <a href="#">Back to top</a>
+        </p>
+      </footer>
+
+      <!-- Body End here -->
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var myIndex = 0;
+      
+      function imageSlider() {
+        var mySlides = document.getElementsByClassName("mySlides");
+        for (let i = 0; i < mySlides.length; i++) {
+          mySlides[i].style.display = "none";
+          
+         }
+         myIndex++;
+         if (myIndex > mySlides.length) {myIndex = 1}    
+         mySlides[myIndex-1].style.display = "block";  
+         setTimeout(imageSlider, 3000); // Change image every 3 seconds
         }
-        const csrftoken = getToken('csrftoken');
-    </script>
 
-</head>
+        imageSlider();
 
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-    </symbol>
-    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
-      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-    </symbol>
-    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-    </symbol>
-  </svg>
+        //$('.notification-box').show()
 
-<body>
+        hideNotification();
 
-    <div class="container">
-        <header class="blog-header py-3">
-            <div class="row flex-nowrap justify-content-between align-items-center">
-                {% if user.is_authenticated  %}
-                <div class="col-4 pt-1 d-flex justify-content-none">
-                    <a class="form" href="#" style='text-align:center;text-decoration: none; border-radius:5px; padding:7px 3px 7px 3px; font-size:15px;color:seashell;font-family:BlinkMacSystemFont'>{{request.user.first_name}} {{request.user.last_name}}</a>
-                </div>
-                {% endif %}
-                <div class="col text-center">
-                    <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 80px;  object-fit: scale-down;image-rendering: auto;
-                    flex: auto;text-align: center;">
-                    <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
-                </div>
-                <div class="col-4 d-flex justify-content-end align-items-center">
-                    <!-- <a class="text-muted" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-                    </a> -->
+        
+        //hide elements notification
+       function hideNotification(){
+         $(".notification-box").click(function(){
+            $(this).hide();
+         });
+        }
 
-                    {% if user.is_authenticated %}
-                    <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
-                    <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
-                </div>
-            </div>
-        </header>
+        
 
 
-        <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
-            <div class="col-md-6 px-0">
-                <h1 class="display-4 font-italic">Texas GrillZ</h1>
-                <p class="lead my-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours</p>
-            </div>
-        </div>
+          
 
-
-        <div class="col-12">
-            {% if messages %} {% for message in messages %}
-            <div class='alert alert-{{message.tags}} alert-dismissible' style="text-align: center;" role="alert">
-                {% if message.tags == 'success' %}
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="{{message.tags}}:"><use xlink:href="#check-circle-fill"/></svg> {{message}} {% else %}
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg> {{message}} {% endif %}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-
-        <main role="main" class="container">
-            <div class="row">
-
-                {% block content %} {% endblock content %}
-            </div>
-            <!-- /.row -->
-
-        </main>
-        <!-- /.container -->
-
-        <footer class="blog-footer">
-            <p class='text-muted'>Powered by Nova Cloud Artificial Intelligence</p>
-            <small class='text-muted'> All Rights Reserved 2021 </small>
-            <p>
-                <a href="#">Back to top</a>
-            </p>
-        </footer>
-
-        <!-- Bootstrap core JavaScript
-    ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script>
-            window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')
-        </script>
-        <script src="../../../../assets/js/vendor/popper.min.js"></script>
-        <script src="../../../../dist/js/bootstrap.min.js"></script>
-        <script src="../../../../assets/js/vendor/holder.min.js"></script>
-        <script>
-            Holder.addTheme('thumb', {
-                bg: '#55595c',
-                fg: '#eceeef',
-                text: 'Thumbnail'
-            });
-        </script> -->
-
-        <!-- Option 1: Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-
-</body>
-
+        // }
+        // welcomeNotification();
+        // hideNotification()
+        
+   </script>
+  </body>
 </html>

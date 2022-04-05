@@ -51,14 +51,7 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
-    visit = request.session.get('OMI',None)
-    request.session['OMI'] = visit
-    visit_number = visit
-    print('my visit',visit_number)
     
-    
-   
-
     
     #Table Number
     table = get_table_number(request)
@@ -167,7 +160,7 @@ def MenuDetails(request,menu_id):
         'app':targetApp
         
     }
-    return render(request,'Resto/MenuDetails.html',context)
+    return render(request,'Resto/MenuDetailsNew.html',context)
 
 
 def ItemDetails(request,item_id):
