@@ -23,8 +23,6 @@ from django.http import HttpResponse
 from django.core.mail import send_mail
 
 
-
-
 def Login(request):
     
     #Table Number
@@ -35,8 +33,8 @@ def Login(request):
     #Tracking user session
     targetApp = target_app(request)
     session = track_session(request)
-    # phone = request.GET.get('phone')
-    print('my current sess:',session)
+   
+    
     
 
     #Authenticate user then redict to their session
@@ -56,10 +54,12 @@ def Login(request):
         else:
             messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
             
-                
-               
+        
     else:
         form = AuthenticationForm()
+        if 'connected' in request.GET:
+            print('WTF')
+        
 
     context = {
         'form':form,

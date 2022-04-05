@@ -1,27 +1,5 @@
-<!DOCTYPE html>
+{% extends "Resto/base.html" %} {% load static %}
 
-{% load static %}
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" /> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <title>Document</title>
-  </head>
-  <body>
     <style>
       * {
         margin: 0;
@@ -101,6 +79,11 @@
       }
     </style>
 
+    
+{% block content %}
+  
+
+
 
     <div class="p-3">
       <!-- UserBox -->
@@ -179,8 +162,8 @@
 
       <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md">
         <div class="notification-content">
-          <div class="notification-message">
-            Welcome Win Aung, you are now connected!
+          <div id="notification-message">
+            <p class="text-md">Win Aung, you are now connected!</p> 
           </div>
         </div>
       </div>
@@ -243,7 +226,13 @@
         }
 
         imageSlider();
+
+        //$('.notification-box').show()
+
+        hideNotification();
+
         
+
         $(document).ready(function(){
       $('.notification-box').hide().delay(1000).fadeIn('slow');
       });
@@ -257,7 +246,18 @@
     $('.notification-box').delay(6000).fadeOut('slow');
   });
         
+        //hide elements notification
+       function hideNotification(){
+         $(".notification-box").click(function(){
+            $(this).hide();
+         });
+        }
+
+    
+        // }
+        // welcomeNotification();
+        // hideNotification()
         
    </script>
-  </body>
-</html>
+  
+   {% endblock content %}
