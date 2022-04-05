@@ -55,8 +55,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'storages',
     # 'django_extensions',
+<<<<<<< Updated upstream
     'django.contrib.humanize',
    
+=======
+>>>>>>> Stashed changes
 
 ]
 
@@ -205,7 +208,11 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 
+<<<<<<< Updated upstream
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+=======
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
+>>>>>>> Stashed changes
 
 
 
