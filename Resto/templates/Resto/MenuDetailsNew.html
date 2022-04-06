@@ -1,8 +1,12 @@
 {% extends "Resto/base.html" %} {% load static %} {% block content %}
 <script src="https://cdn.tailwindcss.com"></script>
-<style>
+<!-- Bootstrap CSS -->
 
-</style>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<style></style>
 
 <div class="p-3">
   <!-- UserBox -->
@@ -27,6 +31,7 @@
   </div>
 </div>
 
+<!-- Menu Info -->
 <div class="info my-3">
   <div class="text-white">
     <div class="mySlides relative">
@@ -38,12 +43,31 @@
     </div>
   </div>
 </div>
+<!-- Menu Info -->
+
+<!-- Other Menu  -->
+<div class="overflow-x-scroll">
+  <nav class="flex">
+    {% for m in category %}
+    <a href="/texasgrillz/menudetails/{{m.id}}/?session={{app}}">
+      <p class="p-2 border-2" style="color: skyblue; font-size: large">{{m.name}}</p>
+    </a>
+    {% endfor %} {% if perms.resto.view_order%}
+    <a class="p-2 text-muted" href="{% url 'cuisine-texasgrillz'  %} ">
+      <p style="color: skyblue; font-size: large">Cuisine</p>
+    </a>
+    {% endif %}
+  </nav>
+</div>
+<!-- Other Menu  -->
+
+<!-- Menu Details -->
 
 <div class="menudetails">
   <div class="menudetails-content py-10 sm:pt-32">
     {% for i in item %}
     <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2">
-      <div class="menu-leftside  w-80 sm:w-1/2 leading-10">
+      <div class="menu-leftside w-80 sm:w-1/2 leading-10">
         <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
         <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
         <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description}}</div>
@@ -52,12 +76,15 @@
         <img class="w-full p-2" src="{{i.img.url}}" />
       </div>
     </div>
-    <hr class="mx-4">
-  <script>
-    const trunc = document.querySelector('.trunc');
-    trunc.innerHTML = trunc.innerHTML.substring(0, 150) + '...'
-  </script>
+    <hr class="mx-4" />
+
+    <script>
+      const trunc = document.querySelector(".trunc");
+      trunc.innerHTML = trunc.innerHTML.substring(0, 150) + "...";
+    </script>
+
     {% endfor %}
   </div>
-  {% endblock content %}
 </div>
+{% endblock content %}
+<!-- Menu Details -->
