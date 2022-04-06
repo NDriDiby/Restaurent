@@ -7,7 +7,7 @@ from .forms import models
 from.models import Category, Item,ItemChoices,ItemChoiceCategory,IventoryItem
 from django.contrib.auth.models import AbstractUser, User,AbstractBaseUser,BaseUserManager
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError

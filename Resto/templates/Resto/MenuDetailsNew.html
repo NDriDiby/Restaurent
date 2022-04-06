@@ -1,0 +1,95 @@
+{% extends "Resto/base.html" %} {% load static %} {% block content %}
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Bootstrap CSS -->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<style>
+
+div.item-image img {
+        border-radius: 5px 5px 0 0px;
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+      } 
+
+</style>
+
+<div class="p-3">
+  <!-- UserBox -->
+  <div class="flex justify-between userBox items-center">
+    <div class="userfield">
+      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+    </div>
+
+    <div class="logofield w-20">
+      <span class="businesslogo"
+        ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
+      ></span>
+    </div>
+
+    <div class="logOutfield">
+      <div class="logOutlogo">
+        {% if user.is_authenticated %}
+        <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
+        <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Menu Info -->
+<div class="info my-3">
+  <div class="text-white">
+    <div class="mySlides relative">
+      <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
+      <div class="absolute top-0 left-0 font-bold p-2">
+        <h1 class="italic">{{menu.name}}</h1>
+        <p class="w-full text-xl pt-3">{{menu.description}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Menu Info -->
+
+<!-- Other Menu  -->
+<div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
+  <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
+    {% for m in category %}
+    <a href="/texasgrillz/menudetails/{{m.id}}/?session={{app}}">
+      <p class="animate-bounce p-2 border-1 border-gray-400 rounded-md" style="color: rgb(109, 110, 110); font-size: large">{{m.name}}</p>
+    </a>
+    {% endfor %} {% if perms.resto.view_order%}
+    <a class="p-2 text-muted" href="{% url 'cuisine-texasgrillz'  %} ">
+      <p style="color: skyblue; font-size: large">Cuisine</p>
+    </a>
+    {% endif %}
+  </nav>
+
+</div>
+<!-- Other Menu  -->
+
+<!-- Menu Details -->
+
+<div class="menudetails">
+  <div class="menudetails-content sm:pt-10">
+    {% for i in item %}
+    <a class="" href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
+      <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2">
+        <div class="menu-leftside w-80 sm:w-1/2 leading-10">
+          <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
+          <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
+          <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
+        </div>
+        <div class="item-image">
+          <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </a>
+</div>
+{% endblock content %}
+<!-- Menu Details -->
