@@ -192,14 +192,7 @@
         </div>
     
 
-      <!-- Footer -->
-      <footer class="blog-footer mt-2">
-        <p class="text-muted">Powered by Nova Cloud Artificial Intelligence</p>
-        <small class="text-muted"> All Rights Reserved 2021 </small>
-        <p>
-          <a href="#">Back to top</a>
-        </p>
-      </footer>
+
 
       <!-- Body End here -->
     </div>
@@ -227,37 +220,25 @@
 
         imageSlider();
 
-        //$('.notification-box').show()
-
-        hideNotification();
-
         
-
+        //to show
         $(document).ready(function(){
       $('.notification-box').hide().delay(1000).fadeIn('slow');
       });
 
-
+      //click to hide
       $(".notification-box").click(function(){
-  $(this).hide();
-});
+        $(this).hide();
+      });
 
+      //to hide
         $(document).ready(function(){
-    $('.notification-box').delay(6000).fadeOut('slow');
-  });
+        $('.notification-box').delay(6000).fadeOut('slow');
+        });
         
-        //hide elements notification
-       function hideNotification(){
-         $(".notification-box").click(function(){
-            $(this).hide();
-         });
-        }
+  
 
     
-        // }
-        // welcomeNotification();
-        // hideNotification()
-        
    </script>
   
    {% endblock content %}
