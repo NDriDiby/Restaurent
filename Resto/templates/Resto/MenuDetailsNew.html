@@ -6,7 +6,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-<style></style>
+<style>
+
+div.item-image img {
+        border-radius: 5px 5px 0 0px;
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+      } 
+
+</style>
 
 <div class="p-3">
   <!-- UserBox -->
@@ -46,11 +55,11 @@
 <!-- Menu Info -->
 
 <!-- Other Menu  -->
-<div class="overflow-x-scroll">
-  <nav class="flex">
+<div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
+  <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
     {% for m in category %}
     <a href="/texasgrillz/menudetails/{{m.id}}/?session={{app}}">
-      <p class="p-2 border-2" style="color: skyblue; font-size: large">{{m.name}}</p>
+      <p class="animate-bounce p-2 border-1 border-gray-400 rounded-md" style="color: rgb(109, 110, 110); font-size: large">{{m.name}}</p>
     </a>
     {% endfor %} {% if perms.resto.view_order%}
     <a class="p-2 text-muted" href="{% url 'cuisine-texasgrillz'  %} ">
@@ -58,33 +67,29 @@
     </a>
     {% endif %}
   </nav>
+
 </div>
 <!-- Other Menu  -->
 
 <!-- Menu Details -->
 
 <div class="menudetails">
-  <div class="menudetails-content py-10 sm:pt-32">
+  <div class="menudetails-content sm:pt-10">
     {% for i in item %}
-    <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2">
-      <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-        <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
-        <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
-        <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description}}</div>
+    <a class="" href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
+      <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2">
+        <div class="menu-leftside w-80 sm:w-1/2 leading-10">
+          <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
+          <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
+          <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
+        </div>
+        <div class="item-image">
+          <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
+        </div>
       </div>
-      <div class="item-image w-44 sm:w-60">
-        <img class="w-full p-2" src="{{i.img.url}}" />
-      </div>
+      {% endfor %}
     </div>
-    <hr class="mx-4" />
-
-    <script>
-      const trunc = document.querySelector(".trunc");
-      trunc.innerHTML = trunc.innerHTML.substring(0, 150) + "...";
-    </script>
-
-    {% endfor %}
-  </div>
+  </a>
 </div>
 {% endblock content %}
 <!-- Menu Details -->
