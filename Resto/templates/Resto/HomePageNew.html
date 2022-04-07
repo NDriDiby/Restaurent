@@ -89,7 +89,7 @@
       <!-- UserBox -->
       <div class="flex justify-between userBox items-center">
         <div class="userfield">
-          <div class="username">Win Aung</div>
+          <div class="username">{{request.user.first_name}} {{request.user.last_name}}</div>
         </div>
 
         <div class="logofield w-20">
@@ -105,7 +105,6 @@
         </div>
       </div>
     </div>
-
       <!-- UserBox -->
 
       <!-- Image Slider -->
@@ -163,7 +162,7 @@
       <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md">
         <div class="notification-content">
           <div id="notification-message">
-            <p class="text-md">Win Aung, you are now connected!</p> 
+            <p class="text-md">{{request.user.first_name}} you are now connected!</p> 
           </div>
         </div>
       </div>
@@ -177,7 +176,6 @@
         <h1 class="font-bold">MENU</h1>
       </div>
 
-    
         <div class="grid grid-cols-2 justify-center gap-y-2 md:grid-cols-3 pl-4">
           {% for cat in category %}
           <div >
@@ -203,6 +201,8 @@
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
       crossorigin="anonymous"
     ></script>
+
+
     <script>
       var myIndex = 0;
       
@@ -220,21 +220,41 @@
 
         imageSlider();
 
+
+       
         
         //to show
         $(document).ready(function(){
-      $('.notification-box').hide().delay(1000).fadeIn('slow');
-      });
+
+        //connected = String(localStorage.getItem('connected'))
+        console.log("Connected:",connected)
+        
+        if(connected == 'Yes'){
+          $('.notification-box').hide().delay(1000).fadeIn('slow');
+          console.log('I AM Connected')
+        }
+        console.log('I AM NOT connected')
+        });
+        
+        
+      
+
 
       //click to hide
-      $(".notification-box").click(function(){
-        $(this).hide();
-      });
+      //$(".notification-box").click(function(){
+        //$(this).hide();
+     // });
 
       //to hide
-        $(document).ready(function(){
-        $('.notification-box').delay(6000).fadeOut('slow');
-        });
+       // $(document).ready(function(){
+       // $('.notification-box').delay(6000).fadeOut('slow')
+       // });
+
+       
+
+      
+
+        //$('.notification-box').replaceWith("")
         
   
 

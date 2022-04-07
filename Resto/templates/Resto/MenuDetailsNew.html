@@ -17,6 +17,9 @@ div.item-image img {
 
 </style>
 
+
+
+
 <div class="p-3">
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
@@ -55,10 +58,10 @@ div.item-image img {
 <!-- Menu Info -->
 
 <!-- Other Menu  -->
-<div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
+<div  class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
   <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
     {% for m in category %}
-    <a href="/texasgrillz/menudetails/{{m.id}}/?session={{app}}">
+    <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
       <p class="animate-bounce p-2 border-1 border-gray-400 rounded-md" style="color: rgb(109, 110, 110); font-size: large">{{m.name}}</p>
     </a>
     {% endfor %} {% if perms.resto.view_order%}
@@ -76,7 +79,7 @@ div.item-image img {
 <div class="menudetails">
   <div class="menudetails-content sm:pt-10">
     {% for i in item %}
-    <a class="" href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
+    <a  href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
       <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2">
         <div class="menu-leftside w-80 sm:w-1/2 leading-10">
           <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
@@ -91,5 +94,23 @@ div.item-image img {
     </div>
   </a>
 </div>
-{% endblock content %}
 <!-- Menu Details -->
+
+<script>
+  $('.next-menu').on('click',function(e){
+    e.preventDefault();
+    console.log('you clicked me')
+    menu_id = $(this).data('menu_id')
+    app = $(this).data('app')
+    console.log(menu_id,app)
+    location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
+    //$('.menudetails-content').html(" nothing here")
+
+
+  })
+
+ 
+
+</script>
+{% endblock content %}
+
