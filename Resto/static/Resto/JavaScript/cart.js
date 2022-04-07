@@ -53,6 +53,7 @@ for (var i = 0; i < updated_but.length; i++) {
         total_cart = response.total_cart;
         item_name = response.item_name;
         tot_item = response.tot_item;
+        console.log(response);
 
         msg = document.getElementById("message");
 
@@ -69,6 +70,8 @@ for (var i = 0; i < updated_but.length; i++) {
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
         total_item_box.innerHTML = total_cart;
+
+        $(".orderTotal-total").html(`My total - <b>${response.total}</b> FCFA`);
       },
 
       error: function (error) {

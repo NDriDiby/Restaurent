@@ -1,0 +1,199 @@
+{% extends "Resto/base.html" %} {% load static %} {% block content %}{% if items %}
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Bootstrap CSS -->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<style>
+ 
+  .orderTotal-box {
+    width: 90%;
+    height: 30%;
+    border: 2px solid gray;
+    margin-left: 20px;
+    border-radius: 8px;
+    margin: 20px;
+    position: sticky;
+  }
+
+  .orderTotal-box .orderTotal-content {
+    background-color: rgb(131, 190, 242);
+    padding: 10px;
+    color: rgb(237, 98, 48);
+    font-size: 20px;
+  }
+  .orderTotal-box .orderTotal-content .orderTotal-total{
+
+    text-align: center;
+  }
+
+  input[type=checkbox]{
+    box-sizing: border-box;
+    margin: 9px;
+    width: 15px;
+    height: 15px;
+    
+  }
+
+  input[type=checkbox]:checked {
+    border: 3px solid rgb(163, 230, 100);
+  }
+
+  h5{
+    background-color: rgb(188, 181, 181);
+    width: 100%;
+    height: 40px;
+  }
+
+  
+</style>
+
+
+
+
+<div class="p-3">
+  <!-- UserBox -->
+  <div class="flex justify-between userBox items-center">
+    <div class="userfield">
+      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+    </div>
+
+    <div class="logofield w-20">
+      <span class="businesslogo"
+        ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
+      ></span>
+    </div>
+
+    <div class="logOutfield">
+        <div id="cart-total" class ='bg-green-300 border p-1'>
+            
+            <p id='total-item' class="mt-2 mt-1">{{cart_quantity}}</p>
+          </div>
+    </div>
+  </div>
+</div>
+
+<div id="message" class="col-12">
+    {% if messages %} {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+        <use xlink:href="#check-circle-fill" />
+      </svg>
+      {{message}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+
+
+<!-- Menu Info -->
+<div class="info my-3">
+  <div class="text-white">
+    <div class="mySlides relative">
+      <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{items.img.url }}" alt="{{items.name}}" />
+      <div class="absolute top-0 left-0 font-bold p-2"></div>
+    </div>
+  </div>
+</div>
+
+<div class="iteminfo-box p-2 m-2 bg-green-300">
+<h1 class="italic">{{items.name}}</h1>
+<p class="w-full text-xl">{{items.prix}}</p>
+<p class="text-gray">{{items.description}}</p>
+
+</div>
+
+<!-- Menu Info -->
+
+
+
+<!-- Item Choices -->
+<div class="itemChoice-box py-3 p-2 m-2">
+  <div class="itemChoice-content">
+    <div class="itemChoice-choice">
+        <form  method="POST" class ='choiceOptions'>
+            <div>
+
+              {% csrf_token %} 
+               <!-- ingredients  -->
+              {% if ingredients %}
+              <div class="ingredient">
+                <h5 style="color:black;"><strong>Ingredients ({{ingredients|length}})</strong></h5>
+                {% for ingredient in ingredients %}
+                <input id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+                <span class="checkmark"></span>
+                <label>{{ingredient.name}}</label><br />
+                {% endfor %} <br />
+              </div>
+              {% endif %}
+  
+              
+               <!-- seasoning  -->
+              {% if assaisonement %}
+              <div class="saissoning">
+                <h5 style="color: black">Assaisonnement ({{assaisonement|length}})</h5>
+                {% for saissoning in assaisonement %}
+                <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
+                <label>{{saissoning.name}}</label><br />
+                {% endfor %}<br /> 
+              </div>
+              {% endif %}
+  
+               <!-- cuisson  -->
+              {% if cuisson %}
+              <div class = 'cuisson'>
+                <h5 style="color: black;"><strong> Cuisson ({{cuisson|length}})</strong> </h5>
+                {% for cuiss in cuisson %}
+                <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
+                <label>{{cuiss.name}}</label><br />
+                {% endfor %}<br /> 
+              <div>
+              {% endif %}
+                
+              <!-- Water -->
+              {% if eau_mineral %}
+              <div class = 'eau_mineral'>
+                <h5 style="color: black;">Eau Mineral ({{eau_mineral|length}})</h5>
+                {% for eau in eau_mineral %}
+                <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral" value="{{eau.name}}" />
+                <label>{{eau.name}}</label><br />
+                {% endfor %}<br /> 
+              <div>
+              {% endif %}
+                
+              <!-- Coca Cola product -->
+              {% if coca_cola_produit %}
+              <div class = 'coca_cola_produit'>
+                <h5 style="color: black;">Coca-cola Produit ({{coca_cola_produit|length}})</h5>
+                {% for coca in coca_cola_produit %}
+                <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit" value="{{coca.name}}" />
+                <label>{{coca.name}}</label><br />
+                {% endfor %}<br /> 
+              <div>
+              {% endif %}
+
+              <div class ='d-flex justify-content-center mt-3'>
+              <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Ajouter a ma table</button>
+              </div>
+            </div>
+          </form>
+    </div>
+  </div>
+</div>
+<!-- Item choices -->
+
+<!-- Order Total -->
+<div class="orderTotal-box animate-bounce">
+  <div class="orderTotal-content">
+    <div class="orderTotal-total ">My Total - <b>{{my_total}} FCFA</b></div>
+  </div>
+</div>
+<!-- Order Total -->
+
+{% endif %} 
+
+
+<script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
+{% endblock content %}
