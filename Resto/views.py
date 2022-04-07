@@ -198,6 +198,7 @@ def ItemDetails(request,item_id):
             cust,created = Customer.objects.get_or_create(user =request.user)
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
+            my_total = order.get_order_total()
             
             
     
@@ -241,11 +242,12 @@ def ItemDetails(request,item_id):
         'ingredients':ingredients,
         'eau_mineral':eau_mineral,
         'coca_cola_produit':coca_cola_produit,
-        'myitem':myItem
+        'myitem':myItem,
+        'my_total':my_total,
         
     }
     
-    return render (request,'Resto/ItemsDetails.html',context)
+    return render (request,'Resto/ItemDetailsNew.html',context)
     
 
 
@@ -360,6 +362,7 @@ def UpdatedItem(request):
                          'total':total,
                          'orderItem':item_selected,
                          'active_orderItem':active_orderItem,
+                         
                          
                     
                          },safe=False)
