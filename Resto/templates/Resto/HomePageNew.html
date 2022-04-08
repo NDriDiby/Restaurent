@@ -159,7 +159,7 @@
 
       <!-- notification -->
 
-      <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md">
+      <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl">
         <div class="notification-content">
           <div id="notification-message">
             <p class="text-md">{{request.user.first_name}} you are now connected!</p> 
@@ -172,11 +172,11 @@
       
       <!-- Menu -->
 
-      <div class="text-center my-3 sm:pt-20">
+      <div class="text-center my-3 sm:pt-10">
         <h1 class="font-bold">MENU</h1>
       </div>
 
-        <div class="grid grid-cols-2 justify-center gap-y-2 md:grid-cols-3 pl-4">
+        <div class="grid grid-cols-2 gap-y-2 md:grid-cols-3 justify-center pl-8 sm:pl-2">
           {% for cat in category %}
           <div >
             <div class="gallery w-40 sm:w-60">

@@ -57,15 +57,11 @@ for (var i = 0; i < updated_but.length; i++) {
 
         msg = document.getElementById("message");
 
-        msg.innerHTML = ` <div id="message" class="col-12">
-        <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
-          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-            <use xlink:href="#check-circle-fill" />
-          </svg>
-          <p> (${response.tot_item}) ${item_name} ajouté(es) a votre table </p>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      </div>`;
+        msg.innerHTML = `
+        <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
+          <p class="text-white"><strong>(${response.tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
+          <span><i class="bi bi-check-circle text-2xl font-bold text-green-300"></i></span>
+        </div>`;
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
