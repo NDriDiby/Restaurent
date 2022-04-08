@@ -7,7 +7,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <style>
- 
   .orderTotal-box {
     width: 90%;
     height: 30%;
@@ -29,24 +28,39 @@
     text-align: center;
   }
 
-  input[type=checkbox]{
-    box-sizing: border-box;
+  input[type="checkbox"]{
+    appearance: none;
+    background-color: rgb(110, 107, 107);
+    /* box-sizing: border-box; */
     margin: 9px;
     width: 15px;
     height: 15px;
     
   }
 
-  input[type=checkbox]:checked {
-    border: 3px solid rgb(163, 230, 100);
+  input[type="checkbox"]:checked {
+    background-color: rgb(219, 223, 222);
+  }
+  input[type="checkbox"]:hover{
+   background-color: rgb(61, 47, 255);
   }
 
   h5{
-    background-color: rgb(188, 181, 181);
+    background-color: rgb(173, 169, 169);
     width: 100%;
     height: 40px;
+    border-radius: 8px;
   }
 
+  .item-cat-name{
+    font-weight: bold;
+  }
+  .item-cat-number{
+    color: white;
+    padding-left: 4px;
+    font-weight: bold;
+  }
+  
   
 </style>
 
@@ -67,40 +81,33 @@
     </div>
 
     <div class="logOutfield">
-        <div id="cart-total" class ='bg-green-300 border p-1'>
-            
-            <p id='total-item' class="mt-2 mt-1">{{cart_quantity}}</p>
-          </div>
+        <div id="cart-total" class ='relative'>
+          <i class="bi bi-bag text-3xl"></i>
+          <p id='total-item' class="mt-2 mt-1 font-bold absolute top-0 left-0 pt-1 w-full text-center bg-gray-500 text-white rounded-b-md">{{cart_quantity}}</p>
+        </div>
     </div>
   </div>
 </div>
 
-<div id="message" class="col-12">
-    {% if messages %} {% for message in messages %}
-    <div class="alert alert-{{message.tags}} alert-dismissible" style="text-align: center" role="alert">
-      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-        <use xlink:href="#check-circle-fill" />
-      </svg>
-      {{message}}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %} {% endif %}
+<div id="message">
+    
+  
   </div>
 
 
 <!-- Menu Info -->
-<div class="info my-3">
+<div class="info my-2 ">
   <div class="text-white">
     <div class="mySlides relative">
-      <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{items.img.url }}" alt="{{items.name}}" />
+      <img class="w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 " src="{{items.img.url }}" alt="{{items.name}}" />
       <div class="absolute top-0 left-0 font-bold p-2"></div>
     </div>
   </div>
 </div>
 
-<div class="iteminfo-box p-2 m-2 bg-green-300">
-<h1 class="italic">{{items.name}}</h1>
-<p class="w-full text-xl">{{items.prix}}</p>
+<div class="iteminfo-box p-1 m-2 rounded-md mx-2">
+<h1 class="italic font-bold text-xl">{{items.name}}</h1>
+<p class="w-full font-bold">{{items.prix}}</p>
 <p class="text-gray">{{items.description}}</p>
 
 </div>
@@ -114,16 +121,18 @@
   <div class="itemChoice-content">
     <div class="itemChoice-choice">
         <form  method="POST" class ='choiceOptions'>
-            <div>
+            <div class="rounded-md">
 
               {% csrf_token %} 
                <!-- ingredients  -->
               {% if ingredients %}
-              <div class="ingredient">
-                <h5 style="color:black;"><strong>Ingredients ({{ingredients|length}})</strong></h5>
+              <div class="ingredient ">
+              <h5 class="px-2 flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
                 {% for ingredient in ingredients %}
-                <input id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
-                <span class="checkmark"></span>
+
+                  <input class="checkbox" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+                  <!-- <span class="checkmark"></span> -->
+              
                 <label>{{ingredient.name}}</label><br />
                 {% endfor %} <br />
               </div>
@@ -133,7 +142,7 @@
                <!-- seasoning  -->
               {% if assaisonement %}
               <div class="saissoning">
-                <h5 style="color: black">Assaisonnement ({{assaisonement|length}})</h5>
+                <h5 class="px-2 flex items-center" style="color: black"><span class="item-cat-name">Assaisonnement</span><span class="item-cat-number">({{assaisonement|length}})</span></h5>
                 {% for saissoning in assaisonement %}
                 <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
                 <label>{{saissoning.name}}</label><br />
@@ -144,7 +153,7 @@
                <!-- cuisson  -->
               {% if cuisson %}
               <div class = 'cuisson'>
-                <h5 style="color: black;"><strong> Cuisson ({{cuisson|length}})</strong> </h5>
+                <h5 class="px-2 flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span></h5>
                 {% for cuiss in cuisson %}
                 <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
                 <label>{{cuiss.name}}</label><br />
@@ -155,7 +164,7 @@
               <!-- Water -->
               {% if eau_mineral %}
               <div class = 'eau_mineral'>
-                <h5 style="color: black;">Eau Mineral ({{eau_mineral|length}})</h5>
+                <h5 style="color: black;"><span class="item-cat-name">Eau Mineral </span><span class="item-cat-number">({{eau_mineral|length}})</span></h5>
                 {% for eau in eau_mineral %}
                 <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral" value="{{eau.name}}" />
                 <label>{{eau.name}}</label><br />
@@ -166,7 +175,7 @@
               <!-- Coca Cola product -->
               {% if coca_cola_produit %}
               <div class = 'coca_cola_produit'>
-                <h5 style="color: black;">Coca-cola Produit ({{coca_cola_produit|length}})</h5>
+                <h5 style="color: black;"><span class="item-cat-name">Coca-cola Produit </span><span class="item-cat-number">({{coca_cola_produit|length}})</span></h5>
                 {% for coca in coca_cola_produit %}
                 <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit" value="{{coca.name}}" />
                 <label>{{coca.name}}</label><br />
@@ -174,8 +183,11 @@
               <div>
               {% endif %}
 
-              <div class ='d-flex justify-content-center mt-3'>
-              <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-outline-success add-btn update-cart">Ajouter a ma table</button>
+              <div class ='d-flex justify-content-center mt-3 flex'>
+                <div class="relative">
+                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-secondary update-cart">Ajouter a ma table</button>
+                  <i class="bi bi-plus-lg absolute top-0 right-0 text-white"></i>
+                </div>
               </div>
             </div>
           </form>
@@ -193,7 +205,11 @@
 <!-- Order Total -->
 
 {% endif %} 
-
-
+<script>
+  let checkbox = document.querySelector('.checkbox')
+  checkbox.addEventListener('click', () => {
+    console.log('hashdfksjhsdkj')
+  })
+</script>
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
 {% endblock content %}
