@@ -10,40 +10,77 @@
   .orderTotal-box {
     width: 90%;
     height: 30%;
-    border: 2px solid gray;
+    border-bottom: 2px dotted gray;
     margin-left: 20px;
     border-radius: 8px;
     margin: 20px;
     position: sticky;
   }
-
+  
   .orderTotal-box .orderTotal-content {
-    background-color: rgb(131, 190, 242);
+    /* background-color: rgb(131, 190, 242); */
+    /* background-color: rgb(38, 165, 38); */
     padding: 10px;
-    color: rgb(237, 98, 48);
+    /* color: rgb(237, 98, 48); */
     font-size: 20px;
   }
   .orderTotal-box .orderTotal-content .orderTotal-total{
-
+    
     text-align: center;
   }
-
+  /* .update-cart{
+    border: 1px solid black
+  }  */
+  
   input[type="checkbox"]{
-    appearance: none;
-    background-color: rgb(110, 107, 107);
-    /* box-sizing: border-box; */
+    display: none;
+    /* background-color: rgb(110, 107, 107);
+    box-sizing: border-box;
     margin: 9px;
     width: 15px;
-    height: 15px;
+    height: 15px; */
     
   }
+  
+  
+  label{
+    position: relative;
+  }
+  
+  label::before{
+    content: url("{% static 'Resto/check.svg' %}");
+    background-position: center;
+    background-size: contain;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: -44px;
+    top: -8px;
+     transform: scale(0) rotateZ(180deg);
+    transition: all 0.4s cubic-bezier(0.53, 0.01, 0, 1.49); 
+    
 
-  input[type="checkbox"]:checked {
-    background-color: rgb(219, 223, 222);
+  }
+   label::after{
+    content: '';
+    border: 2px solid green;
+    border-radius: 50%;
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 3px;
+    left: -1px;
+    
+
+  } 
+
+  input[type="checkbox"]:checked + label::before{
+    transform: scale(1) rotateZ(0deg);
   }
   input[type="checkbox"]:hover{
    background-color: rgb(61, 47, 255);
-  }
+  } 
 
   h5{
     background-color: rgb(173, 169, 169);
@@ -60,6 +97,60 @@
     padding-left: 4px;
     font-weight: bold;
   }
+
+
+.border{
+  border: 1px solid black;
+}
+.first {
+    opacity: 0;
+    }
+    .second {
+    opacity: 1;
+    }
+    .popout {
+        animation: popout 1s ease;
+        -webkit-animation: popout 1s ease;
+    }
+    @keyframes popout {
+        from{transform:scale(0)}
+        80%{transform:scale(1.2)}
+        to{transform:scale(1)}
+    }
+    @-webkit-keyframes popout {
+        from{-webkit-transform:scale(0)}
+        80%{-webkit-transform:scale(1.2)}
+        to{-webkit-transform:scale(1)}
+    }
+
+.circle-ripple {
+  /* background-color: gray; */
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  -webkit-animation: ripple .7s linear infinite;
+          animation: ripple .7s linear infinite;
+}
+
+
+@-webkit-keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(128,128,128, 0.3), 0 0 0 1em rgba(128,128,128, 0.3), 0 0 0 3em rgba(128,128,128, 0.3), 0 0 0 5em rgba(128,128,128, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 1em rgba(128,128,128, 0.3), 0 0 0 3em rgba(128,128,128, 0.3), 0 0 0 5em rgba(128,128,128, 0.3), 0 0 0 8em rgba(128,128,128, 0);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(128,128,128, 0.3), 0 0 0 1em rgba(128,128,128, 0.3), 0 0 0 3em rgba(128,128,128, 0.3), 0 0 0 5em rgba(128,128,128, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 1em rgba(128,128,128, 0.3), 0 0 0 3em rgba(128,128,128, 0.3), 0 0 0 5em rgba(128,128,128, 0.3), 0 0 0 8em rgba(128,128,128, 0);
+  }
+}
+
   
   
 </style>
@@ -74,11 +165,20 @@
       <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
     </div>
 
-    <div class="logofield w-20">
+    <!-- <div class="logofield w-20">
       <span class="businesslogo"
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
+    </div> -->
+
+    <!-- Order Total -->
+
+  <div class="orderTotal-box">
+    <div class="orderTotal-content">
+      <div class="orderTotal-total text-green-400">My Total - <b>{{my_total}} FCFA</b></div>
     </div>
+  </div>
+<!-- Order Total -->
 
     <div class="logOutfield">
         <div id="cart-total" class ='relative'>
@@ -96,7 +196,7 @@
 
 
 <!-- Menu Info -->
-<div class="info my-2 ">
+<div class="info my-1 ">
   <div class="text-white">
     <div class="mySlides relative">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 " src="{{items.img.url }}" alt="{{items.name}}" />
@@ -117,7 +217,7 @@
 
 
 <!-- Item Choices -->
-<div class="itemChoice-box py-3 p-2 m-2">
+<div class="itemChoice-box py-1 p-2 m-2">
   <div class="itemChoice-content">
     <div class="itemChoice-choice">
         <form  method="POST" class ='choiceOptions'>
@@ -126,14 +226,13 @@
               {% csrf_token %} 
                <!-- ingredients  -->
               {% if ingredients %}
-              <div class="ingredient ">
+              <div class="ingredient group">
               <h5 class="px-2 flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
                 {% for ingredient in ingredients %}
-
-                  <input class="checkbox" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
-                  <!-- <span class="checkmark"></span> -->
-              
-                <label>{{ingredient.name}}</label><br />
+                    <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+                    <!-- <span class="checkmark"></span> -->
+                    <label for="ingredient">{{ingredient.name}}</label><br />
+                  <!-- <i class="bi bi-check hidden check w-5 h-5 text-center bg-green-400 text-white"></i> -->
                 {% endfor %} <br />
               </div>
               {% endif %}
@@ -141,53 +240,52 @@
               
                <!-- seasoning  -->
               {% if assaisonement %}
-              <div class="saissoning">
+              <div class="saissoning group">
                 <h5 class="px-2 flex items-center" style="color: black"><span class="item-cat-name">Assaisonnement</span><span class="item-cat-number">({{assaisonement|length}})</span></h5>
                 {% for saissoning in assaisonement %}
                 <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
-                <label>{{saissoning.name}}</label><br />
+                <label for="saissoning">{{saissoning.name}}</label><br />
                 {% endfor %}<br /> 
               </div>
               {% endif %}
   
                <!-- cuisson  -->
               {% if cuisson %}
-              <div class = 'cuisson'>
+              <div class = 'cuisson group'>
                 <h5 class="px-2 flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span></h5>
                 {% for cuiss in cuisson %}
                 <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
-                <label>{{cuiss.name}}</label><br />
+                <label for="cuisson">{{cuiss.name}}</label><br />
                 {% endfor %}<br /> 
               <div>
               {% endif %}
                 
               <!-- Water -->
               {% if eau_mineral %}
-              <div class = 'eau_mineral'>
+              <div class = 'eau_mineral group'>
                 <h5 style="color: black;"><span class="item-cat-name">Eau Mineral </span><span class="item-cat-number">({{eau_mineral|length}})</span></h5>
                 {% for eau in eau_mineral %}
                 <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral" value="{{eau.name}}" />
-                <label>{{eau.name}}</label><br />
+                <label for="eau_mineral">{{eau.name}}</label><br />
                 {% endfor %}<br /> 
               <div>
               {% endif %}
                 
               <!-- Coca Cola product -->
               {% if coca_cola_produit %}
-              <div class = 'coca_cola_produit'>
+              <div class = 'coca_cola_produit group'>
                 <h5 style="color: black;"><span class="item-cat-name">Coca-cola Produit </span><span class="item-cat-number">({{coca_cola_produit|length}})</span></h5>
                 {% for coca in coca_cola_produit %}
                 <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit" value="{{coca.name}}" />
-                <label>{{coca.name}}</label><br />
+                <label for="coca_cola_produit">{{coca.name}}</label><br />
                 {% endfor %}<br /> 
               <div>
               {% endif %}
 
-              <div class ='d-flex justify-content-center mt-3 flex'>
-                <div class="relative">
-                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="btn btn-secondary update-cart">Ajouter a ma table</button>
-                  <i class="bi bi-plus-lg absolute top-0 right-0 text-white"></i>
-                </div>
+              <div class ='d-flex justify-content-center mt-3 flex items-center'>
+               
+                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart w-10 h-10 rounded-full bg-green-400 text-white animate-bounce"><i class="bi bi-plus-lg text-2x p-2"></i></button>
+              
               </div>
             </div>
           </form>
@@ -196,20 +294,25 @@
 </div>
 <!-- Item choices -->
 
-<!-- Order Total -->
-<div class="orderTotal-box animate-bounce">
-  <div class="orderTotal-content">
-    <div class="orderTotal-total ">My Total - <b>{{my_total}} FCFA</b></div>
-  </div>
-</div>
-<!-- Order Total -->
 
 {% endif %} 
 <script>
-  let checkbox = document.querySelector('.checkbox')
-  checkbox.addEventListener('click', () => {
-    console.log('hashdfksjhsdkj')
+  
+  let btnUpdate = document.getElementById('update')
+  let group = document.querySelector('.group')
+  let check = document.querySelector('.check')
+  let checkBox = document.getElementById('checkbox')
+  btnUpdate.addEventListener('click', () =>{
+    btnUpdate.classList.add('circle-ripple')
+    // btnUpdate.classList.add('border')
+    setTimeout(() => {
+      btnUpdate.classList.remove('circle-ripple')
+      // btnUpdate.classList.remove('border')
+      }, 500)
   })
+
+
+
 </script>
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
 {% endblock content %}
