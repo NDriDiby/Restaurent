@@ -6,8 +6,7 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
-console.log("CHECKING");
-
+//All input
 var bag = [];
 $("input")
   .not(".cuisson input")
@@ -21,6 +20,7 @@ $("input")
     console.log(bag);
   });
 
+//Cuisson
 var cuisson = [];
 $(".cuisson input").click(function () {
   $(".cuisson input").not(this).prop("checked", false);
@@ -79,7 +79,6 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
         console.log(response);
-        console.log("THIS MY BAG", bag);
 
         msg = document.getElementById("message");
 

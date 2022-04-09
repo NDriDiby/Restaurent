@@ -171,9 +171,20 @@ def MenuDetailsData(request,menu_id):
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
     
+    print('All my Items',item)
     
+    cat_item = list()
+    for i in range(0,len(item)): 
+        data = { 
+                'item_id':item[i].id,
+                'item_name':item[i].name,
+                'item_description':item[i].description,
+                'item_prix':item[i].prix,
+                'item_img_url':item[i].img.url,
+                }
+        cat_item.append(data)
     
-    return JsonResponse({'menu':1111,
+    return JsonResponse({'item':cat_item,
                          'category':'cool'},safe=False)
 
 
