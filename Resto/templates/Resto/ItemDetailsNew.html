@@ -30,20 +30,18 @@
 
   input[type="checkbox"]{
     appearance: none;
-    background-color: rgb(110, 107, 107);
-    /* box-sizing: border-box; */
+    background-color: rgb(155, 151, 151);
     margin: 9px;
     width: 15px;
     height: 15px;
     
   }
+  
 
   input[type="checkbox"]:checked {
-    background-color: rgb(219, 223, 222);
+    background-color: rgb(154, 226, 76);
   }
-  input[type="checkbox"]:hover{
-   background-color: rgb(61, 47, 255);
-  }
+  
 
   h5{
     background-color: rgb(173, 169, 169);
@@ -74,18 +72,20 @@
       <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
     </div>
 
-    <div class="logofield w-20">
+    <!-- <div class="logofield w-20">
       <span class="businesslogo"
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
-    </div>
+    </div> -->
 
     <div class="logOutfield">
-        <div id="cart-total" class ='relative'>
+        <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;"><div id="cart-total" class ='relative'>
           <i class="bi bi-bag text-3xl"></i>
           <p id='total-item' class="mt-2 mt-1 font-bold absolute top-0 left-0 pt-1 w-full text-center bg-gray-500 text-white rounded-b-md">{{cart_quantity}}</p>
         </div>
-    </div>
+    
+    </div></a>
+
   </div>
 </div>
 
@@ -96,7 +96,7 @@
 
 
 <!-- Menu Info -->
-<div class="info my-2 ">
+<div class="info my-1 ">
   <div class="text-white">
     <div class="mySlides relative">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 " src="{{items.img.url }}" alt="{{items.name}}" />
@@ -130,7 +130,7 @@
               <h5 class="px-2 flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
                 {% for ingredient in ingredients %}
 
-                  <input class="checkbox" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+                  <input type="checkbox" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
                   <!-- <span class="checkmark"></span> -->
               
                 <label>{{ingredient.name}}</label><br />
@@ -206,10 +206,10 @@
 
 {% endif %} 
 <script>
-  let checkbox = document.querySelector('.checkbox')
-  checkbox.addEventListener('click', () => {
-    console.log('hashdfksjhsdkj')
-  })
+  //let checkbox = document.querySelector('.checkbox')
+  //checkbox.addEventListener('click', () => {
+  //  console.log('hashdfksjhsdkj')
+ // })
 </script>
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
 {% endblock content %}
