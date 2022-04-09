@@ -110,7 +110,6 @@ def HomePage(request):
 def MenuDetails(request,menu_id):
     
     
-    
     #Get Table Number
     table = get_table_number(request)
     
@@ -125,7 +124,7 @@ def MenuDetails(request,menu_id):
 
     order = None
     cartItem = 0
-    
+    cartTotal = 0
     
     #Create customer and order
     
@@ -136,6 +135,7 @@ def MenuDetails(request,menu_id):
             cust,created = Customer.objects.get_or_create(user =request.user)
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
+            cartTotal = order.get_order_total()
             
             print('My next order',order.date_ordered)
             current_time = timezone.localtime(timezone.now())
@@ -157,6 +157,7 @@ def MenuDetails(request,menu_id):
         'item':item,
         'orders':order,
         'cart_quantity':cartItem,
+        'cart_total':cartTotal,
         'app':targetApp
         
     }

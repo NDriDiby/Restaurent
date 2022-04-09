@@ -15,16 +15,38 @@ div.item-image img {
         object-fit: cover;
       } 
 
+      .orderTotal-box {
+        width: 33%;
+        height: 10%;
+        border: 2px solid gray;
+        margin-left: 20px;
+        border-radius: 8px;
+        margin: 10px;
+        background-color: rgb(176, 222, 155)
+      }
+      
+      .orderTotal-box .orderTotal-content {
+        /* background-color: rgb(131, 190, 242); */
+        /* background-color: rgb(38, 165, 38); */
+        padding: 3px;
+        /* color: rgb(237, 98, 48); */
+        font-size: 18px;
+      }
+      .orderTotal-box .orderTotal-content .orderTotal-total{
+        
+        text-align: center;
+      }
+
 </style>
 
 
 
 
-<div class="p-3">
+<div class="p-2">
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Menu</a>
     </div>
 
     <div class="logofield w-20">
@@ -32,6 +54,14 @@ div.item-image img {
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
     </div>
+
+      <!-- Order Total -->
+    <div class="orderTotal-box">
+      <div class="orderTotal-content">
+        <div class="orderTotal-total"><b>{{cart_total}} FCFA</b></div>
+      </div>
+    </div>
+  <!-- Order Total -->
 
     <div class="logOutfield">
       <div class="logOutlogo">
@@ -44,7 +74,7 @@ div.item-image img {
 </div>
 
 <!-- Menu Info -->
-<div class="info my-3">
+<div class="info my-0">
   <div class="text-white">
     <div class="mySlides relative">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
@@ -70,7 +100,6 @@ div.item-image img {
     </a>
     {% endif %}
   </nav>
-
 </div>
 <!-- Other Menu  -->
 
@@ -90,9 +119,11 @@ div.item-image img {
           <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
         </div>
       </div>
+      
       {% endfor %}
     </div>
   </a>
+  
 </div>
 <!-- Menu Details -->
 
@@ -105,11 +136,17 @@ div.item-image img {
     console.log(menu_id,app)
     location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
     //$('.menudetails-content').html(" nothing here")
-
-
+    
   })
 
- 
+  var cart = "{{cart_quantity}}"
+  $('.orderTotal-box').hide()
+  //Check if there item in the cart
+  if (cart>=1){
+    $('.logofield').hide() //hide logo
+    $('.orderTotal-box').show() //show total order
+
+  }
 
 </script>
 {% endblock content %}

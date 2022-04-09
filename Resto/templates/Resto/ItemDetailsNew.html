@@ -8,19 +8,19 @@
 
 <style>
   .orderTotal-box {
-    width: 50%;
-    height: 30%;
+    width: 33%;
+    height: 10%;
     border: 2px solid gray;
     margin-left: 20px;
     border-radius: 8px;
     margin: 10px;
-    background-color: rgb(255, 210, 189);
+    background-color: rgb(176, 222, 155)
   }
   
   .orderTotal-box .orderTotal-content {
     /* background-color: rgb(131, 190, 242); */
     /* background-color: rgb(38, 165, 38); */
-    padding: 10px;
+    padding: 3px;
     /* color: rgb(237, 98, 48); */
     font-size: 18px;
   }
@@ -32,37 +32,14 @@
     border: 1px solid black
   }  */
   
-<<<<<<< HEAD
-  input[type="checkbox"]{
-
-    appearance: none;
-    background-color: rgb(155, 151, 151);
-
-    display: none;
-    /* background-color: rgb(110, 107, 107);
-    box-sizing: border-box;
-    margin: 9px;
-    width: 15px;
-    height: 15px; */
-    
-  }
-  
 
 
-  input[type="checkbox"]:checked {
-    background-color: rgb(154, 226, 76);
-  }
-  
-
-  
-=======
   input{
     width: 20px;
     height: 20px;
     margin: 10px;
   }
 
->>>>>>> winBranch
   label{
     height: 20px;
   }
@@ -146,19 +123,9 @@ input[type='checkbox']:not(:checked) + label::after{
 }
  */
 
-<<<<<<< HEAD
-  input[type="checkbox"]:checked + label::before{
-    transform: scale(1) rotateZ(0deg);
-  }
-  input[type="checkbox"]:hover{
-   background-color: rgb(61, 47, 255);
-  } 
 
 
-=======
 
-  
->>>>>>> winBranch
   h5{
     background-color: rgb(107 114 128);
     width: 100%;
@@ -249,7 +216,7 @@ input[type='checkbox']:not(:checked) + label::after{
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> {{items.category.name}}</a>
     </div>
 
     <!-- <div class="logofield w-20">
@@ -257,16 +224,14 @@ input[type='checkbox']:not(:checked) + label::after{
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
     </div> -->
-<<<<<<< HEAD
 
-=======
->>>>>>> winBranch
 
-    <!-- Order Total -->
 
+
+  <!-- Order Total -->
   <div class="orderTotal-box animate-bounce">
     <div class="orderTotal-content">
-      <div class="orderTotal-total">My Total - <b>{{my_total}}</b></div>
+      <div class="orderTotal-total"><b>{{my_total}} FCFA</b></div>
     </div>
   </div>
 <!-- Order Total -->
@@ -283,14 +248,15 @@ input[type='checkbox']:not(:checked) + label::after{
   </div>
 </div>
 
+<!-- Notification Box -->
 <div id="message">
-    
-  
+
   </div>
+<!-- Notification Box -->
 
 
 <!-- Menu Info -->
-<div class="info my-1">
+<div class="info my-0">
   <div class="text-white">
     <div class="mySlides relative">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 " src="{{items.img.url }}" alt="{{items.name}}" />
@@ -302,7 +268,9 @@ input[type='checkbox']:not(:checked) + label::after{
 <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
 <h1 class="italic font-bold text-xl">{{items.name}}</h1>
 <p class="w-full font-bold">{{items.prix}}</p>
-<p class="text-gray">{{items.description}}</p>
+<small>
+  <p class="text-gray">{{items.description}}</p>
+</small>
 
 </div>
 
@@ -324,28 +292,18 @@ input[type='checkbox']:not(:checked) + label::after{
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
               <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
                 {% for ingredient in ingredients %}
-<<<<<<< HEAD
 
-=======
                 <div class="ingredient-item">
->>>>>>> winBranch
 
                   <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
-                  <!-- <span class="checkmark"></span> -->
-<<<<<<< HEAD
-              
+  
+  
                 <label>{{ingredient.name}}</label><br />
 
-                    <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
-                    <!-- <span class="checkmark"></span> -->
-                    <label for="ingredient">{{ingredient.name}}</label><br />
-                  <!-- <i class="bi bi-check hidden check w-5 h-5 text-center bg-green-400 text-white"></i> -->
-
-=======
-                  <label for="ingredient">{{ingredient.name}}</label><br />
+            
                 </div>
                   <!-- <i class="bi bi-check hidden check w-5 h-5 text-center bg-green-400 text-white"></i> -->
->>>>>>> winBranch
+
                 {% endfor %} <br />
               </div>
               {% endif %}
@@ -419,17 +377,7 @@ input[type='checkbox']:not(:checked) + label::after{
 
 {% endif %} 
 <script>
-<<<<<<< HEAD
 
-  //let checkbox = document.querySelector('.checkbox')
-  //checkbox.addEventListener('click', () => {
-  //  console.log('hashdfksjhsdkj')
- // })
-
-
-=======
-  
->>>>>>> winBranch
   let btnUpdate = document.getElementById('update')
   let group = document.querySelector('.group')
   let check = document.querySelector('.check')
@@ -443,17 +391,6 @@ input[type='checkbox']:not(:checked) + label::after{
       }, 500)
   })
 
-
-
-<<<<<<< HEAD
-=======
-
-  //let checkbox = document.querySelector('.checkbox')
-  //checkbox.addEventListener('click', () => {
-  //  console.log('hashdfksjhsdkj')
- // })
-
->>>>>>> winBranch
 </script>
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
 {% endblock content %}

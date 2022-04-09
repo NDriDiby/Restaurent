@@ -92,9 +92,12 @@ for (var i = 0; i < updated_but.length; i++) {
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
+        $("#message").show();
         total_item_box.innerHTML = total_cart;
 
-        $(".orderTotal-total").html(`My total - <b>${response.total}</b>`);
+        $("#message").delay(3000).fadeOut("slow");
+
+        $(".orderTotal-total").html(`<b>${response.total} FCFA</b>`);
       },
 
       error: function (error) {
