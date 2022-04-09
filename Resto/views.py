@@ -164,6 +164,19 @@ def MenuDetails(request,menu_id):
     return render(request,'Resto/MenuDetailsNew.html',context)
 
 
+def MenuDetailsData(request,menu_id):
+    
+    #Get and show the item in each category
+    menu = Category.objects.get(id = menu_id)
+    category = Category.objects.all().order_by("name")
+    item = Item.objects.filter(category__id = menu_id)
+    
+    
+    
+    return JsonResponse({'menu':1111,
+                         'category':'cool'},safe=False)
+
+
 def ItemDetails(request,item_id):
     
     #Item

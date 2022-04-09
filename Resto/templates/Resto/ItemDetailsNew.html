@@ -216,7 +216,7 @@ input[type='checkbox']:not(:checked) + label::after{
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> {{items.category.name}}</a>
+      <a class="btn btn-sm btn-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> {{items.category.name}}</a>
     </div>
 
     <!-- <div class="logofield w-20">
@@ -292,19 +292,11 @@ input[type='checkbox']:not(:checked) + label::after{
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
               <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
                 {% for ingredient in ingredients %}
-
                 <div class="ingredient-item">
-
                   <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
-  
-  
                 <label>{{ingredient.name}}</label><br />
-
-            
                 </div>
-                  <!-- <i class="bi bi-check hidden check w-5 h-5 text-center bg-green-400 text-white"></i> -->
-
-                {% endfor %} <br />
+                {% endfor %}
               </div>
               {% endif %}
   
@@ -318,7 +310,7 @@ input[type='checkbox']:not(:checked) + label::after{
                   <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement" value="{{saissoning.name}}" />
                   <label for="saissoning">{{saissoning.name}}</label><br />
                 </div>
-                {% endfor %}<br /> 
+                {% endfor %}
               </div>
               {% endif %}
   
@@ -332,7 +324,7 @@ input[type='checkbox']:not(:checked) + label::after{
                   <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
                   <label for="cuisson">{{cuiss.name}}</label><br />
                 </div>
-                {% endfor %}<br /> 
+                {% endfor %}
               <div>
               {% endif %}
                 
@@ -345,7 +337,7 @@ input[type='checkbox']:not(:checked) + label::after{
                   <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral" value="{{eau.name}}" />
                   <label for="eau_mineral">{{eau.name}}</label><br />
                 </div>
-                {% endfor %}<br /> 
+                {% endfor %}
               <div>
               {% endif %}
                 
@@ -358,7 +350,7 @@ input[type='checkbox']:not(:checked) + label::after{
                   <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit" value="{{coca.name}}" />
                   <label for="coca_cola_produit">{{coca.name}}</label><br />
                 </div>
-                {% endfor %}<br /> 
+                {% endfor %}
               <div>
               {% endif %}
 

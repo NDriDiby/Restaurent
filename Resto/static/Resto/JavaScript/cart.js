@@ -16,7 +16,7 @@ $("input")
       bag.push($(this).val());
     } else if ($(this).prop("checked", false)) {
       console.log("UNCHECKED", $(this).val());
-      delete bag[bag.indexOf($(this).val())];
+      bag = bag.slice(bag.indexOf($(this).val()), 1);
     }
     console.log(bag);
   });
@@ -71,7 +71,6 @@ for (var i = 0; i < updated_but.length; i++) {
         itemId: itemId,
         action: action,
         choice: bag.concat(cuisson).toString(),
-        //custChoice.toString(),
       },
       dataType: "json",
       success: function (response) {
