@@ -6,6 +6,31 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
+console.log("CHECKING");
+
+var bag = [];
+$("input")
+  .not(".cuisson input")
+  .click(function () {
+    if ($(this).prop("checked")) {
+      bag.push($(this).val());
+    } else if ($(this).prop("checked", false)) {
+      console.log("UNCHECKED", $(this).val());
+      delete bag[bag.indexOf($(this).val())];
+    }
+    console.log(bag);
+  });
+
+var cuisson = [];
+$(".cuisson input").click(function () {
+  $(".cuisson input").not(this).prop("checked", false);
+  if (cuisson.length == 0) {
+    cuisson.push($(this).val());
+  } else {
+    cuisson[0] = $(this).val();
+  }
+});
+
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
     var custChoice = [];
@@ -16,11 +41,11 @@ for (var i = 0; i < updated_but.length; i++) {
     var ingre = this.dataset.ingredient;
 
     //Customer ingredient choice
-    for (let i = 1; i < ingredients.length; i++) {
-      if (ingredients[i].checked === true) {
-        custChoice.push(ingredients[i].value);
-      }
-    }
+    // for (let i = 1; i < ingredients.length; i++) {
+    //   if (ingredients[i].checked === true) {
+    //     custChoice.push(ingredients[i].value);
+    //   }
+    // }
 
     //From order page (ingredient)
     if (custChoice[0] == null) {
@@ -45,7 +70,8 @@ for (var i = 0; i < updated_but.length; i++) {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
         action: action,
-        choice: custChoice.toString(),
+        choice: bag.concat(cuisson).toString(),
+        //custChoice.toString(),
       },
       dataType: "json",
       success: function (response) {
@@ -54,6 +80,7 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
         console.log(response);
+        console.log("THIS MY BAG", bag);
 
         msg = document.getElementById("message");
 
@@ -67,7 +94,7 @@ for (var i = 0; i < updated_but.length; i++) {
         $("#cart-total").slideUp(100).slideDown(300);
         total_item_box.innerHTML = total_cart;
 
-        $(".orderTotal-total").html(`My total - <b>${response.total}</b> FCFA`);
+        $(".orderTotal-total").html(`My total - <b>${response.total}</b>`);
       },
 
       error: function (error) {
