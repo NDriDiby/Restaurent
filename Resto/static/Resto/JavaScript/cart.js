@@ -94,7 +94,7 @@ for (var i = 0; i < updated_but.length; i++) {
         $("#cart-total").slideUp(100).slideDown(300);
         total_item_box.innerHTML = total_cart;
 
-        $(".orderTotal-total").html(`My total - <b>${response.total}</b> FCFA`);
+        $(".orderTotal-total").html(`My total - <b>${response.total}</b>`);
       },
 
       error: function (error) {
