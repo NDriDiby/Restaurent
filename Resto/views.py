@@ -110,7 +110,6 @@ def HomePage(request):
 def MenuDetails(request,menu_id):
     
     
-    
     #Get Table Number
     table = get_table_number(request)
     
@@ -125,7 +124,7 @@ def MenuDetails(request,menu_id):
 
     order = None
     cartItem = 0
-    
+    cartTotal = 0
     
     #Create customer and order
     
@@ -136,6 +135,7 @@ def MenuDetails(request,menu_id):
             cust,created = Customer.objects.get_or_create(user =request.user)
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
+            cartTotal = order.get_order_total()
             
             print('My next order',order.date_ordered)
             current_time = timezone.localtime(timezone.now())
@@ -157,10 +157,41 @@ def MenuDetails(request,menu_id):
         'item':item,
         'orders':order,
         'cart_quantity':cartItem,
+        'cart_total':cartTotal,
         'app':targetApp
         
     }
     return render(request,'Resto/MenuDetailsNew.html',context)
+
+
+def MenuDetailsData(request,menu_id):
+    
+    #Get and show the item in each category
+    menu = Category.objects.get(id = menu_id)
+    category = Category.objects.all().order_by("name")
+    item = Item.objects.filter(category__id = menu_id)
+    
+    print('All my Items',item)
+    
+    
+    
+    cat_item = list()
+    for i in range(0,len(item)): 
+        data = { 
+                'item_id':item[i].id,
+                'item_name':item[i].name,
+                'item_description':item[i].description,
+                'item_prix':item[i].prix,
+                'item_img_url':item[i].img.url,
+                'item_category_id':item[i].category.id,
+                'item_category_name':item[i].category.name,
+                'item_category_description':item[i].category.description,
+                 'item_category_img_url':item[i].category.img.url,
+                }
+        cat_item.append(data)
+    
+    return JsonResponse({'item':cat_item,
+                         'category':'cool'},safe=False)
 
 
 def ItemDetails(request,item_id):

@@ -15,16 +15,40 @@ div.item-image img {
         object-fit: cover;
       } 
 
+
+    
+      .orderTotal-box {
+        width: 33%;
+        height: 10%;
+        border: 2px solid gray;
+        margin-left: 20px;
+        border-radius: 8px;
+        margin: 10px;
+        background-color: rgb(176, 222, 155)
+      }
+      
+      .orderTotal-box .orderTotal-content {
+        /* background-color: rgb(131, 190, 242); */
+        /* background-color: rgb(38, 165, 38); */
+        padding: 3px;
+        /* color: rgb(237, 98, 48); */
+        font-size: 18px;
+      }
+      .orderTotal-box .orderTotal-content .orderTotal-total{
+        
+        text-align: center;
+      }
+
 </style>
 
 
 
 
-<div class="p-3">
+<div class="p-2">
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-outline-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+      <a class="btn btn-sm btn-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Menu</a>
     </div>
 
     <div class="logofield w-20">
@@ -32,6 +56,14 @@ div.item-image img {
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
     </div>
+
+      <!-- Order Total -->
+    <div class="orderTotal-box">
+      <div class="orderTotal-content">
+        <div class="orderTotal-total"><b>{{cart_total}} FCFA</b></div>
+      </div>
+    </div>
+  <!-- Order Total -->
 
     <div class="logOutfield">
       <div class="logOutlogo">
@@ -44,12 +76,12 @@ div.item-image img {
 </div>
 
 <!-- Menu Info -->
-<div class="info my-3">
+<div class="info my-0">
   <div class="text-white">
     <div class="mySlides relative">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
       <div class="absolute top-0 left-0 font-bold p-2">
-        <h1 class="italic">{{menu.name}}</h1>
+        <h1 class ='menu-name' data-active = '{{menu.id}}' class="italic">{{menu.name}}</h1>
         <p class="w-full text-xl pt-3">{{menu.description}}</p>
       </div>
     </div>
@@ -62,7 +94,7 @@ div.item-image img {
   <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
     {% for m in category %}
     <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
-      <p class="animate-bounce p-2 border-1 border-gray-400 rounded-md " style="color: rgb(109, 110, 110); font-size: large">{{m.name}}</p>
+      <p id ='menu-{{m.id}}' class="animate-bounce p-2 border-1 border-gray-400 rounded-md menu-name " style="color: rgb(109, 110, 110); font-size: large">{{m.name}}</p>
     </a>
     {% endfor %} {% if perms.resto.view_order%}
     <a class="p-2 text-muted" href="{% url 'cuisine-texasgrillz'  %} ">
@@ -70,46 +102,141 @@ div.item-image img {
     </a>
     {% endif %}
   </nav>
-
 </div>
 <!-- Other Menu  -->
 
 <!-- Menu Details -->
 
 <div class="menudetails">
-  <div class="menudetails-content sm:pt-10">
-    {% for i in item %}
-    <a  href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
-      <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
-        <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-          <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
-          <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
-          <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
-        </div>
-        <div class="item-image">
-          <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
-        </div>
+    <div  class="menudetails-content sm:pt-10">
+                {% for i in item %}
+              <a  href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
+                <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
+                  <div class="menu-leftside w-80 sm:w-1/2 leading-10">
+                    <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
+                    <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
+                    <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
+                  </div>
+                  <div class="item-image">
+                    <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </a>   
+            <br>
       </div>
-      {% endfor %}
-    </div>
-  </a>
 </div>
 <!-- Menu Details -->
 
 <script>
-  $('.next-menu').on('click',function(e){
-    e.preventDefault();
-    console.log('you clicked me')
-    menu_id = $(this).data('menu_id')
-    app = $(this).data('app')
-    console.log(menu_id,app)
-    location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
-    //$('.menudetails-content').html(" nothing here")
 
 
-  })
+  $(document).ready(function() {
+    //Active Menu
+    var active_menu_id = $('.menu-name').data('active')
+    $(`#menu-${active_menu_id}`).addClass('active').css({
+      'color':'green'
+    })
 
- 
+    //ON CLICK CHANGE MENU
+    $('.next-menu').on('click',function(e){
+
+      //New Active Menu
+      active_menu = $(this).data('menu_id')
+      var old_active = active_menu_id
+
+     /* $( ".item-image" ).load( `/texasgrillz/menudetails/${active_menu}/?session=texasgrillz&table=23 .item-image`,function(response, status, xhr){
+        if ( status != "error" ) {
+          var msg = old_active+"Sorry but there was an error: "+active_menu ;
+          alert( msg);
+        }
+        */
+
+      //Restore active menu css proprety
+      $(`#menu-${old_active}`).removeClass('active').css({
+        'color':'gray'
+      })
+     
+
+     //Add active class to New Active Menu 
+     $(`#menu-${active_menu}`).addClass('active').css({
+       'color':'green'
+     })
+
+      $(".menudetails-content").empty();
+      $('.mySlides').empty()
+      e.preventDefault();
+      console.log('you clicked me')
+      menu_id = $(this).data('menu_id')
+      app = $(this).data('app')
+     
+      $.ajax({
+        url: '/texasgrillz/menuDetailsData/'+menu_id,
+        method: "GET",
+        success: function (response) {
+          console.log(response);
+          items = response.item
+
+
+          for(var i in items){
+            $('.menudetails-content').append(`
+            <a  href="/texasgrillz/itemdetails/${items[i]['item_id']}/?session=${app}" style="text-decoration: none; color: black">
+              <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
+                <div class="menu-leftside w-80 sm:w-1/2 leading-10">
+                  <div class="item-name font-bold sm:text-xl">${items[i]['item_name']}</div>
+                  <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
+                  <div class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
+                </div>
+                <div class="item-image">
+                  <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
+                </div>
+              </div>
+            </div>
+          </a>
+            `)
+
+            
+            $('.mySlides').html(`<img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src=${items[i]['item_category_img_url']} />
+          <div class="absolute top-0 left-0 font-bold p-2">
+            <h1 class ='menu-name' data-active = ${items[i]['item_category_id']} class="italic">${items[i]['item_category_name']} </h1>
+            <p class="w-full text-xl pt-3">${items[i]['item_category_description']}</p>
+          </div>`)
+        }
+        //Update Active Menu
+        active_menu_id = active_menu
+
+        $('.menudetails-content').css({
+          "background-color":"yellow",
+          "font-size": "200%"
+      })
+        
+        },
+
+        error: function (error) {
+          console.log('error',error);
+        },
+      });
+    
+});
+
+
+
+
+  //location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
+  //$('.menudetails-content').html(" nothing here")
+  
+})
+
+var cart = "{{cart_quantity}}"
+$('.orderTotal-box').hide()
+//Check if there item in the cart
+if (cart>=1){
+  $('.logofield').hide() //hide logo
+  $('.orderTotal-box').show() //show total order
+
+}
+  
 
 </script>
 {% endblock content %}

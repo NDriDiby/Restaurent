@@ -17,7 +17,7 @@ class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=100,blank=True)
-    img = ResizedImageField(size=[1280, 720],quality=99, upload_to='images/')
+    img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     
 

@@ -6,8 +6,7 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
-console.log("CHECKING");
-
+//All input
 var bag = [];
 $("input")
   .not(".cuisson input")
@@ -16,11 +15,12 @@ $("input")
       bag.push($(this).val());
     } else if ($(this).prop("checked", false)) {
       console.log("UNCHECKED", $(this).val());
-      delete bag[bag.indexOf($(this).val())];
+      bag = bag.slice(bag.indexOf($(this).val()), 1);
     }
     console.log(bag);
   });
 
+//Cuisson
 var cuisson = [];
 $(".cuisson input").click(function () {
   $(".cuisson input").not(this).prop("checked", false);
@@ -71,7 +71,6 @@ for (var i = 0; i < updated_but.length; i++) {
         itemId: itemId,
         action: action,
         choice: bag.concat(cuisson).toString(),
-        //custChoice.toString(),
       },
       dataType: "json",
       success: function (response) {
@@ -80,7 +79,6 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
         console.log(response);
-        console.log("THIS MY BAG", bag);
 
         msg = document.getElementById("message");
 
@@ -92,9 +90,12 @@ for (var i = 0; i < updated_but.length; i++) {
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
+        $("#message").show();
         total_item_box.innerHTML = total_cart;
 
-        $(".orderTotal-total").html(`My total - <b>${response.total}</b>`);
+        $("#message").delay(3000).fadeOut("slow");
+
+        $(".orderTotal-total").html(`<b>${response.total} FCFA</b>`);
       },
 
       error: function (error) {
