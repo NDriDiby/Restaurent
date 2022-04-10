@@ -22,7 +22,6 @@
     <title>Menu</title>
   </head>
   <body>
-    
     <style>
       * {
         margin: 0;
@@ -31,14 +30,13 @@
         font-family: "Poppins", sans-serif;
       }
 
-       div.gallery {
+      div.gallery {
         border-radius: 10px;
         margin: 2px;
         box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
         border: 1px solid rgb(163, 159, 159);
       }
-    
-      
+
       div.gallery:hover {
         border: 2px solid #777;
       }
@@ -48,7 +46,7 @@
         width: 100%;
         height: 100px;
         object-fit: cover;
-      } 
+      }
 
       div.desc {
         padding: 15px;
@@ -56,12 +54,12 @@
       }
 
       .username {
-        background-color: gray;
+        background-color: rgb(108, 106, 106);
         border-radius: 3px;
         color: white;
         padding: 5px 10px;
       }
- 
+
       .info {
         margin-top: 25px;
         width: 100%;
@@ -69,8 +67,7 @@
         box-sizing: border-box;
         padding: 10px;
         border-radius: 12px;
-      } 
-
+      }
 
       .logofield .businessName {
         font-size: 25px;
@@ -87,41 +84,55 @@
 
       .blog-footer p:last-child {
         margin-bottom: 0;
-      }  
-      .mySlides{
+      }
+      .mySlides {
         background-color: black;
         border-radius: 8px;
-        box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
-        -webkit-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
-
+        box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
       }
 
-      .notification-message{
+      .notification-message {
         font-weight: bold;
       }
     </style>
 
-
-
-
-
     {% block content%} {% endblock content %}
-     
 
-     
+    <script>
+      var myIndex = 0;
 
-      <!-- Footer -->
-      <footer class="blog-footer mt-2">
-        <p class="text-muted">Powered by Nova Cloud Artificial Intelligence</p>
-        <small class="text-muted"> All Rights Reserved 2021 </small>
-        <p>
-          <a href="#">Back to top</a>
-        </p>
-      </footer>
+      function imageSlider() {
+        var mySlides = document.getElementsByClassName("mySlides");
+        for (let i = 0; i < mySlides.length; i++) {
+          mySlides[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > mySlides.length) {
+          myIndex = 1;
+        }
+        mySlides[myIndex - 1].style.display = "block";
+        setTimeout(imageSlider, 3000); // Change image every 3 seconds
+      }
 
-      <!-- Body End here -->
-    </div>
+      imageSlider();
+
+      //$('.notification-box').show()
+
+      hideNotification();
+
+      //hide elements notification
+      function hideNotification() {
+        $(".notification-box").click(function () {
+          $(this).hide();
+        });
+      }
+
+      // }
+      // welcomeNotification();
+      // hideNotification()
+    </script>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script
@@ -129,44 +140,7 @@
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
       crossorigin="anonymous"
     ></script>
-    <script>
-      var myIndex = 0;
-      
-      function imageSlider() {
-        var mySlides = document.getElementsByClassName("mySlides");
-        for (let i = 0; i < mySlides.length; i++) {
-          mySlides[i].style.display = "none";
-          
-         }
-         myIndex++;
-         if (myIndex > mySlides.length) {myIndex = 1}    
-         mySlides[myIndex-1].style.display = "block";  
-         setTimeout(imageSlider, 3000); // Change image every 3 seconds
-        }
 
-        imageSlider();
-
-        //$('.notification-box').show()
-
-        hideNotification();
-
-        
-        //hide elements notification
-       function hideNotification(){
-         $(".notification-box").click(function(){
-            $(this).hide();
-         });
-        }
-
-        
-
-
-          
-
-        // }
-        // welcomeNotification();
-        // hideNotification()
-        
-   </script>
+    <!-- Body End here -->
   </body>
 </html>

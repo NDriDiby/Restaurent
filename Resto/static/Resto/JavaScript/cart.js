@@ -6,6 +6,31 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
+//All input
+var bag = [];
+$("input")
+  .not(".cuisson input")
+  .click(function () {
+    if ($(this).prop("checked")) {
+      bag.push($(this).val());
+    } else if ($(this).prop("checked", false)) {
+      console.log("UNCHECKED", $(this).val());
+      bag = bag.slice(bag.indexOf($(this).val()), 1);
+    }
+    console.log(bag);
+  });
+
+//Cuisson
+var cuisson = [];
+$(".cuisson input").click(function () {
+  $(".cuisson input").not(this).prop("checked", false);
+  if (cuisson.length == 0) {
+    cuisson.push($(this).val());
+  } else {
+    cuisson[0] = $(this).val();
+  }
+});
+
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
     var custChoice = [];
@@ -16,11 +41,11 @@ for (var i = 0; i < updated_but.length; i++) {
     var ingre = this.dataset.ingredient;
 
     //Customer ingredient choice
-    for (let i = 1; i < ingredients.length; i++) {
-      if (ingredients[i].checked === true) {
-        custChoice.push(ingredients[i].value);
-      }
-    }
+    // for (let i = 1; i < ingredients.length; i++) {
+    //   if (ingredients[i].checked === true) {
+    //     custChoice.push(ingredients[i].value);
+    //   }
+    // }
 
     //From order page (ingredient)
     if (custChoice[0] == null) {
@@ -45,7 +70,7 @@ for (var i = 0; i < updated_but.length; i++) {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
         action: action,
-        choice: custChoice.toString(),
+        choice: bag.concat(cuisson).toString(),
       },
       dataType: "json",
       success: function (response) {
@@ -53,22 +78,24 @@ for (var i = 0; i < updated_but.length; i++) {
         total_cart = response.total_cart;
         item_name = response.item_name;
         tot_item = response.tot_item;
+        console.log(response);
 
         msg = document.getElementById("message");
 
-        msg.innerHTML = ` <div id="message" class="col-12">
-        <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
-          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-            <use xlink:href="#check-circle-fill" />
-          </svg>
-          <p> (${response.tot_item}) ${item_name} ajouté(es) a votre table </p>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      </div>`;
+        msg.innerHTML = `
+        <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
+          <p class="text-white"><strong>(${response.tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
+          <span><i class="bi bi-check-circle text-2xl font-bold text-green-300"></i></span>
+        </div>`;
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
+        $("#message").show();
         total_item_box.innerHTML = total_cart;
+
+        $("#message").delay(3000).fadeOut("slow");
+
+        $(".orderTotal-total").html(`<b>${response.total} FCFA</b>`);
       },
 
       error: function (error) {

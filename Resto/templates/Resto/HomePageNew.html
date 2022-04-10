@@ -85,11 +85,11 @@
 
 
 
-    <div class="p-3">
+    <div class="p-2">
       <!-- UserBox -->
       <div class="flex justify-between userBox items-center">
         <div class="userfield">
-          <div class="username">Win Aung</div>
+          <div class="username">{{request.user.first_name}} {{request.user.last_name}}</div>
         </div>
 
         <div class="logofield w-20">
@@ -105,12 +105,11 @@
         </div>
       </div>
     </div>
-
       <!-- UserBox -->
 
       <!-- Image Slider -->
   
-      <div class="info my-3">
+      <div class="info my-0">
           <div class="text-white">
             <div class="mySlides relative">
               <img class=" w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{% static 'Resto/hotdog.jpg' %}">
@@ -160,10 +159,10 @@
 
       <!-- notification -->
 
-      <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md">
+      <div class="notification-box text-center  bg-green-300 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl">
         <div class="notification-content">
           <div id="notification-message">
-            <p class="text-md">Win Aung, you are now connected!</p> 
+            <p class="text-md">{{request.user.first_name}} you are now connected!</p> 
           </div>
         </div>
       </div>
@@ -173,12 +172,11 @@
       
       <!-- Menu -->
 
-      <div class="text-center my-3 sm:pt-20">
+      <div class="text-center my-3 sm:pt-10">
         <h1 class="font-bold">MENU</h1>
       </div>
 
-    
-        <div class="grid grid-cols-2 justify-center gap-y-2 md:grid-cols-3 pl-4">
+        <div class="grid grid-cols-2 gap-y-2 md:grid-cols-3 justify-center pl-8 sm:pl-2">
           {% for cat in category %}
           <div >
             <div class="gallery w-40 sm:w-60">
@@ -190,10 +188,19 @@
           </div>
           {% endfor %}
         </div>
+
+
+
+         <!-- Footer -->
+      <footer class="blog-footer mt-2">
+        <p class="text-muted">Powered by Nova Cloud Artificial Intelligence</p>
+        <small class="text-muted"> All Rights Reserved 2021 </small>
+        <p>
+          <a href="#">Back to top</a>
+        </p>
+      </footer>
+      <!-- Footer -->
     
-
-
-
       <!-- Body End here -->
     </div>
 
@@ -203,6 +210,8 @@
       integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
       crossorigin="anonymous"
     ></script>
+
+
     <script>
       var myIndex = 0;
       
@@ -220,21 +229,35 @@
 
         imageSlider();
 
+
+       
         
         //to show
         $(document).ready(function(){
-      $('.notification-box').hide().delay(1000).fadeIn('slow');
-      });
+
+        //connected = String(localStorage.getItem('connected'))
+       
+        });
+        
+        
+      
+
 
       //click to hide
-      $(".notification-box").click(function(){
-        $(this).hide();
-      });
+      //$(".notification-box").click(function(){
+        //$(this).hide();
+     // });
 
       //to hide
-        $(document).ready(function(){
-        $('.notification-box').delay(6000).fadeOut('slow');
-        });
+       // $(document).ready(function(){
+       // $('.notification-box').delay(6000).fadeOut('slow')
+       // });
+
+       
+
+      
+
+        //$('.notification-box').replaceWith("")
         
   
 
