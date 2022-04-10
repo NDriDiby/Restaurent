@@ -18,51 +18,53 @@
   }
   
   .orderTotal-box .orderTotal-content {
-    /* background-color: rgb(131, 190, 242); */
-    /* background-color: rgb(38, 165, 38); */
     padding: 10px;
-    /* color: rgb(237, 98, 48); */
     font-size: 18px;
   }
   .orderTotal-box .orderTotal-content .orderTotal-total{
     
     text-align: center;
   }
-  /* .update-cart{
-    border: 1px solid black
-  }  */
   
   input{
-    width: 20px;
-    height: 20px;
-    margin: 10px;
+    width: 80px;
+    height: 58px;
+  
+    
   }
 
   label{
     height: 20px;
   }
 
-  /*
-  input[type='checkbox']{
-    opacity: 1;
+  
+  input[type='checkbox'] + label{
+    position: relative;
+    padding-left: 35px; 
+    margin-top: 20px;
+    margin-left: 5px; 
+    cursor: pointer;
+    display: inline-block;
+    color: gray;
+    line-height: 25px;
     
   }
-  input[type='checkbox'] + label{
-  position: relative;
-  padding-left: 30px;
-  margin-top: 20px;
-  cursor: pointer;
-  display: inline-block;
-  color: gray;
-  line-height: 25px;
-  
-}
+  input[type='checkbox']{
+    position: absolute;
+    opacity: 0;
+    width: 30px;
+    z-index: 10;
+    cursor: pointer;
+ 
+    
+    
+  }
 
 input[type='checkbox'] + label::before{
   content: '';
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 18px;
   height: 18px;
   outline: 2px solid rgb(69, 69, 70);
@@ -119,7 +121,7 @@ input[type='checkbox']:not(:checked) + label::after{
     -ms-transition: all 1s ease;
     -o-transition: all 1s ease;
 }
- */
+
 
 
   
@@ -130,14 +132,14 @@ input[type='checkbox']:not(:checked) + label::after{
     border-radius: 8px;
     padding-left: 45px;
   }
-  .ingredient-item{
+  /* .ingredient-item{
     position: relative;
   }
   .ingredient-item label{
     position: absolute;
     top: 8px;
     left: 43px;
-  }
+  } */
 
   .item-cat-name{
     font-weight: bold;
@@ -280,7 +282,7 @@ input[type='checkbox']:not(:checked) + label::after{
               {% csrf_token %} 
                <!-- ingredients  -->
               {% if ingredients %}
-              <div class="ingredient group relative">
+              <div class="ingredient relative">
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
               <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
                 {% for ingredient in ingredients %}
@@ -298,7 +300,7 @@ input[type='checkbox']:not(:checked) + label::after{
               
                <!-- seasoning  -->
               {% if assaisonement %}
-              <div class="saissoning group">
+              <div class="saissoning">
                 <h5 class="flex items-center" style="color: black"><span class="item-cat-name">Assaisonnement</span><span class="item-cat-number">({{assaisonement|length}})</span></h5>
                 {% for saissoning in assaisonement %}
                 <div class="ingredient-item">
@@ -310,8 +312,8 @@ input[type='checkbox']:not(:checked) + label::after{
               {% endif %}
   
                <!-- cuisson  -->
-              {% if cuisson %}
-              <div class = 'cuisson group relative'>
+              <!-- {% if cuisson %} -->
+              <div class = 'cuisson relative'>
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/meats.png' %}" alt="">
                 <h5 class="flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span></h5>
                 {% for cuiss in cuisson %}
@@ -325,7 +327,7 @@ input[type='checkbox']:not(:checked) + label::after{
                 
               <!-- Water -->
               {% if eau_mineral %}
-              <div class = 'eau_mineral group'>
+              <div class = 'eau_mineral'>
                 <h5 style="color: black;"><span class="item-cat-name">Eau Mineral </span><span class="item-cat-number">({{eau_mineral|length}})</span></h5>
                 {% for eau in eau_mineral %}
                 <div class="ingredient-item">
@@ -338,7 +340,7 @@ input[type='checkbox']:not(:checked) + label::after{
                 
               <!-- Coca Cola product -->
               {% if coca_cola_produit %}
-              <div class = 'coca_cola_produit group'>
+              <div class = 'coca_cola_produit'>
                 <h5 style="color: black;"><span class="item-cat-name">Coca-cola Produit </span><span class="item-cat-number">({{coca_cola_produit|length}})</span></h5>
                 {% for coca in coca_cola_produit %}
                 <div class="ingredient-item">
@@ -366,7 +368,6 @@ input[type='checkbox']:not(:checked) + label::after{
 <script>
   
   let btnUpdate = document.getElementById('update')
-  let group = document.querySelector('.group')
   let check = document.querySelector('.check')
   let checkBox = document.getElementById('checkbox')
   btnUpdate.addEventListener('click', () =>{
