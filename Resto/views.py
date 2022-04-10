@@ -173,6 +173,8 @@ def MenuDetailsData(request,menu_id):
     
     print('All my Items',item)
     
+    
+    
     cat_item = list()
     for i in range(0,len(item)): 
         data = { 
@@ -181,6 +183,10 @@ def MenuDetailsData(request,menu_id):
                 'item_description':item[i].description,
                 'item_prix':item[i].prix,
                 'item_img_url':item[i].img.url,
+                'item_category_id':item[i].category.id,
+                'item_category_name':item[i].category.name,
+                'item_category_description':item[i].category.description,
+                 'item_category_img_url':item[i].category.img.url,
                 }
         cat_item.append(data)
     
