@@ -7,6 +7,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <style>
+
+
   .orderTotal-box {
     width: 33%;
     height: 10%;
@@ -142,6 +144,12 @@ input[type='checkbox']:not(:checked) + label::after{
     left: 43px;
   }
 
+  .item-cat-instruction{
+
+    padding-left: 140px;
+
+  }
+
   .item-cat-name{
     font-weight: bold;
     color: white;
@@ -229,7 +237,7 @@ input[type='checkbox']:not(:checked) + label::after{
 
 
   <!-- Order Total -->
-  <div class="orderTotal-box animate-bounce">
+  <div class="orderTotal-box ">
     <div class="orderTotal-content">
       <div class="orderTotal-total"><b>{{my_total}} FCFA</b></div>
     </div>
@@ -290,7 +298,8 @@ input[type='checkbox']:not(:checked) + label::after{
               {% if ingredients %}
               <div class="ingredient group relative">
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
-              <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span></h5>
+              <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
+                <small class="item-cat-instruction italic ">Multiple choices</small></span></h5></h5>
                 {% for ingredient in ingredients %}
                 <div class="ingredient-item">
                   <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
@@ -318,7 +327,9 @@ input[type='checkbox']:not(:checked) + label::after{
               {% if cuisson %}
               <div class = 'cuisson group relative'>
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/meats.png' %}" alt="">
-                <h5 class="flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span></h5>
+                <h5 class="flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span><span>
+                  <small class="item-cat-instruction italic">1 choice</small></span></h5>
+                
                 {% for cuiss in cuisson %}
                 <div class="ingredient-item">
                   <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
@@ -365,8 +376,6 @@ input[type='checkbox']:not(:checked) + label::after{
   </div>
 </div>
 <!-- Item choices -->
-
-
 {% endif %} 
 <script>
 
@@ -382,7 +391,7 @@ input[type='checkbox']:not(:checked) + label::after{
       // btnUpdate.classList.remove('border')
       }, 500)
   })
-
 </script>
+
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
 {% endblock content %}

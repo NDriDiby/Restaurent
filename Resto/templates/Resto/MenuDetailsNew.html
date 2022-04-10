@@ -81,7 +81,7 @@ div.item-image img {
     <div class="mySlides relative">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
       <div class="absolute top-0 left-0 font-bold p-2">
-        <h1 class="italic">{{menu.name}}</h1>
+        <h1 class ='menu-name' data-active = '{{menu.id}}' class="italic">{{menu.name}}</h1>
         <p class="w-full text-xl pt-3">{{menu.description}}</p>
       </div>
     </div>
@@ -124,41 +124,43 @@ div.item-image img {
       {% endfor %}
     </div>
   </a>  
+  <br>
 </div>
 <!-- Menu Details -->
 
 <script>
 
-  
 
   $(document).ready(function() {
 
+    //Active Menu
+    var active_menu_id = $('.menu-name').data('active')
+    $(`#menu-${active_menu_id}`).addClass('active').css({
+      'color':'green'
+    })
+    
     $('.next-menu').on('click',function(e){
 
-      
-      menu = $(this).data('menu_id')
+      //New Active Menu
+      active_menu = $(this).data('menu_id')
+      var old_active = active_menu_id
 
-      $(`#menu-${menu}`).addClass('active')
-
-    
-      $(".menudetails-content").empty();
-
-      $('.active').css({
-        'color':'green'
+      //Restore active menu css proprety
+      $(`#menu-${old_active}`).removeClass('active').css({
+        'color':'gray'
       })
 
-      $(`#menu-${menu}`).removeClass('active')
+     //Add active class to New Active Menu 
+     $(`#menu-${active_menu}`).addClass('active').css({
+       'color':'green'
+     })
 
-      
-      
+      $(".menudetails-content").empty();
       e.preventDefault();
       console.log('you clicked me')
       menu_id = $(this).data('menu_id')
       app = $(this).data('app')
-      console.log(menu_id,app)
-
      
-    
       $.ajax({
         url: '/texasgrillz/menuDetailsData/'+menu_id,
         method: "GET",
@@ -169,7 +171,7 @@ div.item-image img {
 
           for(var i in items){
             $('.menudetails-content').append(`
-            <a  href="/texasgrillz/itemdetails/${menu_id}/?session=${app}" style="text-decoration: none; color: black">
+            <a  href="/texasgrillz/itemdetails/${items[i]['item_id']}/?session=${app}" style="text-decoration: none; color: black">
               <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
                 <div class="menu-leftside w-80 sm:w-1/2 leading-10">
                   <div class="item-name font-bold sm:text-xl">${items[i]['item_name']}</div>
@@ -184,7 +186,12 @@ div.item-image img {
           </a>
             `)
         }
+        //Update Active Menu
+        active_menu_id = active_menu
+        
+       
 
+      
         },
         error: function (error) {
           console.log('error',error);
