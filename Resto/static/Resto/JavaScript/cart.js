@@ -78,7 +78,13 @@ for (var i = 0; i < updated_but.length; i++) {
         total_cart = response.total_cart;
         item_name = response.item_name;
         tot_item = response.tot_item;
-        console.log(response);
+
+        old_total = document.getElementById("orderTotal-total").innerText;
+
+        new_total = response.total;
+
+        console.log("MY TOTAL OLD", old_total.substring(-4, 6));
+        console.log("MY TOTAL NEW", new_total);
 
         msg = document.getElementById("message");
 
@@ -96,6 +102,20 @@ for (var i = 0; i < updated_but.length; i++) {
         $("#message").delay(3000).fadeOut("slow");
 
         $(".orderTotal-total").html(`<b>${response.total} FCFA</b>`);
+
+        //old_total = new_total;
+
+        // diff = new_total - old_total;
+        // console.log(diff);
+        // count = diff;
+
+        // function countUp() {
+        //   count += diff;
+
+        //   console.log(count);
+        // }
+
+        // countUp();
       },
 
       error: function (error) {
