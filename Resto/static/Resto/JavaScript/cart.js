@@ -6,6 +6,13 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
+accomp = [];
+//Accompagement
+$(".accompagement ").on("click", function () {
+  $(this).toggleClass("active");
+  console.log("myVal", $(this).val());
+});
+
 //All input
 var bag = [];
 $("input")

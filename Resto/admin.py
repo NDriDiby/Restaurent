@@ -1,7 +1,7 @@
 from django.contrib import admin
 from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
-                    ItemChoiceCategory,IventoryItemCategory,IventoryItem)
+                    ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagement)
 
 
 # Register your models here.
@@ -27,7 +27,7 @@ admin.site.register(ItemChoiceCategory,ItemChoiceCategoryAdmin)
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name','prix','description', 'category','date_created','img')
+    list_display = ('name','prix','description' ,'category','date_created','img')
 admin.site.register(Item,ItemAdmin)
 
 
@@ -45,7 +45,11 @@ class IventoryItemCategoryAdmin(admin.ModelAdmin):
 admin.site.register(IventoryItemCategory,IventoryItemCategoryAdmin)
 
 class IventoryItemAdmin(admin.ModelAdmin):
-    list_display = ('name','prix','quantity' ,'category','description','date_created')
+    list_display = ('name','prix','quantity','category','description','date_created')
 admin.site.register(IventoryItem,IventoryItemAdmin)
+
+class AccompagementAdmin(admin.ModelAdmin):
+    list_display = ('name','prix')
+admin.site.register(Accompagement,AccompagementAdmin)
 
 

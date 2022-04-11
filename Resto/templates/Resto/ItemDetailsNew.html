@@ -140,14 +140,7 @@ input[type='checkbox']:not(:checked) + label::after{
     padding-left: 45px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   }
-  /* .ingredient-item{
-    position: relative;
-  }
-  .ingredient-item label{
-    position: absolute;
-    top: 8px;
-    left: 43px;
-  } */
+  
 
   .item-cat-instruction{
 
@@ -218,6 +211,29 @@ input[type='checkbox']:not(:checked) + label::after{
   }
 }
 
+
+.accompagement{
+  padding-top: 2px;
+  display: inline-block;
+  
+}
+
+.accompagement .accompagement-name{
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  margin: 2px;
+  box-shadow: inset;
+  border: 5px solid rgb(102, 144, 227);
+  border-radius: 20px;
+  padding: 3px;
+    
+}
+
+.active{
+  color:green
+}
+
   
 </style>
 
@@ -267,23 +283,35 @@ input[type='checkbox']:not(:checked) + label::after{
 <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
       <h1 class="italic font-bold text-xl">{{items.name}}</h1>
       <p id ='item-price'class="item-price w-full font-bold">{{items.prix}}</p>
-      
         <p class="text-gray-500">{{items.description}}</p>
-      
+          
 </div>
+
+
 
 <!-- Menu Info -->
 
 
 
 <!-- Item Choices -->
-<div class="itemChoice-box py-1 p-2 m-2">
+<div class="itemChoice-box py-0 p-2 m-2">
   <div class="itemChoice-content">
     <div class="itemChoice-choice">
         <form  method="POST" class ='choiceOptions'>
             <div class="rounded-md">
 
               {% csrf_token %} 
+            {% if items.accompagement.all %}
+        <p>Accompagner de votre choix:</p>
+        {% for acc in items.accompagement.all %}
+        <div class ='accompagement mb-1'>
+          <input  id="accompagement{{acc.id}}" type="checkbox" name="accompagement" value="{{acc.name}}" />
+          <p data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+              
                <!-- ingredients  -->
               {% if ingredients %}
               <div class="ingredient relative">
@@ -392,6 +420,10 @@ input[type='checkbox']:not(:checked) + label::after{
       // btnUpdate.classList.remove('border')
       }, 500)
   })
+
+  
+
+  
 
 
 
