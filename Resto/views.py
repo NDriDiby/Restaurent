@@ -379,7 +379,8 @@ def UpdatedItem(request):
                     'item':item[i].item.name,
                     'quantity':item[i].quantity,
                     'ingredient':item[i].ingredient,
-                    'total':item[i].get_total()
+                    'total':item[i].get_total(),
+                    'item_price':item[i].item.prix,
                     }
             item_selected.append(data)
             
