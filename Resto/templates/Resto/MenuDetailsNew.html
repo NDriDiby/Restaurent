@@ -116,7 +116,7 @@ div.item-image img {
                   <div class="menu-leftside w-80 sm:w-1/2 leading-10">
                     <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
                     <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
-                    <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
+                    <div id='trunc-{{i.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
                   </div>
                   <div class="item-image">
                     <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
@@ -125,7 +125,6 @@ div.item-image img {
                 {% endfor %}
               </div>
             </a>   
-            <br>
       </div>
 </div>
 <!-- Menu Details -->
@@ -176,9 +175,6 @@ div.item-image img {
 
 
 
-
-
-
 function getMenu(menu_id){
   $.ajax({
     url: '/texasgrillz/menuDetailsData/'+menu_id,
@@ -194,7 +190,7 @@ function getMenu(menu_id){
             <div class="menu-leftside w-80 sm:w-1/2 leading-10">
               <div class="item-name font-bold sm:text-xl">${items[i]['item_name']}</div>
               <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
-              <div class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
+              <div id='trunc-${items[i]['item_id']}' class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
             </div>
             <div class="item-image">
               <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
@@ -209,14 +205,19 @@ function getMenu(menu_id){
         <h1 class ='menu-name' data-active = ${items[i]['item_category_id']} class="italic">${items[i]['item_category_name']} </h1>
         <p class="w-full text-xl pt-3">${items[i]['item_category_description']}</p>
       </div>`)
+
+      const trunc = document.querySelector(`#trunc-${items[i]['item_id']}`);
+      trunc.innerHTML = trunc.innerHTML.substring(0, 150) + "...";
     }
     //Update Active Menu
     active_menu_id = active_menu
 
     $('.menudetails-content').css({
       "background-color":"yellow",
-      "font-size": "110%"
+      "font-size": "100%"
   })
+
+        
 
     },
 
@@ -242,7 +243,8 @@ if (cart>=1){
   $('.orderTotal-box').show() //show total order
 }
 
-  
+
+
 
 
   

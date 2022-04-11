@@ -266,10 +266,10 @@ input[type='checkbox']:not(:checked) + label::after{
 
 <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
       <h1 class="italic font-bold text-xl">{{items.name}}</h1>
-      <p class="w-full font-bold">{{items.prix}}</p>
-      <small>
-        <p class="text-gray">{{items.description}}</p>
-      </small>
+      <p id ='item-price'class="item-price w-full font-bold">{{items.prix}}</p>
+      
+        <p class="text-gray-500">{{items.description}}</p>
+      
 </div>
 
 <!-- Menu Info -->
