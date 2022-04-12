@@ -39,6 +39,7 @@ div.item-image img {
         text-align: center;
       }
 
+
 </style>
 
 
@@ -115,7 +116,7 @@ div.item-image img {
                   <div class="menu-leftside w-80 sm:w-1/2 leading-10">
                     <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
                     <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
-                    <div class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
+                    <div id='trunc-{{i.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
                   </div>
                   <div class="item-image">
                     <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
@@ -124,15 +125,13 @@ div.item-image img {
                 {% endfor %}
               </div>
             </a>   
-            <br>
       </div>
 </div>
 <!-- Menu Details -->
 
 <script>
-
-
   $(document).ready(function() {
+
     //Active Menu
     var active_menu_id = $('.menu-name').data('active')
     $(`#menu-${active_menu_id}`).addClass('active').css({
@@ -141,7 +140,6 @@ div.item-image img {
 
     //ON CLICK CHANGE MENU
     $('.next-menu').on('click',function(e){
-
       //New Active Menu
       active_menu = $(this).data('menu_id')
       var old_active = active_menu_id
@@ -158,7 +156,6 @@ div.item-image img {
         'color':'gray'
       })
      
-
      //Add active class to New Active Menu 
      $(`#menu-${active_menu}`).addClass('active').css({
        'color':'green'
@@ -170,56 +167,66 @@ div.item-image img {
       console.log('you clicked me')
       menu_id = $(this).data('menu_id')
       app = $(this).data('app')
-     
-      $.ajax({
-        url: '/texasgrillz/menuDetailsData/'+menu_id,
-        method: "GET",
-        success: function (response) {
-          console.log(response);
-          items = response.item
+
+      getMenu(menu_id)
 
 
-          for(var i in items){
-            $('.menudetails-content').append(`
-            <a  href="/texasgrillz/itemdetails/${items[i]['item_id']}/?session=${app}" style="text-decoration: none; color: black">
-              <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
-                <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-                  <div class="item-name font-bold sm:text-xl">${items[i]['item_name']}</div>
-                  <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
-                  <div class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
-                </div>
-                <div class="item-image">
-                  <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
-                </div>
-              </div>
-            </div>
-          </a>
-            `)
-
-            
-            $('.mySlides').html(`<img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src=${items[i]['item_category_img_url']} />
-          <div class="absolute top-0 left-0 font-bold p-2">
-            <h1 class ='menu-name' data-active = ${items[i]['item_category_id']} class="italic">${items[i]['item_category_name']} </h1>
-            <p class="w-full text-xl pt-3">${items[i]['item_category_description']}</p>
-          </div>`)
-        }
-        //Update Active Menu
-        active_menu_id = active_menu
-
-        $('.menudetails-content').css({
-          "background-color":"yellow",
-          "font-size": "200%"
-      })
-        
-        },
-
-        error: function (error) {
-          console.log('error',error);
-        },
-      });
-    
 });
 
+
+
+function getMenu(menu_id){
+  $.ajax({
+    url: '/texasgrillz/menuDetailsData/'+menu_id,
+    method: "GET",
+    success: function (response) {
+      console.log(response);
+      items = response.item
+
+      for(var i in items){
+        $('.menudetails-content').append(`
+        <a  href="/texasgrillz/itemdetails/${items[i]['item_id']}/?session=${app}" style="text-decoration: none; color: black">
+          <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
+            <div class="menu-leftside w-80 sm:w-1/2 leading-10">
+              <div class="item-name font-bold sm:text-xl">${items[i]['item_name']}</div>
+              <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
+              <div id='trunc-${items[i]['item_id']}' class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
+            </div>
+            <div class="item-image">
+              <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
+            </div>
+          </div>
+        </div>
+      </a>
+        `)
+
+        $('.mySlides').html(`<img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src=${items[i]['item_category_img_url']} />
+      <div class="absolute top-0 left-0 font-bold p-2">
+        <h1 class ='menu-name' data-active = ${items[i]['item_category_id']} class="italic">${items[i]['item_category_name']} </h1>
+        <p class="w-full text-xl pt-3">${items[i]['item_category_description']}</p>
+      </div>`)
+
+      const trunc = document.querySelector(`#trunc-${items[i]['item_id']}`);
+      trunc.innerHTML = trunc.innerHTML.substring(0, 150) + "...";
+    }
+    //Update Active Menu
+    active_menu_id = active_menu
+
+    $('.menudetails-content').css({
+      "background-color":"yellow",
+      "font-size": "100%"
+  })
+
+        
+
+    },
+
+    error: function (error) {
+      console.log('error',error);
+    },
+  });
+
+}
 
 
 
@@ -234,8 +241,12 @@ $('.orderTotal-box').hide()
 if (cart>=1){
   $('.logofield').hide() //hide logo
   $('.orderTotal-box').show() //show total order
-
 }
+
+
+
+
+
   
 
 </script>

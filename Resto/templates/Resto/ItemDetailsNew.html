@@ -16,22 +16,19 @@
     margin-left: 20px;
     border-radius: 8px;
     margin: 10px;
-    background-color: rgb(176, 222, 155)
+    background-color: rgb(176, 222, 155);
+    
+    /*rgb(176, 222, 155)*/
+    
   }
   
   .orderTotal-box .orderTotal-content {
-<<<<<<< HEAD
     padding: 10px;
-=======
-    /* background-color: rgb(131, 190, 242); */
-    /* background-color: rgb(38, 165, 38); */
     padding: 3px;
-    /* color: rgb(237, 98, 48); */
->>>>>>> TexasGrillZ
     font-size: 18px;
+    
   }
   .orderTotal-box .orderTotal-content .orderTotal-total{
-    
     text-align: center;
   }
   
@@ -67,8 +64,6 @@
     z-index: 10;
     cursor: pointer;
  
-    
-    
   }
 
 input[type='checkbox'] + label::before{
@@ -143,15 +138,9 @@ input[type='checkbox']:not(:checked) + label::after{
     height: 40px;
     border-radius: 8px;
     padding-left: 45px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   }
-  /* .ingredient-item{
-    position: relative;
-  }
-  .ingredient-item label{
-    position: absolute;
-    top: 8px;
-    left: 43px;
-  } */
+  
 
   .item-cat-instruction{
 
@@ -222,15 +211,35 @@ input[type='checkbox']:not(:checked) + label::after{
   }
 }
 
+
+.accompagement{
+  padding-top: 2px;
+  display: inline-block;
   
+}
+
+.accompagement .accompagement-name{
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  margin: 2px;
+  box-shadow: inset;
+  border: 5px solid rgb(102, 144, 227);
+  border-radius: 20px;
+  padding: 3px;
+    
+}
+
+.active{
+  color:green
+}
+
   
 </style>
 
 
-
-
-<div class="p-2">
   <!-- UserBox -->
+<div class="p-2">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a class="btn btn-sm btn-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> {{items.category.name}}</a>
@@ -242,28 +251,17 @@ input[type='checkbox']:not(:checked) + label::after{
       ></span>
     </div> -->
 
-
-
-
-  <!-- Order Total -->
-  <div class="orderTotal-box ">
-    <div class="orderTotal-content">
-      <div class="orderTotal-total"><b>{{my_total}} FCFA</b></div>
-    </div>
-  </div>
-<!-- Order Total -->
-
-
     <div class="logOutfield">
-        <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;"><div id="cart-total" class ='relative'>
+        <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;">
+          <div id="cart-total" class ='relative'>
           <i class="bi bi-bag text-3xl"></i>
           <p id='total-item' class="mt-2 mt-1 font-bold absolute top-0 left-0 pt-1 w-full text-center bg-gray-500 text-white rounded-b-md">{{cart_quantity}}</p>
         </div>
-    
     </div></a>
 
   </div>
 </div>
+  <!-- UserBox -->
 
 <!-- Notification Box -->
 <div id="message">
@@ -283,26 +281,37 @@ input[type='checkbox']:not(:checked) + label::after{
 </div>
 
 <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
-<h1 class="italic font-bold text-xl">{{items.name}}</h1>
-<p class="w-full font-bold">{{items.prix}}</p>
-<small>
-  <p class="text-gray">{{items.description}}</p>
-</small>
-
+      <h1 class="italic font-bold text-xl">{{items.name}}</h1>
+      <p id ='item-price'class="item-price w-full font-bold">{{items.prix}}</p>
+        <p class="text-gray-500">{{items.description}}</p>
+          
 </div>
+
+
 
 <!-- Menu Info -->
 
 
 
 <!-- Item Choices -->
-<div class="itemChoice-box py-1 p-2 m-2">
+<div class="itemChoice-box py-0 p-2 m-2">
   <div class="itemChoice-content">
     <div class="itemChoice-choice">
         <form  method="POST" class ='choiceOptions'>
             <div class="rounded-md">
 
               {% csrf_token %} 
+            {% if items.accompagement.all %}
+        <p>Accompagner de votre choix:</p>
+        {% for acc in items.accompagement.all %}
+        <div class ='accompagement mb-1'>
+          <input  id="accompagement{{acc.id}}" type="checkbox" name="accompagement" value="{{acc.name}}" />
+          <p data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+              
                <!-- ingredients  -->
               {% if ingredients %}
               <div class="ingredient relative">
@@ -373,19 +382,31 @@ input[type='checkbox']:not(:checked) + label::after{
                 {% endfor %}
               <div>
               {% endif %}
-
               <div class ='d-flex justify-content-center mt-2 flex items-center'>
-               
                   <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart w-10 h-10 rounded-full bg-green-400 text-white"><i class="bi bi-plus-lg text-2x p-2"></i></button>
-              
               </div>
+
             </div>
           </form>
     </div>
   </div>
 </div>
 <!-- Item choices -->
-{% endif %} 
+
+<!-- Order Total -->
+<a href="/texasgrillz/myorder/?session={{app}}">
+<div class="orderTotal-box">
+  <div class="orderTotal-content">
+    <div id ='orderTotal-total' class="orderTotal-total"><b>{{my_total}} FCFA</b></div>
+  </div>
+</div></a>
+<!-- Order Total -->
+
+
+
+
+
+
 <script>
 
   let btnUpdate = document.getElementById('update')
@@ -399,7 +420,15 @@ input[type='checkbox']:not(:checked) + label::after{
       // btnUpdate.classList.remove('border')
       }, 500)
   })
+
+  
+
+  
+
+
+
 </script>
 
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
+{% endif %} 
 {% endblock content %}
