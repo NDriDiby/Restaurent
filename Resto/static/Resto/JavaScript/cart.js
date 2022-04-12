@@ -8,9 +8,16 @@ var form = document.getElementById("choiceOptions");
 
 accomp = [];
 //Accompagement
-$(".accompagement ").on("click", function () {
+$(".accompagement").on("click", function () {
   $(this).toggleClass("active");
-  console.log("myVal", $(this).val());
+  var accomp = "";
+  if ($(".active")) {
+    //console.log($(".active input").val());
+    accomp = $(".active input").val();
+  }
+  console.log(accomp);
+
+  //console.log("myVal", $(`#accompagement`).data("accomp_name"));
 });
 
 //All input
@@ -21,10 +28,9 @@ $("input")
     if ($(this).prop("checked")) {
       bag.push($(this).val());
     } else if ($(this).prop("checked", false)) {
-      console.log("UNCHECKED", $(this).val());
       bag = bag.slice(bag.indexOf($(this).val()), 1);
     }
-    console.log(bag);
+    //console.log(bag);
   });
 
 //Cuisson
@@ -36,6 +42,7 @@ $(".cuisson input").click(function () {
   } else {
     cuisson[0] = $(this).val();
   }
+  console.log(bag.concat(cuisson).toString());
 });
 
 for (var i = 0; i < updated_but.length; i++) {

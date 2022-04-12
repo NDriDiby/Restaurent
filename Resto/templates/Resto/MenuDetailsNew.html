@@ -15,8 +15,6 @@ div.item-image img {
         object-fit: cover;
       } 
 
-
-    
       .orderTotal-box {
         width: 33%;
         height: 10%;
@@ -24,7 +22,7 @@ div.item-image img {
         margin-left: 20px;
         border-radius: 8px;
         margin: 10px;
-        background-color: rgb(176, 222, 155)
+        background-color: #b0de9b
       }
       
       .orderTotal-box .orderTotal-content {
@@ -122,10 +120,14 @@ div.item-image img {
                     <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
                   </div>
                 </div>
+                <hr class='mx-[19px] h-[10px]'>
                 {% endfor %}
+               
               </div>
-            </a>   
+            </a>
+          
       </div>
+     
 </div>
 <!-- Menu Details -->
 
@@ -135,7 +137,7 @@ div.item-image img {
     //Active Menu
     var active_menu_id = $('.menu-name').data('active')
     $(`#menu-${active_menu_id}`).addClass('active').css({
-      'color':'green'
+      'backgroundColor':'#b0de9b'
     })
 
     //ON CLICK CHANGE MENU
@@ -153,12 +155,12 @@ div.item-image img {
 
       //Restore active menu css proprety
       $(`#menu-${old_active}`).removeClass('active').css({
-        'color':'gray'
+        'backgroundColor':'white'
       })
      
      //Add active class to New Active Menu 
      $(`#menu-${active_menu}`).addClass('active').css({
-       'color':'green'
+       'backgroundColor':'#b0de9b'
      })
 
       $(".menudetails-content").empty();
@@ -214,11 +216,10 @@ function getMenu(menu_id){
 
     $('.menudetails-content').css({
       "background-color":"yellow",
-      "font-size": "100%"
+     
   })
 
         
-
     },
 
     error: function (error) {
