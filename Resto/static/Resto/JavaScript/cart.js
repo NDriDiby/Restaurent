@@ -117,7 +117,7 @@ for (var i = 0; i < updated_but.length; i++) {
         count = old_total;
 
         let counting = setInterval(countUp, 50);
-
+        
         function countUp() {
           count += item_price / 20;
           if (count == new_total) {
