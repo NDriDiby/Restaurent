@@ -6,8 +6,21 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
-console.log("CHECKING");
+accomp = [];
+//Accompagement
+$(".accompagement").on("click", function () {
+  $(this).toggleClass("active");
+  var accomp = "";
+  if ($(".active")) {
+    //console.log($(".active input").val());
+    accomp = $(".active input").val();
+  }
+  console.log(accomp);
 
+  //console.log("myVal", $(`#accompagement`).data("accomp_name"));
+});
+
+//All input
 var bag = [];
 $("input")
   .not(".cuisson input")
@@ -15,12 +28,12 @@ $("input")
     if ($(this).prop("checked")) {
       bag.push($(this).val());
     } else if ($(this).prop("checked", false)) {
-      console.log("UNCHECKED", $(this).val());
-      delete bag[bag.indexOf($(this).val())];
+      bag = bag.slice(bag.indexOf($(this).val()), 1);
     }
-    console.log(bag);
+    //console.log(bag);
   });
 
+//Cuisson
 var cuisson = [];
 $(".cuisson input").click(function () {
   $(".cuisson input").not(this).prop("checked", false);
@@ -29,6 +42,7 @@ $(".cuisson input").click(function () {
   } else {
     cuisson[0] = $(this).val();
   }
+  console.log(bag.concat(cuisson).toString());
 });
 
 for (var i = 0; i < updated_but.length; i++) {
@@ -71,7 +85,6 @@ for (var i = 0; i < updated_but.length; i++) {
         itemId: itemId,
         action: action,
         choice: bag.concat(cuisson).toString(),
-        //custChoice.toString(),
       },
       dataType: "json",
       success: function (response) {
@@ -80,7 +93,11 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
         console.log(response);
-        console.log("THIS MY BAG", bag);
+
+        old_total = document.getElementById("orderTotal-total").innerText;
+        old_total = parseInt(old_total.split("FCFA")[0]);
+        item_price = parseInt(document.getElementById("item-price").innerText);
+        new_total = response.total;
 
         msg = document.getElementById("message");
 
@@ -92,9 +109,22 @@ for (var i = 0; i < updated_but.length; i++) {
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
+        $("#message").show();
         total_item_box.innerHTML = total_cart;
 
-        $(".orderTotal-total").html(`My total - <b>${response.total}</b>`);
+        $("#message").delay(3000).fadeOut("slow");
+
+        count = old_total;
+
+        let counting = setInterval(countUp, 50);
+
+        function countUp() {
+          count += item_price / 20;
+          if (count == new_total) {
+            clearInterval(counting);
+          }
+          $(".orderTotal-total").html(`<b>${count} FCFA</b>`);
+        }
       },
 
       error: function (error) {

@@ -1,5 +1,6 @@
 
 from ast import AugLoad
+from datetime import datetime
 from django.db import models
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
@@ -17,7 +18,7 @@ class Category(models.Model):
     cat_id = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=100,blank=True)
-    img = ResizedImageField(size=[1280, 720],quality=99, upload_to='images/')
+    img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     
 
@@ -39,6 +40,15 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
     
+
+class Accompagement(models.Model):
+    name = models.CharField(max_length = 150)
+    prix = models.IntegerField(default=0)
+    
+    
+    def __str__(self):
+        return self.name
+    
     
 class Item(models.Model):
     itm_id = models.IntegerField()
@@ -48,14 +58,13 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
+    accompagement = models.ManyToManyField(Accompagement)
     
     
 
     def __str__(self):
         return self.name
     
-
-
 
 class ItemChoiceCategory(models.Model):
     item = models.ForeignKey(Item,on_delete=models.CASCADE,blank=True,null=True)
