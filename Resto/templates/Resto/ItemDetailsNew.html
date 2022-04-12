@@ -10,16 +10,14 @@
 
 
   .orderTotal-box {
-    width: 33%;
+    width: 50%;
     height: 10%;
     border: 2px solid gray;
-    margin-left: 20px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 8px;
-    margin: 10px;
     background-color: rgb(176, 222, 155);
-    
-    /*rgb(176, 222, 155)*/
-    
   }
   
   .orderTotal-box .orderTotal-content {
@@ -71,6 +69,7 @@ input[type='checkbox'] + label::before{
   position: absolute;
   top: 0;
   left: 0;
+  border-radius: 2px;
   width: 18px;
   height: 18px;
   outline: 2px solid rgb(69, 69, 70);
@@ -93,8 +92,8 @@ input[type='checkbox']:checked + label::after{
    position: absolute;
    left: 0;
    top: 0;
-   width: 18px;
-   height: 18px;
+   width: 25px;
+   height: 25px;
    border-radius: 2px;
    opacity: 1;
    animation: popout 1s ease;
@@ -142,10 +141,20 @@ input[type='checkbox']:not(:checked) + label::after{
   }
   
 
-  .item-cat-instruction{
+  .item-cat-instruction-multiplechoice{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-weight: bold;
+  
 
-    padding-left: 140px;
+  }
 
+  .item-cat-instruction-onechoice{
+    position: absolute;
+    top: 12px;
+    right: 50px;
+    font-weight: bold;
   }
 
   .item-cat-name{
@@ -224,14 +233,15 @@ input[type='checkbox']:not(:checked) + label::after{
   text-align: center;
   margin: 2px;
   box-shadow: inset;
-  border: 5px solid rgb(102, 144, 227);
+  border: 4px solid rgb(102, 144, 227);
   border-radius: 20px;
   padding: 3px;
     
 }
 
-.active{
-  color:green
+.active p{
+  background-color: rgb(176, 222, 155);
+
 }
 
   
@@ -302,7 +312,7 @@ input[type='checkbox']:not(:checked) + label::after{
 
               {% csrf_token %} 
             {% if items.accompagement.all %}
-        <p>Accompagner de votre choix:</p>
+        <p class="text-gray-500">Accompagner de votre choix:</p>
         {% for acc in items.accompagement.all %}
         <div data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement mb-1'>
           <input  id="accompagement{{acc.id}}" type="checkbox" name="accompagement" value="{{acc.name}}" />
@@ -317,8 +327,11 @@ input[type='checkbox']:not(:checked) + label::after{
               {% if ingredients %}
               <div class="ingredient relative">
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
-              <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
-                <small class="item-cat-instruction italic ">Multiple choices</small></span></h5></h5>
+                <div class="item-cat-instruction-multiplechoice">
+                  <small class="italic">Multiple choices</small>
+                </div>
+                <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
+                </h5>
                 {% for ingredient in ingredients %}
                 <div class="ingredient-item">
                   <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
@@ -344,10 +357,10 @@ input[type='checkbox']:not(:checked) + label::after{
   
                <!-- cuisson  -->
               <!-- {% if cuisson %} -->
-              <div class = 'cuisson relative'>
+              <div class = 'cuisson relative mt-2'>
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/meats.png' %}" alt="">
                 <h5 class="flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span><span>
-                  <small class="item-cat-instruction italic">1 choice</small></span></h5>
+                  <small class="item-cat-instruction-onechoice italic">1 choice</small></span></h5>
                 
                 {% for cuiss in cuisson %}
                 <div class="ingredient-item">
@@ -384,7 +397,7 @@ input[type='checkbox']:not(:checked) + label::after{
               <div>
               {% endif %}
               <div class ='d-flex justify-content-center mt-2 flex items-center'>
-                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart w-10 h-10 rounded-full bg-green-400 text-white"><i class="bi bi-plus-lg text-2x p-2"></i></button>
+                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart w-10 h-10 rounded-full bg-gray-500 text-white"><i class="bi bi-plus-lg text-2x p-2"></i></button>
               </div>
 
             </div>
@@ -415,10 +428,8 @@ input[type='checkbox']:not(:checked) + label::after{
   let checkBox = document.getElementById('checkbox')
   btnUpdate.addEventListener('click', () =>{
     btnUpdate.classList.add('circle-ripple')
-    // btnUpdate.classList.add('border')
     setTimeout(() => {
       btnUpdate.classList.remove('circle-ripple')
-      // btnUpdate.classList.remove('border')
       }, 500)
   })
 
