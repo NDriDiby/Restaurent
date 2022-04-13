@@ -315,9 +315,7 @@ input[type='checkbox']:not(:checked) + label::after{
         <p class="text-gray-500">Accompagner de votre choix:</p>
         {% for acc in items.accompagement.all %}
         <div data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement mb-1'>
-          <input  id="accompagement{{acc.id}}" type="checkbox" name="accompagement" value="{{acc.name}}" />
-          <!-- <label>{{acc.name}} ({{acc.prix}})</label><br /> -->
-          <p id="accompagement{{acc.id}}"  class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
+          <p id="accompagement{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
         </div>
         {% endfor %}
         {% endif %}
