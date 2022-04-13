@@ -6,31 +6,30 @@ var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var form = document.getElementById("choiceOptions");
 
-accomp = [];
+accomp_choice = [];
 //Accompagement
 $(".accompagement").on("click", function () {
   $(this).toggleClass("active");
-  var accomp = "";
-  if ($(".active")) {
-    //console.log($(".active input").val());
-    accomp = $(".active input").val();
+  var color = $(".active p").css("background-color");
+  if (".active") {
+    console.log($(this).data("accomp_name"), color);
+  } else if (color != rgb(176, 222, 155)) {
+    console.log("OKAY I SEE", color, $(this).data("accomp_name"));
   }
-  console.log(accomp);
-
-  //console.log("myVal", $(`#accompagement`).data("accomp_name"));
 });
 
 //All input
 var bag = [];
 $("input")
   .not(".cuisson input")
-  .click(function () {
+  .change(function () {
     if ($(this).prop("checked")) {
       bag.push($(this).val());
+      console.log($(this).val(), "CHECKED");
     } else if ($(this).prop("checked", false)) {
       bag = bag.slice(bag.indexOf($(this).val()), 1);
+      console.log($(this).val(), "UNCHECKED");
     }
-    //console.log(bag);
   });
 
 //Cuisson
@@ -92,7 +91,10 @@ for (var i = 0; i < updated_but.length; i++) {
         total_cart = response.total_cart;
         item_name = response.item_name;
         tot_item = response.tot_item;
+
         console.log(response);
+        //console.log("Side choices", document.getElementsByClassName("active").innerHTML);
+        console.log("Side choices", $(".active").data("accomp_name"));
 
         old_total = document.getElementById("orderTotal-total").innerText;
         old_total = parseInt(old_total.split("FCFA")[0]);
@@ -117,7 +119,7 @@ for (var i = 0; i < updated_but.length; i++) {
         count = old_total;
 
         let counting = setInterval(countUp, 50);
-        
+
         function countUp() {
           count += item_price / 20;
           if (count == new_total) {
