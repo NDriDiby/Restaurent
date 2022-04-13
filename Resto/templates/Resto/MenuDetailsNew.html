@@ -47,7 +47,7 @@ div.item-image img {
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Menu</a>
+      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">Menu</span></i></a>
     </div>
 
     <div class="logofield w-20">
@@ -194,8 +194,11 @@ function getMenu(menu_id){
               <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
               <div id='trunc-${items[i]['item_id']}' class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
             </div>
-            <div class="item-image">
+            <div class="item-image relative">
               <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
+              <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
+                <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2"></i>
+              </div>
             </div>
           </div>
           <hr class='mx-[19px] p-[1px]'>
@@ -215,10 +218,10 @@ function getMenu(menu_id){
     //Update Active Menu
     active_menu_id = active_menu
 
-    $('.menudetails-content').css({
-      "background-color":"yellow",
+  //   $('.menudetails-content').css({
+  //     "background-color":"yellow",
      
-  })
+  // })
 
         
     },
