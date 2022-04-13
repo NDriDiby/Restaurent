@@ -7,29 +7,28 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <style>
-
-
-  .orderTotal-box {
-    width: 50%;
-    height: 10%;
-    border: 2px solid gray;
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 8px;
-    background-color: rgb(176, 222, 155);
-  }
+.accompagement{
+  padding-top: 2px;
+  display: inline-block;
   
-  .orderTotal-box .orderTotal-content {
-    padding: 10px;
-    padding: 3px;
-    font-size: 18px;
+}
+
+.accompagement .accompagement-name{
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  margin: 2px;
+  box-shadow: inset;
+  border: 2px solid rgb(102, 144, 227);
+  border-radius: 20px;
+  padding: 0px 10px;
     
-  }
-  .orderTotal-box .orderTotal-content .orderTotal-total{
-    text-align: center;
-  }
-  
+}
+
+.active p{
+  background-color: rgb(176, 222, 155);
+
+}
 
 
   input{
@@ -48,11 +47,11 @@
     position: relative;
     padding-left: 35px; 
     margin-top: 20px;
-    margin-left: 5px; 
+    margin-left: 10px; 
     cursor: pointer;
     display: inline-block;
     color: gray;
-    line-height: 25px;
+    /* line-height: 25px; */
     
   }
   input[type='checkbox']{
@@ -69,9 +68,9 @@ input[type='checkbox'] + label::before{
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 2px;
-  width: 18px;
-  height: 18px;
+  border-radius: 8px;
+  width: 15px;
+  height: 15px;
   outline: 2px solid rgb(69, 69, 70);
   background-color: white;
 }
@@ -80,8 +79,8 @@ input[type='checkbox']:checked + label::before{
     position: absolute;
     left: 0;
     top: 0;
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
     outline: none;
     background-color: white;
 }
@@ -128,11 +127,8 @@ input[type='checkbox']:not(:checked) + label::after{
 }
 
 
-
-
-
   h5{
-    background-color: rgb(107 114 128);
+    /* background-color: rgb(107 114 128); */
     width: 100%;
     height: 40px;
     border-radius: 8px;
@@ -159,10 +155,10 @@ input[type='checkbox']:not(:checked) + label::after{
 
   .item-cat-name{
     font-weight: bold;
-    color: white;
+    color: rgb(3, 3, 3);
   }
   .item-cat-number{
-    color: white;
+    color: rgb(7, 7, 7);
     padding-left: 4px;
     font-weight: bold;
   }
@@ -221,29 +217,135 @@ input[type='checkbox']:not(:checked) + label::after{
 }
 
 
-.accompagement{
-  padding-top: 2px;
-  display: inline-block;
+
+
+.orderTotal-box {
+    width: 50%;
+    height: 40%;
+    border: 2px solid gray;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    background-color: rgb(176, 222, 155);
+  } 
   
+  .orderTotal-box .orderTotal-content {
+    padding: 10px;
+    padding: 3px;
+    font-size: 18px;
+     
+  }
+  .orderTotal-box .orderTotal-content .orderTotal-total{
+    text-align: center;
+  }
+
+  button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px 16px 15px;
+  height: 56px;
+  position: relative;
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 500;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 0.2s ease, background-color 150ms ease;
+  &:focus {
+    box-shadow: 0 8px 64px 16px rgba(0,0,0,0.5);
+    outline: none;
+  }
+  
+  &:hover, &:active {
+    background-color: #eee;
+  }
 }
 
-.accompagement .accompagement-name{
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  margin: 2px;
-  box-shadow: inset;
-  border: 4px solid rgb(102, 144, 227);
-  border-radius: 20px;
-  padding: 3px;
-    
+#cart {
+  margin-right: 12px;
+  transform-origin: 20% 100%;
+  opacity: 1;
 }
 
-.active p{
-  background-color: rgb(176, 222, 155);
-
+@keyframes slide-up-fade {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
 }
 
+@keyframes roll-out {
+  0% {
+    transform: translate(0) rotate(0);
+  }
+  20% {
+    transform: translate(0) rotate(-70deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(140px) rotate(-47deg);
+    opacity: 0;
+  }
+}
+
+.checked-out span {
+  animation: slide-up-fade 150ms 1;
+  animation-fill-mode: both;
+}
+
+.checked-out #cart {
+  animation: roll-out 1s 1 150ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+}
+
+@keyframes checkmark {
+  from {
+    stroke-dashoffset: 26px;
+  }
+  to {
+    stroke-dashoffset: 0;  
+  }
+}
+
+#check {
+  position: absolute;
+  left: calc(50% - 12px);
+}
+
+#check path {
+  stroke-dasharray: 26px;
+  stroke-dashoffset: 26px;
+}
+
+.checked-out #check path {
+  animation: checkmark 150ms 1 1150ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+}
+
+.checked-out button {
+  background-color: #20bf6b;
+  transition-delay: 1150ms;
+}
+  
   
 </style>
 
@@ -252,7 +354,7 @@ input[type='checkbox']:not(:checked) + label::after{
 <div class="p-2">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> {{items.category.name}}</a>
+      <a href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">{{items.category.name}}</span></i></a>
     </div>
 
     <!-- <div class="logofield w-20">
@@ -394,9 +496,19 @@ input[type='checkbox']:not(:checked) + label::after{
                 {% endfor %}
               <div>
               {% endif %}
-              <div class ='d-flex justify-content-center mt-2 flex items-center'>
-                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart w-10 h-10 rounded-full bg-gray-500 text-white"><i class="bi bi-plus-lg text-2x p-2"></i></button>
-              </div>
+              <!-- <div class ='d-flex justify-content-center mt-2 flex items-center'> -->
+                  <!-- <button ><i class="bi bi-plus-lg text-2x p-2"></i></button> -->
+                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart flex ml-auto mr-auto mt-10">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" id="cart">
+                      <path fill="#000000" d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                  </svg>
+                    <span>Add Cart</span>
+                    <svg id="check" style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12"/>
+                    </svg>
+                  </button>
+              
+                <!-- </div> -->
 
             </div>
           </form>
@@ -413,6 +525,7 @@ input[type='checkbox']:not(:checked) + label::after{
   </div>
 </div></a>
 <!-- Order Total -->
+
 
 
 
@@ -436,7 +549,14 @@ input[type='checkbox']:not(:checked) + label::after{
   
 
 
+  const btn = document.querySelector('button');
 
+btn.addEventListener('click', () => {
+  document.documentElement.classList.add('checked-out');
+  setTimeout(() => {
+    document.documentElement.classList.remove('checked-out');
+      }, 2300)
+});
 </script>
 
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
