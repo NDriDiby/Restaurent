@@ -37,6 +37,14 @@ div.item-image img {
         text-align: center;
       }
 
+      .menudetails-items{
+
+        border: 2px solid gray;
+        border-radius: 12px;
+        margin: 5px;
+
+      }
+
 
 </style>
 
@@ -116,11 +124,14 @@ div.item-image img {
                     <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
                     <div id='trunc-{{i.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
                   </div>
-                  <div class="item-image">
+                  <div class="item-image relative">
                     <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
+                    <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
+                      <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2"></i>
+                    </div>
                   </div>
                 </div>
-                <hr class='mx-[19px] p-[1px]'>
+               
                 {% endfor %}
                
               </div>
@@ -201,7 +212,7 @@ function getMenu(menu_id){
               </div>
             </div>
           </div>
-          <hr class='mx-[19px] p-[1px]'>
+          
         </div>
       </a>
         `)
