@@ -17,11 +17,12 @@
   font-weight: bold;
   width: 100%;
   text-align: center;
-  margin: 2px;
+  margin: 3px;
   box-shadow: inset;
-  border: 2px solid rgb(102, 144, 227);
+  border: 3px solid rgb(102, 144, 227);
   border-radius: 20px;
-  padding: 0px 10px;
+  padding: 0px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
     
 }
 
@@ -68,7 +69,7 @@ input[type='checkbox'] + label::before{
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 8px;
+  border-radius: 2px;
   width: 15px;
   height: 15px;
   outline: 2px solid rgb(69, 69, 70);
@@ -133,7 +134,7 @@ input[type='checkbox']:not(:checked) + label::after{
     height: 40px;
     border-radius: 8px;
     padding-left: 45px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25); 
   }
   
 
@@ -155,10 +156,11 @@ input[type='checkbox']:not(:checked) + label::after{
 
   .item-cat-name{
     font-weight: bold;
-    color: rgb(3, 3, 3);
+    color: white;
+  
   }
   .item-cat-number{
-    color: rgb(7, 7, 7);
+    color: white;
     padding-left: 4px;
     font-weight: bold;
   }
@@ -188,8 +190,8 @@ input[type='checkbox']:not(:checked) + label::after{
         to{-webkit-transform:scale(1)}
     }
 
-.circle-ripple {
-  /* background-color: gray; */
+/* .circle-ripple {
+  background-color: gray;
   width: 50px;
   height: 50px;
   border-radius: 100%;
@@ -214,30 +216,38 @@ input[type='checkbox']:not(:checked) + label::after{
   100% {
     box-shadow: 0 0 0 1em rgba(128,128,128, 0.3), 0 0 0 3em rgba(128,128,128, 0.3), 0 0 0 5em rgba(128,128,128, 0.3), 0 0 0 8em rgba(128,128,128, 0);
   }
+} */
+
+
+.total-order{
+  padding-top: 27px;
+  
 }
 
-
-
-
 .orderTotal-box {
-    width: 50%;
-    height: 40%;
-    border: 2px solid gray;
+    width: 190px;
+    height: 60px;
+    /* border: 2px solid gray; */
     margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 8px;
-    background-color: rgb(176, 222, 155);
+    border-radius: 20px;
+    /* background-color: rgb(176, 222, 155); */
+    /* background-color: rgb(252, 250, 250); */
+    /* box-shadow: 0 8px 32px rgba(0,0,0,0.25); */
+    
   } 
   
   .orderTotal-box .orderTotal-content {
-    padding: 10px;
-    padding: 3px;
     font-size: 18px;
+    padding-left: 10px;
+
      
   }
-  .orderTotal-box .orderTotal-content .orderTotal-total{
-    text-align: center;
+  .total-order .orderTotal-box .orderTotal-content{
+    padding-top: 6px;
+    text-align: left;
+  }
+  .add-to-cartBtn{
+    width: 190px;
   }
 
   button {
@@ -254,9 +264,13 @@ input[type='checkbox']:not(:checked) + label::after{
   font-size: 1em;
   line-height: 1em;
   font-weight: 500;
-  background-color: white;
+  /* background-color: rgb(252, 250, 250); */
+  background-color: rgb(107 114 128);
+  color: white;
   cursor: pointer;
-  border-radius: 32px;
+  border-radius: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.25);
   -webkit-tap-highlight-color: transparent;
   transition: box-shadow 0.2s ease, background-color 150ms ease;
@@ -271,7 +285,7 @@ input[type='checkbox']:not(:checked) + label::after{
 }
 
 #cart {
-  margin-right: 12px;
+  margin-right: 2px;
   transform-origin: 20% 100%;
   opacity: 1;
 }
@@ -345,7 +359,8 @@ input[type='checkbox']:not(:checked) + label::after{
   background-color: #20bf6b;
   transition-delay: 1150ms;
 }
-  
+
+
   
 </style>
 
@@ -386,15 +401,15 @@ input[type='checkbox']:not(:checked) + label::after{
 <div class="info my-2">
   <div class="text-white">
     <div class="mySlides relative">
-      <img class="w-full h-60 sm:h-20 object-cover rounded-full bg-white " src="{{items.img.url }}" alt="{{items.name}}" />
+      <img class="w-full h-96 sm:h-20 object-cover rounded-full bg-white " src="{{items.img.url }}" alt="{{items.name}}" />
       <div class="absolute top-0 left-0 font-bold p-2"></div>
     </div>
   </div>
 </div>
 
 <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
-      <h1 class="italic font-bold text-xl">{{items.name}}</h1>
-      <p id ='item-price'class="item-price w-full font-bold">{{items.prix}}</p>
+      <h1 class="italic font-bold text-2xl">{{items.name}}</h1>
+      <p id ='item-price'class="item-price w-full font-bold text-lg">{{items.prix}}</p>
         <p class="text-gray-500">{{items.description}}</p>
           
 </div>
@@ -425,12 +440,12 @@ input[type='checkbox']:not(:checked) + label::after{
               
                <!-- ingredients  -->
               {% if ingredients %}
-              <div class="ingredient relative">
+              <div class="ingredient relative mt-2">
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
                 <div class="item-cat-instruction-multiplechoice">
                   <small class="italic">Multiple choices</small>
                 </div>
-                <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
+                <h5 class=" flex items-center bg-gray-500 " style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
                 </h5>
                 {% for ingredient in ingredients %}
                 <div class="ingredient-item">
@@ -459,7 +474,7 @@ input[type='checkbox']:not(:checked) + label::after{
               <!-- {% if cuisson %} -->
               <div class = 'cuisson relative mt-2'>
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/meats.png' %}" alt="">
-                <h5 class="flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span><span>
+                <h5 class="flex items-center bg-gray-500 " style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span><span>
                   <small class="item-cat-instruction-onechoice italic">1 choice</small></span></h5>
                 
                 {% for cuiss in cuisson %}
@@ -498,15 +513,32 @@ input[type='checkbox']:not(:checked) + label::after{
               {% endif %}
               <!-- <div class ='d-flex justify-content-center mt-2 flex items-center'> -->
                   <!-- <button ><i class="bi bi-plus-lg text-2x p-2"></i></button> -->
-                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart flex ml-auto mr-auto mt-10">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" id="cart">
-                      <path fill="#000000" d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
-                  </svg>
-                    <span>Add Cart</span>
-                    <svg id="check" style="width:24px;height:24px" viewBox="0 0 24 24">
-                      <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12"/>
-                    </svg>
-                  </button>
+                  <div class="flex justify-between">
+                    <div class="total-order">
+                      <!-- Order Total -->
+                      <a href="/texasgrillz/myorder/?session={{app}}">
+                      <div class="orderTotal-box">
+                        <div class="orderTotal-content">
+                          <h1>Total Price</h1>
+                          <div id ='orderTotal-total' class="orderTotal-total text-xl"><b>{{my_total}} FCFA</b></div>
+                        </div>
+                      </div></a>
+                      <!-- Order Total -->
+                    </div>
+
+                    <div class="add-to-cartBtn">
+                      <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart mt-10">
+                        <svg style="width:110px;height:24px" viewBox="0 0 24 24" id="cart">
+                          <path fill="#ffffff" d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                      </svg>
+                        <span>Add Cart</span>
+                        <svg id="check" style="width:24px;height:24px" viewBox="0 0 24 24">
+                          <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12"/>
+                        </svg>
+                      </button>
+                    </div>
+          
+                  </div>
               
                 <!-- </div> -->
 
@@ -517,14 +549,6 @@ input[type='checkbox']:not(:checked) + label::after{
 </div>
 <!-- Item choices -->
 
-<!-- Order Total -->
-<a href="/texasgrillz/myorder/?session={{app}}">
-<div class="orderTotal-box">
-  <div class="orderTotal-content">
-    <div id ='orderTotal-total' class="orderTotal-total"><b>{{my_total}} FCFA</b></div>
-  </div>
-</div></a>
-<!-- Order Total -->
 
 
 
