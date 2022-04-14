@@ -4,61 +4,64 @@ var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 // Add item to your cart
 var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
+var accompagnement = document.getElementsByClassName("accompagement");
 var form = document.getElementById("choiceOptions");
 
-accomp_choice = [];
+console.log(accompagnement);
+
 //Accompagement
 $(".accompagement").on("click", function () {
   $(this).toggleClass("active");
-  var color = $(".active p").css("background-color");
-  if (".active") {
-    console.log($(this).data("accomp_name"), color);
-  } else if (color != rgb(176, 222, 155)) {
-    console.log("OKAY I SEE", color, $(this).data("accomp_name"));
-  }
 });
 
 //All input
-var bag = [];
-$("input")
-  .not(".cuisson input")
-  .change(function () {
-    if ($(this).prop("checked")) {
-      bag.push($(this).val());
-      console.log($(this).val(), "CHECKED");
-    } else if ($(this).prop("checked", false)) {
-      bag = bag.slice(bag.indexOf($(this).val()), 1);
-      console.log($(this).val(), "UNCHECKED");
-    }
-  });
+// var bag = [];
+// $("input")
+//   .not(".cuisson input")
+//   .change(function () {
+//     if ($(this).prop("checked")) {
+//       bag.push($(this).val());
+//       console.log($(this).val(), "CHECKED");
+//     } else if ($(this).prop("checked", false)) {
+//       bag = bag.slice(bag.indexOf($(this).val()), 1);
+//       console.log($(this).val(), "UNCHECKED");
+//     }
+//   });
 
 //Cuisson
 var cuisson = [];
 $(".cuisson input").click(function () {
   $(".cuisson input").not(this).prop("checked", false);
   if (cuisson.length == 0) {
-    cuisson.push($(this).val());
+    //cuisson.push($(this).val());
   } else {
     cuisson[0] = $(this).val();
   }
-  console.log(bag.concat(cuisson).toString());
+  //console.log(bag.concat(cuisson).toString());
 });
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
     var custChoice = [];
+    msg = document.getElementById("message");
 
     e.preventDefault();
     var itemId = this.dataset.product;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
 
+    for (let i = 0; i < accompagnement.length; i++) {
+      if (accompagnement[i].className == "accompagement mb-1 active") {
+        custChoice.push(accompagnement[i].dataset.accomp_name);
+      }
+    }
+
     //Customer ingredient choice
-    // for (let i = 1; i < ingredients.length; i++) {
-    //   if (ingredients[i].checked === true) {
-    //     custChoice.push(ingredients[i].value);
-    //   }
-    // }
+    for (let i = 1; i < ingredients.length; i++) {
+      if (ingredients[i].checked === true) {
+        custChoice.push(ingredients[i].value);
+      }
+    }
 
     //From order page (ingredient)
     if (custChoice[0] == null) {
@@ -83,7 +86,7 @@ for (var i = 0; i < updated_but.length; i++) {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
         action: action,
-        choice: bag.concat(cuisson).toString(),
+        choice: custChoice.toString(),
       },
       dataType: "json",
       success: function (response) {
@@ -93,15 +96,11 @@ for (var i = 0; i < updated_but.length; i++) {
         tot_item = response.tot_item;
 
         console.log(response);
-        //console.log("Side choices", document.getElementsByClassName("active").innerHTML);
-        console.log("Side choices", $(".active").data("accomp_name"));
 
         old_total = document.getElementById("orderTotal-total").innerText;
         old_total = parseInt(old_total.split("FCFA")[0]);
         item_price = parseInt(document.getElementById("item-price").innerText);
         new_total = response.total;
-
-        msg = document.getElementById("message");
 
         msg.innerHTML = `
         <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
