@@ -38,11 +38,12 @@
   
     
   }
-
+  
   label{
     height: 20px;
+ 
   }
-
+  
   
   input[type='checkbox'] + label{
     position: relative;
@@ -61,21 +62,21 @@
     width: 30px;
     z-index: 10;
     cursor: pointer;
- 
+    
   }
-
-input[type='checkbox'] + label::before{
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 2px;
-  width: 15px;
-  height: 15px;
-  outline: 2px solid rgb(69, 69, 70);
-  background-color: white;
-}
-input[type='checkbox']:checked + label::before{
+  
+  input[type='checkbox'] + label::before{
+    content:'' ;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    width: 15px;
+    height: 15px;
+    outline: 2px solid rgb(69, 69, 70);
+    background-color: white; 
+  }
+  input[type='checkbox']:checked + label::before{
     content: '';
     position: absolute;
     left: 0;
@@ -136,7 +137,10 @@ input[type='checkbox']:not(:checked) + label::after{
     padding-left: 45px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.25); 
   }
-  
+  /* ///////////////////////////////////////////  */
+  .ingredient-item{
+    display: none;
+  }
 
   .item-cat-instruction-multiplechoice{
     position: absolute;
@@ -222,6 +226,7 @@ input[type='checkbox']:not(:checked) + label::after{
 .total-order{
   padding-top: 27px;
   
+  
 }
 
 .orderTotal-box {
@@ -234,8 +239,14 @@ input[type='checkbox']:not(:checked) + label::after{
     /* background-color: rgb(252, 250, 250); */
     /* box-shadow: 0 8px 32px rgba(0,0,0,0.25); */
     
+
+    
   } 
-  
+  /* ///////////////////////////////////////////////////  */
+  .box{
+    position: fixed;
+    bottom: 10px;
+  }
   .orderTotal-box .orderTotal-content {
     font-size: 18px;
     padding-left: 10px;
@@ -398,9 +409,9 @@ input[type='checkbox']:not(:checked) + label::after{
 
 
 <!-- Menu Info -->
-<div class="info my-2">
+<div class=" my-2">
   <div class="text-white">
-    <div class="mySlides relative">
+    <div class="relative">
       <img class="w-full h-96 sm:h-20 object-cover rounded-full bg-white " src="{{items.img.url }}" alt="{{items.name}}" />
       <div class="absolute top-0 left-0 font-bold p-2"></div>
     </div>
@@ -447,9 +458,10 @@ input[type='checkbox']:not(:checked) + label::after{
                 </div>
                 <h5 class=" flex items-center bg-gray-500 " style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
                 </h5>
+             
                 {% for ingredient in ingredients %}
                 <div class="ingredient-item">
-                  <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
+                  <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}">
                 <label>{{ingredient.name}}</label><br />
                 </div>
                 {% endfor %}
@@ -513,7 +525,7 @@ input[type='checkbox']:not(:checked) + label::after{
               {% endif %}
               <!-- <div class ='d-flex justify-content-center mt-2 flex items-center'> -->
                   <!-- <button ><i class="bi bi-plus-lg text-2x p-2"></i></button> -->
-                  <div class="flex justify-between">
+                  <div id="box " class="box flex justify-between">
                     <div class="total-order">
                       <!-- Order Total -->
                       <a href="/texasgrillz/myorder/?session={{app}}">
@@ -568,6 +580,25 @@ input[type='checkbox']:not(:checked) + label::after{
       }, 500)
   })
 
+  let ingredientItem = document.querySelectorAll('.ingredient-item')
+  let h5 = document.querySelectorAll('h5')
+  let box = document.querySelector('.box')
+  for(let i = 0; i < h5.length; i++){
+    h5[i].addEventListener('click', (e) => {
+      console.log(e.currentTarget)
+      for(let j = 0; j < ingredientItem.length; j++){
+        ingredientItem[j].classList.toggle('ingredient-item')
+      }
+      if(e.currentTarget === h5[i]){
+        box.style.position.remove = 'fixed'
+        box.style.bottom.remove = '0'
+      }
+    })
+  }
+  h5.addEventListener('click', () => {
+    ingredientItem.classList.toggle('ingredient-item')
+    console.log('hahhah')
+  })
   
 
   
