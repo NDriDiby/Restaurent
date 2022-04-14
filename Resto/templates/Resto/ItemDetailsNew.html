@@ -7,31 +7,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <style>
-
-
-  .orderTotal-box {
-    width: 33%;
-    height: 10%;
-    border: 2px solid gray;
-    margin-left: 20px;
-    border-radius: 8px;
-    margin: 10px;
-    background-color: rgb(176, 222, 155);
-    
-    /*rgb(176, 222, 155)*/
-    
-  }
+.accompagement{
+  padding-top: 2px;
+  display: inline-block;
   
-  .orderTotal-box .orderTotal-content {
-    padding: 10px;
-    padding: 3px;
-    font-size: 18px;
+}
+
+.accompagement .accompagement-name{
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  margin: 3px;
+  box-shadow: inset;
+  border: 3px solid rgb(102, 144, 227);
+  border-radius: 20px;
+  padding: 0px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
     
-  }
-  .orderTotal-box .orderTotal-content .orderTotal-total{
-    text-align: center;
-  }
-  
+}
+
+.active p{
+  background-color: rgb(176, 222, 155);
+
+}
 
 
   input{
@@ -50,11 +48,11 @@
     position: relative;
     padding-left: 35px; 
     margin-top: 20px;
-    margin-left: 5px; 
+    margin-left: 10px; 
     cursor: pointer;
     display: inline-block;
     color: gray;
-    line-height: 25px;
+    /* line-height: 25px; */
     
   }
   input[type='checkbox']{
@@ -71,8 +69,9 @@ input[type='checkbox'] + label::before{
   position: absolute;
   top: 0;
   left: 0;
-  width: 18px;
-  height: 18px;
+  border-radius: 2px;
+  width: 15px;
+  height: 15px;
   outline: 2px solid rgb(69, 69, 70);
   background-color: white;
 }
@@ -81,8 +80,8 @@ input[type='checkbox']:checked + label::before{
     position: absolute;
     left: 0;
     top: 0;
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
     outline: none;
     background-color: white;
 }
@@ -93,8 +92,8 @@ input[type='checkbox']:checked + label::after{
    position: absolute;
    left: 0;
    top: 0;
-   width: 18px;
-   height: 18px;
+   width: 25px;
+   height: 25px;
    border-radius: 2px;
    opacity: 1;
    animation: popout 1s ease;
@@ -129,35 +128,36 @@ input[type='checkbox']:not(:checked) + label::after{
 }
 
 
-
-
-
   h5{
-    background-color: rgb(107 114 128);
+    /* background-color: rgb(107 114 128); */
     width: 100%;
     height: 40px;
     border-radius: 8px;
     padding-left: 45px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25); 
   }
-  /* .ingredient-item{
-    position: relative;
-  }
-  .ingredient-item label{
+  
+
+  .item-cat-instruction-multiplechoice{
     position: absolute;
-    top: 8px;
-    left: 43px;
-  } */
+    top: 6px;
+    right: 6px;
+    font-weight: bold;
+  
 
-  .item-cat-instruction{
+  }
 
-    padding-left: 140px;
-
+  .item-cat-instruction-onechoice{
+    position: absolute;
+    top: 12px;
+    right: 50px;
+    font-weight: bold;
   }
 
   .item-cat-name{
     font-weight: bold;
     color: white;
+  
   }
   .item-cat-number{
     color: white;
@@ -190,8 +190,8 @@ input[type='checkbox']:not(:checked) + label::after{
         to{-webkit-transform:scale(1)}
     }
 
-.circle-ripple {
-  /* background-color: gray; */
+/* .circle-ripple {
+  background-color: gray;
   width: 50px;
   height: 50px;
   border-radius: 100%;
@@ -216,7 +216,150 @@ input[type='checkbox']:not(:checked) + label::after{
   100% {
     box-shadow: 0 0 0 1em rgba(128,128,128, 0.3), 0 0 0 3em rgba(128,128,128, 0.3), 0 0 0 5em rgba(128,128,128, 0.3), 0 0 0 8em rgba(128,128,128, 0);
   }
+} */
+
+
+.total-order{
+  padding-top: 27px;
+  
 }
+
+.orderTotal-box {
+    width: 190px;
+    height: 60px;
+    /* border: 2px solid gray; */
+    margin-top: 10px;
+    border-radius: 20px;
+    /* background-color: rgb(176, 222, 155); */
+    /* background-color: rgb(252, 250, 250); */
+    /* box-shadow: 0 8px 32px rgba(0,0,0,0.25); */
+    
+  } 
+  
+  .orderTotal-box .orderTotal-content {
+    font-size: 18px;
+    padding-left: 10px;
+
+     
+  }
+  .total-order .orderTotal-box .orderTotal-content{
+    padding-top: 6px;
+    text-align: left;
+  }
+  .add-to-cartBtn{
+    width: 190px;
+  }
+
+  button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px 16px 15px;
+  height: 56px;
+  position: relative;
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 500;
+  /* background-color: rgb(252, 250, 250); */
+  background-color: rgb(107 114 128);
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 0.2s ease, background-color 150ms ease;
+  &:focus {
+    box-shadow: 0 8px 64px 16px rgba(0,0,0,0.5);
+    outline: none;
+  }
+  
+  &:hover, &:active {
+    background-color: #eee;
+  }
+}
+
+#cart {
+  margin-right: 2px;
+  transform-origin: 20% 100%;
+  opacity: 1;
+}
+
+@keyframes slide-up-fade {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+}
+
+@keyframes roll-out {
+  0% {
+    transform: translate(0) rotate(0);
+  }
+  20% {
+    transform: translate(0) rotate(-70deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(140px) rotate(-47deg);
+    opacity: 0;
+  }
+}
+
+.checked-out span {
+  animation: slide-up-fade 150ms 1;
+  animation-fill-mode: both;
+}
+
+.checked-out #cart {
+  animation: roll-out 1s 1 150ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+}
+
+@keyframes checkmark {
+  from {
+    stroke-dashoffset: 26px;
+  }
+  to {
+    stroke-dashoffset: 0;  
+  }
+}
+
+#check {
+  position: absolute;
+  left: calc(50% - 12px);
+}
+
+#check path {
+  stroke-dasharray: 26px;
+  stroke-dashoffset: 26px;
+}
+
+.checked-out #check path {
+  animation: checkmark 150ms 1 1150ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+}
+
+.checked-out button {
+  background-color: #20bf6b;
+  transition-delay: 1150ms;
+}
+
 
   
 </style>
@@ -226,7 +369,7 @@ input[type='checkbox']:not(:checked) + label::after{
 <div class="p-2">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-secondary" href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left-square"></i> {{items.category.name}}</a>
+      <a href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">{{items.category.name}}</span></i></a>
     </div>
 
     <!-- <div class="logofield w-20">
@@ -255,41 +398,55 @@ input[type='checkbox']:not(:checked) + label::after{
 
 
 <!-- Menu Info -->
-<div class="info my-0">
+<div class="info my-2">
   <div class="text-white">
     <div class="mySlides relative">
-      <img class="w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 " src="{{items.img.url }}" alt="{{items.name}}" />
+      <img class="w-full h-96 sm:h-20 object-cover rounded-full bg-white " src="{{items.img.url }}" alt="{{items.name}}" />
       <div class="absolute top-0 left-0 font-bold p-2"></div>
     </div>
   </div>
 </div>
 
 <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
-      <h1 class="italic font-bold text-xl">{{items.name}}</h1>
-      <p id ='item-price'class="item-price w-full font-bold">{{items.prix}}</p>
-      
+      <h1 class="italic font-bold text-2xl">{{items.name}}</h1>
+      <p id ='item-price'class="item-price w-full font-bold text-lg">{{items.prix}}</p>
         <p class="text-gray-500">{{items.description}}</p>
-      
+          
 </div>
+
+
 
 <!-- Menu Info -->
 
 
 
 <!-- Item Choices -->
-<div class="itemChoice-box py-1 p-2 m-2">
+<div class="itemChoice-box py-0 p-2 m-2">
   <div class="itemChoice-content">
     <div class="itemChoice-choice">
         <form  method="POST" class ='choiceOptions'>
             <div class="rounded-md">
 
               {% csrf_token %} 
+            {% if items.accompagement.all %}
+        <p class="text-gray-500">Accompagner de votre choix:</p>
+        {% for acc in items.accompagement.all %}
+        <div data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement mb-1'>
+          <p id="accompagement{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+              
                <!-- ingredients  -->
               {% if ingredients %}
-              <div class="ingredient relative">
+              <div class="ingredient relative mt-2">
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
-              <h5 class=" flex items-center" style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
-                <small class="item-cat-instruction italic ">Multiple choices</small></span></h5></h5>
+                <div class="item-cat-instruction-multiplechoice">
+                  <small class="italic">Multiple choices</small>
+                </div>
+                <h5 class=" flex items-center bg-gray-500 " style="color:black;"><span class="item-cat-name">Ingredients</span><span class="item-cat-number">({{ingredients|length}})</span>
+                </h5>
                 {% for ingredient in ingredients %}
                 <div class="ingredient-item">
                   <input  id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}" />
@@ -315,10 +472,10 @@ input[type='checkbox']:not(:checked) + label::after{
   
                <!-- cuisson  -->
               <!-- {% if cuisson %} -->
-              <div class = 'cuisson relative'>
+              <div class = 'cuisson relative mt-2'>
                 <img class="absolute top-1 left-1 w-8" src="{% static 'Resto/meats.png' %}" alt="">
-                <h5 class="flex items-center" style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span><span>
-                  <small class="item-cat-instruction italic">1 choice</small></span></h5>
+                <h5 class="flex items-center bg-gray-500 " style="color: black;"><span class="item-cat-name">Cuisson</span><span class="item-cat-number"> ({{cuisson|length}})</span><span>
+                  <small class="item-cat-instruction-onechoice italic">1 choice</small></span></h5>
                 
                 {% for cuiss in cuisson %}
                 <div class="ingredient-item">
@@ -354,9 +511,36 @@ input[type='checkbox']:not(:checked) + label::after{
                 {% endfor %}
               <div>
               {% endif %}
-              <div class ='d-flex justify-content-center mt-2 flex items-center'>
-                  <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart w-10 h-10 rounded-full bg-green-400 text-white"><i class="bi bi-plus-lg text-2x p-2"></i></button>
-              </div>
+              <!-- <div class ='d-flex justify-content-center mt-2 flex items-center'> -->
+                  <!-- <button ><i class="bi bi-plus-lg text-2x p-2"></i></button> -->
+                  <div class="flex justify-between">
+                    <div class="total-order">
+                      <!-- Order Total -->
+                      <a href="/texasgrillz/myorder/?session={{app}}">
+                      <div class="orderTotal-box">
+                        <div class="orderTotal-content">
+                          <h1>Total Price</h1>
+                          <div id ='orderTotal-total' class="orderTotal-total text-xl"><b>{{my_total}} FCFA</b></div>
+                        </div>
+                      </div></a>
+                      <!-- Order Total -->
+                    </div>
+
+                    <div class="add-to-cartBtn">
+                      <button id="update"  data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" title="add to cart" class="update-cart mt-10">
+                        <svg style="width:110px;height:24px" viewBox="0 0 24 24" id="cart">
+                          <path fill="#ffffff" d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                      </svg>
+                        <span>Add Cart</span>
+                        <svg id="check" style="width:24px;height:24px" viewBox="0 0 24 24">
+                          <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12"/>
+                        </svg>
+                      </button>
+                    </div>
+          
+                  </div>
+              
+                <!-- </div> -->
 
             </div>
           </form>
@@ -365,14 +549,7 @@ input[type='checkbox']:not(:checked) + label::after{
 </div>
 <!-- Item choices -->
 
-<!-- Order Total -->
-<a href="/texasgrillz/myorder/?session={{app}}">
-<div class="orderTotal-box">
-  <div class="orderTotal-content">
-    <div id ='orderTotal-total' class="orderTotal-total"><b>{{my_total}} FCFA</b></div>
-  </div>
-</div></a>
-<!-- Order Total -->
+
 
 
 
@@ -386,15 +563,24 @@ input[type='checkbox']:not(:checked) + label::after{
   let checkBox = document.getElementById('checkbox')
   btnUpdate.addEventListener('click', () =>{
     btnUpdate.classList.add('circle-ripple')
-    // btnUpdate.classList.add('border')
     setTimeout(() => {
       btnUpdate.classList.remove('circle-ripple')
-      // btnUpdate.classList.remove('border')
       }, 500)
   })
 
+  
+
+  
 
 
+const btn = document.querySelector('button');
+
+btn.addEventListener('click', () => {
+  document.documentElement.classList.add('checked-out');
+  setTimeout(() => {
+    document.documentElement.classList.remove('checked-out');
+      }, 2300)
+});
 </script>
 
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>

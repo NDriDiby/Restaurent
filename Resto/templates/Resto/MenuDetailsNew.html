@@ -15,8 +15,6 @@ div.item-image img {
         object-fit: cover;
       } 
 
-
-    
       .orderTotal-box {
         width: 33%;
         height: 10%;
@@ -24,7 +22,7 @@ div.item-image img {
         margin-left: 20px;
         border-radius: 8px;
         margin: 10px;
-        background-color: rgb(176, 222, 155)
+        background-color: #b0de9b
       }
       
       .orderTotal-box .orderTotal-content {
@@ -39,6 +37,18 @@ div.item-image img {
         text-align: center;
       }
 
+      .menudetails-items{
+
+        /* border: 2px solid gray; */
+        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.5); 
+        border-radius: 12px;
+        margin: 10px;
+
+      }
+      .menu-name{
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25); 
+      }
+
 
 </style>
 
@@ -49,7 +59,7 @@ div.item-image img {
   <!-- UserBox -->
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a class="btn btn-sm btn-secondary" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Menu</a>
+      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">Menu</span></i></a>
     </div>
 
     <div class="logofield w-20">
@@ -118,14 +128,21 @@ div.item-image img {
                     <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
                     <div id='trunc-{{i.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
                   </div>
-                  <div class="item-image">
+                  <div class="item-image relative">
                     <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
+                    <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
+                      <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2"></i>
+                    </div>
                   </div>
                 </div>
+               
                 {% endfor %}
+               
               </div>
-            </a>   
+            </a>
+          
       </div>
+     
 </div>
 <!-- Menu Details -->
 
@@ -135,7 +152,7 @@ div.item-image img {
     //Active Menu
     var active_menu_id = $('.menu-name').data('active')
     $(`#menu-${active_menu_id}`).addClass('active').css({
-      'color':'green'
+      'backgroundColor':'#b0de9b'
     })
 
     //ON CLICK CHANGE MENU
@@ -153,12 +170,12 @@ div.item-image img {
 
       //Restore active menu css proprety
       $(`#menu-${old_active}`).removeClass('active').css({
-        'color':'gray'
+        'backgroundColor':'white'
       })
      
      //Add active class to New Active Menu 
      $(`#menu-${active_menu}`).addClass('active').css({
-       'color':'green'
+       'backgroundColor':'#b0de9b'
      })
 
       $(".menudetails-content").empty();
@@ -192,10 +209,14 @@ function getMenu(menu_id){
               <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
               <div id='trunc-${items[i]['item_id']}' class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
             </div>
-            <div class="item-image">
+            <div class="item-image relative">
               <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
+              <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
+                <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2"></i>
+              </div>
             </div>
           </div>
+          
         </div>
       </a>
         `)
@@ -212,13 +233,12 @@ function getMenu(menu_id){
     //Update Active Menu
     active_menu_id = active_menu
 
-    $('.menudetails-content').css({
-      "background-color":"yellow",
-      "font-size": "100%"
-  })
+  //   $('.menudetails-content').css({
+  //     "background-color":"yellow",
+     
+  // })
 
         
-
     },
 
     error: function (error) {
