@@ -23,79 +23,84 @@
   </head>
   <body>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
 
-      div.gallery {
-        border-radius: 10px;
-        margin: 2px;
-        box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
-        border: 1px solid rgb(163, 159, 159);
-      }
+       body{
+         width:100%
+         height:100%
+       }
+       * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         font-family: "Poppins", sans-serif;
+       }
 
-      div.gallery:hover {
-        border: 2px solid #777;
-      }
+       div.gallery {
+         border-radius: 10px;
+         margin: 2px;
+         box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
+         border: 1px solid rgb(163, 159, 159);
+       }
 
-      div.gallery img {
-        border-radius: 5px 5px 0 0px;
-        width: 100%;
-        height: 100px;
-        object-fit: cover;
-      }
+       div.gallery:hover {
+         border: 2px solid #777;
+       }
 
-      div.desc {
-        padding: 15px;
-        text-align: center;
-      }
+       div.gallery img {
+         border-radius: 5px 5px 0 0px;
+         width: 100%;
+         height: 100px;
+         object-fit: cover;
+       }
 
-      .username {
-        background-color: rgb(108, 106, 106);
-        border-radius: 3px;
-        color: white;
-        padding: 5px 10px;
-      }
+       div.desc {
+         padding: 15px;
+         text-align: center;
+       }
 
-     /* .info {
-        margin-top: 25px;
-        width: 100%;
-        height: 170px;
-        box-sizing: border-box;
-        padding: 10px;
-        border-radius: 12px;
-      }  */
+       .username {
+         background-color: rgb(108, 106, 106);
+         border-radius: 3px;
+         color: white;
+         padding: 5px 10px;
+       }
 
-      .logofield .businessName {
-        font-size: 25px;
-        margin-left: 35px;
-      }
+      /* .info {
+         margin-top: 25px;
+         width: 100%;
+         height: 170px;
+         box-sizing: border-box;
+         padding: 10px;
+         border-radius: 12px;
+       }  */
 
-      .blog-footer {
-        padding: 2.5rem 0;
-        color: #999;
-        text-align: center;
-        background-color: #f9f9f9;
-        border-top: 0.05rem solid #e5e5e5;
-      }
+       .logofield .businessName {
+         font-size: 25px;
+         margin-left: 35px;
+       }
 
-      .blog-footer p:last-child {
-        margin-bottom: 0;
-      }
-      /* .mySlides {
-        background-color: black;
-        border-radius: 8px;
-        box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
-        -webkit-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
-      }  */
+       .blog-footer {
+         padding: 2.5rem 0;
+         color: #999;
+         text-align: center;
+         background-color: #f9f9f9;
+         border-top: 0.05rem solid #e5e5e5;
+       }
 
-      .notification-message {
-        font-weight: bold;
-      }
+       .blog-footer p:last-child {
+         margin-bottom: 0;
+       }
+       /* .mySlides {
+         background-color: black;
+         border-radius: 8px;
+         box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+         -webkit-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+         -moz-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
+       }  */
+
+       .notification-message {
+         font-weight: bold;
+       }
     </style>
 
     {% block content%} {% endblock content %}
