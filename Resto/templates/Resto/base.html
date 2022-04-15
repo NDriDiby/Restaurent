@@ -7,13 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
-      crossorigin="anonymous"
-    />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -23,47 +16,50 @@
   </head>
   <body>
     <style>
+      body,
+      html {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
 
-       body{
-         width:100%
-         height:100%
-       }
-       * {
-         margin: 0;
-         padding: 0;
-         box-sizing: border-box;
-         font-family: "Poppins", sans-serif;
-       }
+      .pageContainer {
+        margin: auto;
+        padding: auto;
+        width: 100%;
+      }
 
-       div.gallery {
-         border-radius: 10px;
-         margin: 2px;
-         box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
-         border: 1px solid rgb(163, 159, 159);
-       }
+      div.gallery {
+        border-radius: 10px;
+        margin: 2px;
+        box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.1);
+        border: 1px solid rgb(163, 159, 159);
+      }
 
-       div.gallery:hover {
-         border: 2px solid #777;
-       }
+      div.gallery:hover {
+        border: 2px solid #777;
+      }
 
-       div.gallery img {
-         border-radius: 5px 5px 0 0px;
-         width: 100%;
-         height: 100px;
-         object-fit: cover;
-       }
+      div.gallery img {
+        border-radius: 5px 5px 0 0px;
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+      }
 
-       div.desc {
-         padding: 15px;
-         text-align: center;
-       }
+      div.desc {
+        padding: 15px;
+        text-align: center;
+      }
 
-       .username {
-         background-color: rgb(108, 106, 106);
-         border-radius: 3px;
-         color: white;
-         padding: 5px 10px;
-       }
+      .username {
+        background-color: rgb(108, 106, 106);
+        border-radius: 3px;
+        color: white;
+        padding: 5px 10px;
+      }
 
       /* .info {
          margin-top: 25px;
@@ -74,23 +70,23 @@
          border-radius: 12px;
        }  */
 
-       .logofield .businessName {
-         font-size: 25px;
-         margin-left: 35px;
-       }
+      .logofield .businessName {
+        font-size: 25px;
+        margin-left: 35px;
+      }
 
-       .blog-footer {
-         padding: 2.5rem 0;
-         color: #999;
-         text-align: center;
-         background-color: #f9f9f9;
-         border-top: 0.05rem solid #e5e5e5;
-       }
+      .blog-footer {
+        padding: 2.5rem 0;
+        color: #999;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-top: 0.05rem solid #e5e5e5;
+      }
 
-       .blog-footer p:last-child {
-         margin-bottom: 0;
-       }
-       /* .mySlides {
+      .blog-footer p:last-child {
+        margin-bottom: 0;
+      }
+      /* .mySlides {
          background-color: black;
          border-radius: 8px;
          box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
@@ -98,12 +94,12 @@
          -moz-box-shadow: 1px 3px 5px 0px rgba(0, 0, 0, 0.75);
        }  */
 
-       .notification-message {
-         font-weight: bold;
-       }
+      .notification-message {
+        font-weight: bold;
+      }
     </style>
 
-    {% block content%} {% endblock content %}
+    <div class="pageContainer">{% block content%} {% endblock content %}</div>
 
     <script>
       var myIndex = 0;
@@ -138,13 +134,6 @@
       // welcomeNotification();
       // hideNotification()
     </script>
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-      crossorigin="anonymous"
-    ></script>
 
     <!-- Body End here -->
   </body>

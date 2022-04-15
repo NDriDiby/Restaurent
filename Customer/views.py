@@ -118,34 +118,34 @@ def RegisterCustomer(request):
             cust_phone = form.cleaned_data.get('phone_number')
             
             
-            if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com','kaxharel@gmail.com','felinspiritual508@gmail.com',
-                                   'zeynabfdg02@gmail.com','sostheneange@gmail.com','wogninroger86@gmail.com','ohachosimjennifer@gmail.com',
-                                   'htehua07@gmail.com','rickysilencieux@gmail.com','sinoussouc@gmail.com','tkfatim@gmail.com','bakayokohassan112@gmail.com',
-                                   'cedric.acho@gmail.com','yedofficiel@gmail.com','yannis_kodjo@yahoo.com','cyrayacine@gmail.com','seydinaibrahim16@gmail.com',
-                                   'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr','frejusmactaylor@gmail.com','juliediby@yahoo.com',
-                                   'juniorsoulama@yahoo.fr']):
-                form.save() #User created 
-                user,created= User.objects.get_or_create(username = cust_log_email)
-                user.first_name = cust_first_name
-                user.last_name = cust_last_name 
-                user.email = cust_log_email
-                user.save()
-                messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
+            # if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com','kaxharel@gmail.com','felinspiritual508@gmail.com',
+            #                        'zeynabfdg02@gmail.com','sostheneange@gmail.com','wogninroger86@gmail.com','ohachosimjennifer@gmail.com',
+            #                        'htehua07@gmail.com','rickysilencieux@gmail.com','sinoussouc@gmail.com','tkfatim@gmail.com','bakayokohassan112@gmail.com',
+            #                        'cedric.acho@gmail.com','yedofficiel@gmail.com','yannis_kodjo@yahoo.com','cyrayacine@gmail.com','seydinaibrahim16@gmail.com',
+            #                        'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr','frejusmactaylor@gmail.com','juliediby@yahoo.com',
+            #                        'juniorsoulama@yahoo.fr']):
+            #     form.save() #User created 
+            #     user,created= User.objects.get_or_create(username = cust_log_email)
+            #     user.first_name = cust_first_name
+            #     user.last_name = cust_last_name 
+            #     user.email = cust_log_email
+            #     user.save()
+            #     messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
                 
-                newline = "\n"
-                #send email after registration
-                send_mail("Bienvenue sur Icarus",
-                          f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes très heureux de vous compter parmis nos utilisateurs.\
-                          {newline}{newline}Meilleurs salutations.{newline}Nova Cloud Team",
-                          settings.EMAIL_HOST_USER,
-                          [cust_log_email],fail_silently=False,)
+            #     newline = "\n"
+            #     #send email after registration
+            #     send_mail("Bienvenue sur Icarus",
+            #               f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes très heureux de vous compter parmis nos utilisateurs.\
+            #               {newline}{newline}Meilleurs salutations.{newline}Nova Cloud Team",
+            #               settings.EMAIL_HOST_USER,
+            #               [cust_log_email],fail_silently=False,)
                 
-                return HttpResponseRedirect(f'/login/?register=true&session={targetApp}') #send to login page
+            #     return HttpResponseRedirect(f'/login/?register=true&session={targetApp}') #send to login page
             
                 
             
-            elif (cust_log_email not in testeur): #retrict access
-                return HttpResponseRedirect(f'/noaccess/')
+            # elif (cust_log_email not in testeur): #retrict access
+            #     return HttpResponseRedirect(f'/noaccess/')
             
             
             

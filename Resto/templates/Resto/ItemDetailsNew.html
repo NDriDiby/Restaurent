@@ -8,14 +8,16 @@
 
 <style>
 .accompagement{
-  padding-top: 2px;
-  display: inline-block;
+  padding-top: 3px;
+  display: flex;
+  justify-content:space-around;
   
 }
 
+
 .accompagement .accompagement-name{
   font-weight: bold;
-  width: 100%;
+  width: auto;
   text-align: center;
   margin: 3px;
   box-shadow: inset;
@@ -361,12 +363,19 @@ input[type='checkbox']:not(:checked) + label::after{
 }
 
 
+.checkOut-box{
+  top: 0;
+  position: sticky;
+  bottom: 1rem;
+  margin: 2px;
+}
+
   
 </style>
 
 
   <!-- UserBox -->
-<div class="p-2">
+<div class="p-3 py-5">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">{{items.category.name}}</span></i></a>
@@ -398,16 +407,16 @@ input[type='checkbox']:not(:checked) + label::after{
 
 
 <!-- Menu Info -->
-<div class="info my-2">
+<div class="info my-4">
   <div class="text-white">
     <div class="mySlides relative">
-      <img class="w-full h-96 sm:h-20 object-cover rounded-full bg-white " src="{{items.img.url }}" alt="{{items.name}}" />
+      <img class="w-full h-96 sm:h-20 object-cover rounded  bg-white " src="{{items.img.url }}" alt="{{items.name}}" />
       <div class="absolute top-0 left-0 font-bold p-2"></div>
     </div>
   </div>
 </div>
 
-<div class="iteminfo-box p-1 m-2 rounded-md mx-2">
+<div class="iteminfo-box p-1 m-2 rounded-md mx-2 py-4">
       <h1 class="italic font-bold text-2xl">{{items.name}}</h1>
       <p id ='item-price'class="item-price w-full font-bold text-lg">{{items.prix}}</p>
         <p class="text-gray-500">{{items.description}}</p>
@@ -421,7 +430,7 @@ input[type='checkbox']:not(:checked) + label::after{
 
 
 <!-- Item Choices -->
-<div class="itemChoice-box py-0 p-2 m-2">
+<div class="itemChoice-box py-1 p-2 m-2">
   <div class="itemChoice-content">
     <div class="itemChoice-choice">
         <form  method="POST" class ='choiceOptions'>
@@ -429,7 +438,7 @@ input[type='checkbox']:not(:checked) + label::after{
 
               {% csrf_token %} 
             {% if items.accompagement.all %}
-        <p class="text-gray-500">Accompagner de votre choix:</p>
+        <p class="text-gray-500 mb-3">Accompagner de votre choix:</p>
         {% for acc in items.accompagement.all %}
         <div data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement mb-1'>
           <p id="accompagement{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
@@ -437,7 +446,6 @@ input[type='checkbox']:not(:checked) + label::after{
         {% endfor %}
         {% endif %}
 
-              
                <!-- ingredients  -->
               {% if ingredients %}
               <div class="ingredient relative mt-2">
@@ -513,7 +521,7 @@ input[type='checkbox']:not(:checked) + label::after{
               {% endif %}
               <!-- <div class ='d-flex justify-content-center mt-2 flex items-center'> -->
                   <!-- <button ><i class="bi bi-plus-lg text-2x p-2"></i></button> -->
-                  <div class="flex justify-between">
+                  <div class="flex justify-between py-2 checkOut-box">
                     <div class="total-order">
                       <!-- Order Total -->
                       <a href="/texasgrillz/myorder/?session={{app}}">
