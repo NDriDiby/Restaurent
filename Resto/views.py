@@ -222,6 +222,7 @@ def ItemDetails(request,item_id):
     item = Item.objects.get(id=item_id)
     cartItem = 0
     myItem = None
+    my_total = 0
     
     if request.user.is_authenticated:
         try:
@@ -801,16 +802,21 @@ def Analytics(request):
     #Top 5 Meals
     orderItem = OrderItem.objects.filter(date_added__date = today).values('item__name','item__category__name')\
         .annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
-    
-    df = pd.DataFrame(orderItem)
-    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
-                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
-    plt = plot(fig,output_type='div')
+        
+    plt = None
+    revPerMenuPlot = None
+        
+    if orderItem:
+        df = pd.DataFrame(orderItem)
+        fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+                    color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+        plt = plot(fig,output_type='div')
     
     #REVENU OF THE DAY PER MENU
     revPerMenu = OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
         .annotate(my_sum = Sum(F("quantity")*F('item__prix')))
     revPerMonthPlot = 'There is no item'
+    
     if revPerMenu:
         df = pd.DataFrame(revPerMenu)
         fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
@@ -887,30 +893,33 @@ def Revenues(request):
     
     complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
     total = [sum(x.get_order_total() for x in complete_order)]
+    revPerMenuPlot = None
     
     #REVENU OF THE DAY PER MENU
     revPerMenu = OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
         .annotate(my_sum = Sum(F("quantity")*F('item__prix')))
     
-    
-    df = pd.DataFrame(revPerMenu)
-    fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
-                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
-    fig.update_traces(textposition='inside', textinfo='percent+value')
-    revPerMenuPlot = plot(fig,output_type='div')
+    if revPerMenu:
+        df = pd.DataFrame(revPerMenu)
+        fig = px.pie(df,names='item__category__name', values='my_sum',hover_data=['my_sum'],
+                    color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+        fig.update_traces(textposition='inside', textinfo='percent+value')
+        revPerMenuPlot = plot(fig,output_type='div')
     
     
     #REVENUE PER MONTH
     revPerMonth = OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
         .annotate(my_sum= Sum(F("quantity")*F('item__prix')))
-    df = pd.DataFrame(revPerMonth)
-    get_month(df)
-    df = df.rename({'date_added__date__month':'Mois','my_sum':'Total'},axis=1)
-  
-    fig2 = px.bar(df,x='Mois', y='Total',hover_data=['Total'],text_auto='Total',
-                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
-    fig2.update_traces(textposition='inside')
-    revPerMonthPlot = plot(fig2,output_type='div')
+        
+    if revPerMonth:
+        df = pd.DataFrame(revPerMonth)
+        get_month(df)
+        df = df.rename({'date_added__date__month':'Mois','my_sum':'Total'},axis=1)
+    
+        fig2 = px.bar(df,x='Mois', y='Total',hover_data=['Total'],text_auto='Total',
+                    color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+        fig2.update_traces(textposition='inside')
+        revPerMonthPlot = plot(fig2,output_type='div')
     
     
     

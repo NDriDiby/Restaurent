@@ -1,7 +1,7 @@
 from django.contrib import admin
 from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
-                    ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagement)
+                    ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagnement)
 
 
 # Register your models here.
@@ -50,6 +50,6 @@ admin.site.register(IventoryItem,IventoryItemAdmin)
 
 class AccompagementAdmin(admin.ModelAdmin):
     list_display = ('name','prix')
-admin.site.register(Accompagement,AccompagementAdmin)
+admin.site.register(Accompagnement,AccompagementAdmin)
 
 
