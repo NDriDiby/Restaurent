@@ -111,6 +111,7 @@ for (var i = 0; i < updated_but.length; i++) {
 
         function countUp() {
           count += item_price / 20;
+
           if (count == new_total) {
             clearInterval(counting);
           }

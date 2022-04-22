@@ -6,7 +6,7 @@ import re
 from django.db import reset_queries
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
-from.models import (Category,Customer,Item,Order,OrderItem,ItemChoices,
+from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory)
 from django.contrib import messages
 from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
@@ -233,8 +233,6 @@ def ItemDetails(request,item_id):
             cartItem = order.get_order_quantity()
             my_total = order.get_order_total()
             
-            
-    
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
             if len(pending_order) > 1:
@@ -329,6 +327,7 @@ def UpdatedItem(request):
     item_name = None
     total_cart = None
     tot_item= None
+    total_accomp = 0
     
     
     if request.method == 'POST':
@@ -339,13 +338,18 @@ def UpdatedItem(request):
         accompagment = request.POST.get('accomp')
         
         
+            
         
-        print('MY ACCOM_ID', accompagment)
+        
+        
+        
         
         
         #Update the Cart of the current user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
+        #accomp = Accompagnement.objects.filter(id=int(accompagment))
+        #print('ADD THIS TO MY ORDER',accomp)
         order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
         orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
         item_name = item.name
@@ -371,9 +375,20 @@ def UpdatedItem(request):
         tot_item = [sum(x.quantity for x in my_order_item)][0]
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
-        total= order.get_order_total()
+        if accompagment:
+            accompagment = [int(x) for x in accompagment.split(',')]
+            print('MY ACCOM_ID', accompagment)
+            accomp = Accompagnement.objects.filter(id__in=accompagment)
+            print('ADD THIS TO MY ORDER',accomp)
+            total_accomp = sum([acc.prix for acc in accomp])
+            print('ORDER ACCOMP TOT',total_accomp)
+            total = order.get_order_total() + total_accomp
+        else:
+            total = order.get_order_total()
+             
+        print("MY TOTAL",total)
+
         active_orderItem = orderItem.id
-        
         item_selected = list()
         item = order.orderitem_set.all()
         for i in range(0,len(item)): 
@@ -400,9 +415,7 @@ def UpdatedItem(request):
                          'total':total,
                          'orderItem':item_selected,
                          'active_orderItem':active_orderItem,
-                         
-                         
-                    
+                         'total_accomp':total_accomp,
                          },safe=False)
 
 
