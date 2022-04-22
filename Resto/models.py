@@ -45,7 +45,6 @@ class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField(default=0)
     
-    
     def __str__(self):
         return self.name
     
@@ -87,8 +86,6 @@ class ItemChoices(models.Model):
         return self.name
     
     
-
-
 class Order(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,blank=True,null=True)
     transaction_id = models.CharField(null = True, blank = True,max_length=20)
@@ -137,6 +134,8 @@ class OrderItem(models.Model):
     def get_total(self):
         total = (self.item.prix * self.quantity)
         return total
+    
+    
 
 
 class IventoryItemCategory(models.Model):

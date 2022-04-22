@@ -15,62 +15,52 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Accompagnement',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=150)),
-                ('prix', models.IntegerField(default=0)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Category',
+            name='CategoryBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('cat_id', models.IntegerField()),
                 ('name', models.CharField(max_length=50)),
                 ('description', models.TextField(blank=True, max_length=100)),
-                ('img', models.ImageField(upload_to='images/')),
+                ('img', models.ImageField(upload_to='images/Bakerys')),
                 ('date_created', models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'Categorie',
+                'verbose_name': 'CategorieBakerys',
             },
         ),
         migrations.CreateModel(
-            name='Customer',
+            name='CustomerBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=30)),
                 ('email', models.EmailField(max_length=30)),
-                ('phone', models.CharField(blank=True, default=1, max_length=10, null=True)),
                 ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
-            name='Item',
+            name='ItemBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('itm_id', models.IntegerField()),
                 ('name', models.CharField(max_length=150)),
                 ('prix', models.IntegerField()),
                 ('description', models.TextField(blank=True, max_length=150)),
-                ('img', models.ImageField(upload_to='images/')),
+                ('img', models.ImageField(upload_to='images/Bakerys')),
                 ('date_created', models.DateTimeField(auto_now=True)),
-                ('accompagnement', models.ManyToManyField(blank=True, to='Resto.Accompagnement')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Resto.category')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Bakerys.categorybakerys')),
             ],
         ),
         migrations.CreateModel(
-            name='ItemChoiceCategory',
+            name='ItemChoiceCategoryBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=50)),
                 ('date_created', models.DateTimeField(auto_now=True)),
-                ('item', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Resto.item')),
+                ('item', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.itembakerys')),
             ],
         ),
         migrations.CreateModel(
-            name='IventoryItemCategory',
+            name='IventoryItemCategoryBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=150, null=True)),
@@ -79,7 +69,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Order',
+            name='OrderBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('transaction_id', models.CharField(blank=True, max_length=20, null=True)),
@@ -89,11 +79,11 @@ class Migration(migrations.Migration):
                 ('date_completed', models.DateTimeField(auto_now_add=True)),
                 ('table', models.IntegerField(default=1)),
                 ('note', models.TextField(blank=True, max_length=50)),
-                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='Resto.customer')),
+                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='Bakerys.customerbakerys')),
             ],
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name='OrderItemBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.IntegerField(blank=True, default=0, null=True)),
@@ -101,13 +91,13 @@ class Migration(migrations.Migration):
                 ('seasoning', models.CharField(blank=True, max_length=150, null=True)),
                 ('cuisson', models.CharField(blank=True, max_length=150, null=True)),
                 ('date_added', models.DateTimeField(auto_now=True)),
-                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Resto.customer')),
-                ('item', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Resto.item')),
-                ('order', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='Resto.order')),
+                ('customer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.customerbakerys')),
+                ('item', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.itembakerys')),
+                ('order', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='Bakerys.orderbakerys')),
             ],
         ),
         migrations.CreateModel(
-            name='IventoryItem',
+            name='IventoryItemBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=150)),
@@ -115,19 +105,19 @@ class Migration(migrations.Migration):
                 ('prix', models.IntegerField(blank=True)),
                 ('quantity', models.IntegerField(blank=True)),
                 ('date_created', models.DateTimeField(auto_now=True)),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Resto.iventoryitemcategory')),
+                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.iventoryitemcategorybakerys')),
             ],
         ),
         migrations.CreateModel(
-            name='ItemChoices',
+            name='ItemChoicesBakerys',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=150)),
                 ('description', models.TextField(blank=True, max_length=20)),
                 ('prix', models.IntegerField(blank=True)),
                 ('date_created', models.DateTimeField(auto_now=True)),
-                ('choice_category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Resto.itemchoicecategory')),
-                ('parent_food', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Resto.item')),
+                ('choice_category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.itemchoicecategorybakerys')),
+                ('parent_food', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='Bakerys.itembakerys')),
             ],
         ),
     ]
