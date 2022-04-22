@@ -37,7 +37,7 @@
 
     <i class="fas fa-phone-square-alt"></i>
     <label style="padding-right: 100px" for="phone_number">Numéro de téléphone</label><br />
-    <input type="text" placeholder="+225" {{form.phone_number}} <br />
+    <input id="phone_number" type="text" name="phone_number" placeholder="+225" {{form.phone_number}} <br />
   </div>
 
   <div class="two">
@@ -53,11 +53,20 @@
     <input type="password" placeholder="Confirmer votre mot de passe" {{form.password2}}
   </div>
 
-  <button class="mt-2" type="submit">S'inscrire</button>
+  <button id="inscrire" class="mt-2" type="submit">S'inscrire</button>
 
   <div style="text-align: center">
     <small class="text-muted">Vous avez déjà un compte? <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
   </div>
 </form>
+
+<script>
+  var signupBtn = document.getElementById("inscrire");
+  signupBtn.addEventListener("click", function () {
+    var phone_num = document.getElementById("phone_number").value;
+    console.log(phone_num);
+    localStorage.setItem("phone", phone_num);
+  });
+</script>
 
 {% endblock content %}

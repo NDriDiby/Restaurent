@@ -13,6 +13,7 @@ from pathlib import Path
 from django_resized import ResizedImageField
 
 
+
 #Create your models here.
 class Category(models.Model):
     cat_id = models.IntegerField()
@@ -21,7 +22,6 @@ class Category(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     
-
 
     class Meta:
         verbose_name = 'Categorie'
@@ -41,7 +41,7 @@ class Customer(models.Model):
         return self.name
     
 
-class Accompagement(models.Model):
+class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField(default=0)
     
@@ -58,7 +58,7 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
-    accompagement = models.ManyToManyField(Accompagement)
+    accompagnement = models.ManyToManyField(Accompagnement,blank=True)
     
     
 
@@ -104,7 +104,8 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.customer)
-
+    
+    
     #Total value of cart
     def get_order_total(self):
         order = self.orderitem_set.all()
@@ -134,7 +135,7 @@ class OrderItem(models.Model):
 
     #Get total
     def get_total(self):
-        total = self.item.prix * self.quantity
+        total = (self.item.prix * self.quantity)
         return total
 
 
