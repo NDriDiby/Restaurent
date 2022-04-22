@@ -10,23 +10,10 @@ var form = document.getElementById("choiceOptions");
 console.log(accompagnement);
 
 //Accompagement
+
 $(".accompagement").on("click", function () {
   $(this).toggleClass("active");
 });
-
-//All input
-// var bag = [];
-// $("input")
-//   .not(".cuisson input")
-//   .change(function () {
-//     if ($(this).prop("checked")) {
-//       bag.push($(this).val());
-//       console.log($(this).val(), "CHECKED");
-//     } else if ($(this).prop("checked", false)) {
-//       bag = bag.slice(bag.indexOf($(this).val()), 1);
-//       console.log($(this).val(), "UNCHECKED");
-//     }
-//   });
 
 //Cuisson
 var cuisson = [];
@@ -43,6 +30,7 @@ $(".cuisson input").click(function () {
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
     var custChoice = [];
+    var accomp_id = [];
     msg = document.getElementById("message");
 
     e.preventDefault();
@@ -53,6 +41,7 @@ for (var i = 0; i < updated_but.length; i++) {
     for (let i = 0; i < accompagnement.length; i++) {
       if (accompagnement[i].className == "accompagement mb-1 active") {
         custChoice.push(accompagnement[i].dataset.accomp_name);
+        accomp_id.push(accompagnement[i].dataset.accomp_id);
       }
     }
 
@@ -87,6 +76,7 @@ for (var i = 0; i < updated_but.length; i++) {
         itemId: itemId,
         action: action,
         choice: custChoice.toString(),
+        accomp: accomp_id.toString(),
       },
       dataType: "json",
       success: function (response) {

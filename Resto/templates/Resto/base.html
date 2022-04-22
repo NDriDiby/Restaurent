@@ -115,6 +115,7 @@
 
       function imageSlider() {
         var mySlides = document.getElementsByClassName("mySlides");
+
         for (let i = 0; i < mySlides.length; i++) {
           mySlides[i].style.display = "none";
         }
@@ -126,7 +127,7 @@
         setTimeout(imageSlider, 3000); // Change image every 3 seconds
       }
 
-      imageSlider();
+      {% comment %} imageSlider(); {% endcomment %}
 
       //$('.notification-box').show()
 

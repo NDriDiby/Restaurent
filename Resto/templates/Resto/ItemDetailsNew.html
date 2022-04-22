@@ -456,9 +456,9 @@ input[type='checkbox']:not(:checked) + label::after{
             <div class="rounded-md">
 
               {% csrf_token %} 
-            {% if items.accompagement.all %}
+            {% if items.accompagnement.all %}
         <p class="text-gray-500 mb-3">Accompagner de votre choix:</p>
-        {% for acc in items.accompagement.all %}
+        {% for acc in items.accompagnement.all %}
         <div data-accomp_id="{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement mb-1'>
           <p id="accompagement{{acc.id}}" data-accomp_name ="{{acc.name}}" class ='accompagement-name' >{{acc.name}} ({{acc.prix}})</p>
         </div>

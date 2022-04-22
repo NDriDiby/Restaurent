@@ -220,6 +220,7 @@ def ItemDetails(request,item_id):
     
     
     item = Item.objects.get(id=item_id)
+    print('THIS IS MY ITEM-ACCOMP',item.accompagnement.all())
     cartItem = 0
     myItem = None
     my_total = 0
@@ -335,6 +336,11 @@ def UpdatedItem(request):
         itemId = request.POST['itemId']
         action = request.POST['action']
         choice = request.POST.get('choice')
+        accompagment = request.POST.get('accomp')
+        
+        
+        
+        print('MY ACCOM_ID', accompagment)
         
         
         #Update the Cart of the current user
@@ -362,7 +368,6 @@ def UpdatedItem(request):
             
             
         my_order_item = OrderItem.objects.filter(order= order, item = item)
-        #my_order_item = model_to_dict(my_order_item)
         tot_item = [sum(x.quantity for x in my_order_item)][0]
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
