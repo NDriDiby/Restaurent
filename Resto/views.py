@@ -205,13 +205,13 @@ def ItemDetails(request,item_id):
     form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
     
     #Choice Category
-    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonnement')
+    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Assaisonne')
     cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'Cui')
     ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
     eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
     coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     
-    
+    print('it is assaisonment',assaisonement)
     #Get Table Number
     table = get_table_number(request)
     
