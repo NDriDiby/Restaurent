@@ -41,13 +41,12 @@ class Customer(models.Model):
         return self.name
     
 
-class Accompagnement(models.Model):
-    name = models.CharField(max_length = 150)
-    prix = models.IntegerField(default=0)
+# class Accompagnement(models.Model):
+#     name = models.CharField(max_length = 150)
+#     prix = models.IntegerField(default=0)
     
-    
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
     
 class Item(models.Model):
@@ -58,7 +57,7 @@ class Item(models.Model):
     img = models.ImageField(upload_to='images/')
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
-    accompagnement = models.ManyToManyField(Accompagnement,blank=True)
+    # accompagnement = models.ManyToManyField(Accompagnement,blank=True)
     
     
 
