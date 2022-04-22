@@ -87,8 +87,6 @@ class ItemChoices(models.Model):
         return self.name
     
     
-
-
 class Order(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.SET_NULL,blank=True,null=True)
     transaction_id = models.CharField(null = True, blank = True,max_length=20)
