@@ -87,10 +87,15 @@ for (var i = 0; i < updated_but.length; i++) {
 
         console.log(response);
 
-        old_total = document.getElementById("orderTotal-total").innerText;
+        var old_total = document.getElementById("orderTotal-total").innerText;
+
+        console.log("OLD VALUE 1", old_total);
         old_total = parseInt(old_total.split("FCFA")[0]);
+
         item_price = parseInt(document.getElementById("item-price").innerText);
-        new_total = response.total;
+        var new_total = response.total;
+
+        console.log("NEW VALUE 1", new_total);
 
         msg.innerHTML = `
         <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
@@ -107,16 +112,25 @@ for (var i = 0; i < updated_but.length; i++) {
 
         count = old_total;
 
+        console.log("COUNT FROM", count);
+
         let counting = setInterval(countUp, 50);
 
         function countUp() {
-          count += item_price / 20;
+          if (response.total_accomp != 0) {
+            count += (item_price + response.total_accomp) / 20;
+          } else {
+            count += item_price / 20;
+          }
 
           if (count == new_total) {
             clearInterval(counting);
           }
           $(".orderTotal-total").html(`<b>${count} FCFA</b>`);
         }
+
+        document.getElementById("orderTotal-total").innerText = new_total;
+        console.log($("#orderTotal-total").html());
       },
 
       error: function (error) {
