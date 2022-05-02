@@ -314,7 +314,7 @@ def MyOrder(request):
         'cart_quantity':cartItem,
         'app':targetApp
     }    
-    return render(request,'Resto/MyOrder.html',context)
+    return render(request,'Resto/myOrderNew.html',context)
 
 
 #Backend Process of Item

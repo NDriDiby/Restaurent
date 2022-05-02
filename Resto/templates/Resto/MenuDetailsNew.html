@@ -49,6 +49,17 @@ div.item-image img {
         box-shadow: 0 8px 32px rgba(0,0,0,0.25); 
       }
 
+      @media screen and (min-width: 1000px) {
+        div.item-image img {
+        border-radius: 5px 5px 0 0px;
+        width: 250px;
+        height: 150px;
+        object-fit: cover;
+      } 
+
+        
+      }
+
 
 </style>
 
@@ -89,7 +100,7 @@ div.item-image img {
 <!-- Menu Info -->
 <div class="info my-0">
   <div class="text-white">
-    <div class="mySlides relative">
+    <div class="mySlides relative ">
       <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
       <div class="absolute top-0 left-0 font-bold p-2">
         <h1 class ='menu-name' data-active = '{{menu.id}}' class="italic">{{menu.name}}</h1>
@@ -101,11 +112,12 @@ div.item-image img {
 <!-- Menu Info -->
 
 <!-- Other Menu  -->
-<div  class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
+<div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
   <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
     {% for m in category %}
     <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
-      <p id ='menu-{{m.id}}' class="animate-bounce p-2 border-1 border-gray-400 rounded-md menu-name " style="color: rgb(109, 110, 110); font-size: large">{{m.name}}</p>
+      <p id='menu-{{m.id}}' class="animate-bounce p-2 lg:py-5 border-1 border-gray-400 rounded-md menu-name lg:text-2xl"
+        style="color: rgb(109, 110, 110);">{{m.name}}</p>
     </a>
     {% endfor %} {% if perms.resto.view_order%}
     <a class="p-2 text-muted" href="{% url 'cuisine-texasgrillz'  %} ">
@@ -122,16 +134,17 @@ div.item-image img {
     <div  class="menudetails-content sm:pt-10">
                 {% for i in item %}
               <a  href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
-                <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
+                <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 lg:py-10">
                   <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-                    <div class="item-name font-bold sm:text-xl">{{i.name}}</div>
-                    <div class="item-price text-sm sm:text-xl">{{i.prix}}</div>
+                    <div class="item-name font-bold sm:text-2xl lg:text-3xl">{{i.name}}</div>
+                    <div class="item-price text-sm sm:text-2xl lg:text-3xl">{{i.prix}}</div>
                     <div id='trunc-{{i.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
                   </div>
                   <div class="item-image relative">
                     <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
                     <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
-                      <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2"></i>
+                      <i
+                        class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
                     </div>
                   </div>
                 </div>
@@ -271,4 +284,5 @@ if (cart>=1){
 
 </script>
 {% endblock content %}
+
 

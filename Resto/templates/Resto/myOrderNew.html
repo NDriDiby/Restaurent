@@ -1,0 +1,147 @@
+{% extends "Resto/base.html" %} {% load static %} {% block content %}
+<style>
+    .order-item-container{
+        padding: 7px;
+    }
+    .order-item-content{
+        display: flex;
+        justify-content: space-around;
+        padding: 15px 0px;
+   
+    }
+    .order-item-info{
+        padding-top: 27px;
+    }
+    .page-title{
+        font-weight: bold;
+        font-size: 25px;
+        padding-bottom: 5px;
+    }
+    .price{
+        font-weight: bold;
+        font-size: 25px;
+        color: green;
+    }
+    .quantity{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        /* border: solid 1px gray; */
+        width: fit-content;
+        padding: 0px 15px;
+        border-radius: 20px;
+        margin-top: 10px;
+        background-color: white;
+    }
+    .order-item-content .quantity{
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .delet-item{
+        padding-top: 5px;
+        color: rgb(189, 81, 81);
+    }
+   
+</style>
+<!-- UserBox -->
+<div class="p-1 py-5">
+    <div class="flex justify-between userBox items-center">
+      <div class="userfield">
+        <a href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i
+            class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span
+              class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
+        </div>
+  
+    </div>
+  </div>
+  <!-- UserBox -->
+
+  
+  
+  <div class="order-item-container">
+      <div class="page-title">
+          <h1>My Order</h1>
+      </div>
+      {% for item in items %}
+      <div class="order-item-content">
+        <div class="order-item-img z-50 relative">
+            <img src="{{item.item.img.url}}" alt="{{item.item.name}}" class="product-frame" />
+            <div class="quantity absolute top-[140px] left-1 z-50">
+        
+           
+                <i class="bi bi-dash font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-orderItem="{{item.id}}" data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
+                <p class="font-bold">{{item.quantity}}</p>
+                <i class="bi bi-plus font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
+               
+            </div>
+            <div class="background-item bg-gray-300 h-32 w-1/2 rounded-[20%]  absolute top-10 left-3 -z-10"></div>
+        </div>
+        <div class="order-item-info">
+                <!-- <div class="product-details"> -->
+                <div class="price">{{item.item.prix}} FCFA</div>
+                <p id="item-quantity-{{item.id}}">
+                  <strong>{{item.item.name}}</strong>
+                </p>
+                <small class="text-gray-500">
+                    <h1><strong>{{item.item.description}}</strong></h1>
+                </small>
+                {% if item.ingredient %}
+                <h1 class="mt-1" style="color: rgb(209, 112, 131)"><strong>{{item.ingredient}}</strong></h1>
+                {% endif %}
+              <!-- </div> -->
+                <!-- <div id="item-subtotal" class="subtotals">{{item.get_total}} FCFA</div> -->
+                <form method="POST">
+                {% csrf_token %}
+                <div class="delet-item">
+                    <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{item.id}}/?session={{app}}"><i class="bi bi-trash text-xl"></i></a>
+                </div>
+                </form>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

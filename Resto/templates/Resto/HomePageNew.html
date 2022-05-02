@@ -1,4 +1,5 @@
-{% extends "Resto/base.html" %} {% load static %}
+
+    {% extends "Resto/base.html" %} {% load static %}
 
     <style>
       * {
@@ -65,14 +66,14 @@
       .blog-footer p:last-child {
         margin-bottom: 0;
       }  
-      .mySlides{
+      /* .mySlides{
         background-color: black;
         border-radius: 8px;
         box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
         -webkit-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
         -moz-box-shadow: 1px 3px 5px 0px rgba(0,0,0,0.75);
 
-      }
+      } */
 
       .notification-message{
         font-weight: bold;
@@ -89,10 +90,10 @@
       <!-- UserBox -->
       <div class="flex justify-between userBox items-center">
         <div class="userfield">
-          <div class="username">{{request.user.first_name}} {{request.user.last_name}}</div>
+          <div class="username lg:p-4">{{request.user.first_name}} {{request.user.last_name}}</div>
         </div>
 
-        <div class="logofield w-20">
+        <div class="logofield w-20 lg:w-32">
           <span class="businesslogo"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></span>
         </div>
 
@@ -111,43 +112,50 @@
   
       <div class="info my-0">
           <div class="text-white">
-            <div class="mySlides relative">
-              <img class=" w-full h-40 sm:h-60 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{% static 'Resto/hotdog.jpg' %}">
+            <div class="mySlides relative lg:h-80">
+              <img
+                class=" w-full h-40 sm:h-60 lg:h-80 object-cover rounded-lg  border-2 bg-gradient-to-r from-black to-gray-700 opacity-50"
+                src="{% static 'Resto/hotdog.jpg' %}">
               <div class="absolute top-0 left-0 font-bold p-2"> 
-                  <h1 class="italic">Texas GrillZ</h1>
-                  <p class=" w-full text-xl pt-3">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout les jours</p>  
+                  <h1 class="italic lg:text-3xl">Texas GrillZ</h1>
+                  <p class=" w-full text-xl pt-3 lg:text-3xl">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout
+                    les jours</p>
               </div>
             </div>
 
-            <div class="mySlides relative">
-              <img class="w-full h-40 sm:h-60  object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"  src="{% static 'Resto/steak.jfif' %}" >
+            <div class="mySlides relative lg:h-80">
+              <img class="w-full h-40 sm:h-60 lg:h-80 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"
+                src="{% static 'Resto/steak.jfif' %}">
               <div class="absolute top-0 left-0 font-bold p-2"> 
-                <h1 class="italic">Steak</h1>
-                <p class=" w-full text-xl pt-3">Delicious steak in town</p>  
+                <h1 class="italic lg:text-3xl">Steak</h1>
+                <p class=" w-full text-xl pt-3 lg:text-3xl">Delicious steak in town</p>
               </div>
             </div>
 
-            <div class="mySlides relative">
-              <img class=" w-full h-40 sm:h-60 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"  src="{% static 'Resto/drinks.jfif' %}" >
+            <div class="mySlides relative lg:h-80">
+              <img class=" w-full h-40 sm:h-60 lg:h-80 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"
+                src="{% static 'Resto/drinks.jfif' %}">
               <div class="absolute top-0 left-0 font-bold p-2"> 
-                <h1 class="italic">Drinks</h1>
-                <p class=" w-full text-xl pt-3">Don't forget your favorite drinks</p>  
+                <h1 class="italic lg:text-3xl">Drinks</h1>
+                <p class=" w-full text-xl pt-3 lg:text-3xl">Don't forget your favorite drinks</p>
               </div>
             </div>
 
-            <div class="mySlides relative">
-              <img class="  w-full h-40 sm:h-60 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"  src="{% static 'Resto/burger.jfif' %}">
+            <div class="mySlides relative lg:h-80">
+              <img class="  w-full h-40 sm:h-60 lg:h-80 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"
+                src="{% static 'Resto/burger.jfif' %}">
               <div class="absolute top-0 left-0 font-bold p-2"> 
-                <h1 class="italic">Burger</h1>
-                <p class=" w-full text-xl pt-3">Taste the juiciest burgers in life time</p>  
+                <h1 class="italic lg:text-3xl">Burger</h1>
+                <p class=" w-full text-xl pt-3 lg:text-3xl">Taste the juiciest burgers in life time</p>
               </div>
             </div>
 
-            <div class="mySlides relative">
-              <img class="  w-full h-40 sm:h-60 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"  src="{% static 'Resto/chicken.jpg' %}"> 
+            <div class="mySlides relative lg:h-80">
+              <img class="  w-full h-40 sm:h-60 lg:h-80 object-cover rounded-lg  bg-gradient-to-r from-black to-black opacity-50"
+                src="{% static 'Resto/chicken.jpg' %}">
               <div class="absolute top-0 left-0 font-bold p-2"> 
-                <h1 class="italic">Chicken</h1>
-                <p class=" w-full text-xl pt-3">Try our delicious barbecued chickens</p>  
+                <h1 class="italic lg:text-3xl">Chicken</h1>
+                <p class=" w-full text-xl pt-3 lg:text-3xl">Try our delicious barbecued chickens</p>
               </div>
             </div>
             
@@ -159,7 +167,7 @@
 
       <!-- notification -->
 
-      <div class="notification-box text-center mt-2 bg-green-300 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl">
+      <div class="notification-box text-center bg-green-300 mx-2 py-1 rounded-md sm:py-3 mt-2 sm:mt-24 sm:text-2xl">
         <div class="notification-content">
           <div id="notification-message">
             <p class="text-md">{{request.user.first_name}} you are now connected!</p> 
@@ -172,18 +180,18 @@
       
       <!-- Menu -->
 
-      <div class="text-center my-3 sm:pt-10">
-        <h1 class="font-bold">MENU</h1>
+      <div class="text-center my-3 sm:pt-10 lg:pt-32 ">
+        <h1 class="font-bold sm:text-xl lg:text-2xl">MENU</h1>
       </div>
 
-        <div class="grid grid-cols-2 gap-y-2 md:grid-cols-3 justify-center pl-8 sm:pl-2">
+        <div class="grid grid-cols-2 justify-center gap-y-2 lg:gap-y-4 md:grid-cols-3  w-full">
           {% for cat in category %}
-          <div >
-            <div class="gallery w-40 sm:w-60">
+          <div class="flex justify-center">
+            <div class="gallery w-40 sm:w-60 lg:w-80 lg:h-60">
               <a href="/texasgrillz/menudetails/{{cat.cat_id}}/?session={{app}}">
                 <img src="{{cat.img.url}}" alt="Cinque Terre" width="600" height="400" />
               </a>
-              <div class="desc">{{cat.name}}</div>
+              <div class="desc lg:text-2xl">{{cat.name}}</div>
             </div>
           </div>
           {% endfor %}
@@ -193,10 +201,10 @@
 
          <!-- Footer -->
       <footer class="blog-footer mt-2">
-        <p class="text-muted">Powered by Nova Cloud Artificial Intelligence</p>
-        <small class="text-muted"> All Rights Reserved 2021 </small>
+        <p class="text-muted lg:text-2xl">Powered by Nova Cloud Artificial Intelligence</p>
+        <small class="text-muted lg:text-2xl"> All Rights Reserved 2021 </small>
         <p>
-          <a href="#">Back to top</a>
+          <a href="#" class="lg:text-2xl">Back to top</a>
         </p>
       </footer>
       <!-- Footer -->
