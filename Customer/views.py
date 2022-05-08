@@ -109,8 +109,6 @@ def RegisterCustomer(request):
     if request.method == 'POST':
         form = CustomerForm(request.POST or None)
         
-        
-        
         if form.is_valid():
             cust_log_email = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')

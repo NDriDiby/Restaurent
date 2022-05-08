@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'storages',
     # 'django_extensions',
     'django.contrib.humanize',
-    'django_resized',
+    # 'django_resized',
 
 
 
