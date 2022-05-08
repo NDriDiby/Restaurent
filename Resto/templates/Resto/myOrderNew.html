@@ -1,147 +1,172 @@
-{% extends "Resto/base.html" %} {% load static %} {% block content %}
+{% extends "Resto/base.html" %} {% load static %} {% block content %} {% if items %}
+
 <style>
-    .order-item-container{
-        padding: 7px;
-    }
-    .order-item-content{
-        display: flex;
-        justify-content: space-around;
-        padding: 15px 0px;
-   
-    }
-    .order-item-info{
-        padding-top: 27px;
-    }
-    .page-title{
-        font-weight: bold;
-        font-size: 25px;
-        padding-bottom: 5px;
-    }
-    .price{
-        font-weight: bold;
-        font-size: 25px;
-        color: green;
-    }
-    .quantity{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        /* border: solid 1px gray; */
-        width: fit-content;
-        padding: 0px 15px;
-        border-radius: 20px;
-        margin-top: 10px;
-        background-color: white;
-    }
-    .order-item-content .quantity{
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .delet-item{
-        padding-top: 5px;
-        color: rgb(189, 81, 81);
-    }
-   
+  .order-item-container {
+    padding: 2px;
+  }
+
+  div.item-image img {
+    border-radius: 5px 5px 0 0px;
+    width: 250px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .page-title {
+    font-weight: bold;
+    font-size: 25px;
+    padding-bottom: 5px;
+  }
+
+  .delet-item {
+    padding-top: 5px;
+    color: rgb(189, 81, 81);
+    margin: 3px;
+    cursor: pointer;
+  }
+
+  .quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    padding: 0px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    background-color: white;
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 25px;
+    color: green;
+  }
+
+  /*
+  .order-item-info {
+    padding-top: 27px;
+  }
+
+  .quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    padding: 0px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    background-color: white;
+  }
+  .order-item-content .quantity {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  */
 </style>
 <!-- UserBox -->
 <div class="p-1 py-5">
-    <div class="flex justify-between userBox items-center">
-      <div class="userfield">
-        <a href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i
-            class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span
-              class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
-        </div>
-  
+  <div class="flex justify-between userBox items-center">
+    <div class="userfield">
+      <a onclick="history.back()"
+        ><i class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a
+      >
     </div>
   </div>
-  <!-- UserBox -->
+</div>
+<!-- UserBox -->
 
-  
-  
-  <div class="order-item-container">
-      <div class="page-title">
-          <h1>My Order</h1>
+<div class="menudetails">
+  <div class="page-title p-1">
+    <h1>My Order</h1>
+  </div>
+  <div class="menudetails-content sm:pt-10 py-5">
+    {% for i in items %}
+    <div class="menudetails-items flex justify-between sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
+      <div class="item-image">
+        <img class="p-1" src="{{i.item.img.url}}" width="150" height="150" />
       </div>
-      {% for item in items %}
-      <div class="order-item-content">
-        <div class="order-item-img z-50 relative">
-            <img src="{{item.item.img.url}}" alt="{{item.item.name}}" class="product-frame" />
-            <div class="quantity absolute top-[140px] left-1 z-50">
-        
-           
-                <i class="bi bi-dash font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-orderItem="{{item.id}}" data-product="{{item.item.id}}" data-action="add" class="fas fa-caret-square-up update-cart"></i>
-                <p class="font-bold">{{item.quantity}}</p>
-                <i class="bi bi-plus font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
-               
-            </div>
-            <div class="background-item bg-gray-300 h-32 w-1/2 rounded-[20%]  absolute top-10 left-3 -z-10"></div>
+
+      <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
+        <div class="item-price price text-sm sm:text-2xl lg:text-3xl">{{i.item.prix}} FCFA</div>
+        <div class="item-name font-bold sm:text-2xl lg:text-3xl">{{i.item.name}}</div>
+        <div id="trunc-{{i.item.id}}" class="trunc text-sm text-gray-500 sm:text-xl"><small>{{i.item.description|truncatewords:5}}</small></div>
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="delet-item flex">
+          <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{i.id}}/?session={{app}}"><i class="bi bi-trash text-xl"></i></a>
         </div>
-        <div class="order-item-info">
-                <!-- <div class="product-details"> -->
-                <div class="price">{{item.item.prix}} FCFA</div>
-                <p id="item-quantity-{{item.id}}">
-                  <strong>{{item.item.name}}</strong>
-                </p>
-                <small class="text-gray-500">
-                    <h1><strong>{{item.item.description}}</strong></h1>
-                </small>
-                {% if item.ingredient %}
-                <h1 class="mt-1" style="color: rgb(209, 112, 131)"><strong>{{item.ingredient}}</strong></h1>
-                {% endif %}
-              <!-- </div> -->
-                <!-- <div id="item-subtotal" class="subtotals">{{item.get_total}} FCFA</div> -->
-                <form method="POST">
-                {% csrf_token %}
-                <div class="delet-item">
-                    <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{item.id}}/?session={{app}}"><i class="bi bi-trash text-xl"></i></a>
-                </div>
-                </form>
-        </div>
-        </div>
-        {% endfor %}
+      </form>
+
+      <div class="background-item bg-gray-300 h-32 w-1/2 rounded-[20%] absolute top-5 left-4 -z-10"></div>
     </div>
-   
 
+    <div class="quantity border border-2 m-2">
+      <i
+        class="bi bi-dash font-bold text-2xl"
+        data-ingredient="{{item.ingredient}}"
+        data-orderItem="{{item.id}}"
+        data-product="{{item.item.id}}"
+        data-action="add"
+        class="fas fa-caret-square-up update-cart"
+      ></i>
+      <p class="font-bold">{{i.quantity}}</p>
+      <i class="bi bi-plus font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
+    </div>
 
+    {% endfor %}
+  </div>
+</div>
 
+<!-- Menu Details -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% endblock content %}
+<!-- <div class="order-item-container">
+  <div class="page-title">
+    <h1>My Order</h1>
+  </div>
+  {% for item in items %}
+  <div class="order-item-content m-2 flex items-center">
+    <div class="order-item-img">
+      <img src="{{item.item.img.url}}" alt="{{item.item.name}}" class="p-2 item-img" />
+    </div> -->
+<!-- <div class="quantity">
+      <i
+        class="bi bi-dash font-bold text-2xl"
+        data-ingredient="{{item.ingredient}}"
+        data-orderItem="{{item.id}}"
+        data-product="{{item.item.id}}"
+        data-action="add"
+        class="fas fa-caret-square-up update-cart"
+      ></i>
+      <p class="font-bold">{{item.quantity}}</p>
+      <i class="bi bi-plus font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
+    </div> -->
+<!-- <div class="background-item bg-gray-300 h-32 w-1/2 rounded-[20%] absolute top-10 left-3 -z-10"></div> -->
+<!-- <div class="order-item-info"> -->
+<!-- <div class="product-details"> -->
+<!-- <div class="price">{{item.item.prix}} FCFA</div>
+      <p id="item-quantity-{{item.id}}">
+        <strong>{{item.item.name}}</strong>
+      </p>
+      <small class="text-gray-500">
+        <h1><strong>{{item.item.description}}</strong></h1>
+      </small>
+      {% if item.ingredient %}
+      <h1 class="mt-1" style="color: rgb(209, 112, 131)"><strong>{{item.ingredient}}</strong></h1>
+      {% endif %} -->
+<!-- </div> -->
+<!-- <div id="item-subtotal" class="subtotals">{{item.get_total}} FCFA</div> -->
+<!-- <form method="POST">
+        {% csrf_token %}
+        <div class="delet-item">
+          <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{item.id}}/?session={{app}}"><i class="bi bi-trash text-xl"></i></a>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %} {% endblock content %} -->
