@@ -290,18 +290,10 @@
     </div>
 
     <div class="quantity border border-2 m-2">
-      <i
-        class="bi bi-dash font-bold text-2xl"
-        data-ingredient="{{item.ingredient}}"
-        data-orderItem="{{item.id}}"
-        data-product="{{item.item.id}}"
-        data-action="add"
-        class="fas fa-caret-square-up update-cart"
-      ></i>
+      <i class="bi bi-dash font-bold text-2xl update-cart" data-ingredient="{{i.item.ingredient}}" data-orderItem="{{i.item.id}}" data-product="{{i.item.id}}" data-action="add"></i>
       <p class="font-bold">{{i.quantity}}</p>
-      <i class="bi bi-plus font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
+      <i class="bi bi-plus font-bold text-2xl update-cart" data-ingredient="{{i.item.ingredient}}" data-product="{{i.item.id}}" data-action="remove"></i>
     </div>
-
     {% endfor %}
   </div>
 </div>
@@ -347,5 +339,7 @@
       </svg>
     </button>
   </div>
-  {% endif %} {% endblock content %}
+  {% endif %}
+  <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
 </div>
+{% endblock content %}
