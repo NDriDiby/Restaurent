@@ -5,12 +5,12 @@
     padding: 2px;
   }
 
-  div.item-image img {
+  /* div.item-image img {
     border-radius: 5px 5px 0 0px;
     width: 250px;
     height: 100px;
     object-fit: cover;
-  }
+  } */
 
   .page-title {
     font-weight: bold;
@@ -51,8 +51,7 @@
     height: 60px;
     margin-top: 10px;
     border-radius: 20px;
-  }
-
+  } 
   .popout {
     animation: popout 1s ease;
     -webkit-animation: popout 1s ease;
@@ -250,6 +249,9 @@
 
 
   */
+  .payment_active{
+    background-color: green;
+  }
 </style>
 <!-- UserBox -->
 <div class="p-1 py-5">
@@ -271,25 +273,25 @@
     {% for i in items %}
     <div class="menudetails-items flex justify-between sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
       <div class="item-image">
-        <img class="p-1" src="{{i.item.img.url}}" width="150" height="150" />
+        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] lg:h-[250px]" src="{{i.item.img.url}}"/>
       </div>
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
-        <div class="item-price price text-sm sm:text-2xl lg:text-3xl">{{i.item.prix}} FCFA</div>
-        <div class="item-name font-bold sm:text-2xl lg:text-3xl">{{i.item.name}}</div>
+        <div class="item-price price text-sm sm:text-2xl lg:text-4xl">{{i.item.prix}} FCFA</div>
+        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}}</div>
       </div>
 
       <form method="POST">
         {% csrf_token %}
         <div class="delet-item flex">
-          <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{i.id}}/?session={{app}}"><i class="bi bi-trash text-xl"></i></a>
+          <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{i.id}}/?session={{app}}"><i class="bi bi-trash text-xl lg:text-4xl"></i></a>
         </div>
       </form>
 
-      <div class="background-item bg-gray-300 h-32 w-[120px] rounded-[20%] absolute top-5 left-4 -z-10"></div>
+      <div class="background-item bg-gray-200 h-32 w-[140px] sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div>
     </div>
 
-    <div class="quantity border border-2 m-2">
+    <div class="quantity m-2">
       <i
         class="bi bi-dash font-bold text-2xl"
         data-ingredient="{{item.ingredient}}"
@@ -308,12 +310,16 @@
 
 <!-- Paiement -->
 
-<div class="paiement-box w-full">
+<div class="paiement-box w-full my-5">
   <h4 class="text-center mb-2" style="font-size: 20px; color: coral">Paiment Method</h4>
   <div class="paiment-content flex justify-center gap-x-4">
-    <div class="paiment-cash border border-2 rounded-2 rounded-lg p-2" style="font-size: 20px; color: white"><i class="bi bi-cash"></i> <span>Cash</span></div>
-    <div class="paiment-mobile-card border border-2 rounded-lg p-2" style="font-size: 20px; color: white">
-      <i class="bi bi-phone-fill"></i> <span>Mobile & <i class="bi bi-credit-card-fill"></i> Card</span>
+    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
+      <i class="bi bi-wallet2 md:text-6xl"></i> 
+      <p>Cash</p>
+    </div>
+    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
+      <i class="bi bi-credit-card md:text-6xl"></i>
+      <p>Card</p>
     </div>
   </div>
 </div>
@@ -326,26 +332,42 @@
     <a href="/texasgrillz/myorder/?session={{app}}">
       <div class="orderTotal-box">
         <div class="orderTotal-content p-2">
-          <h1>Total Price</h1>
-          <div id="orderTotal-total" class="orderTotal-total text-xl lg:text-2xl"><b>{{order.get_order_total}} FCFA</b></div>
+          <h1 class="md:text-2xl">Total Price</h1>
+          <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b>{{order.get_order_total}} FCFA</b></div>
         </div>
       </div>
     </a>
     <!-- Order Total -->
   </div>
   <div class="add-to-cartBtn mt-8 p-2">
-    <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="send-order w-[180px]">
+    <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
       <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
         <path
           fill="#ffffff"
           d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z"
         />
       </svg>
-      <span class="pl-4">Send To Kitchen</span>
+      <span class="md:text-2xl">Send To Kitchen</span>
       <svg id="check" style="width: 24px; height: 24px" viewBox="0 0 24 24">
         <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12" />
       </svg>
     </button>
   </div>
+<script>
+    let payments = document.querySelectorAll('.payment');
+    payments.forEach(element => {
+        element.addEventListener('click', ({target}) => {
+          if(target.matches('.payment_active')){
+            target.classList.add('payment_active');
+            // target.classList.remove('payment_active');
+          }
+
+          
+
+          
+        })
+       
+    })
+</script>
   {% endif %} {% endblock content %}
 </div>
