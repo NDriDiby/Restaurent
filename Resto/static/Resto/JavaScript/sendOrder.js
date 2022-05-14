@@ -130,15 +130,14 @@ for (let i = 0; i < update_but.length; i++) {
       },
       success: function (response) {
         orderItem = response.orderItem;
-
         active_item = null;
 
         for (var ord in orderItem) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];
           var item_total_price = document.getElementsByClassName("item-price")[ord];
 
-          // console.log(total_item);
-          // console.log(item_total_price);
+          console.log(response.total);
+
           total_item.innerHTML = orderItem[ord]["quantity"];
           item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
         }
@@ -186,7 +185,6 @@ for (let i = 0; i < delete_item.length; i++) {
               timer: 1500,
             });
             //delete_item[i].closest(".menudetails-items").style.display = "none";
-            console.log(delete_item[i].nextSibling);
             setTimeout(() => {
               location.reload();
             }, 1000);

@@ -359,9 +359,8 @@ def UpdatedItem(request):
             orderItem.save()
 
         #Delete item
-        elif orderItem.quantity<=0:
-             orderItem.delete()
-            
+        # if orderItem.quantity<=0:
+        #      orderItem.delete()
             
         my_order_item = OrderItem.objects.filter(order= order, item = item)
         tot_item = [sum(x.quantity for x in my_order_item)][0]
@@ -750,8 +749,6 @@ def DeleteOrderItem(request):
         del_items = OrderItem.objects.get(id = order_item_id)
         del_items.delete()
         print('DELETING',order_item_id)
-    
-    
     return JsonResponse('item deleted',safe=False)
 
 
