@@ -472,9 +472,7 @@
     padding-left: 10px;
 
 
-  }
-
-
+  
     
   }
 </style>
@@ -640,14 +638,17 @@
                           {% endfor %}
                           <div>
                             {% endif %}
+
                             <!-- Notification Box -->
                             <div id="message">
                           
                             </div>
                             <!-- Notification Box -->
+
                               <div id="box" class="box flex justify-around w-full">
                               
                                 <div class="flex justify-between py-2 checkOut-box">
+
   <div class="flex justify-between items-center">
 
       <div class="total-order">
@@ -679,11 +680,12 @@
 
 <!-- </div> -->
 
-</div>
-</form>
-</div>
-</div>
-</div>
+    </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    </div>
 <!-- Item choices -->
 
 
@@ -693,18 +695,16 @@
 
 
 
-      <script>
+<script>
+let addToCartBtn = document.querySelector('.add-to-cartBtn');
+addToCartBtn.addEventListener('click', () => {
+  document.documentElement.classList.add('checked-out');
+  setTimeout(() => {
+    document.documentElement.classList.remove('checked-out');
+  }, 2300)
+});
+</script>
 
-  let addToCartBtn = document.querySelector('.add-to-cartBtn');
-
-                                                                                                                                                                                        addToCartBtn.addEventListener('click', () => {
-                                                                                                                                                                                          document.documentElement.classList.add('checked-out');
-                                                                                                                                                                                          setTimeout(() => {
-                                                                                                                                                                                            document.documentElement.classList.remove('checked-out');
-                                                                                                                                                                                          }, 2300)
-                                                                                                                                                                                        });
-                                                                                                                                                                                      </script>
-
-      <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
-      {% endif %}
-      {% endblock content %}
+<script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
+{% endif %}
+{% endblock content %}

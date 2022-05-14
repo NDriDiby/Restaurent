@@ -742,6 +742,18 @@ def DeleteOrder(request,item_id):
     return render(request, 'Resto/DeleteOrder.html',context)
 
 
+def DeleteOrderItem(request):
+    
+    if request.method == 'POST':
+        order_item_id = request.POST['item_id']
+        
+        del_items = OrderItem.objects.get(id = order_item_id)
+        del_items.delete()
+        print('DELETING',order_item_id)
+    
+    
+    return JsonResponse('item deleted',safe=False)
+
 
 
 #Inventory Management System

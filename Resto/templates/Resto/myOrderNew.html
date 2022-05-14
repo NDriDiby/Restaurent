@@ -51,7 +51,7 @@
     height: 60px;
     margin-top: 10px;
     border-radius: 20px;
-  } 
+  }
   .popout {
     animation: popout 1s ease;
     -webkit-animation: popout 1s ease;
@@ -249,7 +249,7 @@
 
 
   */
-  .payment_active{
+  .payment_active {
     background-color: green;
   }
 </style>
@@ -273,37 +273,34 @@
     {% for i in items %}
     <div class="menudetails-items flex justify-between sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
       <div class="item-image">
-        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] lg:h-[250px]" src="{{i.item.img.url}}"/>
+        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] lg:h-[250px]" src="{{i.item.img.url}}" />
       </div>
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
-        <div class="item-price price text-sm sm:text-2xl lg:text-4xl">{{i.item.prix}} FCFA</div>
+        <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
         <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}}</div>
+        {% if i.ingredient %}
+        <h1 style="color: rgb(209, 112, 131)"><strong>{{i.ingredient}}</strong></h1>
+        {% endif %}
       </div>
 
       <form method="POST">
         {% csrf_token %}
         <div class="delet-item flex">
-          <a class="btn btn-outline-danger mt-2" href="/texasgrillz/deleteorder/{{i.id}}/?session={{app}}"><i class="bi bi-trash text-xl lg:text-4xl"></i></a>
+          <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger mt-2 delete-order"><i class="bi bi-trash text-xl lg:text-4xl"></i></p>
         </div>
       </form>
+
+      <!-- /texasgrillz/deleteorder/{{i.id}}/?session={{app}} -->
 
       <div class="background-item bg-gray-200 h-32 w-[140px] sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div>
     </div>
 
     <div class="quantity m-2">
-      <i
-        class="bi bi-dash font-bold text-2xl"
-        data-ingredient="{{item.ingredient}}"
-        data-orderItem="{{item.id}}"
-        data-product="{{item.item.id}}"
-        data-action="add"
-        class="fas fa-caret-square-up update-cart"
-      ></i>
-      <p class="font-bold">{{i.quantity}}</p>
-      <i class="bi bi-plus font-bold text-2xl" data-ingredient="{{item.ingredient}}" data-product="{{item.item.id}}" data-action="remove" class="fas fa-caret-square-down update-cart"></i>
+      <i class="bi bi-dash font-bold text-2xl update-cart" data-ingredient="{{i.ingredient}}" data-orderItem="{{i.id}}" data-product="{{i.item.id}}" data-action="remove"></i>
+      <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{i.quantity}}</p>
+      <i class="bi bi-plus font-bold text-2xl update-cart" data-ingredient="{{i.ingredient}}" data-product="{{i.item.id}}" data-action="add"></i>
     </div>
-
     {% endfor %}
   </div>
 </div>
@@ -313,13 +310,19 @@
 <div class="paiement-box w-full my-5">
   <h4 class="text-center mb-2" style="font-size: 20px; color: coral">Paiment Method</h4>
   <div class="paiment-content flex justify-center gap-x-4">
-    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
-      <i class="bi bi-wallet2 md:text-6xl"></i> 
+    <div
+      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
+      style="font-size: 20px; color: white"
+    >
+      <i class="bi bi-wallet2 md:text-6xl"></i>
       <p>Cash</p>
     </div>
-    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
+    <div
+      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
+      style="font-size: 20px; color: white"
+    >
       <i class="bi bi-credit-card md:text-6xl"></i>
-      <p>Card</p>
+      <p>Mobile</p>
     </div>
   </div>
 </div>
@@ -353,21 +356,18 @@
       </svg>
     </button>
   </div>
-<script>
-    let payments = document.querySelectorAll('.payment');
-    payments.forEach(element => {
-        element.addEventListener('click', ({target}) => {
-          if(target.matches('.payment_active')){
-            target.classList.add('payment_active');
-            // target.classList.remove('payment_active');
-          }
-
-          
-
-          
-        })
-       
-    })
-</script>
-  {% endif %} {% endblock content %}
+  <script>
+    let payments = document.querySelectorAll(".payment");
+    payments.forEach((element) => {
+      element.addEventListener("click", ({ target }) => {
+        if (target.matches(".payment_active")) {
+          target.classList.add("payment_active");
+          // target.classList.remove('payment_active');
+        }
+      });
+    });
+  </script>
+  {% endif %}
+  <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
 </div>
+{% endblock content %}
