@@ -14,6 +14,11 @@
     margin: 0;
   }
 
+  .userBox{
+    position: sticky;
+    top:0
+  }
+
   .accompagement-box{
     display: flex;
     flex-wrap: wrap;
@@ -472,11 +477,29 @@
     font-size: 28px;
     padding-left: 10px;
 
+  }
+
+
+  .pop-item{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .pop-item-title{
+  color: blueviolet;
+  font-size: 25px;
+  padding: 2px;
+  }
+  .accompagement {
+    /* padding-top: 3px; */
+    display: flex;
+    width: fit-content;
 
   }
 
 
-    
+
   }
 </style>
 
@@ -691,6 +714,19 @@
     </div>
     </div>
 <!-- Item choices -->
+
+
+<div class="pop-item-box">
+  <div class="pop-item-content">
+    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:blueviolet">Popular Items</h1>
+    <div class="pop-item">
+      {% for pop in show_pop_item %}
+      <div class="col-md-3">{{pop.name}}</div>
+      {% endfor %}
+  
+    </div>
+  </div>
+</div>
 
 
 
