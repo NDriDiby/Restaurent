@@ -566,7 +566,7 @@ def SendOrder(request):
     #     send_mail(subject,message,
     #                       settings.EMAIL_HOST_USER,
     #                       [order.customer.user.email],fail_silently=False,)
-    order = model_to_dict(order)
+    # order = model_to_dict(order)
     
         
 
