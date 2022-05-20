@@ -7,10 +7,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
+
 <style>
   * {
     padding: 0;
     margin: 0;
+  }
+
+  .userBox{
+    position: sticky;
+    top:0
   }
 
   .accompagement-box{
@@ -471,11 +477,32 @@
     font-size: 28px;
     padding-left: 10px;
 
+  }
 
-  
-    
+
+  .pop-item{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .pop-item-title{
+  color: blueviolet;
+  font-size: 25px;
+  padding: 2px;
+  }
+  .accompagement {
+    /* padding-top: 3px; */
+    display: flex;
+    width: fit-content;
+
+  }
+
+
+
   }
 </style>
+
 
 
 <!-- UserBox -->
@@ -689,6 +716,20 @@
 <!-- Item choices -->
 
 
+<div class="pop-item-box">
+  <div class="pop-item-content">
+    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:blueviolet">Popular Items</h1>
+    <div class="pop-item">
+      {% for pop in show_pop_item %}
+      <div class="col-md-3">{{pop.name}}</div>
+      {% endfor %}
+  
+    </div>
+  </div>
+</div>
+
+
+
 
 
 
@@ -696,7 +737,7 @@
 
 
 <script>
-<<<<<<< HEAD
+
 let addToCartBtn = document.querySelector('.add-to-cartBtn');
 addToCartBtn.addEventListener('click', () => {
   document.documentElement.classList.add('checked-out');
@@ -709,17 +750,3 @@ addToCartBtn.addEventListener('click', () => {
 <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
 {% endif %}
 {% endblock content %}
-=======
-
-  let addToCartBtn = document.querySelector('.add-to-cartBtn');
-addToCartBtn.addEventListener('click', () => {
-    document.documentElement.classList.add('checked-out');
-    setTimeout(() => {
-      document.documentElement.classList.remove('checked-out');
-    }, 2300)
-  });
-</script>
-      <script type="text/javascript" src="{% static 'Resto/JavaScript/cart.js'%}"></script>
- {% endif %}
-  {% endblock content %}
->>>>>>> AprilWinBranch

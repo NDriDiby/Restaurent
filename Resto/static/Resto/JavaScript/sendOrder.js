@@ -50,41 +50,55 @@ for (let i = 0; i < sendOrder.length; i++) {
       method: "POST",
       data: { csrfmiddlewaretoken: csrfToken, action: action, order: order },
       dataType: "json",
-      success: function (response) {
-        $(".basket").fadeOut(); // remove basket
-        $(".summary").hide(); // remove summary
 
-        console.log("total Item", total_item);
+      beforeSend: function () {
+        $("#spinner-div").show();
+      },
+
+      success: function (response) {
+        console.log("total Item:", total_item);
 
         if (total_item > 0) {
-          // check if there is item in the basket
-          process_order.innerHTML = ` 
-        <div style='text-align:center'>
-        <h1 style ='color:black;font-size:20px'> We're processing your order....</h1>
-              <div class='p-3'>
-              <div class="spinner-grow text-muted"></div>
-              <div class="spinner-grow text-primary"></div>
-              <div class="spinner-grow text-success"></div>
-              <div class="spinner-grow text-info"></div>
-              <div class="spinner-grow text-warning"></div>
-              <div class="spinner-grow text-danger"></div>
-              <div class="spinner-grow text-secondary"></div>
-            <div>
-        </div>`;
+          console.log("I can send your order");
 
-          setInterval(function () {
-            $("#process_order").hide();
-            success_transaction.innerHTML = `
-          <div id="message" class="col-12">
-            <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                <use xlink:href="#check-circle-fill" />
-              </svg>
-              <h4 style="color:black"> <b> Votre commande a ete bien recu par notre cuisine! </b></h4>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>`;
-          }, 3000);
+          Swal.fire({
+            icon: "success",
+            title: "Nous avons bien reçu votre commande",
+            showConfirmButton: false,
+            timer: 3000,
+          }).then(() => {
+            menu = location.href.replace("myorder/", "");
+            location.href = menu;
+          });
+
+          // check if there is item in the basket
+          //   process_order.innerHTML = `
+          // <div style='text-align:center'>
+          // <h1 style ='color:black;font-size:20px'> We're processing your order....</h1>
+          //       <div class='p-3'>
+          //       <div class="spinner-grow text-muted"></div>
+          //       <div class="spinner-grow text-primary"></div>
+          //       <div class="spinner-grow text-success"></div>
+          //       <div class="spinner-grow text-info"></div>
+          //       <div class="spinner-grow text-warning"></div>
+          //       <div class="spinner-grow text-danger"></div>
+          //       <div class="spinner-grow text-secondary"></div>
+          //     <div>
+          // </div>`;
+
+          //   setInterval(function () {
+          //     $("#process_order").hide();
+          //     success_transaction.innerHTML = `
+          //   <div id="message" class="col-12">
+          //     <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
+          //       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+          //         <use xlink:href="#check-circle-fill" />
+          //       </svg>
+          //       <h4 style="color:black"> <b> Votre commande a ete bien recu par notre cuisine! </b></h4>
+          //       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          //     </div>
+          //   </div>`;
+          //   }, 3000);
         } else {
           //show succes messages
           success_transaction.innerHTML = ` 
@@ -98,6 +112,10 @@ for (let i = 0; i < sendOrder.length; i++) {
             </div>
           </div>`;
         }
+      },
+
+      complete: function () {
+        $("#spinner-div").hide(); //Request is complete so hide spinner
       },
 
       error: function (error) {
@@ -155,7 +173,7 @@ for (let i = 0; i < update_but.length; i++) {
     });
   });
 }
-
+// Delete Order
 delete_item = document.getElementsByClassName("delete-order");
 for (let i = 0; i < delete_item.length; i++) {
   delete_item[i].addEventListener("click", () => {

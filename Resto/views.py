@@ -233,6 +233,12 @@ def ItemDetails(request,item_id):
             cartItem = order.get_order_quantity()
             my_total = order.get_order_total()
             
+            popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+            print('MOST POP ITEM',list(popular_item))
+            
+            show_pop_item = Item.objects.filter(name__in=list(popular_item))
+            print('I CAN SHOW YOU', show_pop_item)
+            
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
             if len(pending_order) > 1:
@@ -275,6 +281,7 @@ def ItemDetails(request,item_id):
         'coca_cola_produit':coca_cola_produit,
         'myitem':myItem,
         'my_total':my_total,
+        'show_pop_item':show_pop_item,
         
     }
     
@@ -566,7 +573,7 @@ def SendOrder(request):
     #     send_mail(subject,message,
     #                       settings.EMAIL_HOST_USER,
     #                       [order.customer.user.email],fail_silently=False,)
-    order = model_to_dict(order)
+    # order = model_to_dict(order)
     
         
 
