@@ -220,11 +220,14 @@
   }
 
   .paiment-cash {
-    background: linear-gradient(#e66465, #9198e5);
+    /* background: linear-gradient(#e66465, #9198e5);
+     */
+     background-color: gray;
   }
 
   .paiment-mobile-card {
-    background: linear-gradient(#e66465, #9198e5);
+    /* background: linear-gradient(#e66465, #9198e5); */
+    background-color: gray;
   }
 
   /*
@@ -310,17 +313,11 @@
 <div class="paiement-box w-full my-5">
   <h4 class="text-center mb-2" style="font-size: 20px; color: coral">Paiment Method</h4>
   <div class="paiment-content flex justify-center gap-x-4">
-    <div
-      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
-      style="font-size: 20px; color: white"
-    >
+    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
       <i class="bi bi-wallet2 md:text-6xl"></i>
       <p>Cash</p>
     </div>
-    <div
-      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
-      style="font-size: 20px; color: white"
-    >
+    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-mobile-card  border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
       <i class="bi bi-credit-card md:text-6xl"></i>
       <p>Mobile</p>
     </div>
@@ -357,12 +354,18 @@
     </button>
   </div>
   <script>
+    let paymentCash = document.querySelector('.paiment-cash');
+    let paymentCard = document.querySelector('.paiment-mobile-card');
     let payments = document.querySelectorAll(".payment");
     payments.forEach((element) => {
       element.addEventListener("click", ({ target }) => {
-        if (target.matches(".payment_active")) {
-          target.classList.add("payment_active");
-          // target.classList.remove('payment_active');
+        if(target.matches('.paiment-cash')){
+          paymentCard.classList.remove('payment_active');
+          target.classList.add('payment_active');  
+        }
+        if(target.matches('.paiment-mobile-card')){
+          paymentCash.classList.remove('payment_active');
+          target.classList.add('payment_active');
         }
       });
     });
