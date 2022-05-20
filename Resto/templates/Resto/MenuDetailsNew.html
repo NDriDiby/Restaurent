@@ -7,6 +7,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <style>
+
+  .cat-tile{
+    padding: 2px;
+    font-size: 20px;
+    color: chocolate;;
+  }
+
+  .nav {
+    position: fixed;
+    top:0px
+  }
+
+
   div.item-image img {
     border-radius: 5px 5px 0 0px;
     width: 150px;
@@ -37,7 +50,7 @@
 
   .menudetails-items {
     /* border: 2px solid gray; */
-    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
+    /*  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);*/
     border-radius: 12px;
     margin: 10px;
   }
@@ -100,67 +113,51 @@
     </div>
   </div>
 </div>
-<!-- Menu Info -->
-
-<!-- Other Menu  -->
-
- <!-- <div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
-  <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
-    {% for m in category %}
-    <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
-      <p id='menu-{{m.id}}' class="animate-bounce p-2 lg:py-5 border-1 border-gray-400 rounded-md menu-name lg:text-2xl"
-        style="color: rgb(109, 110, 110);">{{m.name}}</p>
-    </a>
-    {% endfor %} {% if perms.resto.view_order%}
-    <a class="p-2 text-muted" href="{% url 'cuisine-texasgrillz'  %} ">
-      <p style="color: skyblue; font-size: large">Cuisine</p>
-    </a>
-    {% endif %}
-  </nav>
-</div> -->
-
-<!-- Other Menu  -->
-
-<!-- Menu Details -->
-<!-- <div class="menudetails">
-    <div  class="menudetails-content sm:pt-10">
-                {% for i in item %}
-              <a  href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
-                <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 lg:py-10">
-                  <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-                    <div class="item-name font-bold sm:text-2xl lg:text-3xl">{{i.name}}</div>
-                    <div class="item-price text-sm sm:text-2xl lg:text-3xl">{{i.prix}}</div>
-                    <div id='trunc-{{i.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{i.description|truncatewords:5}}</div>
-                  </div>
-                  <div class="item-image relative">
-                    <img class="p-1" src="{{i.img.url}}" width="150" height="150" />
-                    <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
-                      <i
-                        class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
-            </a>
-      </div> -->
-
-<!-- Menu Details -->
 
 
-
-<nav class=" flex overflow-x-scroll gap-x-2 mt-2 pt-3 sm:justify-center">
-
+<!-- Menu Options -->
+<nav class=" flex overflow-x-scroll gap-x-2 mt-2 pt-5 sm:justify-center">
   <ul class="flex justify-center gap-x-2 font-bold text-white text-2xl">
     {% for m in category %}
     <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
       <p id='menu-{{m.id}}' class="animate-bounce p-2 lg:py-5 border-1 border-gray-400 rounded-md menu-name lg:text-2xl"
         style="color: rgb(109, 110, 110);">{{m.name}}</p>
     </a>
+    {% endfor %}
   </ul>
 </nav>
-<section id={{m.id}} class="w-full min-h-screen bg-blue-500 flex items-center justify-center text-white font-bold text-3xl">{{m.name}}</section>
+<!-- Menu Options -->
+
+
+<!-- Menu Details -->
+{% for m in category %}
+<h1 class="text-center font-bold sm:text-2xl cat-tile">{{m.name}}</h1><br>
+<section id={{m.id}} class="w-full font-bold text-3xl">
+  {% for cat in m.item_set.all  %}
+  <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
+  <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 lg:py-10">
+  <div class="menu-leftside w-80 sm:w-1/2 leading-10">
+    <div class="item-name font-bold sm:text-2xl lg:text-3xl">{{cat.name}}</div>
+    <div class="item-price text-sm sm:text-2xl lg:text-3xl" style="color: chocolate;">{{cat.prix}}</div>
+    <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{cat.description|truncatewords:5}}</div>
+  </div>
+
+  <div class="item-image relative">
+    <img class="p-1" src="{{cat.img.url}}" width="150" height="150" />
+    <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
+      <i
+        class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
+    </div>
+  </div>
+
+</div>
+  {% endfor %}
+  </a>
+</section>
+<br>
 {% endfor %}
+
+<!-- Menu Details -->
 
 
 <script>
