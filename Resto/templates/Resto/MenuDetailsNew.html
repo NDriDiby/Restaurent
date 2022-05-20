@@ -7,87 +7,78 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 <style>
+  div.item-image img {
+    border-radius: 5px 5px 0 0px;
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+  }
 
-div.item-image img {
-        border-radius: 5px 5px 0 0px;
-        width: 150px;
-        height: 100px;
-        object-fit: cover;
-      } 
+  .orderTotal-box {
+    width: 33%;
+    height: 10%;
+    border: 2px solid gray;
+    margin-left: 20px;
+    border-radius: 8px;
+    margin: 10px;
+    background-color: #b0de9b;
+  }
 
-      .orderTotal-box {
-        width: 33%;
-        height: 10%;
-        border: 2px solid gray;
-        margin-left: 20px;
-        border-radius: 8px;
-        margin: 10px;
-        background-color: #b0de9b
-      }
-      
-      .orderTotal-box .orderTotal-content {
-        /* background-color: rgb(131, 190, 242); */
-        /* background-color: rgb(38, 165, 38); */
-        padding: 3px;
-        /* color: rgb(237, 98, 48); */
-        font-size: 18px;
-      }
-      .orderTotal-box .orderTotal-content .orderTotal-total{
-        
-        text-align: center;
-      }
+  .orderTotal-box .orderTotal-content {
+    /* background-color: rgb(131, 190, 242); */
+    /* background-color: rgb(38, 165, 38); */
+    padding: 3px;
+    /* color: rgb(237, 98, 48); */
+    font-size: 18px;
+  }
+  .orderTotal-box .orderTotal-content .orderTotal-total {
+    text-align: center;
+  }
 
-      .menudetails-items{
+  .menudetails-items {
+    /* border: 2px solid gray; */
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    margin: 10px;
+  }
+  .menu-name {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
 
-        /* border: 2px solid gray; */
-        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.5); 
-        border-radius: 12px;
-        margin: 10px;
-
-      }
-      .menu-name{
-        box-shadow: 0 8px 32px rgba(0,0,0,0.25); 
-      }
-
-      @media screen and (min-width: 1000px) {
-        div.item-image img {
-        border-radius: 5px 5px 0 0px;
-        width: 250px;
-        height: 150px;
-        object-fit: cover;
-      } 
-
-        
-      }
-
-
+  @media screen and (min-width: 1000px) {
+    div.item-image img {
+      border-radius: 5px 5px 0 0px;
+      width: 250px;
+      height: 150px;
+      object-fit: cover;
+    }
+  }
 </style>
 
 
 
-
-<div class="p-2">
-  <!-- UserBox -->
-  <div class="flex justify-between userBox items-center">
+<!-- <div class="p-2"> -->
+<!-- UserBox -->
+ <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">Menu</span></i></a>
     </div>
 
-    <div class="logofield w-20">
+ <div class="logofield w-20">
       <span class="businesslogo"
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
     </div>
 
-      <!-- Order Total -->
+<!-- Order Total -->
+ <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;">
     <div class="orderTotal-box">
       <div class="orderTotal-content">
         <div class="orderTotal-total"><b>{{cart_total}} FCFA</b></div>
-      </div>
+      </div></a>
     </div>
-  <!-- Order Total -->
-
-    <div class="logOutfield">
+<!-- Order Total -->
+<div class="logOutfield">
       <div class="logOutlogo">
         {% if user.is_authenticated %}
         <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
@@ -95,7 +86,7 @@ div.item-image img {
       </div>
     </div>
   </div>
-</div>
+</div> 
 
 <!-- Menu Info -->
 <div class="info my-0">
@@ -112,7 +103,8 @@ div.item-image img {
 <!-- Menu Info -->
 
 <!-- Other Menu  -->
-<div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
+
+ <div class="overflow-x-scroll p-2 sm:mt-24 sm:overflow-hidden">
   <nav class=" flex overflow-x-scroll gap-x-2 pt-3 sm:justify-center">
     {% for m in category %}
     <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
@@ -126,10 +118,10 @@ div.item-image img {
     {% endif %}
   </nav>
 </div>
+
 <!-- Other Menu  -->
 
 <!-- Menu Details -->
-
 <div class="menudetails">
     <div  class="menudetails-content sm:pt-10">
                 {% for i in item %}
@@ -156,21 +148,20 @@ div.item-image img {
 <!-- Menu Details -->
 
 <script>
-  $(document).ready(function() {
-
+  $(document).ready(function () {
     //Active Menu
-    var active_menu_id = $('.menu-name').data('active')
-    $(`#menu-${active_menu_id}`).addClass('active').css({
-      'backgroundColor':'#b0de9b'
-    })
+    var active_menu_id = $(".menu-name").data("active");
+    $(`#menu-${active_menu_id}`).addClass("active").css({
+      backgroundColor: "#b0de9b",
+    });
 
     //ON CLICK CHANGE MENU
-    $('.next-menu').on('click',function(e){
+    $(".next-menu").on("click", function (e) {
       //New Active Menu
-      active_menu = $(this).data('menu_id')
-      var old_active = active_menu_id
+      active_menu = $(this).data("menu_id");
+      var old_active = active_menu_id;
 
-     /* $( ".item-image" ).load( `/texasgrillz/menudetails/${active_menu}/?session=texasgrillz&table=23 .item-image`,function(response, status, xhr){
+      /* $( ".item-image" ).load( `/texasgrillz/menudetails/${active_menu}/?session=texasgrillz&table=23 .item-image`,function(response, status, xhr){
         if ( status != "error" ) {
           var msg = old_active+"Sorry but there was an error: "+active_menu ;
           alert( msg);
@@ -178,48 +169,44 @@ div.item-image img {
         */
 
       //Restore active menu css proprety
-      $(`#menu-${old_active}`).removeClass('active').css({
-        'backgroundColor':'white'
-      })
-     
-     //Add active class to New Active Menu 
-     $(`#menu-${active_menu}`).addClass('active').css({
-       'backgroundColor':'#b0de9b'
-     })
+      $(`#menu-${old_active}`).removeClass("active").css({
+        backgroundColor: "white",
+      });
+
+      //Add active class to New Active Menu
+      $(`#menu-${active_menu}`).addClass("active").css({
+        backgroundColor: "#b0de9b",
+      });
 
       $(".menudetails-content").empty();
-      $('.mySlides').empty()
+      $(".mySlides").empty();
       e.preventDefault();
-      console.log('you clicked me')
-      menu_id = $(this).data('menu_id')
-      app = $(this).data('app')
+      console.log("you clicked me");
+      menu_id = $(this).data("menu_id");
+      app = $(this).data("app");
 
-      getMenu(menu_id)
+      getMenu(menu_id);
+    });
 
+    function getMenu(menu_id) {
+      $.ajax({
+        url: "/texasgrillz/menuDetailsData/" + menu_id,
+        method: "GET",
+        success: function (response) {
+          console.log(response);
+          items = response.item;
 
-});
-
-
-
-function getMenu(menu_id){
-  $.ajax({
-    url: '/texasgrillz/menuDetailsData/'+menu_id,
-    method: "GET",
-    success: function (response) {
-      console.log(response);
-      items = response.item
-
-      for(var i in items){
-        $('.menudetails-content').append(`
-        <a  href="/texasgrillz/itemdetails/${items[i]['item_id']}/?session=${app}" style="text-decoration: none; color: black">
+          for (var i in items) {
+            $(".menudetails-content").append(`
+        <a  href="/texasgrillz/itemdetails/${items[i]["item_id"]}/?session=${app}" style="text-decoration: none; color: black">
           <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 ">
             <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-              <div class="item-name font-bold sm:text-xl">${items[i]['item_name']}</div>
-              <div class="item-price text-sm sm:text-xl">${items[i]['item_prix']}</div>
-              <div id='trunc-${items[i]['item_id']}' class="trunc text-sm text-gray-500 sm:text-xl">${items[i]['item_description']}</div>
+              <div class="item-name font-bold sm:text-xl">${items[i]["item_name"]}</div>
+              <div class="item-price text-sm sm:text-xl">${items[i]["item_prix"]}</div>
+              <div id='trunc-${items[i]["item_id"]}' class="trunc text-sm text-gray-500 sm:text-xl">${items[i]["item_description"]}</div>
             </div>
             <div class="item-image relative">
-              <img class="p-1" src="${items[i]['item_img_url']}" width="150" height="150" />
+              <img class="p-1" src="${items[i]["item_img_url"]}" width="150" height="150" />
               <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
                 <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2"></i>
               </div>
@@ -228,57 +215,42 @@ function getMenu(menu_id){
           
         </div>
       </a>
-        `)
+        `);
 
-        $('.mySlides').html(`<img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src=${items[i]['item_category_img_url']} />
+            $(".mySlides").html(`<img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src=${items[i]["item_category_img_url"]} />
       <div class="absolute top-0 left-0 font-bold p-2">
-        <h1 class ='menu-name' data-active = ${items[i]['item_category_id']} class="italic">${items[i]['item_category_name']} </h1>
-        <p class="w-full text-xl pt-3">${items[i]['item_category_description']}</p>
-      </div>`)
+        <h1 class ='menu-name' data-active = ${items[i]["item_category_id"]} class="italic">${items[i]["item_category_name"]} </h1>
+        <p class="w-full text-xl pt-3">${items[i]["item_category_description"]}</p>
+      </div>`);
 
-      const trunc = document.querySelector(`#trunc-${items[i]['item_id']}`);
-      trunc.innerHTML = trunc.innerHTML.substring(0, 150) + "...";
+            const trunc = document.querySelector(`#trunc-${items[i]["item_id"]}`);
+            trunc.innerHTML = trunc.innerHTML.substring(0, 150) + "...";
+          }
+          //Update Active Menu
+          active_menu_id = active_menu;
+
+          //   $('.menudetails-content').css({
+          //     "background-color":"yellow",
+
+          // })
+        },
+
+        error: function (error) {
+          console.log("error", error);
+        },
+      });
     }
-    //Update Active Menu
-    active_menu_id = active_menu
 
-  //   $('.menudetails-content').css({
-  //     "background-color":"yellow",
-     
-  // })
-
-        
-    },
-
-    error: function (error) {
-      console.log('error',error);
-    },
+    //location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
+    //$('.menudetails-content').html(" nothing here")
   });
 
-}
-
-
-
-  //location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
-  //$('.menudetails-content').html(" nothing here")
-  
-})
-
-var cart = "{{cart_quantity}}"
-$('.orderTotal-box').hide()
-//Check if there item in the cart
-if (cart>=1){
-  $('.logofield').hide() //hide logo
-  $('.orderTotal-box').show() //show total order
-}
-
-
-
-
-
-  
-
+  var cart = "{{cart_quantity}}";
+  $(".orderTotal-box").hide();
+  //Check if there item in the cart
+  if (cart >= 1) {
+    $(".logofield").hide(); //hide logo
+    $(".orderTotal-box").show(); //show total order
+  }
 </script>
 {% endblock content %}
-
-
