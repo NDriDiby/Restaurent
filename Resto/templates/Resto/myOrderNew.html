@@ -252,6 +252,12 @@
   .payment_active {
     background-color: green;
   }
+  .add-to-cartBtn{
+    transition: opacity 0.8s;
+  }
+  .disableClick{
+    pointer-events: none;
+  }
 </style>
 <!-- UserBox -->
 <div class="p-1 py-5">
@@ -322,15 +328,15 @@
       class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
       style="font-size: 20px; color: white"
     >
-      <i class="bi bi-wallet2 md:text-6xl"></i>
-      <span>Cash</span>
+      <i class="pointer-events-none bi bi-wallet2 md:text-6xl"></i>
+      <span class="pointer-events-none">Cash</span>
     </div>
     <div
       class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-mobile-card border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
       style="font-size: 20px; color: white"
     >
-      <i class="bi bi-credit-card md:text-6xl"></i>
-      <span>Mobile</span>
+      <i class="pointer-events-none bi bi-credit-card md:text-6xl"></i>
+      <span class="pointer-events-none">Mobile</span>
     </div>
   </div>
 </div>
@@ -351,7 +357,7 @@
     <!-- Order Total -->
   </div>
 
-  <div class="add-to-cartBtn mt-8 p-2">
+  <div class="add-to-cartBtn opacity-0 mt-8 p-2">
     <button data-action="sent" data-order="{{order.id}}" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
       <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
         <path
@@ -366,19 +372,32 @@
     </button>
   </div>
   <script>
+    let hidden = document.querySelector(".hidden");
+    let sendOrderBtn = document.querySelector(".add-to-cartBtn");
     let paymentCash = document.querySelector(".paiment-cash");
     let paymentCard = document.querySelector(".paiment-mobile-card");
     let payments = document.querySelectorAll(".payment");
     payments.forEach((element) => {
+      if(sendOrderBtn.classList.contains('opacity-0')){
+        console.log('true');
+        sendOrderBtn.classList.add('disableClick');
+      } 
+      
       element.addEventListener("click", ({ target }) => {
         console.log(target);
         if (target.matches(".paiment-cash")) {
           paymentCard.classList.remove("payment_active");
           target.classList.add("payment_active");
+          sendOrderBtn.classList.remove('hidden');
+          sendOrderBtn.classList.remove('opacity-0');
+          sendOrderBtn.classList.remove('disableClick');
         }
         if (target.matches(".paiment-mobile-card")) {
           paymentCash.classList.remove("payment_active");
           target.classList.add("payment_active");
+          sendOrderBtn.classList.remove('hidden');
+          sendOrderBtn.classList.remove('opacity-0');
+          sendOrderBtn.classList.remove('disableClick');
         }
       });
     });
