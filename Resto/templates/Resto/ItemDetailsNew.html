@@ -482,8 +482,7 @@
 
   .pop-item{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    font-size: 30px;
   }
 
   .pop-item-title{
@@ -491,11 +490,16 @@
   font-size: 25px;
   padding: 2px;
   }
+
   .accompagement {
     /* padding-top: 3px; */
     display: flex;
     width: fit-content;
+  }
 
+  .pop-item-name p {
+   font-size: 12px;
+   color: coral;
   }
 
 
@@ -719,11 +723,13 @@
 <div class="pop-item-box">
   <div class="pop-item-content">
     <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:blueviolet">Popular Items</h1>
-    <div class="pop-item">
+    <div class="pop-item p-2 flex h-100 ">
       {% for pop in show_pop_item %}
-      <div class="col-md-3">{{pop.name}}</div>
+      <div class="pop-item-name" >
+        <p class="card-body" >{{pop.name}}</p>
+        <img src="{{pop.img.url}}" alt="">
+      </div>
       {% endfor %}
-  
     </div>
   </div>
 </div>
