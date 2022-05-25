@@ -66,13 +66,17 @@
       object-fit: cover;
     }
   }
+
+  .active-class{
+    background-color: rgb(145, 195, 145);
+  }
 </style>
 
 
 
 <!-- <div class="p-2"> -->
 <!-- UserBox -->
- <div class="flex justify-between userBox items-center">
+ <div class="flex justify-between userBox items-center px-5">
     <div class="userfield">
       <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">Menu</span></i></a>
     </div>
@@ -116,12 +120,12 @@
 
 
 <!-- Menu Options -->
-<nav class=" flex overflow-x-scroll gap-x-2 mt-2 pt-5 sm:justify-center">
+<nav class=" flex overflow-x-scroll sticky top-0 left-0 z-10 gap-x-2 mt-2 pt-5 sm:justify-center">
   <ul class="flex justify-center gap-x-2 font-bold text-white text-2xl">
     {% for m in category %}
-    <a class="next-menu"  data-menu_id = {{m.id}} data-app ={{app}} >
-      <p id='menu-{{m.id}}' class="animate-bounce p-2 lg:py-5 border-1 border-gray-400 rounded-md menu-name lg:text-2xl"
-        style="color: rgb(109, 110, 110);">{{m.name}}</p>
+    <a class="next-menu" data-menu_id = {{m.id}} data-app ={{app}} >
+      <li id='menu-{{m.id}}' class="menu-{{m.id}} animate-bounce p-2 lg:py-5 border-1 border-gray-400 bg-gray-200 rounded-md menu-name lg:text-2xl"
+        style="color: rgb(109, 110, 110);">{{m.name}}</li>
     </a>
     {% endfor %}
   </ul>
@@ -132,7 +136,7 @@
 <!-- Menu Details -->
 {% for m in category %}
 <h1 class="text-center font-bold sm:text-2xl cat-tile">{{m.name}}</h1><br>
-<section id={{m.id}} class="w-full font-bold text-3xl">
+<section id='menu-{{m.id}}' class="w-full font-bold text-3xl">
   {% for cat in m.item_set.all  %}
   <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
   <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 lg:py-10">
@@ -161,18 +165,18 @@
 
 
 <script>
-  $(document).ready(function () {
+  // $(document).ready(function () {
     //Active Menu
-    var active_menu_id = $(".menu-name").data("active");
-    $(`#menu-${active_menu_id}`).addClass("active").css({
-      backgroundColor: "#b0de9b",
-    });
+    // var active_menu_id = $(".menu-name").data("active");
+    // $(`#menu-${active_menu_id}`).addClass("active").css({
+    //   backgroundColor: "#b0de9b",
+    // });
 
     //ON CLICK CHANGE MENU
-    $(".next-menu").on("click", function (e) {
+    // $(".next-menu").on("click", function (e) {
       //New Active Menu
-      active_menu = $(this).data("menu_id");
-      var old_active = active_menu_id;
+      // active_menu = $(this).data("menu_id");
+      // var old_active = active_menu_id;
 
       /* $( ".item-image" ).load( `/texasgrillz/menudetails/${active_menu}/?session=texasgrillz&table=23 .item-image`,function(response, status, xhr){
         if ( status != "error" ) {
@@ -182,24 +186,24 @@
         */
 
       //Restore active menu css proprety
-      $(`#menu-${old_active}`).removeClass("active").css({
-        backgroundColor: "white",
-      });
+      // $(`#menu-${old_active}`).removeClass("active").css({
+      //   backgroundColor: "white",
+      // });
 
       //Add active class to New Active Menu
-      $(`#menu-${active_menu}`).addClass("active").css({
-        backgroundColor: "#b0de9b",
-      });
+    //   $(`#menu-${active_menu}`).addClass("active").css({
+    //     backgroundColor: "#b0de9b",
+    //   });
 
-      $(".menudetails-content").empty();
-      $(".mySlides").empty();
-      e.preventDefault();
-      console.log("you clicked me");
-      menu_id = $(this).data("menu_id");
-      app = $(this).data("app");
+    //   $(".menudetails-content").empty();
+    //   $(".mySlides").empty();
+    //   e.preventDefault();
+    //   console.log("you clicked me");
+    //   menu_id = $(this).data("menu_id");
+    //   app = $(this).data("app");
 
-      getMenu(menu_id);
-    });
+    //   getMenu(menu_id);
+    // });
 
     function getMenu(menu_id) {
       $.ajax({
@@ -256,7 +260,7 @@
 
     //location.href = ('/texasgrillz/menudetails/'+menu_id +'/?session='+app)
     //$('.menudetails-content').html(" nothing here")
-  });
+  // });
 
   var cart = "{{cart_quantity}}";
   $(".orderTotal-box").hide();
@@ -267,24 +271,29 @@
   }
 
 
-//   let sections = document.querySelectorAll('section');
-// let lis = document.querySelectorAll('li');
+  let sections = document.querySelectorAll('section');
+let lis = document.querySelectorAll('li');
 
-// window.addEventListener('scroll',  ()=>{
-//     let current = '';
-//     sections.forEach(section => {
-//         let sectionTop = section.offsetTop;
-//         if(pageYOffset >= sectionTop){
-//             current = section.getAttribute('id');
-//         }
-//     })
+window.addEventListener('scroll',  ()=>{
+    let current = '';
+    sections.forEach(section => {
+        let sectionTop = section.offsetTop;
+        if(pageYOffset >= sectionTop){
+            current = section.getAttribute('id');
+            console.log(current)
+        }
+    })
 
-//     lis.forEach(li =>{
-//         li.classList.remove('active');
-//         if(li.classList.contains(current)){
-//             li.classList.add('active');
-//         }
-//     })
-// })
+    lis.forEach(li =>{
+        li.classList.remove('active-class');
+        if (li.classList.contains(current)){
+
+          
+            console.log(li)
+              li.classList.add('active-class');
+          
+        }
+    })
+})
 </script>
 {% endblock content %}
