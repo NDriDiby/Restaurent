@@ -211,7 +211,7 @@ def ItemDetails(request,item_id):
     eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
     coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     
-    print('it is assaisonment',assaisonement)
+
     #Get Table Number
     table = get_table_number(request)
     
@@ -221,6 +221,7 @@ def ItemDetails(request,item_id):
     
     item = Item.objects.get(id=item_id)
     print('THIS IS MY ITEM-ACCOMP',item.accompagnement.all())
+   
     cartItem = 0
     myItem = None
     my_total = 0
@@ -344,14 +345,45 @@ def UpdatedItem(request):
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
         
+        
+        print('ACCOMP',accompagment)
+        if accompagment:
+             print('ACCOMP',accompagment)
+             accompagment = [int(x) for x in accompagment.split(",")]
+             accomp = Accompagnement.objects.filter(id__in=accompagment)
+             print('THIS MY ACCOMP',accomp) 
+       
+    
         #Update the Cart of the current user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
-        #accomp = Accompagnement.objects.filter(id=int(accompagment))
-        #print('ADD THIS TO MY ORDER',accomp)
-        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
         item_name = item.name
+        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
+              )
+        orderItem.accompagnememt.add(accomp.id)
+        orderItem.save()
+                           
+        #print("ORDERITEM_ID",orderItem.id)
+        
+       
+        # if accompagment:
+        #      print('ACCOMP',accompagment)
+        #      accompagment = [int(x) for x in accompagment.split(",")]
+        #      accomp = Accompagnement.objects.filter(id__in=accompagment)
+        #      print('THIS MY ACCOMP',accomp) 
+        #      #orderItem,created = OrderItem.objects.get_or_create(order_id = order.id)
+        #      for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #         orderItem.save()
+        #      print('COUNT ACCOMP',orderItem.numb_accomp())
+        #      print('TOTAL ACCOMP',orderItem.total_accomp())
+                
+        
+        
+        
+        
+       
         
         
         #Increase item
@@ -373,18 +405,12 @@ def UpdatedItem(request):
         tot_item = [sum(x.quantity for x in my_order_item)][0]
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
-        if accompagment:
-            accompagment = [int(x) for x in accompagment.split(',')]
-            print('MY ACCOM_ID', accompagment)
-            accomp = Accompagnement.objects.filter(id__in=accompagment)
-            print('ADD THIS TO MY ORDER',accomp)
-            total_accomp = sum([acc.prix for acc in accomp])
-            print('ORDER ACCOMP TOT',total_accomp)
-            total = order.get_order_total() + total_accomp
-        else:
-            total = order.get_order_total()
-             
+        
+      
+        total = order.get_order_total()
+        
         print("MY TOTAL",total)
+        
 
         active_orderItem = orderItem.id
         item_selected = list()

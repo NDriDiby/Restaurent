@@ -32,7 +32,7 @@ admin.site.register(Item,ItemAdmin)
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('id','order','item','ingredient','seasoning','cuisson' ,'quantity','date_added')
+    list_display = ('id','order','item','ingredient','quantity','date_added')
 admin.site.register(OrderItem,OrderItemAdmin)
 
 

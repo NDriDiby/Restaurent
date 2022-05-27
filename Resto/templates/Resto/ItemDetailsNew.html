@@ -483,6 +483,7 @@
   .pop-item{
     display: flex;
     font-size: 30px;
+    cursor: pointer;
   }
 
   .pop-item-title{
@@ -722,12 +723,18 @@
 
 <div class="pop-item-box">
   <div class="pop-item-content">
-    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:blueviolet">Popular Items</h1>
+    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:coral">Popular Items</h1>
     <div class="pop-item p-2 flex h-100 ">
       {% for pop in show_pop_item %}
       <div class="pop-item-name" >
-        <p class="card-body" >{{pop.name}}</p>
-        <img src="{{pop.img.url}}" alt="">
+        {% if pop.name|length == 5 %}
+          <p>check </p>
+        {% endif %}
+        <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}" ">
+          <p class="card-body" >{{pop.name}}</p><br>
+        <img src="{{pop.img.url}}" alt="" width="70px">
+        </a>
+        
       </div>
       {% endfor %}
     </div>

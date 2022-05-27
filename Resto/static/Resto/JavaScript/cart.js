@@ -7,8 +7,6 @@ var ingredients = document.querySelectorAll("input");
 var accompagnement = document.getElementsByClassName("accompagement");
 var form = document.getElementById("choiceOptions");
 
-console.log(accompagnement);
-
 //Accompagement
 
 $(".accompagement").on("click", function () {
@@ -39,8 +37,7 @@ for (var i = 0; i < updated_but.length; i++) {
     var ingre = this.dataset.ingredient;
 
     for (let i = 0; i < accompagnement.length; i++) {
-      if (accompagnement[i].className == "accompagement mb-1 active") {
-        custChoice.push(accompagnement[i].dataset.accomp_name);
+      if (accompagnement[i].className == "accompagement active") {
         accomp_id.push(accompagnement[i].dataset.accomp_id);
       }
     }
@@ -67,6 +64,8 @@ for (var i = 0; i < updated_but.length; i++) {
       ingre = " ";
       custChoice = ingre;
     }
+
+    console.log("CustChoice", custChoice);
 
     $.ajax({
       url: "/texasgrillz/updateitem/",

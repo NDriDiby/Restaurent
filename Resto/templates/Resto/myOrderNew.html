@@ -252,10 +252,10 @@
   .payment_active {
     background-color: green;
   }
-  .add-to-cartBtn{
+  .add-to-cartBtn {
     transition: opacity 0.8s;
   }
-  .disableClick{
+  .disableClick {
     pointer-events: none;
   }
 </style>
@@ -285,9 +285,17 @@
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
         <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
         <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}}</div>
+        <!-- Accompagement -->
+        {% if i.accompagnememt.all %} {% for acc in i.accompagnememt.all %}
+        <small style="color: coral"><strong>{{acc.name}}</strong></small>
+        {% endfor %} {% endif %}
+        <!-- Accompagement -->
+
+        <!-- Ingredients -->
         {% if i.ingredient %}
         <h1 style="color: rgb(209, 112, 131)"><strong>{{i.ingredient}}</strong></h1>
         {% endif %}
+        <!-- Ingredients -->
       </div>
 
       <form method="POST">
@@ -318,11 +326,10 @@
   </div>
 </div>
 
-
 <!-- Paiement -->
 
 <div class="paiement-box w-full my-5">
-  <h4 class="text-center mb-2" style="font-size: 20px; color: coral">Paiment Method</h4>
+  <h4 class="text-center mb-2" style="font-size: 20px; color: coral"><b>Paiement Method</b></h4>
   <div class="paiment-content flex justify-center gap-x-4">
     <div
       class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
@@ -349,8 +356,8 @@
     <a href="/texasgrillz/myorder/?session={{app}}">
       <div class="orderTotal-box">
         <div class="orderTotal-content p-2">
-          <h1 class="md:text-2xl">Total Price</h1>
-          <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b>{{order.get_order_total}} FCFA</b></div>
+          <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
+          <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
         </div>
       </div>
     </a>
@@ -378,33 +385,32 @@
     let paymentCard = document.querySelector(".paiment-mobile-card");
     let payments = document.querySelectorAll(".payment");
     payments.forEach((element) => {
-      if(sendOrderBtn.classList.contains('opacity-0')){
-        console.log('true');
-        sendOrderBtn.classList.add('disableClick');
-      } 
-      
+      if (sendOrderBtn.classList.contains("opacity-0")) {
+        console.log("true");
+        sendOrderBtn.classList.add("disableClick");
+      }
+
       element.addEventListener("click", ({ target }) => {
         console.log(target);
         if (target.matches(".paiment-cash")) {
           paymentCard.classList.remove("payment_active");
           target.classList.add("payment_active");
-          sendOrderBtn.classList.remove('hidden');
-          sendOrderBtn.classList.remove('opacity-0');
-          sendOrderBtn.classList.remove('disableClick');
+          sendOrderBtn.classList.remove("hidden");
+          sendOrderBtn.classList.remove("opacity-0");
+          sendOrderBtn.classList.remove("disableClick");
         }
         if (target.matches(".paiment-mobile-card")) {
           paymentCash.classList.remove("payment_active");
           target.classList.add("payment_active");
-          sendOrderBtn.classList.remove('hidden');
-          sendOrderBtn.classList.remove('opacity-0');
-          sendOrderBtn.classList.remove('disableClick');
+          sendOrderBtn.classList.remove("hidden");
+          sendOrderBtn.classList.remove("opacity-0");
+          sendOrderBtn.classList.remove("disableClick");
         }
       });
     });
   </script>
 
   <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
-
 </div>
 
 {% endif%} {% endblock content %}

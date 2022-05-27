@@ -154,7 +154,7 @@ for (let i = 0; i < update_but.length; i++) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];
           var item_total_price = document.getElementsByClassName("item-price")[ord];
 
-          console.log(response.total);
+          console.log("MY TOTAL", response.total);
 
           total_item.innerHTML = orderItem[ord]["quantity"];
           item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
@@ -168,7 +168,7 @@ for (let i = 0; i < update_but.length; i++) {
         total = document.getElementById("orderTotal-total");
 
         //UPDATE THE VALUE
-        total.innerHTML = `<b>${response.total} FCFA</b>`;
+        total.innerHTML = `<b style="color:green;font-size:25px">${response.total} FCFA</b>`;
       },
     });
   });
