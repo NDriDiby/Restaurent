@@ -311,8 +311,9 @@
       <div id="spinner-div" class="pt-5">
         <div class="spinner-border text-primary" role="status"></div>
       </div>
-
       <!-- Spinner -->
+
+      {{i.id}}
 
       <div class="background-item bg-gray-200 h-32 w-[140px] sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div>
     </div>
@@ -412,5 +413,21 @@
 
   <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
 </div>
+{% else %}
 
+<div>There is No Items in your cart</div>
+<div class="total-order">
+  <!-- Order Total -->
+  <a href="/texasgrillz/myorder/?session={{app}}">
+    <div class="orderTotal-box">
+      <div class="orderTotal-content p-2">
+        <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
+        <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
+      </div>
+    </div>
+  </a>
+  <!-- Order Total -->
+</div>
+
+<div>Return to Menu</div>
 {% endif%} {% endblock content %}

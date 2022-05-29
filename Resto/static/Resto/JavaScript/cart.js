@@ -65,8 +65,6 @@ for (var i = 0; i < updated_but.length; i++) {
       custChoice = ingre;
     }
 
-    console.log("CustChoice", custChoice);
-
     $.ajax({
       url: "/texasgrillz/updateitem/",
       method: "POST",
@@ -84,17 +82,11 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
 
-        console.log(response);
-
         var old_total = document.getElementById("orderTotal-total").innerText;
-
-        console.log("OLD VALUE 1", old_total);
         old_total = parseInt(old_total.split("FCFA")[0]);
 
         item_price = parseInt(document.getElementById("item-price").innerText);
         var new_total = response.total;
-
-        console.log("NEW VALUE 1", new_total);
 
         msg.innerHTML = `
         <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
@@ -110,8 +102,6 @@ for (var i = 0; i < updated_but.length; i++) {
         $("#message").delay(3000).fadeOut("slow");
 
         count = old_total;
-
-        console.log("COUNT FROM", count);
 
         let counting = setInterval(countUp, 50);
 
@@ -129,7 +119,6 @@ for (var i = 0; i < updated_but.length; i++) {
         }
 
         document.getElementById("orderTotal-total").innerText = new_total;
-        console.log($("#orderTotal-total").html());
       },
 
       error: function (error) {

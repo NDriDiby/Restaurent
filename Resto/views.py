@@ -225,6 +225,7 @@ def ItemDetails(request,item_id):
     cartItem = 0
     myItem = None
     my_total = 0
+    show_pop_item=None
     
     if request.user.is_authenticated:
         try:
@@ -235,10 +236,7 @@ def ItemDetails(request,item_id):
             my_total = order.get_order_total()
             
             popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
-            print('MOST POP ITEM',list(popular_item))
-            
             show_pop_item = Item.objects.filter(name__in=list(popular_item))
-            print('I CAN SHOW YOU', show_pop_item)
             
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
@@ -336,6 +334,7 @@ def UpdatedItem(request):
     total_cart = None
     tot_item= None
     total_accomp = 0
+    accomp = None
     
     
     if request.method == 'POST':
@@ -346,23 +345,56 @@ def UpdatedItem(request):
         accompagment = request.POST.get('accomp')
         
         
-        print('ACCOMP',accompagment)
+
         if accompagment:
              print('ACCOMP',accompagment)
              accompagment = [int(x) for x in accompagment.split(",")]
              accomp = Accompagnement.objects.filter(id__in=accompagment)
              print('THIS MY ACCOMP',accomp) 
        
+        
     
         #Update the Cart of the current user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
         item_name = item.name
         order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
-              )
-        orderItem.accompagnememt.add(accomp.id)
-        orderItem.save()
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        
+        
+        # if choice != ' ':
+        #     print("I PICK INGREDIENTS")
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        
+        # if choice == ' ':
+        #     print('I DO NOT PICK INGREDIENTS',choice)
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+            
+        # if choice == ' ' and accomp is not None:
+        #     print("I PICK ACCOMP",accomp)
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+        #     for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #         print(orderItem.id)
+                
+        # if choice != ' ' and accomp is not None:
+        #     print('I PICK INGREDIENT AND ACCOMP',choice,accomp)
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        #     for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #         print(orderItem.id)
+        
+        
+        
+        # if accomp:
+        #     for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #     orderItem.item = item
+        #     orderItem.ingredient = choice
+        #     print(orderItem.id)
+        
+        # orderItem.save()
+        # orderItem = OrderItem.objects.get(id = orderItem.id).add(i)
                            
         #print("ORDERITEM_ID",orderItem.id)
         
@@ -383,9 +415,7 @@ def UpdatedItem(request):
         
         
         
-       
-        
-        
+    
         #Increase item
         if action =='add':
             orderItem.quantity = (orderItem.quantity + 1)
@@ -398,8 +428,8 @@ def UpdatedItem(request):
             orderItem.save()
 
         #Delete item
-        # if orderItem.quantity<=0:
-        #      orderItem.delete()
+        if orderItem.quantity< 0:
+             orderItem.delete()
             
         my_order_item = OrderItem.objects.filter(order= order, item = item)
         tot_item = [sum(x.quantity for x in my_order_item)][0]
