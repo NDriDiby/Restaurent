@@ -122,20 +122,13 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     ingredient = models.CharField(null = True, blank = True,max_length=150)
-    accompagnememt = models.ManyToManyField(Accompagnement,blank=True)
+    accompagnememt = models.CharField(null = True, blank = True,max_length=150)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.item)
     
-    def numb_accomp(self):
-        number_acc = self.accompagnememt.all().count()
-        return number_acc
     
-    def total_accomp(self):
-        acc = self.accompagnememt.all()
-        total = sum([accomp.prix for accomp in acc])
-        return total
 
     #Get total
     def get_total(self):

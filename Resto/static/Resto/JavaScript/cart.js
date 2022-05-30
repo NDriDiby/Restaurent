@@ -38,7 +38,7 @@ for (var i = 0; i < updated_but.length; i++) {
 
     for (let i = 0; i < accompagnement.length; i++) {
       if (accompagnement[i].className == "accompagement active") {
-        accomp_id.push(accompagnement[i].dataset.accomp_id);
+        accomp_id.push(accompagnement[i].dataset.accomp_name);
       }
     }
 
