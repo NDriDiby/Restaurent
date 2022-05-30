@@ -95,9 +95,13 @@ for (let i = 0; i < update_but.length; i++) {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
-    var ordItem = this.dataset.orderItem;
+    var ordItem = this.dataset.orderItemID;
+    var accompa = this.dataset.accomp;
 
-    console.log("DELETE THIS ONE", ordItem);
+    // var accompa = document.getElementsByClassName("accompa");
+    // console.log(accompa);
+
+    console.log("DELETE THIS ONE", accompa);
 
     $.ajax({
       url: "/texasgrillz/updateitem/",
@@ -107,13 +111,13 @@ for (let i = 0; i < update_but.length; i++) {
         itemId: itemId,
         action: action,
         choice: ingre,
-        ordItem: ordItem,
+        accomp: accompa,
       },
       success: function (response) {
         orderItem = response.orderItem;
         active_item = null;
 
-        console.log("SET ITEM", response);
+        // console.log("SET ITEM", orderItem[ord]["quantity"]);
 
         for (var ord in orderItem) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];

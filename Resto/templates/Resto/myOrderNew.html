@@ -286,14 +286,14 @@
         <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
         <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}}</div>
         <!-- Accompagement -->
-        {% if i.accompagnememt.all %} {% for acc in i.accompagnememt.all %}
-        <small style="color: coral"><strong>{{acc.name}}</strong></small>
-        {% endfor %} {% endif %}
+        {% if i.accompagnememt %}
+        <small class="accompa" style="color: coral"><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}}</strong></small>
+        {% endif %}
         <!-- Accompagement -->
 
         <!-- Ingredients -->
         {% if i.ingredient %}
-        <h1 style="color: rgb(209, 112, 131)"><strong>{{i.ingredient}}</strong></h1>
+        <h6 style="color: rgb(209, 112, 131)"><strong>{{i.ingredient}}</strong></h6>
         {% endif %}
         <!-- Ingredients -->
       </div>
@@ -319,9 +319,23 @@
     </div>
 
     <div class="quantity m-2">
-      <i class="bi bi-dash font-bold text-2xl update-cart" data-ingredient="{{i.ingredient}}" data-orderItem="{{i.id}}" data-product="{{i.item.id}}" data-action="remove"></i>
+      <i
+        class="bi bi-dash font-bold text-2xl update-cart"
+        data-ingredient="{{i.ingredient}}"
+        data-orderItemID="{{i.id}}"
+        data-accomp="{{i.accompagnememt}}"
+        data-product="{{i.item.id}}"
+        data-action="remove"
+      ></i>
       <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{i.quantity}}</p>
-      <i class="bi bi-plus font-bold text-2xl update-cart" data-ingredient="{{i.ingredient}}" data-product="{{i.item.id}}" data-action="add"></i>
+      <i
+        class="bi bi-plus font-bold text-2xl update-cart"
+        data-ingredient="{{i.ingredient}}"
+        data-product="{{i.item.id}}"
+        data-orderItemID="{{i.id}}"
+        data-accomp="{{i.accompagnememt}}"
+        data-action="add"
+      ></i>
     </div>
     {% endfor %}
   </div>

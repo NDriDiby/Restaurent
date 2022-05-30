@@ -327,9 +327,6 @@ def MyOrder(request):
 def UpdatedItem(request):
     
     
-   
- 
-    
     item_name = None
     total_cart = None
     tot_item= None
@@ -343,14 +340,10 @@ def UpdatedItem(request):
         action = request.POST['action']
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
+        ordItem = request.POST.get('ordItem')
         
-        print("MY ACCOMP",accompagment)
-        
-        
-        # if accompagment:
-        #      accompagment = [int(x) for x in accompagment.split(",")]
-        #      accomp = Accompagnement.objects.filter(id__in=accompagment)
-        
+        print('ORDITEM', ordItem)
+       
     
         #Update the Cart of the current user
         #customer = request.user
@@ -359,61 +352,16 @@ def UpdatedItem(request):
         item_name = item.name
         order = Order.objects.filter(customer__id = customer.id).last()
         # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
-                        accompagnememt = accompagment)
+        if accompagment != None:
+            orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
+                                                accompagnememt = accompagment)
         
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+                                                
         
-            
-            
-        # if choice == ' ' and accomp is not None:
-        #     print("I PICK ACCOMP",accomp)
-        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = None)
-        #     for i in accomp:
-        #         orderItem.accompagnememt.add(i)
-        #         print(orderItem.id)
-        #         orderItem.save()
-                
-        # if choice != ' ' and accomp is not None:
-        #     print('I PICK INGREDIENT AND ACCOMP',choice,accomp)
-        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-        #     for i in accomp:
-        #         orderItem.accompagnememt.add(i)
-        #         print(orderItem.id)
-        
-        
-        
-        # if accomp:
-        #     for i in accomp:
-        #         orderItem.accompagnememt.add(i)
-        #     orderItem.item = item
-        #     orderItem.ingredient = choice
-        #     print(orderItem.id)
-        
-        # orderItem.save()
-        # orderItem = OrderItem.objects.get(id = orderItem.id).add(i)
-                           
-        #print("ORDERITEM_ID",orderItem.id)
-        
-       
-        # if accompagment:
-        #      print('ACCOMP',accompagment)
-        #      accompagment = [int(x) for x in accompagment.split(",")]
-        #      accomp = Accompagnement.objects.filter(id__in=accompagment)
-        #      print('THIS MY ACCOMP',accomp) 
-        #      #orderItem,created = OrderItem.objects.get_or_create(order_id = order.id)
-        #      for i in accomp:
-        #         orderItem.accompagnememt.add(i)
-        #         orderItem.save()
-        #      print('COUNT ACCOMP',orderItem.numb_accomp())
-        #      print('TOTAL ACCOMP',orderItem.total_accomp())
-                
-        
-        
-        
-        
-    
         #Increase item
         if action =='add':
+            
             orderItem.quantity = (orderItem.quantity + 1)
             orderItem.save()
             
@@ -426,13 +374,14 @@ def UpdatedItem(request):
         #Delete item
         if orderItem.quantity< 0:
              orderItem.delete()
-            
+        
+        
         my_order_item = OrderItem.objects.filter(order= order, item = item)
         tot_item = [sum(x.quantity for x in my_order_item)][0]
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
         
-      
+    
         total = order.get_order_total()
         
         print("MY TOTAL",total)
