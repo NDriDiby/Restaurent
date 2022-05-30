@@ -211,7 +211,7 @@ def ItemDetails(request,item_id):
     eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
     coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     
-    print('it is assaisonment',assaisonement)
+
     #Get Table Number
     table = get_table_number(request)
     
@@ -221,9 +221,11 @@ def ItemDetails(request,item_id):
     
     item = Item.objects.get(id=item_id)
     print('THIS IS MY ITEM-ACCOMP',item.accompagnement.all())
+   
     cartItem = 0
     myItem = None
     my_total = 0
+    show_pop_item=None
     
     if request.user.is_authenticated:
         try:
@@ -234,10 +236,7 @@ def ItemDetails(request,item_id):
             my_total = order.get_order_total()
             
             popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
-            print('MOST POP ITEM',list(popular_item))
-            
             show_pop_item = Item.objects.filter(name__in=list(popular_item))
-            print('I CAN SHOW YOU', show_pop_item)
             
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
@@ -327,14 +326,15 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
-    customer = request.user
-    order = Order.objects.filter(customer__id = customer.customer.id).last()
+    
+   
  
     
     item_name = None
     total_cart = None
     tot_item= None
     total_accomp = 0
+    accomp = None
     
     
     if request.method == 'POST':
@@ -344,16 +344,74 @@ def UpdatedItem(request):
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
         
+        print("MY ACCOMP",accompagment)
+        
+        
+        # if accompagment:
+        #      accompagment = [int(x) for x in accompagment.split(",")]
+        #      accomp = Accompagnement.objects.filter(id__in=accompagment)
+        
+    
         #Update the Cart of the current user
+        #customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
-        #accomp = Accompagnement.objects.filter(id=int(accompagment))
-        #print('ADD THIS TO MY ORDER',accomp)
-        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
         item_name = item.name
+        order = Order.objects.filter(customer__id = customer.id).last()
+        # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
+                        accompagnememt = accompagment)
         
         
+            
+            
+        # if choice == ' ' and accomp is not None:
+        #     print("I PICK ACCOMP",accomp)
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = None)
+        #     for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #         print(orderItem.id)
+        #         orderItem.save()
+                
+        # if choice != ' ' and accomp is not None:
+        #     print('I PICK INGREDIENT AND ACCOMP',choice,accomp)
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        #     for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #         print(orderItem.id)
+        
+        
+        
+        # if accomp:
+        #     for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #     orderItem.item = item
+        #     orderItem.ingredient = choice
+        #     print(orderItem.id)
+        
+        # orderItem.save()
+        # orderItem = OrderItem.objects.get(id = orderItem.id).add(i)
+                           
+        #print("ORDERITEM_ID",orderItem.id)
+        
+       
+        # if accompagment:
+        #      print('ACCOMP',accompagment)
+        #      accompagment = [int(x) for x in accompagment.split(",")]
+        #      accomp = Accompagnement.objects.filter(id__in=accompagment)
+        #      print('THIS MY ACCOMP',accomp) 
+        #      #orderItem,created = OrderItem.objects.get_or_create(order_id = order.id)
+        #      for i in accomp:
+        #         orderItem.accompagnememt.add(i)
+        #         orderItem.save()
+        #      print('COUNT ACCOMP',orderItem.numb_accomp())
+        #      print('TOTAL ACCOMP',orderItem.total_accomp())
+                
+        
+        
+        
+        
+    
         #Increase item
         if action =='add':
             orderItem.quantity = (orderItem.quantity + 1)
@@ -366,25 +424,19 @@ def UpdatedItem(request):
             orderItem.save()
 
         #Delete item
-        # if orderItem.quantity<=0:
-        #      orderItem.delete()
+        if orderItem.quantity< 0:
+             orderItem.delete()
             
         my_order_item = OrderItem.objects.filter(order= order, item = item)
         tot_item = [sum(x.quantity for x in my_order_item)][0]
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
-        if accompagment:
-            accompagment = [int(x) for x in accompagment.split(',')]
-            print('MY ACCOM_ID', accompagment)
-            accomp = Accompagnement.objects.filter(id__in=accompagment)
-            print('ADD THIS TO MY ORDER',accomp)
-            total_accomp = sum([acc.prix for acc in accomp])
-            print('ORDER ACCOMP TOT',total_accomp)
-            total = order.get_order_total() + total_accomp
-        else:
-            total = order.get_order_total()
-             
+        
+      
+        total = order.get_order_total()
+        
         print("MY TOTAL",total)
+        
 
         active_orderItem = orderItem.id
         item_selected = list()

@@ -482,8 +482,8 @@
 
   .pop-item{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    font-size: 30px;
+    cursor: pointer;
   }
 
   .pop-item-title{
@@ -491,11 +491,16 @@
   font-size: 25px;
   padding: 2px;
   }
+
   .accompagement {
     /* padding-top: 3px; */
     display: flex;
     width: fit-content;
+  }
 
+  .pop-item-name p {
+   font-size: 12px;
+   color: coral;
   }
 
 
@@ -509,7 +514,7 @@
 <div class="p-3 py-5">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a href="/texasgrillz/menudetails/{{items.category.id}}/?session={{app}}"><i
+      <a onclick="history.back()"><i
           class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span
             class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
     </div>
@@ -718,12 +723,20 @@
 
 <div class="pop-item-box">
   <div class="pop-item-content">
-    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:blueviolet">Popular Items</h1>
-    <div class="pop-item">
+    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:coral">Popular Items</h1>
+    <div class="pop-item p-2 flex h-100 ">
       {% for pop in show_pop_item %}
-      <div class="col-md-3">{{pop.name}}</div>
+      <div class="pop-item-name" >
+        {% if pop.name|length == 5 %}
+          <p>check </p>
+        {% endif %}
+        <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}" ">
+          <p class="card-body" >{{pop.name}}</p><br>
+        <img src="{{pop.img.url}}" alt="" width="70px">
+        </a>
+        
+      </div>
       {% endfor %}
-  
     </div>
   </div>
 </div>
