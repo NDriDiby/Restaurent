@@ -326,8 +326,8 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
-    customer = request.user
-    order = Order.objects.filter(customer__id = customer.customer.id).last()
+    
+   
  
     
     item_name = None
@@ -344,38 +344,34 @@ def UpdatedItem(request):
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
         
+        print("MY ACCOMP",accompagment)
         
-
-        if accompagment:
-             print('ACCOMP',accompagment)
-             accompagment = [int(x) for x in accompagment.split(",")]
-             accomp = Accompagnement.objects.filter(id__in=accompagment)
-             print('THIS MY ACCOMP',accomp) 
-       
+        
+        # if accompagment:
+        #      accompagment = [int(x) for x in accompagment.split(",")]
+        #      accomp = Accompagnement.objects.filter(id__in=accompagment)
         
     
         #Update the Cart of the current user
+        #customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
         item_name = item.name
-        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        order = Order.objects.filter(customer__id = customer.id).last()
+        # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
+                        accompagnememt = accompagment)
         
         
-        # if choice != ' ':
-        #     print("I PICK INGREDIENTS")
-        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-        
-        # if choice == ' ':
-        #     print('I DO NOT PICK INGREDIENTS',choice)
-        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+            
             
         # if choice == ' ' and accomp is not None:
         #     print("I PICK ACCOMP",accomp)
-        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item)
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item,ingredient = None)
         #     for i in accomp:
         #         orderItem.accompagnememt.add(i)
         #         print(orderItem.id)
+        #         orderItem.save()
                 
         # if choice != ' ' and accomp is not None:
         #     print('I PICK INGREDIENT AND ACCOMP',choice,accomp)
