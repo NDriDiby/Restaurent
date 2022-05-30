@@ -340,10 +340,7 @@ def UpdatedItem(request):
         action = request.POST['action']
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
-        ordItem = request.POST.get('ordItem')
-        
-        print('ORDITEM', ordItem)
-       
+
     
         #Update the Cart of the current user
         #customer = request.user
@@ -352,12 +349,11 @@ def UpdatedItem(request):
         item_name = item.name
         order = Order.objects.filter(customer__id = customer.id).last()
         # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        if accompagment != None:
-            orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,
-                                                accompagnememt = accompagment)
-        
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-                                                
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,accompagnememt = accompagment)
+                    
+                    
+      
+                                             
         
         #Increase item
         if action =='add':
@@ -370,6 +366,7 @@ def UpdatedItem(request):
         elif action == 'remove':
             orderItem.quantity = (orderItem.quantity - 1)
             orderItem.save()
+
 
         #Delete item
         if orderItem.quantity< 0:
