@@ -15,7 +15,9 @@ function getTotalItem() {
     method: "GET",
     success: function (response) {
       total_item = response.total_item;
+
       console.log(response);
+
       if (total_item == 0) {
         Swal.fire({
           icon: "warning",
@@ -70,47 +72,6 @@ for (let i = 0; i < sendOrder.length; i++) {
             menu = location.href.replace("myorder/", "");
             location.href = menu;
           });
-
-          // check if there is item in the basket
-          //   process_order.innerHTML = `
-          // <div style='text-align:center'>
-          // <h1 style ='color:black;font-size:20px'> We're processing your order....</h1>
-          //       <div class='p-3'>
-          //       <div class="spinner-grow text-muted"></div>
-          //       <div class="spinner-grow text-primary"></div>
-          //       <div class="spinner-grow text-success"></div>
-          //       <div class="spinner-grow text-info"></div>
-          //       <div class="spinner-grow text-warning"></div>
-          //       <div class="spinner-grow text-danger"></div>
-          //       <div class="spinner-grow text-secondary"></div>
-          //     <div>
-          // </div>`;
-
-          //   setInterval(function () {
-          //     $("#process_order").hide();
-          //     success_transaction.innerHTML = `
-          //   <div id="message" class="col-12">
-          //     <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
-          //       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-          //         <use xlink:href="#check-circle-fill" />
-          //       </svg>
-          //       <h4 style="color:black"> <b> Votre commande a ete bien recu par notre cuisine! </b></h4>
-          //       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          //     </div>
-          //   </div>`;
-          //   }, 3000);
-        } else {
-          //show succes messages
-          success_transaction.innerHTML = ` 
-          <div id="message" class="col-12">
-            <div class="alert alert-warning alert-dismissible" style="text-align: center" role="alert">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                <use xlink:href="#check-circle-fill" />
-              </svg>
-              <h4 style="color:black"> <b> Votre pannier est vide! </b></h4>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>`;
         }
       },
 
@@ -136,6 +97,8 @@ for (let i = 0; i < update_but.length; i++) {
     var ingre = this.dataset.ingredient;
     var ordItem = this.dataset.orderItem;
 
+    console.log("DELETE THIS ONE", ordItem);
+
     $.ajax({
       url: "/texasgrillz/updateitem/",
       method: "POST",
@@ -150,11 +113,11 @@ for (let i = 0; i < update_but.length; i++) {
         orderItem = response.orderItem;
         active_item = null;
 
+        console.log("SET ITEM", response);
+
         for (var ord in orderItem) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];
           var item_total_price = document.getElementsByClassName("item-price")[ord];
-
-          console.log(response.total);
 
           total_item.innerHTML = orderItem[ord]["quantity"];
           item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
@@ -168,11 +131,18 @@ for (let i = 0; i < update_but.length; i++) {
         total = document.getElementById("orderTotal-total");
 
         //UPDATE THE VALUE
-        total.innerHTML = `<b>${response.total} FCFA</b>`;
+        total.innerHTML = `<b style="color:green;font-size:25px">${response.total} FCFA</b>`;
+
+        if (response.tot_item == 0) {
+          console.log("YOU CAN DELETE ME");
+
+          window.location.reload();
+        }
       },
     });
   });
 }
+
 // Delete Order
 delete_item = document.getElementsByClassName("delete-order");
 for (let i = 0; i < delete_item.length; i++) {

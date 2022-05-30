@@ -7,8 +7,6 @@ var ingredients = document.querySelectorAll("input");
 var accompagnement = document.getElementsByClassName("accompagement");
 var form = document.getElementById("choiceOptions");
 
-console.log(accompagnement);
-
 //Accompagement
 
 $(".accompagement").on("click", function () {
@@ -39,9 +37,8 @@ for (var i = 0; i < updated_but.length; i++) {
     var ingre = this.dataset.ingredient;
 
     for (let i = 0; i < accompagnement.length; i++) {
-      if (accompagnement[i].className == "accompagement mb-1 active") {
-        custChoice.push(accompagnement[i].dataset.accomp_name);
-        accomp_id.push(accompagnement[i].dataset.accomp_id);
+      if (accompagnement[i].className == "accompagement active") {
+        accomp_id.push(accompagnement[i].dataset.accomp_name);
       }
     }
 
@@ -85,17 +82,11 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
 
-        console.log(response);
-
         var old_total = document.getElementById("orderTotal-total").innerText;
-
-        console.log("OLD VALUE 1", old_total);
         old_total = parseInt(old_total.split("FCFA")[0]);
 
         item_price = parseInt(document.getElementById("item-price").innerText);
         var new_total = response.total;
-
-        console.log("NEW VALUE 1", new_total);
 
         msg.innerHTML = `
         <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
@@ -111,8 +102,6 @@ for (var i = 0; i < updated_but.length; i++) {
         $("#message").delay(3000).fadeOut("slow");
 
         count = old_total;
-
-        console.log("COUNT FROM", count);
 
         let counting = setInterval(countUp, 50);
 
@@ -130,7 +119,6 @@ for (var i = 0; i < updated_but.length; i++) {
         }
 
         document.getElementById("orderTotal-total").innerText = new_total;
-        console.log($("#orderTotal-total").html());
       },
 
       error: function (error) {
