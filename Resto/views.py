@@ -340,6 +340,14 @@ def UpdatedItem(request):
         action = request.POST['action']
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
+        
+        # for i in accompagment:
+        #     acc = accompagment.split(",")
+        # print(acc)
+        # my_acc = Accompagnement.objects.filter(name__in=acc)
+        # print(my_acc)
+        # total_acc = sum([x.prix for x in my_acc])
+        # print(total_acc)
 
     
         #Update the Cart of the current user
@@ -350,6 +358,9 @@ def UpdatedItem(request):
         order = Order.objects.filter(customer__id = customer.id).last()
         # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
         orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,accompagnememt = accompagment)
+        print('MT TOTAL ACCOMP',orderItem.total_accomp())
+        
+        print('ITEMS PRICE',item.prix)
                     
                     
       
@@ -369,7 +380,7 @@ def UpdatedItem(request):
 
 
         #Delete item
-        if orderItem.quantity< 0:
+        if orderItem.quantity== 0:
              orderItem.delete()
         
         

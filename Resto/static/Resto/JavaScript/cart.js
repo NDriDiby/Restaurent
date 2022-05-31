@@ -85,12 +85,16 @@ for (var i = 0; i < updated_but.length; i++) {
         var old_total = document.getElementById("orderTotal-total").innerText;
         old_total = parseInt(old_total.split("FCFA")[0]);
 
+        console.log("OLD VAL", old_total);
+
         item_price = parseInt(document.getElementById("item-price").innerText);
         var new_total = response.total;
 
+        console.log("NEW VAL", new_total);
+
         msg.innerHTML = `
         <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
-          <p class="text-white"><strong>(${response.tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
+          <p class="text-white"><strong>(${tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
           <span><i class="bi bi-check-circle text-2xl font-bold text-green-300"></i></span>
         </div>`;
 
@@ -103,19 +107,15 @@ for (var i = 0; i < updated_but.length; i++) {
 
         count = old_total;
 
-        let counting = setInterval(countUp, 50);
+        let counting = setInterval(countUp, 70);
 
         function countUp() {
-          if (response.total_accomp != 0) {
-            count += (item_price + response.total_accomp) / 20;
-          } else {
-            count += item_price / 20;
-          }
+          count = count + 1000;
 
           if (count == new_total) {
             clearInterval(counting);
           }
-          $(".orderTotal-total").html(`<b>${count} FCFA</b>`);
+          $(".orderTotal-total").html(`<b style="color:green;font-size:25px" >${count} FCFA</b>`);
         }
 
         document.getElementById("orderTotal-total").innerText = new_total;
