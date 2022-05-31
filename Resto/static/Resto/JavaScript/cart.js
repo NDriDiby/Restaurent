@@ -107,10 +107,10 @@ for (var i = 0; i < updated_but.length; i++) {
 
         count = old_total;
 
-        let counting = setInterval(countUp, 70);
+        let counting = setInterval(countUp, 10);
 
         function countUp() {
-          count = count + 1000;
+          count = count + 100;
 
           if (count == new_total) {
             clearInterval(counting);

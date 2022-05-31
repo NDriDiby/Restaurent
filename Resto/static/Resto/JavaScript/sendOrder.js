@@ -18,18 +18,18 @@ function getTotalItem() {
 
       console.log(response);
 
-      if (total_item == 0) {
-        Swal.fire({
-          icon: "warning",
-          title: "There is no item in your cart",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setTimeout(() => {
-          menu = location.href.replace("myorder/", "");
-          location.href = menu;
-        }, 1300);
-      }
+      // if (total_item == 0) {
+      //   Swal.fire({
+      //     icon: "warning",
+      //     title: "There is no item in your cart",
+      //     showConfirmButton: false,
+      //     timer: 1500,
+      //   });
+      //   setTimeout(() => {
+      //     menu = location.href.replace("myorder/", "");
+      //     location.href = menu;
+      //   }, 1300);
+      // }
     },
     error: function (error) {
       console.log(error);
@@ -100,8 +100,6 @@ for (let i = 0; i < update_but.length; i++) {
 
     // var accompa = document.getElementsByClassName("accompa");
     // console.log(accompa);
-
-    console.log("DELETE THIS ONE", accompa);
 
     $.ajax({
       url: "/texasgrillz/updateitem/",

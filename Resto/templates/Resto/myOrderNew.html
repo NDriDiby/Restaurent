@@ -284,10 +284,10 @@
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
         <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
-        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}}</div>
+        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} ({{i.get_total_item}})</div>
         <!-- Accompagement -->
         {% if i.accompagnememt %}
-        <small class="accompa" style="color: coral"><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} (+{{i.total_accomp}})</strong></small>
+        <small class="accompa" style="color: coral"><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} (+{{i.get_total_accomp}})</strong></small>
         {% endif %}
         <!-- Accompagement -->
 
