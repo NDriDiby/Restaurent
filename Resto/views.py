@@ -362,10 +362,7 @@ def UpdatedItem(request):
         
         print('ITEMS PRICE',item.prix)
                     
-                    
-      
-                                             
-        
+                
         #Increase item
         if action =='add':
             
@@ -413,8 +410,6 @@ def UpdatedItem(request):
             item_selected.append(data)
             
         
-
-
     return JsonResponse({"item_name":item_name,
                          'total_cart':total_cart,
                          'tot_item':tot_item,
