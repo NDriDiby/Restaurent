@@ -9,7 +9,7 @@
 <style>
 
   .cat-tile{
-    padding: 2px;
+    /* padding: 2px; */
     font-size: 20px;
     color: chocolate;;
   }
@@ -22,8 +22,8 @@
 
   div.item-image img {
     border-radius: 5px 5px 0 0px;
-    width: 150px;
-    height: 100px;
+    width: 250px;
+    height: 80px;
     object-fit: cover;
   }
 
@@ -76,16 +76,18 @@
 
 <!-- <div class="p-2"> -->
 <!-- UserBox -->
- <div class="flex justify-between userBox items-center px-5">
+ <div class="flex justify-between userBox items-center px-5 pt-5">
     <div class="userfield">
-      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2"><span class="font-normal text-xl">Menu</span></i></a>
+      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2">
+        <!-- <span class="font-normal text-xl">Menu</span> -->
+      </i></a>
     </div>
-
+<!-- 
  <div class="logofield w-20">
       <span class="businesslogo"
         ><a href="/texasgrillz/?session={{app}}"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></a
       ></span>
-    </div>
+    </div> -->
 
 <!-- Order Total -->
  <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;">
@@ -119,8 +121,8 @@
 </div>
 
 
-<!-- Menu Options -->
-<nav class=" flex overflow-x-scroll sticky top-0 left-0 z-10 gap-x-2 mt-2 pt-5 sm:justify-center">
+<!-- Menu Options Nav-->
+<!-- <nav class=" flex overflow-x-scroll sticky top-0 left-0 z-10 gap-x-2 mt-2 pt-5 sm:justify-center">
   <ul class="flex justify-center gap-x-2 font-bold text-white text-2xl">
     {% for m in category %}
     <a class="next-menu" data-menu_id = {{m.id}} data-app ={{app}} >
@@ -129,30 +131,31 @@
     </a>
     {% endfor %}
   </ul>
-</nav>
-<!-- Menu Options -->
+</nav> -->
+<!-- Menu Options Nav-->
 
 
 <!-- Menu Details -->
 {% for m in category %}
-<h1 class="text-center font-bold sm:text-2xl cat-tile">{{m.name}}</h1><br>
+<h1 class="text-left font-bold sm:text-2xl cat-tile px-4 pt-2">{{m.name}}</h1>
 <section id='menu-{{m.id}}' class="w-full font-bold text-3xl">
   {% for cat in m.item_set.all  %}
   <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
-  <div class="menudetails-items flex justify-between sm:justify-around px-2 mx-2 lg:py-10">
-  <div class="menu-leftside w-80 sm:w-1/2 leading-10">
-    <div class="item-name font-bold sm:text-2xl lg:text-3xl">{{cat.name}}</div>
-    <div class="item-price text-sm sm:text-2xl lg:text-3xl" style="color: chocolate;">{{cat.prix}}</div>
-    <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl">{{cat.description|truncatewords:5}}</div>
-  </div>
-
-  <div class="item-image relative">
-    <img class="p-1" src="{{cat.img.url}}" width="150" height="150" />
-    <div class ='justify-content-center mt-2 flex items-center absolute -top-2 right-0'>
-      <i
-        class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
+  <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-200">
+    
+    <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
+      <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
     </div>
-  </div>
+
+    <div class="item-image relative">
+      <img class="" src="{{cat.img.url}}" width="250" height="150" />
+    </div>
+
+    <div class="menu-leftside w-80 sm:w-1/2">
+      <div class="item-name font-bold text-xl lg:text-3xl">{{cat.name}}</div>
+      <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl pb-2">{{cat.description|truncatewords:5}}</div>
+      <div class="item-price text-sm sm:text-2xl lg:text-3xl" style="color: chocolate;">{{cat.prix}}</div>
+    </div>
 
 </div>
   {% endfor %}

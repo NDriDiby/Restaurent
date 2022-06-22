@@ -489,7 +489,7 @@
   .pop-item-title{
   color: blueviolet;
   font-size: 25px;
-  padding: 2px;
+  /* padding: 2px; */
   }
 
   .accompagement {
@@ -547,10 +547,14 @@
         </div>
         </div>
 
-  <div class="iteminfo-box p-1 m-2 rounded-md mx-2">
-    <h1 class="italic font-bold text-2xl sm:text-3xl lg:text-5xl">{{items.name}}</h1>
-    <p id='item-price' class="item-price w-full font-bold text-lg sm:text-xl lg:text-2xl">{{items.prix}}</p>
-    <p class="text-gray-500 sm:text-xl lg:text-2xl">{{items.description}}</p>
+  <div class="iteminfo-box p-1 m-2 rounded-md mx-2 flex justify-between">
+    <div>
+      <h1 class="italic font-bold text-xl sm:text-3xl lg:text-5xl">{{items.name}}</h1>
+      <p class="text-gray-500 text-md lg:text-2xl">{{items.description}}</p>
+    </div>
+    <div>
+      <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl lg:text-2xl text-orange-500">{{items.prix}}</p>
+    </div>
 </div>
 
 <!-- Menu Info -->
@@ -559,7 +563,7 @@
 
 <!-- Item Choices -->
 
-    <div class="itemChoice-box py-1 p-2">
+    <div class="itemChoice-box py-3 p-2">
 
       <div class="itemChoice-box py-0 min-h-full">
 
@@ -721,18 +725,16 @@
 <!-- Item choices -->
 
 
-<div class="pop-item-box">
-  <div class="pop-item-content">
-    <h1 class="text-center mt-2 pop-item-title" style="font-size: 25px;color:coral">Popular Items</h1>
-    <div class="pop-item p-2 flex h-100 ">
+<div class=" pt-10">
+  <div class="">
+    <h1 class="text-left pb-5 font-bold text-lg text-blue-400">Popular Items</h1>
+    <div class="pop-item h-100 ">
       {% for pop in show_pop_item %}
-      <div class="pop-item-name" >
-        {% if pop.name|length == 5 %}
-          <p>check </p>
-        {% endif %}
-        <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}" ">
-          <p class="card-body" >{{pop.name}}</p><br>
-        <img src="{{pop.img.url}}" alt="" width="70px">
+      <div class=" w-full" >
+    
+        <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}" >
+          <p class="p-0 m-0" >{{pop.name}}</p><br>
+        <!-- <img src="{{pop.img.url}}" alt="" width="70px"> -->
         </a>
         
       </div>
