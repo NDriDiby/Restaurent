@@ -121,18 +121,6 @@
 </div>
 
 
-<!-- Menu Options Nav-->
-<!-- <nav class=" flex overflow-x-scroll sticky top-0 left-0 z-10 gap-x-2 mt-2 pt-5 sm:justify-center">
-  <ul class="flex justify-center gap-x-2 font-bold text-white text-2xl">
-    {% for m in category %}
-    <a class="next-menu" data-menu_id = {{m.id}} data-app ={{app}} >
-      <li id='menu-{{m.id}}' class="menu-{{m.id}} animate-bounce p-2 lg:py-5 border-1 border-gray-400 bg-gray-200 rounded-md menu-name lg:text-2xl"
-        style="color: rgb(109, 110, 110);">{{m.name}}</li>
-    </a>
-    {% endfor %}
-  </ul>
-</nav> -->
-<!-- Menu Options Nav-->
 
 
 <!-- Menu Details -->
@@ -141,7 +129,7 @@
 <section id='menu-{{m.id}}' class="w-full font-bold text-3xl">
   {% for cat in m.item_set.all  %}
   <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
-  <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-200">
+  <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
     
     <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
       <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
