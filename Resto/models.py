@@ -128,11 +128,35 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.item)
     
+    def total_accomp(self):
+        acc = None
+        if self.accompagnememt:
+            for i in self.accompagnememt:
+                acc = self.accompagnememt.split(",")
+            my_acc = Accompagnement.objects.filter(name__in=acc)
+            total_acc = sum([x.prix for x in my_acc])
+            return total_acc 
+        else:
+            return 0
     
-
+    
     #Get total
     def get_total(self):
+        total = (self.item.prix * self.quantity) 
+        acc = self.total_accomp()
+        global_total = total + acc
+        if acc!=0:
+            acc = self.quantity * self.total_accomp()
+            global_total = total + acc
+        return global_total 
+    
+    
+    def get_total_item(self):
         total = (self.item.prix * self.quantity)
+        return total
+    
+    def get_total_accomp(self):
+        total = self.quantity * self.total_accomp()
         return total
     
     
