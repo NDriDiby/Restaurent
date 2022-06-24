@@ -514,9 +514,9 @@
 <div class="p-3 py-5">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a onclick="history.back()"><i
+      <a href="/texasgrillz/menudetails/1/?session={{app}}"><i
           class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span
-            class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
+          class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
     </div>
 
     <div class="logOutfield">
@@ -536,7 +536,6 @@
 
 
 <!-- Menu Info -->
-
 <div class="info my-4">
   <div class=" my-2">
     <div class="text-white">
@@ -556,7 +555,6 @@
       <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl lg:text-2xl text-orange-500">{{items.prix}}</p>
     </div>
 </div>
-
 <!-- Menu Info -->
 
 
@@ -571,7 +569,6 @@
           <div class="itemChoice-choice">
             <form method="POST" class='choiceOptions'>
               <div class="rounded-md">
-
                 {% csrf_token %}
                 {% if items.accompagnement.all %}
                 <p class="text-gray-500 mb-3 lg:text-2xl">Accompagner de votre choix:</p>
@@ -683,7 +680,7 @@
 
                               <div id="box" class="box flex justify-around w-full">
                               
-                                <div class="flex justify-between py-2 checkOut-box">
+                              <div class="flex justify-between py-2 checkOut-box">
 
   <div class="flex justify-between items-center">
 

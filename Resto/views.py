@@ -377,8 +377,8 @@ def UpdatedItem(request):
 
 
         #Delete item
-        if orderItem.quantity== 0:
-             orderItem.delete()
+        # if orderItem.quantity== 0:
+        #      orderItem.delete()
         
         
         my_order_item = OrderItem.objects.filter(order= order, item = item)

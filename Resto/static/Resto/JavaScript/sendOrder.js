@@ -16,8 +16,6 @@ function getTotalItem() {
     success: function (response) {
       total_item = response.total_item;
 
-      console.log(response);
-
       // if (total_item == 0) {
       //   Swal.fire({
       //     icon: "warning",
@@ -115,6 +113,8 @@ for (let i = 0; i < update_but.length; i++) {
         orderItem = response.orderItem;
         active_item = null;
 
+        console.log(response);
+
         // console.log("SET ITEM", orderItem[ord]["quantity"]);
 
         for (var ord in orderItem) {
@@ -135,10 +135,9 @@ for (let i = 0; i < update_but.length; i++) {
         //UPDATE THE VALUE
         total.innerHTML = `<b style="color:green;font-size:25px">${response.total} FCFA</b>`;
 
-        if (response.tot_item == 0) {
+        if (response.tot_ind_item < 1) {
           console.log("YOU CAN DELETE ME");
-
-          window.location.reload();
+          deleteItem(response.active_orderItem, response.item_name);
         }
       },
     });
@@ -160,32 +159,36 @@ for (let i = 0; i < delete_item.length; i++) {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        $.ajax({
-          url: `/texasgrillz/deleteorderitem/`,
-          method: "POST",
-          data: {
-            csrfmiddlewaretoken: csrfToken,
-            item_id: delete_item_id,
-          },
-          success: function (response) {
-            Swal.fire({
-              icon: "success",
-              title: `${delete_item_name} supprimer`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            //delete_item[i].closest(".menudetails-items").style.display = "none";
-            setTimeout(() => {
-              location.reload();
-            }, 1000);
-          },
-          complete: function (response) {
-            console.log("Completed");
-          },
-        });
+        deleteItem(delete_item_id, delete_item_name);
       } else if (result.isDenied) {
         return;
       }
     });
+  });
+}
+
+function deleteItem(itemID, itemName) {
+  $.ajax({
+    url: `/texasgrillz/deleteorderitem/`,
+    method: "POST",
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+      item_id: itemID,
+    },
+    success: function (response) {
+      Swal.fire({
+        icon: "success",
+        title: `${itemName} supprimer`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      //delete_item[i].closest(".menudetails-items").style.display = "none";
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    },
+    complete: function (response) {
+      console.log("Completed");
+    },
   });
 }
