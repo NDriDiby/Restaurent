@@ -1,4 +1,4 @@
-var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+//var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var transaction = "PINAVCI" + Math.floor(Math.random() * 10000000).toString();
 console.log(transaction);
 
@@ -105,43 +105,44 @@ function cinetpayAPI() {
       api = response.apiKey;
       site = response.site_id;
       console.log("responseBACKEND", api, site);
-      checkout(api, site);
+      checkout(api, site, 2000);
       return response;
     },
   });
+}
 
-  function checkout(api, site) {
-    CinetPay.setConfig({
-      apikey: api, //YOUR APIKEY
-      site_id: site, //YOUR_SITE_ID
-      notify_url: "http://mondomaine.com/notify/",
-      mode: "PRODUCTION",
-    });
-    CinetPay.getCheckout({
-      transaction_id: transaction, // YOUR TRANSACTION ID
-      amount: 100,
-      currency: "XOF",
-      channels: "ALL",
-      description: "Test paiement",
-      customer_name: "Joe", //Customer name
-      customer_surname: "Down", //The customer's first name
-      customer_email: "down@test.com", //the customer's email
-      customer_phone_number: "088767611", //the customer's email
-      customer_address: "BP 0024", //customer address
-      customer_city: "Antananarivo", // The customer's city
-      customer_country: "CI", // the ISO code of the country
-      customer_state: "CM", // the ISO state code
-      customer_zip_code: "06510",
-    });
-    CinetPay.waitResponse(function (data) {
-      if (data.status == "REFUSED") {
-        console.log("refused");
-      } else if (data.status == "ACCEPTED") {
-        console.log("accepted");
-      }
-      verifyPaiement(api, site, transaction);
-    });
+// Checkout apis
+function checkout(api, site, pay) {
+  CinetPay.setConfig({
+    apikey: api, //YOUR APIKEY
+    site_id: site, //YOUR_SITE_ID
+    notify_url: "http://mondomaine.com/notify/",
+    mode: "PRODUCTION",
+  });
+  CinetPay.getCheckout({
+    transaction_id: transaction, // YOUR TRANSACTION ID
+    amount: pay,
+    currency: "XOF",
+    channels: "ALL",
+    description: "Test paiement",
+    customer_name: "Joe", //Customer name
+    customer_surname: "Down", //The customer's first name
+    customer_email: "down@test.com", //the customer's email
+    customer_phone_number: "088767611", //the customer's email
+    customer_address: "BP 0024", //customer address
+    customer_city: "Antananarivo", // The customer's city
+    customer_country: "CI", // the ISO code of the country
+    customer_state: "CM", // the ISO state code
+    customer_zip_code: "06510",
+  });
+  CinetPay.waitResponse(function (data) {
+    if (data.status == "REFUSED") {
+      console.log("refused");
+    } else if (data.status == "ACCEPTED") {
+      console.log("accepted");
+    }
+    verifyPaiement(api, site, transaction);
+  });
 
-    return "Caisse Ouverte";
-  }
+  return "Caisse Ouverte";
 }

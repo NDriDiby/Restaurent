@@ -964,3 +964,57 @@ def Revenues(request):
     return render(request, 'Resto/Revenues.html',context)
 
 
+def ProcessTransaction(request):
+    
+    if request.method == 'POST':
+        user = User.objects.get(id=int(request.POST.get('user')))
+        
+        #Transaction info
+        amount = request.POST.get('amount')
+        currency = request.POST.get('currency')
+        description = request.POST.get('description')
+        operator_id = request.POST.get('operator_id')
+        payment_date = request.POST.get('payment_date')
+        status = request.POST.get('status')
+        transactionID = request.POST.get('transactionID')
+        payment_method = request.POST.get('payment_method')
+    
+        #Appointement Info
+        # object = request.POST.get('objet')
+        # date = request.POST.get('date')
+        
+        
+        print('working fine, just ckecking',[user,payment_method,
+        amount,currency,description,operator_id,
+        payment_date,status,transactionID])
+        
+        
+        #Record Transaction
+        # record_trans,created = Transactions.objects.get_or_create(
+        # user = user,
+        # amount =  amount,
+        # currency =  currency ,
+        # description =  description,
+        # operator_id =    operator_id ,
+        # payment_date =  payment_date,
+        # status =  status ,
+        # transactionID = transactionID,
+        # payment_method =  payment_method,
+        # )
+        
+        #Create RDV
+        # if status == 'ACCEPTED':
+        #     rdv,created = rendezVous.objects.get_or_create(
+        #         user = user,
+        #         object = object,
+        #         date = date,
+        #     )
+    return JsonResponse({'valider':status})
+
+def CinetPayCredential(request):
+    
+    apikey = "188254710627a7eefc41627.61387840"
+    site_id = "722116"
+    
+    
+    return JsonResponse({'apiKey':apikey,'site_id':site_id})

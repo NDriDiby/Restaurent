@@ -370,7 +370,7 @@
       <div class="orderTotal-box">
         <div class="orderTotal-content p-2">
           <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
-          <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
+          <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b id="finalPrice" style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
         </div>
       </div>
     </a>
@@ -406,6 +406,7 @@
 
       element.addEventListener("click", ({ target }) => {
         console.log(target);
+
         if (target.matches(".paiment-cash")) {
           paymentCard.classList.remove("payment_active");
           target.classList.add("payment_active");
