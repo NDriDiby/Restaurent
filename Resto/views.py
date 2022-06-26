@@ -549,7 +549,6 @@ def SendOrder(request):
     
     
     
-    
     #get the data from the BackEnd
     if request.method == 'POST':
         action = request.POST['action']

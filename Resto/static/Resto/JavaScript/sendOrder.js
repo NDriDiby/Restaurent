@@ -3,10 +3,11 @@
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
-var process_order = document.getElementById("process_order");
-var success_transaction = document.getElementById("success_transaction");
+var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+var transaction = "PINAVCI" + Math.floor(Math.random() * 10000000).toString();
 var total_item = null;
 var orderItem = null;
+var toPay = null;
 
 //Get total item
 function getTotalItem() {
@@ -14,6 +15,7 @@ function getTotalItem() {
     url: "/texasgrillz/sendorder/",
     method: "GET",
     success: function (response) {
+      console.log("response", response);
       total_item = response.total_item;
 
       // if (total_item == 0) {
@@ -41,9 +43,12 @@ total_order_item;
 //send order to the kitchen
 for (let i = 0; i < sendOrder.length; i++) {
   sendOrder[i].addEventListener("click", function (e) {
+    //var toPay = document.getElementById("finalPrice").innerHTML;
+    console.log(toPay);
     e.preventDefault();
     var action = this.dataset.action;
     var order = this.dataset.order;
+
     //sendMyOrder(action, order);
     cinetpayAPI();
   });
@@ -72,8 +77,8 @@ function sendMyOrder(action, order) {
           showConfirmButton: false,
           timer: 3000,
         }).then(() => {
-          menu = location.href.replace("myorder/", "");
-          location.href = menu;
+          //menu = location.href.replace("myorder/", "");
+          //location.href = menu;
         });
       }
     },
@@ -117,10 +122,6 @@ for (let i = 0; i < update_but.length; i++) {
         orderItem = response.orderItem;
         active_item = null;
 
-        console.log(response);
-
-        // console.log("SET ITEM", orderItem[ord]["quantity"]);
-
         for (var ord in orderItem) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];
           var item_total_price = document.getElementsByClassName("item-price")[ord];
@@ -138,6 +139,8 @@ for (let i = 0; i < update_but.length; i++) {
 
         //UPDATE THE VALUE
         total.innerHTML = `<b style="color:green;font-size:25px">${response.total} FCFA</b>`;
+        toPay = response.total;
+        console.log(toPay);
 
         if (response.tot_ind_item < 1) {
           console.log("YOU CAN DELETE ME");
@@ -161,7 +164,7 @@ for (let i = 0; i < delete_item.length; i++) {
       confirmButtonText: "Supprimer",
       denyButtonText: `Abandonner`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
+      /* isConfirmed, isDenied below */
       if (result.isConfirmed) {
         deleteItem(delete_item_id, delete_item_name);
       } else if (result.isDenied) {
@@ -196,10 +199,6 @@ function deleteItem(itemID, itemName) {
     },
   });
 }
-
-var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
-var transaction = "PINAVCI" + Math.floor(Math.random() * 10000000).toString();
-console.log(transaction);
 
 //Verify paiement
 function verifyPaiement(api, site, transaction) {
@@ -292,9 +291,8 @@ function processPaiement(pay_data) {
 
 //Get Credential Cinetpay
 function cinetpayAPI() {
-  var toPay = document.getElementById("finalPrice").innerHTML;
-  toPay = parseInt(toPay.split(" ")[0]);
-  console.log(toPay);
+  // toPay = parseInt(toPay.split(" ")[0]);
+  // console.log(toPay);
   $.ajax({
     url: "/cinetpayapi/",
     method: "POST",

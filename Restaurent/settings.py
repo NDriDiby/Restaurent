@@ -29,9 +29,29 @@ SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#Cross-site Scripting(XSS)
+# SECRURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+
+#SSL redirect
+# SECURE_SSL_REDIRECT = True
+
+#HTTPS
+# SECURE_HSTS_SECONDS = 86400
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+
+
+#CSRF
+# CSRF_COOKIE_SECURE= True
+# SESSION_COOKIE_SECURE = True
+
+
+
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
+
 
 # CSRF_COOKIE_DOMAIN =['novacloudlab.com']
 
@@ -239,6 +259,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'prudencediby@gmail.com'
 EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
+
+
+
 
 
 
