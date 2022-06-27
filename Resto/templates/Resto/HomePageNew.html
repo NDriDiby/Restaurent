@@ -1,7 +1,7 @@
 
-    {% extends "Resto/base.html" %} {% load static %}
+{% extends "Resto/base.html" %} {% load static %}{% block content %}
 
-    <style>
+<style>
       * {
         margin: 0;
         padding: 0;
@@ -31,7 +31,7 @@
       }
 
       .username {
-        background-color: gray;
+        background-color: cornflowerblue;
         border-radius: 3px;
         color: white;
         padding: 5px 10px;
@@ -80,21 +80,16 @@
     </style>
 
     
-{% block content %}
-  
 
-
-
-    <div class="p-2">
+    <div class="p-3 pt-5">
       <!-- UserBox -->
       <div class="flex justify-between userBox items-center">
+        {% if user.is_authenticated %}
         <div class="userfield">
-          <div class="username lg:p-4">{{request.user.first_name}} {{request.user.last_name}}</div>
+          <div class="username lg:p-4"> <span class="p-1"><i class="bi bi-person-fill"></i></span>{{request.user.first_name}} {{request.user.last_name}}</div>
         </div>
-
-        <div class="logofield w-20 lg:w-32">
-          <span class="businesslogo"><img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" alt="" width="auto" height="60px" /></span>
-        </div>
+        {% endif %}
+       
 
         <div class="logOutfield">
           <div class="logOutlogo">
@@ -107,8 +102,15 @@
     </div>
       <!-- UserBox -->
 
+      <div class="content-center">
+        <div class="logofield py-5">
+          <span class="businesslogo"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="170px" height="170px" /></span>
+        </div>
+      </div>
+     
+
+
       <!-- Image Slider -->
-  
       <div class="info my-0 p-4">
           <div class="text-white">
             <div class="mySlides relative lg:h-80">
@@ -160,12 +162,11 @@
             
             </div>
         </div>
+      <!-- Image Slider -->
       
 
-      <!-- Image Slider -->
 
       <!-- notification -->
-
       <!-- <div class="notification-box text-center bg-green-300 mx-2 py-1 rounded-md sm:py-3 mt-2 sm:mt-24 sm:text-2xl">
         <div class="notification-content">
           <div id="notification-message">
@@ -173,14 +174,12 @@
           </div>
         </div>
       </div> -->
-
       <!-- notification -->
       
       
       <!-- Menu -->
-
       <div class="text-center my-3 sm:pt-10 lg:pt-32 ">
-        <h1 class="font-bold sm:text-xl lg:text-2xl text-left px-3 py-2">MENU</h1>
+        <h1 class="font-bold sm:text-xl lg:text-2xl text-left px-3 py-2" style="color: chocolate;">MENU</h1>
       </div>
 
         <div class="grid grid-cols-2 justify-center gap-2 lg:gap-y-4 md:grid-cols-3  w-full px-2">
@@ -195,6 +194,7 @@
           </div>
           {% endfor %}
         </div>
+        <!-- Menu -->
 
 
 
@@ -214,17 +214,9 @@
       <!-- Body End here -->
     </div>
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-      crossorigin="anonymous"
-    ></script>
-
 
     <script>
       var myIndex = 0;
-      
       function imageSlider() {
         var mySlides = document.getElementsByClassName("mySlides");
         for (let i = 0; i < mySlides.length; i++) {
@@ -238,40 +230,6 @@
         }
 
         imageSlider();
-
-
-       
-        
-        //to show
-        $(document).ready(function(){
-
-        //connected = String(localStorage.getItem('connected'))
-       
-        });
-        
-        
-      
-
-
-      //click to hide
-      //$(".notification-box").click(function(){
-        //$(this).hide();
-     // });
-
-      //to hide
-       // $(document).ready(function(){
-       // $('.notification-box').delay(6000).fadeOut('slow')
-       // });
-
-       
-
-      
-
-        //$('.notification-box').replaceWith("")
-        
-  
-
-    
    </script>
   
    {% endblock content %}
