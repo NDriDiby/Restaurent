@@ -275,6 +275,6 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 
 
 
-import django_heroku
-django_heroku.settings(locals(),staticfiles=False)
+import django_on_heroku
+django_on_heroku.settings(locals(),staticfiles=False)
 
