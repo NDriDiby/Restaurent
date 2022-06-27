@@ -7,7 +7,6 @@ var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var transaction = "PINAVCI" + Math.floor(Math.random() * 10000000).toString();
 var total_item = null;
 var orderItem = null;
-var toPay = null;
 
 //Get total item
 function getTotalItem() {
@@ -40,17 +39,16 @@ function getTotalItem() {
 var total_order_item = getTotalItem();
 total_order_item;
 
-//send order to the kitchen
+//SEND ORDER TO KITCHEN
 for (let i = 0; i < sendOrder.length; i++) {
   sendOrder[i].addEventListener("click", function (e) {
-    //var toPay = document.getElementById("finalPrice").innerHTML;
-    console.log(toPay);
     e.preventDefault();
     var action = this.dataset.action;
     var order = this.dataset.order;
 
     //sendMyOrder(action, order);
     cinetpayAPI();
+    //checkout();
   });
 }
 
@@ -138,9 +136,8 @@ for (let i = 0; i < update_but.length; i++) {
         total = document.getElementById("orderTotal-total");
 
         //UPDATE THE VALUE
-        total.innerHTML = `<b style="color:green;font-size:25px">${response.total} FCFA</b>`;
-        toPay = response.total;
-        console.log(toPay);
+        total.innerHTML = `<b id="finalPrice" style="color:green;font-size:25px">${response.total} FCFA</b>`;
+        console.log("TOPAY", response.total);
 
         if (response.tot_ind_item < 1) {
           console.log("YOU CAN DELETE ME");
@@ -221,7 +218,7 @@ function verifyPaiement(api, site, transaction) {
 
       if (status_res === "ACCEPTED") {
         setTimeout(function () {
-          console.log("Paiement Verified, Redirecring you....", status);
+          console.log("Paiement Verified, Redirecring you....", status_res);
           //location.href = "/";
         }, 5000);
       } else if (status_res === "REFUSED") {
@@ -291,8 +288,6 @@ function processPaiement(pay_data) {
 
 //Get Credential Cinetpay
 function cinetpayAPI() {
-  // toPay = parseInt(toPay.split(" ")[0]);
-  // console.log(toPay);
   $.ajax({
     url: "/cinetpayapi/",
     method: "POST",
@@ -301,18 +296,23 @@ function cinetpayAPI() {
     },
     dataType: "json",
     success: function (response) {
-      console.log(response);
       api = response.apiKey;
       site = response.site_id;
-      console.log("responseBACKEND", api, site);
+
+      var toPay = document.getElementById("finalPrice").innerHTML;
+      toPay = parseInt(toPay.split(" ")[0]);
+
+      console.log("Amount to pay", toPay);
+
       checkout(api, site, toPay);
-      return response;
+
+      //return response;
     },
   });
 }
 
 // Checkout API
-function checkout(api, site, pay) {
+function checkout(api, site, amount) {
   CinetPay.setConfig({
     apikey: api, //YOUR APIKEY
     site_id: site, //YOUR_SITE_ID
@@ -321,7 +321,7 @@ function checkout(api, site, pay) {
   });
   CinetPay.getCheckout({
     transaction_id: transaction, //YOUR TRANSACTION ID
-    amount: pay,
+    amount: amount,
     currency: "XOF",
     channels: "ALL",
     description: "Test paiement",

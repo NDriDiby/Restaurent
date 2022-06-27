@@ -33,6 +33,8 @@ import plotly.express as px
 import pandas as pd
 import calendar
 
+from Resto.tasks import checkMe
+
 
  #App Name
 app = Order._meta.app_label
@@ -50,6 +52,8 @@ def HomePage(request):
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
+    
+    checkMe.delay("I got you bro")
     
     
     

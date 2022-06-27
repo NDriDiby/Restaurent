@@ -378,7 +378,7 @@
   </div>
 
   <div class="add-to-cartBtn opacity-0 mt-8 p-2">
-    <button data-action="sent" data-order="{{order.id}}" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
+    <button data-totalToPay="{{order.get_order_total}}" data-action="sent" data-order="{{order.id}}" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
       <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
         <path
           fill="#ffffff"
@@ -400,13 +400,10 @@
     let payments = document.querySelectorAll(".payment");
     payments.forEach((element) => {
       if (sendOrderBtn.classList.contains("opacity-0")) {
-        console.log("true");
         sendOrderBtn.classList.add("disableClick");
       }
 
       element.addEventListener("click", ({ target }) => {
-        console.log(target);
-
         if (target.matches(".paiment-cash")) {
           paymentCard.classList.remove("payment_active");
           target.classList.add("payment_active");
@@ -424,8 +421,6 @@
       });
     });
   </script>
-
-  <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
 </div>
 {% else %}
 
@@ -446,4 +441,7 @@
 </div>
 
 <div>Return to Menu</div>
-{% endif%} {% endblock content %}
+{% endif%}
+
+<script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
+{% endblock content %}
