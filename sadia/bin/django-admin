@@ -1,4 +1,6 @@
-#!/Users/ndridiby/Desktop/sadia/bin/python
+#!/bin/sh
+'''exec' "/Users/ndridiby/Desktop/NOVA CLOUD AI/Restaurent/sadia/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

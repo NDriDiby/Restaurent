@@ -183,7 +183,6 @@ class IventoryItemCategory(models.Model):
         return count
         
     
-
 class IventoryItem(models.Model):
     name = models.CharField(max_length=150)
     description = models.CharField(max_length=150,null = True, blank = True)
@@ -199,6 +198,23 @@ class IventoryItem(models.Model):
     def __str__(self):
         return self.name
     
+
+class Transactions(models.Model):
     
+    user = models.ForeignKey(Customer,verbose_name='customer',on_delete=models.CASCADE)
+    amount= models.CharField(max_length=150,blank=True)
+    currency= models.CharField(max_length=150,blank=True)
+    description= models.CharField(max_length=150,blank=True)
+    operator_id= models.CharField(max_length=150,blank=True)
+    payment_date= models.CharField(max_length=150,blank=True)
+    payment_method= models.CharField(max_length=150,blank=True)
+    status= models.CharField(max_length=150,blank=True)
+    transactionID = models.CharField(max_length=150,blank=True,primary_key=True)
+    
+    def __str__(self):
+        return self.status
+    
+    class Meta:
+        verbose_name_plural = "Transactions"
     
 
