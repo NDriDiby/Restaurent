@@ -10,7 +10,7 @@
 
   .cat-tile{
     /* padding: 2px; */
-    font-size: 20px;
+    /* font-size: 20px; */
     color: chocolate;;
   }
 
@@ -58,13 +58,23 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   }
 
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 680px) {
     div.item-image img {
       border-radius: 5px 5px 0 0px;
       width: 250px;
-      height: 150px;
+      height: 170px;
       object-fit: cover;
     }
+    
+  }
+  @media screen and (min-width: 900px) {
+    div.item-image img {
+      border-radius: 5px 5px 0 0px;
+      width: 350px;
+      height: 200px;
+      object-fit: cover;
+    }
+    
   }
 
   .active-class{
@@ -78,7 +88,7 @@
 <!-- UserBox -->
  <div class="flex justify-between userBox items-center px-5 pt-5">
     <div class="userfield">
-      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl flex items-center gap-x-2">
+      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl md:text-3xl lg:text-4xl flex items-center gap-x-2">
         <!-- <span class="font-normal text-xl">Menu</span> -->
       </i></a>
     </div>
@@ -98,7 +108,7 @@
     </div>
 <!-- Order Total -->
 <div class="logOutfield">
-      <div class="logOutlogo">
+      <div class="logOutlogo md:text-2xl lg:text-3xl">
         {% if user.is_authenticated %}
         <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
         <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
@@ -108,13 +118,13 @@
 </div> 
 
 <!-- Menu Info -->
-<div class="info my-0">
+<div class="info md:my-40 lg:my-44">
   <div class="text-white">
     <div class="mySlides relative ">
-      <img class="w-full h-40 sm:h-60 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
+      <img class="w-full h-40 sm:h-60 md:h-72 lg:h-80 object-cover rounded-lg border-2 bg-gradient-to-r from-black to-gray-700 opacity-50" src="{{menu.img.url}}" />
       <div class="absolute top-0 left-0 font-bold p-2">
-        <h1 class ='menu-name' data-active = '{{menu.id}}' class="italic">{{menu.name}}</h1>
-        <p class="w-full text-xl pt-3">{{menu.description}}</p>
+        <h1 class ='menu-name text-2xl md:text-5xl lg:text-6xl' data-active = '{{menu.id}}' class="italic">{{menu.name}}</h1>
+        <p class="w-full text-lg pt-3 md:text-2xl lg:text-3xl">{{menu.description}}</p>
       </div>
     </div>
   </div>
@@ -123,24 +133,24 @@
 
 <!-- Menu Details -->
 {% for m in category %}
-<h1 class="text-left font-bold sm:text-2xl cat-tile px-4 pt-2">{{m.name}}</h1>
+<h1 class="text-left font-bold sm:text-2xl md:text-3xl lg:text-4xl cat-tile px-4 pt-2">{{m.name}}</h1>
 <section id='menu-{{m.id}}' class="w-full font-bold text-3xl">
   {% for cat in m.item_set.all  %}
   <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
   <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
     
     <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
-      <i class="bi bi-plus w-6 h-6 rounded-full bg-green-400 text-white flex items-center justify-center border-2 lg:w-10 lg:h-10"></i>
+      <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
     </div>
 
     <div class="item-image relative">
       <img class="" src="{{cat.img.url}}" width="250" height="150" />
     </div>
 
-    <div class="menu-leftside w-80 sm:w-1/2">
-      <div class="item-name font-bold text-xl lg:text-3xl">{{cat.name}}</div>
-      <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl pb-2">{{cat.description|truncatewords:5}}</div>
-      <div class="item-price text-sm sm:text-2xl lg:text-3xl" style="color: chocolate;">{{cat.prix}}</div>
+    <div class="menu-leftside w-80 sm:w-1/2 leading-normal">
+      <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name}}</div>
+      <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:5}}</div>
+      <div class="item-price text-sm sm:text-2xl lg:pt-5 md:pt-3 md:text-3xl lg:text-4xl" style="color: chocolate;">{{cat.prix}}</div>
     </div>
 </div>
   {% endfor %}

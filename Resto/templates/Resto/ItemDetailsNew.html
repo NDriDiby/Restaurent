@@ -515,8 +515,8 @@
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a href="/texasgrillz/menudetails/1/?session={{app}}"><i
-          class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span
-          class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
+          class="bi bi-arrow-left font-bold text-2xl md:3xl lg:text-4xl flex items-center gap-x-2"><span
+          class="font-normal text-xl md:text-3xl lg:text-4xl">{{items.category.name}}</span></i></a>
     </div>
 
     <div class="logOutfield">
@@ -524,7 +524,7 @@
         <div id="cart-total" class='relative'>
           <i class="bi bi-bag text-3xl lg:text-5xl"></i>
           <p id='total-item'
-            class="mt-2 mt-1 font-bold absolute top-0 left-0 lg:top-2 pt-1 w-full lg:h-10 text-center bg-gray-500 text-white rounded-b-md lg:text-2xl">
+            class="mt-2 mt-1 font-bold absolute top-0 left-0 lg:top-2 pt-1 w-full lg:h-10 text-center bg-gray-500 text-white rounded-b-md md:text-3xl lg:text-4xl">
             {{cart_quantity}}</p>
         </div>
     </div></a>
@@ -548,11 +548,11 @@
 
   <div class="iteminfo-box p-1 m-2 rounded-md mx-2 flex justify-between">
     <div>
-      <h1 class="italic font-bold text-xl sm:text-3xl lg:text-5xl">{{items.name}}</h1>
-      <p class="text-gray-500 text-md lg:text-2xl">{{items.description}}</p>
+      <h1 class="italic font-bold text-xl sm:text-3xl md:text-4xl lg:text-5xl">{{items.name}}</h1>
+      <p class="text-gray-500 text-md md:text-3xl lg:text-4xl">{{items.description}}</p>
     </div>
     <div>
-      <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl lg:text-2xl text-orange-500">{{items.prix}}</p>
+      <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl md:text-4xl lg:text-5xl text-orange-500">{{items.prix}}</p>
     </div>
 </div>
 <!-- Menu Info -->
@@ -689,8 +689,8 @@
         <a href="/texasgrillz/myorder/?session={{app}}">
           <div class="orderTotal-box">
             <div class="orderTotal-content">
-              <h1>Total Price</h1>
-                <div id='orderTotal-total' class="orderTotal-total text-xl lg:text-2xl"><b style="color:green;font-size:25px">{{my_total}}
+              <h1 class="md:text-3xl lg:text-4xl">Total Price</h1>
+                <div id='orderTotal-total' class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b style="color:green;font-size:25px">{{my_total}}
                     FCFA</b></div>
                 </div>
                 </div>

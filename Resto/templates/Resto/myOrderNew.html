@@ -265,7 +265,7 @@
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a href="/texasgrillz/?session={{app}}"
-        ><i class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a
+        ><i class="bi bi-arrow-left font-bold text-2xl md:text-3xl lg:text-5xl flex items-center gap-x-2"><span class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a
       >
     </div>
   </div>
@@ -274,21 +274,21 @@
 
 <div class="menudetails">
   <div class="page-title p-1">
-    <h1 style="color: chocolate">My Order</h1>
+    <h1 class="md:text-3xl lg:text-4xl" style="color: chocolate">My Order</h1>
   </div>
   <div class="menudetails-content flex items-center sm:pt-10 py-1">
     {% for i in items %}
-    <div class="menudetails-items flex justify-between rounded-lg  items-center bg-gray-100 py-6 sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
+    <div class="menudetails-items w-full flex justify-between rounded-lg  items-center bg-gray-100 py-6 sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
       
       <form method="POST" class="absolute top-2 right-2">
         {% csrf_token %}
-        <div class="delet-item text-center bg-white w-8 h-8 flex justify-center items-center rounded-full">
-          <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger delete-order"><i class="bi bi-trash text-xl lg:text-4xl"></i></p>
+        <div class="delet-item text-center bg-white w-8 h-8 md:w-14 md:h-14 flex justify-center items-center rounded-full">
+          <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger delete-order"><i class="bi bi-trash text-xl md:text-3xl lg:text-4xl"></i></p>
         </div>
       </form>
 
       <div class="item-image">
-        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] lg:h-[250px]" src="{{i.item.img.url}}" />
+        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] md:h-[200px] lg:h-[250px]" src="{{i.item.img.url}}" />
       </div>
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
@@ -307,9 +307,9 @@
         <!-- Ingredients -->
       </div>
 
-      <div class="quantity m-2 flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-2 -right-2 ">
+      <div class="quantity m-2 md:text-3xl flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-2 -right-2 ">
         <i
-          class="bi bi-dash font-bold text-2xl update-cart"
+          class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart"
           data-ingredient="{{i.ingredient}}"
           data-orderItemID="{{i.id}}"
           data-accomp="{{i.accompagnememt}}"
@@ -318,7 +318,7 @@
         ></i>
         <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{i.quantity}}</p>
         <i
-          class="bi bi-plus font-bold text-2xl update-cart"
+          class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart"
           data-ingredient="{{i.ingredient}}"
           data-product="{{i.item.id}}"
           data-orderItemID="{{i.id}}"
@@ -347,21 +347,18 @@
 <!-- Paiement -->
 
 <div class="paiement-box w-full my-5">
-  <h4 class="text-center mb-2" style="font-size: 20px; color: chocolate"><b>Paiement Method</b></h4>
+  <h4 class="text-center mb-2 text-xl md:text-3xl lg:text-4xl" style="color: chocolate"><b>Paiement Method</b></h4>
   <div class="paiment-content flex justify-center gap-x-4">
-    <div
-      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
-      style="font-size: 20px; color: white"
-    >
+    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
       <i class="pointer-events-none bi bi-wallet2 md:text-6xl"></i>
-      <span class="pointer-events-none">Cash</span>
+      <h1 class="pointer-events-none">Cash</h1>
     </div>
     <div
       class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-mobile-card border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
       style="font-size: 20px; color: white"
     >
       <i class="pointer-events-none bi bi-credit-card md:text-6xl"></i>
-      <span class="pointer-events-none">Mobile</span>
+      <h1 class="pointer-events-none">Mobile</h1>
     </div>
   </div>
 </div>
