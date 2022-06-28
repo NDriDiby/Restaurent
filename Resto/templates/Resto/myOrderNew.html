@@ -276,11 +276,11 @@
   <div class="page-title p-1">
     <h1 style="color: chocolate">My Order</h1>
   </div>
-  <div class="menudetails-content flex items-center rounded-lg sm:pt-10 bg-gray-100 m-5 py-1">
+  <div class="menudetails-content flex items-center sm:pt-10 py-1">
     {% for i in items %}
-    <div class="menudetails-items flex justify-between items-center sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
+    <div class="menudetails-items flex justify-between rounded-lg  items-center bg-gray-100 py-6 sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
       
-      <form method="POST" class="absolute top-0 right-2">
+      <form method="POST" class="absolute top-2 right-2">
         {% csrf_token %}
         <div class="delet-item text-center bg-white w-8 h-8 flex justify-center items-center rounded-full">
           <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger delete-order"><i class="bi bi-trash text-xl lg:text-4xl"></i></p>
@@ -307,7 +307,7 @@
         <!-- Ingredients -->
       </div>
 
-      <div class="quantity m-2 flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-7 -right-1 ">
+      <div class="quantity m-2 flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-2 -right-2 ">
         <i
           class="bi bi-dash font-bold text-2xl update-cart"
           data-ingredient="{{i.ingredient}}"
@@ -333,7 +333,7 @@
       <!-- /texasgrillz/deleteorder/{{i.id}}/?session={{app}} -->
 
       <!-- Spinner -->
-      <div id="spinner-div" class="pt-5">
+      <div id="spinner-div" class="">
         <div class="spinner-border text-primary" role="status"></div>
       </div>
       <!-- Spinner -->
