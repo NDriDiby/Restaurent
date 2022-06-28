@@ -26,14 +26,15 @@
   }
 
   .quantity {
-    display: flex;
+    /* display: flex; */
+    text-align: center;
     align-items: center;
     gap: 10px;
     width: fit-content;
     padding: 0px 15px;
-    border-radius: 20px;
+    /* border-radius: 8px; */
     margin-top: 2px;
-    background-color: white;
+    /* background-color: white; */
   }
 
   .price {
@@ -275,9 +276,17 @@
   <div class="page-title p-1">
     <h1 style="color: chocolate">My Order</h1>
   </div>
-  <div class="menudetails-content sm:pt-10 py-5">
+  <div class="menudetails-content flex items-center rounded-lg sm:pt-10 bg-gray-100 m-5 py-1">
     {% for i in items %}
-    <div class="menudetails-items flex justify-between sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
+    <div class="menudetails-items flex justify-between items-center sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
+      
+      <form method="POST" class="absolute top-0 right-2">
+        {% csrf_token %}
+        <div class="delet-item text-center bg-white w-8 h-8 flex justify-center items-center rounded-full">
+          <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger delete-order"><i class="bi bi-trash text-xl lg:text-4xl"></i></p>
+        </div>
+      </form>
+
       <div class="item-image">
         <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] lg:h-[250px]" src="{{i.item.img.url}}" />
       </div>
@@ -298,12 +307,28 @@
         <!-- Ingredients -->
       </div>
 
-      <form method="POST">
-        {% csrf_token %}
-        <div class="delet-item flex">
-          <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger mt-2 delete-order"><i class="bi bi-trash text-xl lg:text-4xl"></i></p>
-        </div>
-      </form>
+      <div class="quantity m-2 flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-7 -right-1 ">
+        <i
+          class="bi bi-dash font-bold text-2xl update-cart"
+          data-ingredient="{{i.ingredient}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-product="{{i.item.id}}"
+          data-action="remove"
+        ></i>
+        <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{i.quantity}}</p>
+        <i
+          class="bi bi-plus font-bold text-2xl update-cart"
+          data-ingredient="{{i.ingredient}}"
+          data-product="{{i.item.id}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-action="add"
+        ></i>
+      </div>
+    
+    </div>
+      </div>
 
       <!-- /texasgrillz/deleteorder/{{i.id}}/?session={{app}} -->
 
@@ -313,30 +338,10 @@
       </div>
       <!-- Spinner -->
 
-      <div class="background-item bg-gray-200 h-32 w-[140px] sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div>
-    </div>
+      <!-- <div class="background-item bg-gray-200 h-32 w-full sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div> -->
+  
 
-    <div class="quantity m-2">
-      <i
-        class="bi bi-dash font-bold text-2xl update-cart"
-        data-ingredient="{{i.ingredient}}"
-        data-orderItemID="{{i.id}}"
-        data-accomp="{{i.accompagnememt}}"
-        data-product="{{i.item.id}}"
-        data-action="remove"
-      ></i>
-      <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{i.quantity}}</p>
-      <i
-        class="bi bi-plus font-bold text-2xl update-cart"
-        data-ingredient="{{i.ingredient}}"
-        data-product="{{i.item.id}}"
-        data-orderItemID="{{i.id}}"
-        data-accomp="{{i.accompagnememt}}"
-        data-action="add"
-      ></i>
-    </div>
     {% endfor %}
-  </div>
 </div>
 
 <!-- Paiement -->
