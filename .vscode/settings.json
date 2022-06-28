@@ -5,6 +5,12 @@
       "driver": "SQLite",
       "database": "${workspaceFolder:Restaurent}/db.sqlite3",
       "name": "Icarus"
+    },
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "${workspaceFolder:Restaurent}/db.sqlite3",
+      "name": "Icarus Bar&Resto"
     }
   ],
   "sqltools.useNodeRuntime": true
