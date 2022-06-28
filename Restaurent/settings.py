@@ -15,9 +15,6 @@ import os
 
 
 
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,9 +29,29 @@ SECRET_KEY = 'django-insecure-9str4f!dk-n=d0v&9zb)kc(sv3mt0%k+bt3f_=zmmtxy1e$eux
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#Cross-site Scripting(XSS)
+# SECRURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+
+#SSL redirect
+# SECURE_SSL_REDIRECT = True
+
+#HTTPS
+# SECURE_HSTS_SECONDS = 86400
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+
+
+#CSRF
+# CSRF_COOKIE_SECURE= True
+# SESSION_COOKIE_SECURE = True
+
+
+
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
+
 
 # CSRF_COOKIE_DOMAIN =['novacloudlab.com']
 
@@ -58,6 +75,7 @@ INSTALLED_APPS = [
     # 'django_extensions',
     'django.contrib.humanize',
     'django_resized',
+   
 
 
 
@@ -244,9 +262,21 @@ EMAIL_HOST_USER = 'prudencediby@gmail.com'
 EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+CELERY_ALWAYS_EAGER = True
 
 
 
-import django_heroku
-django_heroku.settings(locals(),staticfiles=False)
+
+
+
+
+
+import django_on_heroku
+django_on_heroku.settings(locals(),staticfiles=False)
 

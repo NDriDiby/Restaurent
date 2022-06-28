@@ -3,8 +3,8 @@
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
-var process_order = document.getElementById("process_order");
-var success_transaction = document.getElementById("success_transaction");
+var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+
 var total_item = null;
 var orderItem = null;
 
@@ -14,8 +14,21 @@ function getTotalItem() {
     url: "/texasgrillz/sendorder/",
     method: "GET",
     success: function (response) {
+      console.log("response", response);
       total_item = response.total_item;
-      console.log(response);
+
+      // if (total_item == 0) {
+      //   Swal.fire({
+      //     icon: "warning",
+      //     title: "There is no item in your cart",
+      //     showConfirmButton: false,
+      //     timer: 1500,
+      //   });
+      //   setTimeout(() => {
+      //     menu = location.href.replace("myorder/", "");
+      //     location.href = menu;
+      //   }, 1300);
+      // }
     },
     error: function (error) {
       console.log(error);
@@ -23,74 +36,48 @@ function getTotalItem() {
   });
 }
 
-getTotalItem();
+var total_order_item = getTotalItem();
+total_order_item;
 
-//send order to the kitchen
+//SEND ORDER TO KITCHEN
 for (let i = 0; i < sendOrder.length; i++) {
   sendOrder[i].addEventListener("click", function (e) {
     e.preventDefault();
     var action = this.dataset.action;
     var order = this.dataset.order;
 
-    $.ajax({
-      url: "/texasgrillz/sendorder/",
-      method: "POST",
-      data: { csrfmiddlewaretoken: csrfToken, action: action, order: order },
-      dataType: "json",
-      success: function (response) {
-        $(".basket").fadeOut(); // remove basket
-        $(".summary").hide(); // remove summary
+    //CINETPAY API
+    cinetpayAPI();
+    //sendMyOrder(action, order);
+  });
+}
 
-        console.log("total Item", total_item);
+function sendMyOrder(action, order) {
+  $.ajax({
+    url: "/texasgrillz/sendorder/",
+    method: "POST",
+    data: { csrfmiddlewaretoken: csrfToken, action: action, order: order },
+    dataType: "json",
 
-        if (total_item > 0) {
-          // check if there is item in the basket
-          process_order.innerHTML = ` 
-        <div style='text-align:center'>
-        <h1 style ='color:black;font-size:20px'> We're processing your order....</h1>
-              <div class='p-3'>
-              <div class="spinner-grow text-muted"></div>
-              <div class="spinner-grow text-primary"></div>
-              <div class="spinner-grow text-success"></div>
-              <div class="spinner-grow text-info"></div>
-              <div class="spinner-grow text-warning"></div>
-              <div class="spinner-grow text-danger"></div>
-              <div class="spinner-grow text-secondary"></div>
-            <div>
-        </div>`;
+    beforeSend: function () {
+      $("#spinner-div").show();
+    },
 
-          setInterval(function () {
-            $("#process_order").hide();
-            success_transaction.innerHTML = `
-          <div id="message" class="col-12">
-            <div class="alert alert-success alert-dismissible" style="text-align: center" role="alert">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                <use xlink:href="#check-circle-fill" />
-              </svg>
-              <h4 style="color:black"> <b> Votre commande a ete bien recu par notre cuisine! </b></h4>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>`;
-          }, 3000);
-        } else {
-          //show succes messages
-          success_transaction.innerHTML = ` 
-          <div id="message" class="col-12">
-            <div class="alert alert-warning alert-dismissible" style="text-align: center" role="alert">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-                <use xlink:href="#check-circle-fill" />
-              </svg>
-              <h4 style="color:black"> <b> Votre pannier est vide! </b></h4>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>`;
-        }
-      },
+    success: function (response) {
+      console.log("total Item:", total_item);
 
-      error: function (error) {
-        console.log(error);
-      },
-    });
+      if (total_item > 0) {
+        console.log("I can send your order");
+      }
+    },
+
+    complete: function () {
+      $("#spinner-div").hide(); //Request is complete so hide spinner
+    },
+
+    error: function (error) {
+      console.log(error);
+    },
   });
 }
 
@@ -103,7 +90,8 @@ for (let i = 0; i < update_but.length; i++) {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
-    var ordItem = this.dataset.orderItem;
+    var ordItem = this.dataset.orderItemID;
+    var accompa = this.dataset.accomp;
 
     $.ajax({
       url: "/texasgrillz/updateitem/",
@@ -113,45 +101,245 @@ for (let i = 0; i < update_but.length; i++) {
         itemId: itemId,
         action: action,
         choice: ingre,
-        ordItem: ordItem,
+        accomp: accompa,
       },
       success: function (response) {
         orderItem = response.orderItem;
-
         active_item = null;
 
         for (var ord in orderItem) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];
-          var product_details = document.getElementsByClassName("product-details")[ord];
-          var item_total = document.getElementsByClassName("subtotals")[ord];
+          var item_total_price = document.getElementsByClassName("item-price")[ord];
 
-          product_details.innerHTML = `<p id=item-quantity-${orderItem[ord]["orderItem_id"]} data-orderItem=${orderItem[ord]["orderItem_id"]}>
-            <strong><span class="item-quantity">${orderItem[ord]["quantity"]}</span>-${orderItem[ord]["item"]}</strong>
-          </p>
-          <h1><strong>${orderItem[ord]["description"]}</strong></h1>
-          <h1 class="mt-1" style="color: rgb(209, 112, 131)"><strong>${orderItem[ord]["ingredient"]}</strong></h1> `;
-
-          total_item.value = orderItem[ord]["quantity"];
-          item_total.innerHTML = `${orderItem[ord]["total"]} FCFA`;
+          total_item.innerHTML = orderItem[ord]["quantity"];
+          item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
         }
-        $(`#item-quantity-${response.active_orderItem}`).slideUp(0).slideDown(500);
-        $(`#item-quantity-${response.active_orderItem}`).css({ color: "green" });
+
+        activeItem = document.getElementById(`item-total-price-${response.active_orderItem}`);
+
+        $(`#item-total-price-${response.active_orderItem}`).slideUp(0).delay(100).slideDown(500);
 
         //GET THE VARIABLE
-        prod_details = document.getElementById("item-quantity");
-        tot_cart = document.getElementById("summary-total-items");
-        subtotal = document.getElementById("basket-subtotal");
-        total = document.getElementById("basket-total");
-        item_total = document.getElementById("item-subtotal");
+        total = document.getElementById("orderTotal-total");
 
         //UPDATE THE VALUE
-        total_cart = response.total_cart;
-        total.innerHTML = `${response.total} FCFA`;
-        subtotal.innerHTML = `${response.total} FCFA`;
-        tot_cart.innerHTML = `<span class="total-items"></span> Menu dans votre panier (${total_cart}) `;
+        total.innerHTML = `<b id="finalPrice" style="color:green;font-size:25px">${response.total} FCFA</b>`;
+
+        if (response.tot_ind_item < 1) {
+          console.log("YOU CAN DELETE ME");
+          deleteItem(response.active_orderItem, response.item_name);
+        }
       },
     });
   });
 }
 
-// End here
+// Delete Order
+delete_item = document.getElementsByClassName("delete-order");
+for (let i = 0; i < delete_item.length; i++) {
+  delete_item[i].addEventListener("click", () => {
+    var delete_item_id = delete_item[i].dataset.delete;
+    var delete_item_name = delete_item[i].dataset.item_name;
+
+    Swal.fire({
+      title: `Voulez vous supprimer <strong>${delete_item_name}</strong>?`,
+      showDenyButton: true,
+      confirmButtonText: "Supprimer",
+      denyButtonText: `Abandonner`,
+    }).then((result) => {
+      /* isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        deleteItem(delete_item_id, delete_item_name);
+      } else if (result.isDenied) {
+        return;
+      }
+    });
+  });
+}
+
+function deleteItem(itemID, itemName) {
+  $.ajax({
+    url: `/texasgrillz/deleteorderitem/`,
+    method: "POST",
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+      item_id: itemID,
+    },
+    success: function (response) {
+      Swal.fire({
+        icon: "success",
+        title: `${itemName} supprimer`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    },
+    complete: function (response) {
+      console.log("Completed");
+    },
+  });
+}
+
+//Verify paiement
+
+function verifyPaiement(api, site, transaction) {
+  $.ajax({
+    url: `https://api-checkout.cinetpay.com/v2/payment/check?apikey=${api}&site_id=${site}&transaction_id=${transaction}`,
+    method: "POST",
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+    },
+    dataType: "json",
+
+    success: function (response) {
+      status_res = response.data.status;
+      amount = response.data.amount;
+      currency = response.data.currency;
+      description = response.data.description;
+      operator_id = response.data.operator_id;
+      payment_date = response.data.payment_date;
+      payment_method = response.data.payment_method;
+
+      //Paiement Data
+      data = {
+        csrfmiddlewaretoken: csrfToken,
+        user: "{{request.user.id}}",
+        amount: amount,
+        currency: currency,
+        description: description,
+        operator_id: operator_id,
+        payment_date: payment_date,
+        status: status_res,
+        payment_method: payment_method,
+      };
+
+      //Add paiement to Database
+      processPaiement(data, transaction);
+      if (status_res === "ACCEPTED") {
+        console.log("Paiement Verified, Redirecring you....", status_res);
+        Swal.fire({
+          icon: "success",
+          title: "Nous avons bien reçu votre commande",
+          showConfirmButton: false,
+          timer: 4000,
+        }).then(() => {
+          setTimeout(() => {
+            menu = location.href.replace("myorder/", "");
+            location.href = menu;
+          }, 3000);
+        });
+      } else if (status_res === "REFUSED") {
+        swal({
+          icon: "error",
+          title: "Transaction rejeter",
+          timer: 2000,
+        }).then(() => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        });
+      }
+    },
+
+    error: function (error) {
+      console.log(error);
+    },
+  });
+}
+
+//Record payment to DataBase
+function processPaiement(pay_data, transaction) {
+  $.ajax({
+    url: "/process_transaction/",
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+      amount: amount,
+      currency: currency,
+      description: description,
+      operator_id: operator_id,
+      payment_date: payment_date,
+      transactionID: transaction,
+      status: status_res,
+      payment_method: payment_method,
+    },
+    dataType: "json",
+    success: function (response) {
+      console.log("Paiement added to DataBase");
+    },
+  });
+}
+
+//Get Credential Cinetpay
+function cinetpayAPI() {
+  var toPay = document.getElementById("finalPrice").innerHTML;
+  toPay = parseInt(toPay.split(" ")[0]);
+
+  $.ajax({
+    url: "/cinetpayapi/",
+    method: "POST",
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+    },
+    dataType: "json",
+    success: function (response) {
+      api = response.apiKey;
+      site = response.site_id;
+
+      //PAY FOR ORDER
+      checkout(api, site, 100);
+    },
+  });
+}
+
+// Checkout API
+function checkout(api, site, amount) {
+  //TRANSACTION_ID
+  var transaction = "Icarus-" + Math.floor(Math.random() * 10000000).toString();
+  console.log("MY ORDER ID", transaction);
+
+  //ORDER_ID
+  var orderID = $("#order_id").val();
+  console.log("MY ORDER ID", orderID);
+
+  CinetPay.setConfig({
+    apikey: api, //YOUR APIKEY
+    site_id: site, //YOUR_SITE_ID
+    notify_url: "http://mondomaine.com/notify/",
+    mode: "PRODUCTION",
+  });
+  CinetPay.getCheckout({
+    transaction_id: transaction, //YOUR TRANSACTION ID
+    amount: amount,
+    currency: "XOF",
+    channels: "ALL",
+    description: "Test paiement",
+    customer_name: "Joe", //Customer name
+    customer_surname: "Down", //The customer's first name
+    customer_email: "down@test.com", //the customer's email
+    customer_phone_number: "088767611", //the customer's email
+    customer_address: "BP 0024", //customer address
+    customer_city: "Antananarivo", // The customer's city
+    customer_country: "CI", // the ISO code of the country
+    customer_state: "CM", // the ISO state code
+    customer_zip_code: "06510",
+  });
+  CinetPay.waitResponse(function (data) {
+    if (data.status == "REFUSED") {
+      console.log("refused");
+    } else if (data.status == "ACCEPTED") {
+      console.log("accepted");
+      sendMyOrder("Sent", orderID);
+    }
+    verifyPaiement(api, site, transaction);
+  });
+
+  return "Caisse Ouverte";
+}

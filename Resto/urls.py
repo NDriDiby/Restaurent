@@ -11,6 +11,7 @@ urlpatterns = [
     path('texasgrillz/sendorder/', views.SendOrder, name='send_order-texasgrillz'),
     path('texasgrillz/cuisine/', views.Cuisine, name='cuisine-texasgrillz'),
     path('texasgrillz/deleteorder/<item_id>/',views.DeleteOrder, name='delete_order-texasgrillz'),
+    path('texasgrillz/deleteorderitem/',views.DeleteOrderItem, name='delete_order_item-texasgrillz'),
     path('texasgrillz/inventory/',views.IventorySystem, name='inventory-texasgrillz'),
     path('texasgrillz/settings/',views.CuisineSettings, name='settings-texasgrillz'),
     path('texasgrillz/GetOrderCuisine/',views.GetOrderCuisine, name='GetOrderCuisine'),
@@ -19,6 +20,8 @@ urlpatterns = [
     path('texasgrillz/analytics/', views.Analytics, name='texasgrillz-analytics'),
     path('texasgrillz/revenues/', views.Revenues, name='texasgrillz-revenues'),
     path('texasgrillz/menuDetailsData/<menu_id>', views.MenuDetailsData, name='item_details_data-texasgrillz'),
+    path('cinetpayapi/',views.CinetPayCredential,name='cinetpayapi'),#Backend process
+    path('process_transaction/',views.ProcessTransaction,name='process_transaction'), #Backend process
     
 ]
 

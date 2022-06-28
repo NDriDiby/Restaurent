@@ -1,0 +1,448 @@
+{% extends "Resto/base.html" %} {% load static %} {% block content %} {% if items %}
+
+<style>
+  .order-item-container {
+    padding: 2px;
+  }
+
+  /* div.item-image img {
+    border-radius: 5px 5px 0 0px;
+    width: 250px;
+    height: 100px;
+    object-fit: cover;
+  } */
+
+  .page-title {
+    font-weight: bold;
+    font-size: 25px;
+    padding-bottom: 5px;
+  }
+
+  .delet-item {
+    padding-top: 5px;
+    color: rgb(189, 81, 81);
+    margin: 3px;
+    cursor: pointer;
+  }
+
+  .quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    padding: 0px 15px;
+    border-radius: 20px;
+    margin-top: 2px;
+    background-color: white;
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 25px;
+    color: green;
+  }
+
+  .total-order {
+    padding-top: 27px;
+  }
+
+  .orderTotal-box {
+    width: 190px;
+    height: 60px;
+    margin-top: 10px;
+    border-radius: 20px;
+  }
+  .popout {
+    animation: popout 1s ease;
+    -webkit-animation: popout 1s ease;
+  }
+
+  @keyframes popout {
+    from {
+      transform: scale(0);
+    }
+
+    80% {
+      transform: scale(1.2);
+    }
+
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @-webkit-keyframes popout {
+    from {
+      -webkit-transform: scale(0);
+    }
+
+    80% {
+      -webkit-transform: scale(1.2);
+    }
+
+    to {
+      -webkit-transform: scale(1);
+    }
+  }
+
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px 16px 15px;
+    height: 56px;
+    position: relative;
+    font-family: inherit;
+    font-size: 1em;
+    line-height: 1em;
+    font-weight: 500;
+    background-color: rgb(107 114 128);
+    color: white;
+    cursor: pointer;
+    border-radius: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    -webkit-tap-highlight-color: transparent;
+    transition: box-shadow 0.2s ease, background-color 150ms ease;
+
+    &:focus {
+      box-shadow: 0 8px 64px 16px rgba(0, 0, 0, 0.5);
+      outline: none;
+    }
+
+    &:hover,
+    &:active {
+      background-color: #eee;
+    }
+  }
+
+  #cart {
+    margin-right: 2px;
+    transform-origin: 20% 100%;
+    opacity: 1;
+  }
+
+  @keyframes slide-up-fade {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateY(-16px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes roll-out {
+    0% {
+      transform: translate(0) rotate(0);
+    }
+
+    20% {
+      transform: translate(0) rotate(-70deg);
+      opacity: 1;
+    }
+
+    50% {
+      transform: translate(0) rotate(-45deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translate(140px) rotate(-47deg);
+      opacity: 0;
+    }
+  }
+
+  .checked-out span {
+    animation: slide-up-fade 150ms 1;
+    animation-fill-mode: both;
+  }
+
+  .checked-out #cart {
+    margin-top: 20px;
+    animation: roll-out 1s 1 150ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: both;
+  }
+
+  @keyframes checkmark {
+    from {
+      stroke-dashoffset: 26px;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  #check {
+    position: absolute;
+    left: calc(50% - 12px);
+  }
+
+  #check path {
+    stroke-dasharray: 26px;
+    stroke-dashoffset: 26px;
+  }
+
+  .checked-out #check path {
+    animation: checkmark 150ms 1 1150ms;
+    animation-timing-function: ease-in;
+    animation-fill-mode: both;
+  }
+
+  .checked-out button {
+    background-color: #20bf6b;
+    transition-delay: 1150ms;
+  }
+
+  .totalBackground {
+    background-color: rgb(146, 144, 144);
+  }
+
+  .fixed {
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 10px;
+  }
+
+  .checkOut-box {
+    top: 0;
+    position: sticky;
+    bottom: 1rem;
+    margin: 2px;
+  }
+
+  .paiment-cash {
+    background: gray;
+  }
+
+  .paiment-mobile-card {
+    background: gray;
+  }
+
+  /*
+  .order-item-info {
+    padding-top: 27px;
+  }
+
+  .quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    padding: 0px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    background-color: white;
+  }
+  .order-item-content .quantity {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  */
+  .payment_active {
+    background-color: green;
+  }
+  .add-to-cartBtn {
+    transition: opacity 0.8s;
+  }
+  .disableClick {
+    pointer-events: none;
+  }
+</style>
+<!-- UserBox -->
+<div class="p-1 py-5">
+  <div class="flex justify-between userBox items-center">
+    <div class="userfield">
+      <a href="/texasgrillz/?session={{app}}"
+        ><i class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a
+      >
+    </div>
+  </div>
+</div>
+<!-- UserBox -->
+
+<div class="menudetails">
+  <div class="page-title p-1">
+    <h1 style="color: chocolate">My Order</h1>
+  </div>
+  <div class="menudetails-content sm:pt-10 py-5">
+    {% for i in items %}
+    <div class="menudetails-items flex justify-between sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
+      <div class="item-image">
+        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] lg:h-[250px]" src="{{i.item.img.url}}" />
+      </div>
+
+      <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
+        <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
+        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} ({{i.get_total_item}})</div>
+        <!-- Accompagement -->
+        {% if i.accompagnememt %}
+        <small class="accompa" style="color: coral"><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} (+{{i.get_total_accomp}})</strong></small>
+        {% endif %}
+        <!-- Accompagement -->
+
+        <!-- Ingredients -->
+        {% if i.ingredient %}
+        <h6 style="color: rgb(209, 112, 131)"><strong>{{i.ingredient}}</strong></h6>
+        {% endif %}
+        <!-- Ingredients -->
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="delet-item flex">
+          <p data-delete="{{i.id}}" data-item_name="{{i.item.name}}" class="btn btn-outline-danger mt-2 delete-order"><i class="bi bi-trash text-xl lg:text-4xl"></i></p>
+        </div>
+      </form>
+
+      <!-- /texasgrillz/deleteorder/{{i.id}}/?session={{app}} -->
+
+      <!-- Spinner -->
+      <div id="spinner-div" class="pt-5">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+      <!-- Spinner -->
+
+      <div class="background-item bg-gray-200 h-32 w-[140px] sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div>
+    </div>
+
+    <div class="quantity m-2">
+      <i
+        class="bi bi-dash font-bold text-2xl update-cart"
+        data-ingredient="{{i.ingredient}}"
+        data-orderItemID="{{i.id}}"
+        data-accomp="{{i.accompagnememt}}"
+        data-product="{{i.item.id}}"
+        data-action="remove"
+      ></i>
+      <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{i.quantity}}</p>
+      <i
+        class="bi bi-plus font-bold text-2xl update-cart"
+        data-ingredient="{{i.ingredient}}"
+        data-product="{{i.item.id}}"
+        data-orderItemID="{{i.id}}"
+        data-accomp="{{i.accompagnememt}}"
+        data-action="add"
+      ></i>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Paiement -->
+
+<div class="paiement-box w-full my-5">
+  <h4 class="text-center mb-2" style="font-size: 20px; color: chocolate"><b>Paiement Method</b></h4>
+  <div class="paiment-content flex justify-center gap-x-4">
+    <div
+      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
+      style="font-size: 20px; color: white"
+    >
+      <i class="pointer-events-none bi bi-wallet2 md:text-6xl"></i>
+      <span class="pointer-events-none">Cash</span>
+    </div>
+    <div
+      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-mobile-card border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
+      style="font-size: 20px; color: white"
+    >
+      <i class="pointer-events-none bi bi-credit-card md:text-6xl"></i>
+      <span class="pointer-events-none">Mobile</span>
+    </div>
+  </div>
+</div>
+
+<!-- Paiement -->
+
+<div class="flex justify-between">
+  <div class="total-order">
+    <!-- Order Total -->
+    <a href="/texasgrillz/myorder/?session={{app}}">
+      <div class="orderTotal-box">
+        <div class="orderTotal-content p-2">
+          <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
+          <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b id="finalPrice" style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
+        </div>
+      </div>
+    </a>
+    <!-- Order Total -->
+  </div>
+
+  <div class="add-to-cartBtn opacity-0 mt-8 p-2">
+    <input id="order_id" type="hidden" name="order_id" value="{{order.id}}" />
+    <button data-totalToPay="{{order.get_order_total}}" data-action="sent" data-order="{{order.id}}" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
+      <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
+        <path
+          fill="#ffffff"
+          d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z"
+        />
+      </svg>
+      <span class="md:text-2xl">Send To Kitchen</span>
+      <svg id="check" style="width: 24px; height: 24px" viewBox="0 0 24 24">
+        <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12" />
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    let hidden = document.querySelector(".hidden");
+    let sendOrderBtn = document.querySelector(".add-to-cartBtn");
+    let paymentCash = document.querySelector(".paiment-cash");
+    let paymentCard = document.querySelector(".paiment-mobile-card");
+    let payments = document.querySelectorAll(".payment");
+    payments.forEach((element) => {
+      if (sendOrderBtn.classList.contains("opacity-0")) {
+        sendOrderBtn.classList.add("disableClick");
+      }
+
+      element.addEventListener("click", ({ target }) => {
+        if (target.matches(".paiment-cash")) {
+          paymentCard.classList.remove("payment_active");
+          target.classList.add("payment_active");
+          sendOrderBtn.classList.remove("hidden");
+          sendOrderBtn.classList.remove("opacity-0");
+          sendOrderBtn.classList.remove("disableClick");
+        }
+        if (target.matches(".paiment-mobile-card")) {
+          paymentCash.classList.remove("payment_active");
+          target.classList.add("payment_active");
+          sendOrderBtn.classList.remove("hidden");
+          sendOrderBtn.classList.remove("opacity-0");
+          sendOrderBtn.classList.remove("disableClick");
+        }
+      });
+    });
+  </script>
+</div>
+{% else %}
+
+<div>There is No Items in your cart</div>
+<div class="total-order">
+  <!-- Order Total -->
+  <a href="/texasgrillz/myorder/?session={{app}}">
+    <div class="orderTotal-box">
+      <div class="orderTotal-content p-2">
+        <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
+        <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl">
+          <b style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b>
+        </div>
+      </div>
+    </div>
+  </a>
+  <!-- Order Total -->
+</div>
+
+<div>Return to Menu</div>
+{% endif%}
+
+<script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
+{% endblock content %}

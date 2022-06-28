@@ -94,8 +94,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now=True)
     date_completed = models.DateTimeField(auto_now_add=True)
     table = models.IntegerField(default=1)
-    note = models.TextField(blank=True,max_length=50)
-
+    
     class meta:
         permissions = [("view order","can view order")]
 
@@ -123,16 +122,41 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     ingredient = models.CharField(null = True, blank = True,max_length=150)
-    seasoning = models.CharField(null = True, blank = True,max_length=150)
-    cuisson = models.CharField(null = True, blank = True,max_length=150)
+    accompagnememt = models.CharField(null = True, blank = True,max_length=150)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.item)
-
+    
+    def total_accomp(self):
+        acc = None
+        if self.accompagnememt:
+            for i in self.accompagnememt:
+                acc = self.accompagnememt.split(",")
+            my_acc = Accompagnement.objects.filter(name__in=acc)
+            total_acc = sum([x.prix for x in my_acc])
+            return total_acc 
+        else:
+            return 0
+    
+    
     #Get total
     def get_total(self):
+        total = (self.item.prix * self.quantity) 
+        acc = self.total_accomp()
+        global_total = total + acc
+        if acc!=0:
+            acc = self.quantity * self.total_accomp()
+            global_total = total + acc
+        return global_total 
+    
+    
+    def get_total_item(self):
         total = (self.item.prix * self.quantity)
+        return total
+    
+    def get_total_accomp(self):
+        total = self.quantity * self.total_accomp()
         return total
     
     
@@ -159,7 +183,6 @@ class IventoryItemCategory(models.Model):
         return count
         
     
-
 class IventoryItem(models.Model):
     name = models.CharField(max_length=150)
     description = models.CharField(max_length=150,null = True, blank = True)
@@ -175,6 +198,23 @@ class IventoryItem(models.Model):
     def __str__(self):
         return self.name
     
+
+class Transactions(models.Model):
     
+    user = models.ForeignKey(Customer,verbose_name='customer',on_delete=models.CASCADE)
+    amount= models.CharField(max_length=150,blank=True)
+    currency= models.CharField(max_length=150,blank=True)
+    description= models.CharField(max_length=150,blank=True)
+    operator_id= models.CharField(max_length=150,blank=True)
+    payment_date= models.CharField(max_length=150,blank=True)
+    payment_method= models.CharField(max_length=150,blank=True)
+    status= models.CharField(max_length=150,blank=True)
+    transactionID = models.CharField(max_length=150,blank=True,primary_key=True)
+    
+    def __str__(self):
+        return self.status
+    
+    class Meta:
+        verbose_name_plural = "Transactions"
     
 

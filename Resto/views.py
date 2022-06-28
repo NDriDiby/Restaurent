@@ -7,7 +7,7 @@ from django.db import reset_queries
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
-                    IventoryItem,IventoryItemCategory)
+                    IventoryItem,IventoryItemCategory,Transactions)
 from django.contrib import messages
 from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
@@ -22,7 +22,6 @@ from django.utils import timezone
 from Bakerys.forms import OrderForm
 from django.db.models import F
 from django.db.models import Max,Sum,Count
-from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.exceptions import PermissionDenied
@@ -32,6 +31,12 @@ from plotly.offline import plot
 import plotly.express as px
 import pandas as pd
 import calendar
+
+
+#TASK
+from .tasks import add,send_paiement_receipt
+
+
 
 
  #App Name
@@ -51,7 +56,8 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
-    
+   
+    add.delay(2,4)
     
     #Table Number
     table = get_table_number(request)
@@ -211,7 +217,7 @@ def ItemDetails(request,item_id):
     eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
     coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     
-    print('it is assaisonment',assaisonement)
+
     #Get Table Number
     table = get_table_number(request)
     
@@ -221,9 +227,11 @@ def ItemDetails(request,item_id):
     
     item = Item.objects.get(id=item_id)
     print('THIS IS MY ITEM-ACCOMP',item.accompagnement.all())
+   
     cartItem = 0
     myItem = None
     my_total = 0
+    show_pop_item=None
     
     if request.user.is_authenticated:
         try:
@@ -232,6 +240,9 @@ def ItemDetails(request,item_id):
             order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
             cartItem = order.get_order_quantity()
             my_total = order.get_order_total()
+            
+            popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+            show_pop_item = Item.objects.filter(name__in=list(popular_item))
             
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
@@ -275,6 +286,7 @@ def ItemDetails(request,item_id):
         'coca_cola_produit':coca_cola_produit,
         'myitem':myItem,
         'my_total':my_total,
+        'show_pop_item':show_pop_item,
         
     }
     
@@ -314,20 +326,18 @@ def MyOrder(request):
         'cart_quantity':cartItem,
         'app':targetApp
     }    
-    return render(request,'Resto/MyOrder.html',context)
+    return render(request,'Resto/myOrderNew.html',context)
 
 
 #Backend Process of Item
 def UpdatedItem(request):
     
-    customer = request.user
-    order = Order.objects.filter(customer__id = customer.customer.id).last()
- 
     
     item_name = None
     total_cart = None
     tot_item= None
     total_accomp = 0
+    accomp = None
     
     
     if request.method == 'POST':
@@ -337,18 +347,31 @@ def UpdatedItem(request):
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
         
+        # for i in accompagment:
+        #     acc = accompagment.split(",")
+        # print(acc)
+        # my_acc = Accompagnement.objects.filter(name__in=acc)
+        # print(my_acc)
+        # total_acc = sum([x.prix for x in my_acc])
+        # print(total_acc)
+
+    
         #Update the Cart of the current user
+        #customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
-        #accomp = Accompagnement.objects.filter(id=int(accompagment))
-        #print('ADD THIS TO MY ORDER',accomp)
-        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
         item_name = item.name
+        order = Order.objects.filter(customer__id = customer.id).last()
+        # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,accompagnememt = accompagment)
+        print('MT TOTAL ACCOMP',orderItem.total_accomp())
         
-        
+        print('ITEMS PRICE',item.prix)
+                    
+                
         #Increase item
         if action =='add':
+            
             orderItem.quantity = (orderItem.quantity + 1)
             orderItem.save()
             
@@ -358,27 +381,22 @@ def UpdatedItem(request):
             orderItem.quantity = (orderItem.quantity - 1)
             orderItem.save()
 
+
         #Delete item
-        elif orderItem.quantity<=0:
-             orderItem.delete()
-            
-            
+        # if orderItem.quantity== 0:
+        #      orderItem.delete()
+        
+        
         my_order_item = OrderItem.objects.filter(order= order, item = item)
         tot_item = [sum(x.quantity for x in my_order_item)][0]
         tot_ind_item = orderItem.quantity
         total_cart = order.get_order_quantity()
-        if accompagment:
-            accompagment = [int(x) for x in accompagment.split(',')]
-            print('MY ACCOM_ID', accompagment)
-            accomp = Accompagnement.objects.filter(id__in=accompagment)
-            print('ADD THIS TO MY ORDER',accomp)
-            total_accomp = sum([acc.prix for acc in accomp])
-            print('ORDER ACCOMP TOT',total_accomp)
-            total = order.get_order_total() + total_accomp
-        else:
-            total = order.get_order_total()
-             
+        
+    
+        total = order.get_order_total()
+        
         print("MY TOTAL",total)
+        
 
         active_orderItem = orderItem.id
         item_selected = list()
@@ -398,8 +416,6 @@ def UpdatedItem(request):
             item_selected.append(data)
             
         
-
-
     return JsonResponse({"item_name":item_name,
                          'total_cart':total_cart,
                          'tot_item':tot_item,
@@ -491,6 +507,7 @@ def CuisineOptimize(request):
 
 @csrf_exempt
 def CompletedOrder(request):
+    
     if request.method == 'POST':
         order_numb = request.POST.get('id')
         order = Order.objects.get(id = order_numb)
@@ -499,18 +516,9 @@ def CompletedOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
-        
-        # subject = f"Commande: {order.transaction_id}"
-        # newline = "\n"
-        # message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
-        #         {newline}Order Number: {order.transaction_id} \
-        #         {newline}Order Total: {order.get_order_total()} FCFA\
-        #         {newline}"
-            
-        # send_mail(subject,message,
-        #                   settings.EMAIL_HOST_USER,
-        #                   [order.customer.user.email],fail_silently=False,)
-        
+    
+        #TASK
+        send_paiement_receipt.delay(order_numb)
         
 
     return JsonResponse("Order Completed",safe=False)
@@ -539,7 +547,6 @@ def SendOrder(request):
     
     
     
-    
     #get the data from the BackEnd
     if request.method == 'POST':
         action = request.POST['action']
@@ -556,18 +563,10 @@ def SendOrder(request):
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
             order.save()
-        
-    #     subject = f"Commande: {order.transaction_id}"
-    #     newline = "\n"
-    #     message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
-    #         {newline}Order Number: {order.transaction_id} \
-    #         {newline}Order Total: {order.get_order_total()} FCFA\
-    #         {newline}"
             
-    #     send_mail(subject,message,
-    #                       settings.EMAIL_HOST_USER,
-    #                       [order.customer.user.email],fail_silently=False,)
-    order = model_to_dict(order)
+            
+        
+    # order = model_to_dict(order)
     
         
 
@@ -741,6 +740,16 @@ def DeleteOrder(request,item_id):
     }
     return render(request, 'Resto/DeleteOrder.html',context)
 
+
+def DeleteOrderItem(request):
+    
+    if request.method == 'POST':
+        order_item_id = request.POST['item_id']
+        
+        del_items = OrderItem.objects.get(id = order_item_id)
+        del_items.delete()
+        print('DELETING',order_item_id)
+    return JsonResponse('item deleted',safe=False)
 
 
 
@@ -944,3 +953,61 @@ def Revenues(request):
     return render(request, 'Resto/Revenues.html',context)
 
 
+def ProcessTransaction(request):
+    
+    
+    
+    if request.method == 'POST':
+        user = Customer.objects.get(user = request.user)
+        
+        #Transaction info
+        amount = request.POST.get('amount')
+        currency = request.POST.get('currency')
+        description = request.POST.get('description')
+        operator_id = request.POST.get('operator_id')
+        payment_date = request.POST.get('payment_date')
+        status = request.POST.get('status')
+        transactionID = request.POST.get('transactionID')
+        payment_method = request.POST.get('payment_method')
+    
+        #Appointement Info
+        # object = request.POST.get('objet')
+        # date = request.POST.get('date')
+        
+        
+        print('working fine, just ckecking',[user,payment_method,
+        amount,currency,description,operator_id,
+        payment_date,status,transactionID])
+        
+        
+        #Record Transaction
+        record_trans,created = Transactions.objects.get_or_create(
+        user = user,
+        amount =  amount,
+        currency =  currency ,
+        description =  description,
+        operator_id =    operator_id ,
+        payment_date =  payment_date,
+        status =  status ,
+        transactionID = transactionID,
+        payment_method =  payment_method,
+        )
+        
+        print('END OF TRANSACTION')
+        
+        # #Create RDV
+        # if status == 'ACCEPTED':
+        #     rdv,created = rendezVous.objects.get_or_create(
+        #         user = user,
+        #         object = object,
+        #         date = date,
+        #     )
+    return JsonResponse({'valider':status})
+
+def CinetPayCredential(request):
+    
+    apikey = "188254710627a7eefc41627.61387840"
+    site_id = "722116"
+    
+    
+    return JsonResponse({'apiKey':apikey,'site_id':site_id})
