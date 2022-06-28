@@ -41,6 +41,7 @@ class _Frame(object):
             fl["__traceback_hide__"] = frame.f_locals["__traceback_hide__"]
         except KeyError:
             pass
+        self.f_back = None
         self.f_trace = None
         self.f_exc_traceback = None
         self.f_exc_type = None
@@ -127,7 +128,7 @@ class ExceptionInfo(object):
         return self.traceback
 
     def __repr__(self):
-        return "<ExceptionInfo: %r>" % (self.exception, )
+        return "<%s: %r>" % (self.__class__.__name__, self.exception, )
 
     @property
     def exc_info(self):

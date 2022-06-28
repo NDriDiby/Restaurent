@@ -68,7 +68,8 @@ class DummyProcess(threading.Thread):
     def start(self):
         assert self._parent is current_process()
         self._start_called = True
-        self._parent._children[self] = None
+        if hasattr(self._parent, '_children'):
+            self._parent._children[self] = None
         threading.Thread.start(self)
 
     @property
@@ -93,7 +94,7 @@ class Condition(_Condition):
 
 
 Process = DummyProcess
-current_process = threading.currentThread
+current_process = threading.current_thread
 current_process()._children = weakref.WeakKeyDictionary()
 
 
@@ -121,7 +122,7 @@ class Namespace(object):
             if not name.startswith('_'):
                 temp.append('%s=%r' % (name, value))
         temp.sort()
-        return 'Namespace(%s)' % str.join(', ', temp)
+        return '%s(%s)' % (self.__class__.__name__, str.join(', ', temp))
 
 
 dict = dict
@@ -161,5 +162,6 @@ def shutdown():
 def Pool(processes=None, initializer=None, initargs=()):
     from billiard.pool import ThreadPool
     return ThreadPool(processes, initializer, initargs)
+
 
 JoinableQueue = Queue

@@ -33,7 +33,7 @@ import plotly.express as px
 import pandas as pd
 import calendar
 
-from Resto.tasks import checkMe
+
 
 
  #App Name
@@ -43,7 +43,7 @@ today = timezone.localtime(timezone.now()).date()
 yesterday = today - timedelta(days=1)
 visit_number = None
 
-
+from .tasks import add
 
 #HomePage
 # @permission_required('Resto.view_category')
@@ -53,9 +53,8 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
-    checkMe.delay("I got you bro")
-    
-    
+   
+    add.delay(2,4)
     
     #Table Number
     table = get_table_number(request)
