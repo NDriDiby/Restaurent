@@ -1,7 +1,8 @@
 from django.contrib import admin
 from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
-                    ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagnement)
+                    ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagnement,
+                    Transactions)
 
 
 # Register your models here.
@@ -51,5 +52,10 @@ admin.site.register(IventoryItem,IventoryItemAdmin)
 class AccompagementAdmin(admin.ModelAdmin):
     list_display = ('name','prix')
 admin.site.register(Accompagnement,AccompagementAdmin)
+
+
+class TransactionsAdmin(admin.ModelAdmin):
+    list_display = ('transactionID','user','amount','currency','payment_date','payment_method','status')
+admin.site.register(Transactions,TransactionsAdmin)
 
 

@@ -7,7 +7,7 @@ from django.db import reset_queries
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
-                    IventoryItem,IventoryItemCategory)
+                    IventoryItem,IventoryItemCategory,Transactions)
 from django.contrib import messages
 from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
@@ -22,7 +22,6 @@ from django.utils import timezone
 from Bakerys.forms import OrderForm
 from django.db.models import F
 from django.db.models import Max,Sum,Count
-from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.exceptions import PermissionDenied
@@ -34,6 +33,10 @@ import pandas as pd
 import calendar
 
 
+#TASK
+from .tasks import add,send_paiement_receipt
+
+
 
 
  #App Name
@@ -43,7 +46,7 @@ today = timezone.localtime(timezone.now()).date()
 yesterday = today - timedelta(days=1)
 visit_number = None
 
-from .tasks import add
+
 
 #HomePage
 # @permission_required('Resto.view_category')
@@ -504,6 +507,7 @@ def CuisineOptimize(request):
 
 @csrf_exempt
 def CompletedOrder(request):
+    
     if request.method == 'POST':
         order_numb = request.POST.get('id')
         order = Order.objects.get(id = order_numb)
@@ -512,18 +516,9 @@ def CompletedOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
-        
-        # subject = f"Commande: {order.transaction_id}"
-        # newline = "\n"
-        # message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
-        #         {newline}Order Number: {order.transaction_id} \
-        #         {newline}Order Total: {order.get_order_total()} FCFA\
-        #         {newline}"
-            
-        # send_mail(subject,message,
-        #                   settings.EMAIL_HOST_USER,
-        #                   [order.customer.user.email],fail_silently=False,)
-        
+    
+        #TASK
+        send_paiement_receipt.delay(order_numb)
         
 
     return JsonResponse("Order Completed",safe=False)
@@ -568,17 +563,9 @@ def SendOrder(request):
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
             order.save()
-        
-    #     subject = f"Commande: {order.transaction_id}"
-    #     newline = "\n"
-    #     message = f"Salut {order.customer.user.first_name},{newline}{newline}Votre commande est prete. Vous recevrez votre commande sous peu ci-dessous est votre reçu de commande.{newline}\
-    #         {newline}Order Number: {order.transaction_id} \
-    #         {newline}Order Total: {order.get_order_total()} FCFA\
-    #         {newline}"
             
-    #     send_mail(subject,message,
-    #                       settings.EMAIL_HOST_USER,
-    #                       [order.customer.user.email],fail_silently=False,)
+            
+        
     # order = model_to_dict(order)
     
         
@@ -968,8 +955,10 @@ def Revenues(request):
 
 def ProcessTransaction(request):
     
+    
+    
     if request.method == 'POST':
-        user = User.objects.get(id=int(request.POST.get('user')))
+        user = Customer.objects.get(user = request.user)
         
         #Transaction info
         amount = request.POST.get('amount')
@@ -992,19 +981,21 @@ def ProcessTransaction(request):
         
         
         #Record Transaction
-        # record_trans,created = Transactions.objects.get_or_create(
-        # user = user,
-        # amount =  amount,
-        # currency =  currency ,
-        # description =  description,
-        # operator_id =    operator_id ,
-        # payment_date =  payment_date,
-        # status =  status ,
-        # transactionID = transactionID,
-        # payment_method =  payment_method,
-        # )
+        record_trans,created = Transactions.objects.get_or_create(
+        user = user,
+        amount =  amount,
+        currency =  currency ,
+        description =  description,
+        operator_id =    operator_id ,
+        payment_date =  payment_date,
+        status =  status ,
+        transactionID = transactionID,
+        payment_method =  payment_method,
+        )
         
-        #Create RDV
+        print('END OF TRANSACTION')
+        
+        # #Create RDV
         # if status == 'ACCEPTED':
         #     rdv,created = rendezVous.objects.get_or_create(
         #         user = user,

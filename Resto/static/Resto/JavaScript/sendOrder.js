@@ -4,7 +4,7 @@
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
-var transaction = "PINAVCI" + Math.floor(Math.random() * 10000000).toString();
+
 var total_item = null;
 var orderItem = null;
 
@@ -46,9 +46,9 @@ for (let i = 0; i < sendOrder.length; i++) {
     var action = this.dataset.action;
     var order = this.dataset.order;
 
-    //sendMyOrder(action, order);
+    //CINETPAY API
     cinetpayAPI();
-    //checkout();
+    //sendMyOrder(action, order);
   });
 }
 
@@ -68,16 +68,6 @@ function sendMyOrder(action, order) {
 
       if (total_item > 0) {
         console.log("I can send your order");
-
-        Swal.fire({
-          icon: "success",
-          title: "Nous avons bien reçu votre commande",
-          showConfirmButton: false,
-          timer: 3000,
-        }).then(() => {
-          //menu = location.href.replace("myorder/", "");
-          //location.href = menu;
-        });
       }
     },
 
@@ -102,9 +92,6 @@ for (let i = 0; i < update_but.length; i++) {
     var ingre = this.dataset.ingredient;
     var ordItem = this.dataset.orderItemID;
     var accompa = this.dataset.accomp;
-
-    // var accompa = document.getElementsByClassName("accompa");
-    // console.log(accompa);
 
     $.ajax({
       url: "/texasgrillz/updateitem/",
@@ -137,7 +124,6 @@ for (let i = 0; i < update_but.length; i++) {
 
         //UPDATE THE VALUE
         total.innerHTML = `<b id="finalPrice" style="color:green;font-size:25px">${response.total} FCFA</b>`;
-        console.log("TOPAY", response.total);
 
         if (response.tot_ind_item < 1) {
           console.log("YOU CAN DELETE ME");
@@ -186,7 +172,7 @@ function deleteItem(itemID, itemName) {
         showConfirmButton: false,
         timer: 1500,
       });
-      //delete_item[i].closest(".menudetails-items").style.display = "none";
+
       setTimeout(() => {
         location.reload();
       }, 2000);
@@ -198,6 +184,7 @@ function deleteItem(itemID, itemName) {
 }
 
 //Verify paiement
+
 function verifyPaiement(api, site, transaction) {
   $.ajax({
     url: `https://api-checkout.cinetpay.com/v2/payment/check?apikey=${api}&site_id=${site}&transaction_id=${transaction}`,
@@ -216,23 +203,6 @@ function verifyPaiement(api, site, transaction) {
       payment_date = response.data.payment_date;
       payment_method = response.data.payment_method;
 
-      if (status_res === "ACCEPTED") {
-        setTimeout(function () {
-          console.log("Paiement Verified, Redirecring you....", status_res);
-          //location.href = "/";
-        }, 5000);
-      } else if (status_res === "REFUSED") {
-        swal({
-          icon: "error",
-          title: "Transaction rejeter",
-          timer: 2000,
-        }).then(() => {
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        });
-      }
-
       //Paiement Data
       data = {
         csrfmiddlewaretoken: csrfToken,
@@ -247,9 +217,31 @@ function verifyPaiement(api, site, transaction) {
       };
 
       //Add paiement to Database
-      setTimeout(function () {
-        processPaiement(data);
-      }, 5000);
+      processPaiement(data, transaction);
+      if (status_res === "ACCEPTED") {
+        console.log("Paiement Verified, Redirecring you....", status_res);
+        Swal.fire({
+          icon: "success",
+          title: "Nous avons bien reçu votre commande",
+          showConfirmButton: false,
+          timer: 4000,
+        }).then(() => {
+          setTimeout(() => {
+            menu = location.href.replace("myorder/", "");
+            location.href = menu;
+          }, 3000);
+        });
+      } else if (status_res === "REFUSED") {
+        swal({
+          icon: "error",
+          title: "Transaction rejeter",
+          timer: 2000,
+        }).then(() => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        });
+      }
     },
 
     error: function (error) {
@@ -259,7 +251,7 @@ function verifyPaiement(api, site, transaction) {
 }
 
 //Record payment to DataBase
-function processPaiement(pay_data) {
+function processPaiement(pay_data, transaction) {
   $.ajax({
     url: "/process_transaction/",
     method: "POST",
@@ -269,7 +261,6 @@ function processPaiement(pay_data) {
     },
     data: {
       csrfmiddlewaretoken: csrfToken,
-      user: "{{request.user.id}}",
       amount: amount,
       currency: currency,
       description: description,
@@ -288,6 +279,9 @@ function processPaiement(pay_data) {
 
 //Get Credential Cinetpay
 function cinetpayAPI() {
+  var toPay = document.getElementById("finalPrice").innerHTML;
+  toPay = parseInt(toPay.split(" ")[0]);
+
   $.ajax({
     url: "/cinetpayapi/",
     method: "POST",
@@ -299,20 +293,22 @@ function cinetpayAPI() {
       api = response.apiKey;
       site = response.site_id;
 
-      var toPay = document.getElementById("finalPrice").innerHTML;
-      toPay = parseInt(toPay.split(" ")[0]);
-
-      console.log("Amount to pay", toPay);
-
-      checkout(api, site, toPay);
-
-      //return response;
+      //PAY FOR ORDER
+      checkout(api, site, 100);
     },
   });
 }
 
 // Checkout API
 function checkout(api, site, amount) {
+  //TRANSACTION_ID
+  var transaction = "Icarus-" + Math.floor(Math.random() * 10000000).toString();
+  console.log("MY ORDER ID", transaction);
+
+  //ORDER_ID
+  var orderID = $("#order_id").val();
+  console.log("MY ORDER ID", orderID);
+
   CinetPay.setConfig({
     apikey: api, //YOUR APIKEY
     site_id: site, //YOUR_SITE_ID
@@ -340,6 +336,7 @@ function checkout(api, site, amount) {
       console.log("refused");
     } else if (data.status == "ACCEPTED") {
       console.log("accepted");
+      sendMyOrder("Sent", orderID);
     }
     verifyPaiement(api, site, transaction);
   });

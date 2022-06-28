@@ -378,6 +378,7 @@
   </div>
 
   <div class="add-to-cartBtn opacity-0 mt-8 p-2">
+    <input id="order_id" type="hidden" name="order_id" value="{{order.id}}" />
     <button data-totalToPay="{{order.get_order_total}}" data-action="sent" data-order="{{order.id}}" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
       <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
         <path

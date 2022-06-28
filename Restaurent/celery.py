@@ -26,7 +26,7 @@ def debug_task(self):
 
 #Scheduling Task
 app.conf.beat_schedule = {
-    "aa-task": {
+    "add-task": {
         "task": "Resto.tasks.add",
         "schedule": crontab(minute="*"),
         'args': (16, 16)
