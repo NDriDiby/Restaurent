@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     # 'django_extensions',
     'django.contrib.humanize',
     'django_resized',
+   
 
 
 
@@ -261,12 +262,21 @@ EMAIL_HOST_USER = 'prudencediby@gmail.com'
 EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Nairobi'
+CELERY_ALWAYS_EAGER = True
 
 
 
 
 
 
-import django_heroku
-django_heroku.settings(locals(),staticfiles=False)
+
+
+import django_on_heroku
+django_on_heroku.settings(locals(),staticfiles=False)
 
