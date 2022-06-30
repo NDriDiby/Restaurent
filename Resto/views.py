@@ -57,7 +57,7 @@ def HomePage(request):
     print(num_visits)
     
    
-    add.delay(2,4)
+    # add.delay(2,4)
     
     #Table Number
     table = get_table_number(request)
