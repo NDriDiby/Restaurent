@@ -274,12 +274,11 @@
 
 <div class="menudetails">
   <div class="page-title p-1">
-    <h1 class="md:text-3xl lg:text-4xl" style="color: chocolate">My Order</h1>
+    <div class="md:text-3xl lg:text-4xl" style="color: chocolate">My Order</div>
   </div>
   <div class="menudetails-content flex items-center sm:pt-10 py-1">
     {% for i in items %}
-    <div class="menudetails-items w-full flex justify-between rounded-lg  items-center bg-gray-100 py-6 sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
-      
+    <div class="menudetails-items w-full flex justify-between rounded-lg items-center bg-gray-100 py-6 sm:justify-between px-2 mx-2 lg:py-10 m-4 relative">
       <form method="POST" class="absolute top-2 right-2">
         {% csrf_token %}
         <div class="delet-item text-center bg-white w-8 h-8 md:w-14 md:h-14 flex justify-center items-center rounded-full">
@@ -307,7 +306,7 @@
         <!-- Ingredients -->
       </div>
 
-      <div class="quantity m-2 md:text-3xl flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-2 -right-2 ">
+      <div class="quantity m-2 md:text-3xl flex bg-gray-300 rounded-tl-full rounded-br-lgfull absolute -bottom-2 -right-2">
         <i
           class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart"
           data-ingredient="{{i.ingredient}}"
@@ -326,22 +325,20 @@
           data-action="add"
         ></i>
       </div>
-    
     </div>
-      </div>
+  </div>
 
-      <!-- /texasgrillz/deleteorder/{{i.id}}/?session={{app}} -->
+  <!-- /texasgrillz/deleteorder/{{i.id}}/?session={{app}} -->
 
-      <!-- Spinner -->
-      <div id="spinner-div" class="">
-        <div class="spinner-border text-primary" role="status"></div>
-      </div>
-      <!-- Spinner -->
+  <!-- Spinner -->
+  <div id="spinner-div" class="">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+  <!-- Spinner -->
 
-      <!-- <div class="background-item bg-gray-200 h-32 w-full sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div> -->
-  
+  <!-- <div class="background-item bg-gray-200 h-32 w-full sm:h-[170px] sm:w-[220px] lg:w-[400px] lg:h-[290px] rounded-[20%] absolute top-5 left-4 -z-10"></div> -->
 
-    {% endfor %}
+  {% endfor %}
 </div>
 
 <!-- Paiement -->
@@ -349,7 +346,10 @@
 <div class="paiement-box w-full my-5">
   <h4 class="text-center mb-2 text-xl md:text-3xl lg:text-4xl" style="color: chocolate"><b>Paiement Method</b></h4>
   <div class="paiment-content flex justify-center gap-x-4">
-    <div class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center" style="font-size: 20px; color: white">
+    <div
+      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg p-2 w-40 md:w-60 text-center"
+      style="font-size: 20px; color: white"
+    >
       <i class="pointer-events-none bi bi-wallet2 md:text-6xl"></i>
       <h1 class="pointer-events-none">Cash</h1>
     </div>
