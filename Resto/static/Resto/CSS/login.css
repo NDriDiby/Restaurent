@@ -46,13 +46,13 @@ h1 {
 #label {
   padding-right: 190px;
 }
-input {
+/* input {
   border: none;
   border-bottom: 1px solid rgb(151, 150, 150);
   width: 270px;
   padding: 15px 0;
   outline: none;
-}
+} */
 .two {
   padding-top: 20px;
 }
@@ -68,7 +68,7 @@ input {
 p {
   font-size: 13px;
 }
-#span {
+/* #span {
   color: white;
   padding: 10px;
   border-radius: 20px;
@@ -76,7 +76,7 @@ p {
   font-size: 12px;
   background: rgb(28, 163, 250);
   background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
-}
+} */
 #span:hover {
   animation: move 4s alternate infinite;
   cursor: pointer;
