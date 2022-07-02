@@ -515,8 +515,8 @@
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a href="/texasgrillz/menudetails/1/?session={{app}}"><i
-          class="bi bi-arrow-left font-bold text-2xl lg:text-3xl flex items-center gap-x-2"><span
-          class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a>
+          class="bi bi-arrow-left font-bold text-2xl md:3xl lg:text-4xl flex items-center gap-x-2"><span
+          class="font-normal text-xl md:text-3xl lg:text-4xl">{{items.category.name}}</span></i></a>
     </div>
 
     <div class="logOutfield">
@@ -524,7 +524,7 @@
         <div id="cart-total" class='relative'>
           <i class="bi bi-bag text-3xl lg:text-5xl"></i>
           <p id='total-item'
-            class="mt-2 mt-1 font-bold absolute top-0 left-0 lg:top-2 pt-1 w-full lg:h-10 text-center bg-gray-500 text-white rounded-b-md lg:text-2xl">
+            class="mt-2 mt-1 font-bold absolute top-0 left-0 lg:top-2 pt-1 w-full lg:h-10 text-center bg-gray-500 text-white rounded-b-md md:text-3xl lg:text-4xl">
             {{cart_quantity}}</p>
         </div>
     </div></a>
@@ -545,6 +545,7 @@
         </div>
         </div>
         </div>
+
 
     <div class="iteminfo-box p-1 m-2 rounded-md mx-2 flex justify-between">
       <div>
@@ -580,6 +581,7 @@
                               ({{acc.prix}})
                             </p>
                           </div>
+
                         {% endfor %}
                         </div>
                   {% endif %}
@@ -697,6 +699,7 @@
     </a>
     <!-- Order Total -->
     </div>
+
     <div class="add-to-cartBtn mt-8">
     <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add" class="update-cart w-[180px]">
     <svg style="width:40px;height:24px" viewBox="0 0 24 24" id="cart">
