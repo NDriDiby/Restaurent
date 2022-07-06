@@ -46,8 +46,8 @@ for (let i = 0; i < sendOrder.length; i++) {
     var order = this.dataset.order;
 
     //CINETPAY API
-    cinetpayAPI();
-    //sendMyOrder(action, order);
+    //cinetpayAPI();
+    sendMyOrder(action, order);
   });
 }
 

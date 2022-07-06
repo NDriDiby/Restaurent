@@ -34,7 +34,7 @@ import calendar
 
 
 #TASK
-from .tasks import send_paiement_receipt
+from .tasks import send_paiement_receipt,get_daily_revenu,add_number
 
 
 
@@ -56,13 +56,31 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
+    #get_daily_revenu.delay()
+    
+    
+    add_number.delay(5,5)
+    
+    for i in range(10,20):
+        order = Order.objects.filter(status ='Pending',table=i)
+        print('My next order',order)
+    # for ord in order:
+    #     current_time = timezone.localtime(timezone.now())
+    #     if (order[ord].date_ordered < current_time):
+    #         time_diff = (current_time - order[ord].date_ordered)
+    #         print('it is been',round(time_diff.seconds/60))
+    #     if ((time_diff.seconds/60) >= 10):
+    #         order.delete()
+    #         print("ORDER DELETED")
+    
    
-    add.delay(2,4)
     
     #Table Number
     table = get_table_number(request)
     if table == None:
         pass
+    
+    
     
     # phone = request.GET.get('phone')
     # if phone == None:
@@ -143,14 +161,7 @@ def MenuDetails(request,menu_id):
             cartItem = order.get_order_quantity()
             cartTotal = order.get_order_total()
             
-            print('My next order',order.date_ordered)
-            current_time = timezone.localtime(timezone.now())
-            if (order.date_ordered < current_time):
-                time_diff = (current_time - order.date_ordered)
-                print('it is been',round(time_diff.seconds/60))
-                if ((time_diff.seconds/60) >= 10):
-                    order.delete()
-                    print("ORDER DELETED")
+            
             
         except:
             pass
@@ -501,7 +512,6 @@ def CuisineOptimize(request):
     }
     
    
-    
     return render(request,"Resto/CuisineOptimize.html",context)
 
 

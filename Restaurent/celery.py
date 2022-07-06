@@ -27,8 +27,36 @@ def debug_task(self):
 #Scheduling Task
 app.conf.beat_schedule = {
     "add-task": {
-        "task": "Resto.tasks.add",
+        "task": "Resto.tasks.add_number",
         "schedule": crontab(minute="*"),
-        'args': (16, 16)
+        "args":(10,10),
+        
     }
 }
+
+
+app.conf.beat_schedule = {
+    "daily-revenu": {
+        "task": "Resto.tasks.get_daily_revenu",
+        "schedule": crontab(minute="*"),
+    }
+}
+
+
+app.conf.beat_schedule = {
+    "transfert-amount": {
+        "task": "Resto.tasks.transfert_amount",
+        "schedule": crontab(minute="*"),
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
