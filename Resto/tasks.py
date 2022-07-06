@@ -65,22 +65,22 @@ def get_daily_revenu():
 def transfert_amount():
     
     transfert_fees = get_daily_revenu() * TRANSFERT_RATE
-    transfert = get_daily_revenu - transfert_fees
+    transfert = (get_daily_revenu()) - transfert_fees
     return transfert
 
-@shared_task
-def check_pending_order(table_number):
+# @shared_task
+# def check_pending_order(table_number):
     
-    for tables in range(1,table_number):
-        order = Order.objects.all(status = 'Pending',table=tables)
-        print('My next order',order.date_ordered)
-        current_time = timezone.localtime(timezone.now())
-        if (order.date_ordered < current_time):
-            time_diff = (current_time - order.date_ordered)
-            print('it is been',round(time_diff.seconds/60))
-        if ((time_diff.seconds/60) >= 10):
-            order.delete()
-            print("ORDER DELETED")
+#     for tables in range(1,table_number):
+#         order = Order.objects.all(status = 'Pending',table=tables)
+#         print('My next order',order.date_ordered)
+#         current_time = timezone.localtime(timezone.now())
+#         if (order.date_ordered < current_time):
+#             time_diff = (current_time - order.date_ordered)
+#             print('it is been',round(time_diff.seconds/60))
+#         if ((time_diff.seconds/60) >= 10):
+#             order.delete()
+#             print("ORDER DELETED")
 
 
 
