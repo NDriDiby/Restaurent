@@ -427,8 +427,17 @@
 </div>
 {% else %}
 
-<div>There is No Items in your cart</div>
-<div class="total-order">
+<div class="text-center mt-4">
+  <div class="justify-center">
+    <div class="logofield py-5 p-2">
+      <span class="businesslogo"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="150px" height="150px" /></span>
+    </div>
+  </div>
+  <p class="mb-4" style="font-size: 2.3rem; color: chocolate">{{request.user.customer}}</p>
+  <p class="mb-4" style="font-size: 2.3rem; color: chocolate">Votre pannier est vide</p>
+</div>
+
+<div class="total-order text-center mb-4">
   <!-- Order Total -->
   <a href="/texasgrillz/myorder/?session={{app}}">
     <div class="orderTotal-box">
@@ -443,7 +452,11 @@
   <!-- Order Total -->
 </div>
 
-<div>Return to Menu</div>
+<div class="text-center mt-5">
+  <button>
+    <a href="/texasgrillz/?session={{app}}"> <p style="font-size: 2rem; color: green">Voir Menu</p> </a>
+  </button>
+</div>
 {% endif%}
 
 <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>

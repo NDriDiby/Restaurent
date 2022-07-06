@@ -3,7 +3,6 @@
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
-var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
 var total_item = null;
 var orderItem = null;

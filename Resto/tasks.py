@@ -6,9 +6,6 @@ from .models import Order
 
 
 
-@shared_task
-def add(x, y):
-    return x + y
 
 @shared_task
 def send_paiement_receipt(order_id):

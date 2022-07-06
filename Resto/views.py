@@ -34,7 +34,7 @@ import calendar
 
 
 #TASK
-from .tasks import add,send_paiement_receipt
+from .tasks import send_paiement_receipt
 
 
 
