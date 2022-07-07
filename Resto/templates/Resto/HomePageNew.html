@@ -267,6 +267,22 @@
         }
 
         imageSlider();
+
+
+        async function daily_info(){
+          var url =  "/cinetpayapi/"
+          let keys = await fetch(url)
+          let result = await keys.json()
+          //console.log(result)
+          return result
+        }
+
+        daily_info().then(data=>{
+          console.log('THIS MY DATA',data)
+        })
+
+
+
    </script>
   
    {% endblock content %}

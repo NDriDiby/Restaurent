@@ -34,7 +34,8 @@ import calendar
 
 
 #TASK
-from .tasks import send_paiement_receipt,get_daily_revenu,add_number
+from .tasks import (send_paiement_receipt,get_daily_revenu,
+                    add_number,fetch_key,get_cinetpay_balance)
 
 
 
@@ -57,13 +58,18 @@ def HomePage(request):
     print(num_visits)
     
     #get_daily_revenu.delay()
+    fetch_key.delay()
+    
+    get_cinetpay_balance.delay()
+
+    
     
     
     add_number.delay(5,5)
     
-    for i in range(10,20):
-        order = Order.objects.filter(status ='Pending',table=i)
-        print('My next order',order)
+    # for i in range(10,20):
+    #     order = Order.objects.filter(status ='Pending',table=i)
+    #     print('My next order',order)
     # for ord in order:
     #     current_time = timezone.localtime(timezone.now())
     #     if (order[ord].date_ordered < current_time):
@@ -1021,3 +1027,13 @@ def CinetPayCredential(request):
     
     
     return JsonResponse({'apiKey':apikey,'site_id':site_id})
+
+
+#TASKS + JOBS
+def daily_data(request):
+    
+    
+    
+    
+    
+    return JsonResponse({''})

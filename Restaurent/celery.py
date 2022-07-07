@@ -30,6 +30,7 @@ app.conf.beat_schedule = {
         "task": "Resto.tasks.add_number",
         "schedule": crontab(minute="*"),
         "args":(10,10),
+        "queue":"daily"
         
     }
 }
@@ -39,6 +40,7 @@ app.conf.beat_schedule = {
     "daily-revenu": {
         "task": "Resto.tasks.get_daily_revenu",
         "schedule": crontab(minute="*"),
+        "queue":"daily"
     }
 }
 
@@ -47,6 +49,7 @@ app.conf.beat_schedule = {
     "transfert-amount": {
         "task": "Resto.tasks.transfert_amount",
         "schedule": crontab(minute="*"),
+        "queue":"daily"
     }
 }
 

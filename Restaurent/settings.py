@@ -263,15 +263,28 @@ EMAIL_HOST_USER = 'prudencediby@gmail.com'
 EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 
+# CELERY
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Nairobi'
+CELERY_TIMEZONE = 'Africa/Lome'
 CELERY_ALWAYS_EAGER = True
 
 
+# CELERY_BEAT_SCHEDULE ={
+    
+#     "daily_revenue":{
+#         'task':'Resto.tasks.get_daily_revenu',
+#         'schedule':5.0,
+#     },
+    
+#     "transfert_amount":{
+#     'task':'Resto.tasks.transfert_amount',
+#     'schedule':5.0,
+#     }
+# }
 
 
 

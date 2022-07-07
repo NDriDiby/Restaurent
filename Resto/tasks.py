@@ -1,3 +1,4 @@
+from urllib import request
 from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
@@ -12,6 +13,8 @@ from django.db.models import F
 from django.db.models import Max,Sum,Count
 from datetime import datetime,timedelta,time
 from django.utils import timezone
+from urllib import request
+import requests
 
 
 today = timezone.localtime(timezone.now()).date()
@@ -63,7 +66,6 @@ def get_daily_revenu():
 
 @shared_task
 def transfert_amount():
-    
     transfert_fees = get_daily_revenu() * TRANSFERT_RATE
     transfert = (get_daily_revenu()) - transfert_fees
     return transfert
@@ -83,7 +85,47 @@ def transfert_amount():
 #             print("ORDER DELETED")
 
 
+@shared_task
+def fetch_key():
+    url = 'http://127.0.0.1:8000/cinetpayapi/'
+    result = requests.get(url)
+    result = result.json()
+    apiKey = result['apiKey']
+    site_id = result['site_id']
+    return apiKey
 
+
+@shared_task
+def get_cinetpay_balance():
+    #Get Token
+    url ='https://client.cinetpay.com/v1/auth/login'
+    data = {
+        'apikey':fetch_key(),'password':"Goldenco901306$"
+    }
+    headers = {'Accept': 'application/x-www-form-urlencoded'}
+    
+    r = requests.post(url=url,
+                     data=data,
+                     headers=headers,
+                     )
+    result = r.json()['data']
+    token = result['token']
+    
+  
+    #Get Balance
+    balance_url = 'https://client.cinetpay.com/v1/transfer/check/balance'
+    data_balance ={
+        'token':token,
+    }
+    balance = requests.get(url=balance_url,
+                           params=data_balance)
+    balance = balance.json()['data']
+    
+    return balance['amount']
+    
+
+    
+    
 
 
 
