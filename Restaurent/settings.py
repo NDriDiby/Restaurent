@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     # 'django_extensions',
     'django.contrib.humanize',
     'django_resized',
+     'django_celery_beat',
    
 
 
