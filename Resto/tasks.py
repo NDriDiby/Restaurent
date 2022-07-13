@@ -122,6 +122,31 @@ def get_cinetpay_balance():
     balance = balance.json()['data']
     
     return balance['amount']
+
+@shared_task
+def add_cinetpay_contact():
+    
+    url = 'https://client.cinetpay.com/v1/transfer/contact'
+    headers = {'Accept': 'application/x-www-form-urlencoded'}
+    
+    data = {
+    "prefix": "225",
+    "phone": "01020304",
+    "name": "Test A",
+    "surname": "Test B",
+    "email": "testa@exemple.com"
+}
+    
+    r = requests.post(url = url,
+                      headers=headers,
+                      params= 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjkzNTM2LCJpc3MiOiJodHRwczovL2NsaWVudC5jaW5ldHBheS5jb20vdjEvYXV0aC9sb2dpbiIsImlhdCI6MTY1NzI0NzgwMywiZXhwIjoxNjU3MjU1MDYzLCJuYmYiOjE2NTcyNDc4MDMsImp0aSI6IkhpbnV0bm0wMnpVZGlzQzUifQ.668aw_5JZ_zBfoZMg8I5JiNg8U_mK7PaamUU9hVhJ9w',
+                      data=data
+                      )
+    
+    result = r.json()
+    return result
+                        
+    
     
 
     

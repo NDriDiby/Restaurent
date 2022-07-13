@@ -35,7 +35,7 @@ import calendar
 
 #TASK
 from .tasks import (send_paiement_receipt,get_daily_revenu,
-                    add_number,fetch_key,get_cinetpay_balance)
+                    add_number,fetch_key,get_cinetpay_balance,add_cinetpay_contact)
 
 
 
@@ -61,6 +61,8 @@ def HomePage(request):
     fetch_key.delay()
     
     get_cinetpay_balance.delay()
+    
+    add_cinetpay_contact.delay()
 
     
     
