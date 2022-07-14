@@ -58,16 +58,16 @@ def HomePage(request):
     print(num_visits)
     
     #get_daily_revenu.delay()
-    fetch_key.delay()
+    # fetch_key.delay()
     
-    get_cinetpay_balance.delay()
+    # get_cinetpay_balance.delay()
     
-    add_cinetpay_contact.delay()
+    # add_cinetpay_contact.delay()
 
     
     
     
-    add_number.delay(5,5)
+    # add_number.delay(5,5)
     
     # for i in range(10,20):
     #     order = Order.objects.filter(status ='Pending',table=i)
