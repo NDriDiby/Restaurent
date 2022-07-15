@@ -101,6 +101,7 @@ def HomePage(request):
     
     order_sent = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
+    sides = Accompagnement.objects.all()
 
     #After user has logged in
     if request.user.is_authenticated:
@@ -133,7 +134,8 @@ def HomePage(request):
     context = {
         'category':category,
         'order':order_sent,
-        'app':targetApp
+        'app':targetApp,
+        'side':sides
     }
     return render(request,'Resto/HomePageNew.html',context)
 
@@ -152,6 +154,8 @@ def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
+    sides = Accompagnement.objects.all()
+    
 
 
     order = None
@@ -183,7 +187,8 @@ def MenuDetails(request,menu_id):
         'orders':order,
         'cart_quantity':cartItem,
         'cart_total':cartTotal,
-        'app':targetApp
+        'app':targetApp,
+        'sides':sides
         
     }
     return render(request,'Resto/MenuDetailsNew.html',context)

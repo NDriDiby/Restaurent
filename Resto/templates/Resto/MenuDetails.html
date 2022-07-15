@@ -49,6 +49,22 @@
         </div>
       </div>
       {% endfor %}
+      <!--  -->
+      {% for side in sides %}
+      <div class="col-sm">
+        <div class="card">
+          <a href="/texasgrillz/itemdetails/{{i.id}}/?session={{app}}" style="text-decoration: none; color: black">
+            <h6 class="card-title" style="color: brown">{{side.name}}</h6>
+            <div>$</div>
+            <div class="mt-3 text-muted"><strong>{{side.prix }} FCFA</strong></div>
+            <div class="mt-3">
+              <img id="food-image" src="#" class="card-img-top" alt="#" style="width: 100%; height: auto; object-fit: scale-down; image-rendering: auto; text-align: center" />
+            </div>
+          </a>
+        </div>
+      </div>
+      <!--  -->
+      {% endfor %}
     </div>
   </div>
   {% endblock content %}

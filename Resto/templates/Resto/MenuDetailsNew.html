@@ -134,31 +134,97 @@
 <!-- Menu Details -->
 {% for m in category %}
 <h1 class="text-left font-bold sm:text-2xl md:text-3xl lg:text-4xl cat-tile px-4 pt-2">{{m.name}}</h1>
+
 <section id='menu-{{m.id}}' class="w-full font-bold text-3xl">
   {% for cat in m.item_set.all  %}
   <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
-  <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
-    
-    <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
-      <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
-    </div>
+      <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
+        
+        <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
+          <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
+        </div>
 
-    <div class="item-image relative">
-      <img class="" src="{{cat.img.url}}" width="250" height="150" />
-    </div>
+        <div class="item-image relative">
+          <img class="" src="{{cat.img.url}}" width="250" height="150" />
+        </div>
 
-    <div class="menu-leftside w-80 sm:w-1/2 leading-normal">
-      <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name}}</div>
-      <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:5}}</div>
-      <div class="item-price text-sm sm:text-2xl lg:pt-5 md:pt-3 md:text-3xl lg:text-4xl" style="color: chocolate;">{{cat.prix}}</div>
-    </div>
-</div>
-  {% endfor %}
+        <div class="menu-leftside w-80 sm:w-1/2 leading-normal">
+          <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name}}</div>
+          <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:5}}</div>
+          <div class="item-price text-sm sm:text-2xl lg:pt-5 md:pt-3 md:text-3xl lg:text-4xl" style="color: chocolate;">{{cat.prix}}</div>
+        </div>
+      </div>
+    {% endfor %}
   </a>
-</section>
+  </section>
 <br>
 {% endfor %}
 <!-- Menu Details -->
+
+<h1 class="text-left font-bold sm:text-2xl md:text-3xl lg:text-4xl cat-tile px-4 pt-2">Sides</h1>
+<!-- sides -->
+{% for side in sides  %}
+
+<div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
+    
+  <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
+    <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
+  </div>
+
+  <div class="item-image relative">
+    <img class="" src="https://www.seriouseats.com/thmb/sQ_5MV-c0N_8kLLSas6Pr-fbrcY=/735x0/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2013__03__20130305-fried-plantains-mint-mojo-recipe-3-941b0e98a44743e18cb967d7ac677a95.jpg" width="250" height="150" />
+  </div>
+
+  <div class="menu-leftside w-80 sm:w-1/2 leading-normal">
+    <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{side.name}}</div>
+    <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2"></div>
+    <div class="item-price text-sm sm:text-2xl lg:pt-5 md:pt-3 md:text-3xl lg:text-4xl" style="color: chocolate;">{{side.prix}}</div>
+  </div>
+</div>
+
+{% endfor %}
+
+<!-- sides -->
+
+
+<!-- side modal -->
+<!-- Button trigger modal -->
+<button type="button"
+  class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog relative w-auto pointer-events-none">
+    <div
+      class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+      <div
+        class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+        <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
+          Modal title
+        </h5>
+        <button type="button"
+          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+          data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body relative p-4">
+        ...
+      </div>
+      <div
+        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+        <button type="button"
+          class="inline-block px-6 py-2.5 bg-purple-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out"
+          data-bs-dismiss="modal">Close</button>
+        <button type="button"
+          class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script>
