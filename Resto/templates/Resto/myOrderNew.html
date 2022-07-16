@@ -264,7 +264,7 @@
 <div class="p-1 py-5">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a href="/texasgrillz/?session={{app}}"
+      <a href="/texasgrillz/menudetails/1/?session={{app}}"
         ><i class="bi bi-arrow-left font-bold text-2xl md:text-3xl lg:text-5xl flex items-center gap-x-2"><span class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a
       >
     </div>
@@ -296,6 +296,14 @@
         <!-- Accompagement -->
         {% if i.accompagnememt %}
         <small class="accompa" style="color: coral"><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} (+{{i.get_total_accomp}})</strong></small>
+        <i
+          class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart-side"
+          data-ingredient="{{i.ingredient}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-product="{{i.item.id}}"
+          data-action="remove"
+        ></i>
         {% endif %}
         <!-- Accompagement -->
 

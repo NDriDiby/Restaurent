@@ -3,7 +3,7 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
 from celery.schedules import crontab
-from .models import Order
+from .models import Order,Customer
 from Restaurent.celery import app
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -15,6 +15,7 @@ from datetime import datetime,timedelta,time
 from django.utils import timezone
 from urllib import request
 import requests
+
 
 
 today = timezone.localtime(timezone.now()).date()
@@ -69,6 +70,8 @@ def transfert_amount():
     transfert_fees = get_daily_revenu() * TRANSFERT_RATE
     transfert = (get_daily_revenu()) - transfert_fees
     return transfert
+
+
 
 # @shared_task
 # def check_pending_order(table_number):

@@ -173,13 +173,11 @@ def MenuDetails(request,menu_id):
             cartItem = order.get_order_quantity()
             cartTotal = order.get_order_total()
             
-            
-            
+        
         except:
             pass
         
         
-    
     context = {
         'menu':menu,
         'category':category,
@@ -203,8 +201,7 @@ def MenuDetailsData(request,menu_id):
     
     print('All my Items',item)
     
-    
-    
+
     cat_item = list()
     for i in range(0,len(item)): 
         data = { 

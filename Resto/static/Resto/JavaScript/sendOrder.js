@@ -342,3 +342,11 @@ function checkout(api, site, amount) {
 
   return "Caisse Ouverte";
 }
+
+var updateSide = document.getElementsByClassName("update-cart-side");
+
+for (let i = 0; i < updateSide.length; i++) {
+  updateSide[i].addEventListener("click", () => {
+    console.log(updateSide[i]);
+  });
+}
