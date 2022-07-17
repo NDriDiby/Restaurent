@@ -140,6 +140,18 @@ def HomePage(request):
     return render(request,'Resto/HomePageNew.html',context)
 
 
+def UserProfile(request):
+    
+    cust,created = Customer.objects.get_or_create(user = request.user)
+    
+    all_order= Order.objects.filter(customer = cust,status='Completed')
+    
+    context = {
+        'all_order':all_order,
+    }
+    
+    return render(request,'Resto/user_profile.html',context)
+
 #Menu Details
 def MenuDetails(request,menu_id):
     
