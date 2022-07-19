@@ -342,6 +342,13 @@ body {
   }
 }
 
+.btn {
+  background-color: chocolate;
+  border-radius: 3px;
+  color: white;
+  padding: 5px 10px;
+}
+
 /* #food-image {
   width: 200px;
   height: 150px;

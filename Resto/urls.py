@@ -4,6 +4,7 @@ from. import views
 
 urlpatterns = [
     path('texasgrillz/', views.HomePage,name='homepage-texasgrillz'),
+    path('texasgrillz/user_profile/',views.UserProfile,name='user_profile'),
     path('texasgrillz/menudetails/<menu_id>/', views.MenuDetails,name='menu_details-texasgrillz'),
     path('texasgrillz/myorder/', views.MyOrder,name='order-texasgrillz'),
     path('texasgrillz/itemdetails/<item_id>/', views.ItemDetails, name='item_details-texasgrillz'),

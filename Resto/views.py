@@ -140,6 +140,18 @@ def HomePage(request):
     return render(request,'Resto/HomePageNew.html',context)
 
 
+def UserProfile(request):
+    
+    cust,created = Customer.objects.get_or_create(user = request.user)
+    
+    all_order= Order.objects.filter(customer = cust,status='Completed')
+    
+    context = {
+        'all_order':all_order,
+    }
+    
+    return render(request,'Resto/user_profile.html',context)
+
 #Menu Details
 def MenuDetails(request,menu_id):
     
@@ -387,7 +399,7 @@ def UpdatedItem(request):
         orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,accompagnememt = accompagment)
         print('MT TOTAL ACCOMP',orderItem.total_accomp())
         
-        print('ITEMS PRICE',item.prix)
+        
                     
                 
         #Increase item
@@ -403,6 +415,7 @@ def UpdatedItem(request):
             orderItem.save()
 
 
+        print("MY ITEM TOTAL PRICE ACCOM",orderItem.get_total_accomp())
         #Delete item
         # if orderItem.quantity== 0:
         #      orderItem.delete()
@@ -433,6 +446,8 @@ def UpdatedItem(request):
                     'ingredient':item[i].ingredient,
                     'total':item[i].get_total(),
                     'item_price':item[i].item.prix,
+                    'item_price_item':item[i].get_total_item(),
+                    'total_item_accomp':item[i].get_total_accomp(),
                     }
             item_selected.append(data)
             

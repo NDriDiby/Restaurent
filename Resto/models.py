@@ -44,6 +44,7 @@ class Customer(models.Model):
 class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0,blank=True)
     
     def __str__(self):
         return self.name
