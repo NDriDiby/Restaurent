@@ -7,6 +7,9 @@ var ingredients = document.querySelectorAll("input");
 var accompagnement = document.getElementsByClassName("accompagement");
 var form = document.getElementById("choiceOptions");
 
+var form = $("#item-details-form");
+console.log(form[0]);
+
 //Accompagement
 
 $(".accompagement").on("click", function () {
@@ -119,6 +122,10 @@ for (var i = 0; i < updated_but.length; i++) {
         }
 
         document.getElementById("orderTotal-total").innerText = new_total;
+
+        // Reset Form
+        form[0].reset();
+        $(".accompagement").removeClass("active");
       },
 
       error: function (error) {

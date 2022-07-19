@@ -34,7 +34,8 @@ import calendar
 
 
 #TASK
-from .tasks import add,send_paiement_receipt
+from .tasks import (send_paiement_receipt,get_daily_revenu,
+                    add_number,fetch_key,get_cinetpay_balance,add_cinetpay_contact)
 
 
 
@@ -56,13 +57,38 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
+    #get_daily_revenu.delay()
+    # fetch_key.delay()
+    
+    # get_cinetpay_balance.delay()
+    
+    # add_cinetpay_contact.delay()
+
+    
+    
+    
+    # add_number.delay(5,5)
+    
+    # for i in range(10,20):
+    #     order = Order.objects.filter(status ='Pending',table=i)
+    #     print('My next order',order)
+    # for ord in order:
+    #     current_time = timezone.localtime(timezone.now())
+    #     if (order[ord].date_ordered < current_time):
+    #         time_diff = (current_time - order[ord].date_ordered)
+    #         print('it is been',round(time_diff.seconds/60))
+    #     if ((time_diff.seconds/60) >= 10):
+    #         order.delete()
+    #         print("ORDER DELETED")
+    
    
-    add.delay(2,4)
     
     #Table Number
     table = get_table_number(request)
     if table == None:
         pass
+    
+    
     
     # phone = request.GET.get('phone')
     # if phone == None:
@@ -75,6 +101,7 @@ def HomePage(request):
     
     order_sent = None #set order to none
     category = Category.objects.all().order_by("name") #Order the category by name
+    sides = Accompagnement.objects.all()
 
     #After user has logged in
     if request.user.is_authenticated:
@@ -107,10 +134,23 @@ def HomePage(request):
     context = {
         'category':category,
         'order':order_sent,
-        'app':targetApp
+        'app':targetApp,
+        'side':sides
     }
     return render(request,'Resto/HomePageNew.html',context)
 
+
+def UserProfile(request):
+    
+    cust,created = Customer.objects.get_or_create(user = request.user)
+    
+    all_order= Order.objects.filter(customer = cust,status='Completed')
+    
+    context = {
+        'all_order':all_order,
+    }
+    
+    return render(request,'Resto/user_profile.html',context)
 
 #Menu Details
 def MenuDetails(request,menu_id):
@@ -126,6 +166,8 @@ def MenuDetails(request,menu_id):
     menu = Category.objects.get(id = menu_id)
     category = Category.objects.all().order_by("name")
     item = Item.objects.filter(category__id = menu_id)
+    sides = Accompagnement.objects.all()
+    
 
 
     order = None
@@ -143,20 +185,11 @@ def MenuDetails(request,menu_id):
             cartItem = order.get_order_quantity()
             cartTotal = order.get_order_total()
             
-            print('My next order',order.date_ordered)
-            current_time = timezone.localtime(timezone.now())
-            if (order.date_ordered < current_time):
-                time_diff = (current_time - order.date_ordered)
-                print('it is been',round(time_diff.seconds/60))
-                if ((time_diff.seconds/60) >= 10):
-                    order.delete()
-                    print("ORDER DELETED")
-            
+        
         except:
             pass
         
         
-    
     context = {
         'menu':menu,
         'category':category,
@@ -164,7 +197,8 @@ def MenuDetails(request,menu_id):
         'orders':order,
         'cart_quantity':cartItem,
         'cart_total':cartTotal,
-        'app':targetApp
+        'app':targetApp,
+        'sides':sides
         
     }
     return render(request,'Resto/MenuDetailsNew.html',context)
@@ -179,8 +213,7 @@ def MenuDetailsData(request,menu_id):
     
     print('All my Items',item)
     
-    
-    
+
     cat_item = list()
     for i in range(0,len(item)): 
         data = { 
@@ -366,7 +399,7 @@ def UpdatedItem(request):
         orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,accompagnememt = accompagment)
         print('MT TOTAL ACCOMP',orderItem.total_accomp())
         
-        print('ITEMS PRICE',item.prix)
+        
                     
                 
         #Increase item
@@ -382,6 +415,7 @@ def UpdatedItem(request):
             orderItem.save()
 
 
+        print("MY ITEM TOTAL PRICE ACCOM",orderItem.get_total_accomp())
         #Delete item
         # if orderItem.quantity== 0:
         #      orderItem.delete()
@@ -412,6 +446,8 @@ def UpdatedItem(request):
                     'ingredient':item[i].ingredient,
                     'total':item[i].get_total(),
                     'item_price':item[i].item.prix,
+                    'item_price_item':item[i].get_total_item(),
+                    'total_item_accomp':item[i].get_total_accomp(),
                     }
             item_selected.append(data)
             
@@ -501,7 +537,6 @@ def CuisineOptimize(request):
     }
     
    
-    
     return render(request,"Resto/CuisineOptimize.html",context)
 
 
@@ -1011,3 +1046,13 @@ def CinetPayCredential(request):
     
     
     return JsonResponse({'apiKey':apikey,'site_id':site_id})
+
+
+#TASKS + JOBS
+def daily_data(request):
+    
+    
+    
+    
+    
+    return JsonResponse({''})
