@@ -30,12 +30,23 @@
         text-align: center;
       }
 
+
       .username {
         background-color: cornflowerblue;
         border-radius: 3px;
         color: white;
         padding: 5px 10px;
       }
+
+      .btn {
+        background-color:chocolate;
+        border-radius: 3px;
+        color: white;
+        padding: 5px 10px;
+      }
+
+
+    
  
       .info {
         margin-top: 25px;
@@ -113,8 +124,8 @@
         <div class="logOutfield">
           <div class="logOutlogo lg:text-3xl">
             {% if user.is_authenticated %}
-            <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
-            <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
+            <a class="btn btn-sm btn lg:text-3xl" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
+            <a class="btn btn-sm btn lg:text-3xl" href="/login/?session={{app}}">Connexion</a> {% endif %}
           </div>
         </div>
       </div>

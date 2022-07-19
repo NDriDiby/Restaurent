@@ -19,6 +19,13 @@
     top:0px
   }
 
+  .btn {
+    background-color:chocolate;
+    border-radius: 3px;
+    color: white;
+    padding: 5px 10px;
+  }
+
 
   div.item-image img {
     border-radius: 5px 5px 0 0px;
@@ -110,8 +117,8 @@
 <div class="logOutfield">
       <div class="logOutlogo md:text-2xl lg:text-3xl">
         {% if user.is_authenticated %}
-        <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
-        <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
+        <a class="btn btn-sm btn" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
+        <a class="btn btn-sm btn" href="/login/?session={{app}}">Connexion</a> {% endif %}
       </div>
     </div>
   </div>

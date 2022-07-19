@@ -355,11 +355,10 @@ function checkout(api, site, amount) {
 // UPDATE SIDE ORDER
 var updateSide = document.getElementsByClassName("update-cart-side");
 
-var item_price = $("#item-price-item").html();
-
 for (let i = 0; i < updateSide.length; i++) {
   updateSide[i].addEventListener("click", () => {
-    console.log(updateSide[i]);
-    console.log(item_price);
+    console.log(updateSide[i].dataset.accomp);
+
+    console.log(this.data);
   });
 }
