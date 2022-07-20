@@ -155,8 +155,8 @@
         </div>
 
         <div class="menu-leftside w-80 sm:w-1/2 leading-normal">
-          <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name}}</div>
-          <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:5}}</div>
+          <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name | truncatewords:4}}</div>
+          <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:3}}</div>
           <div class="item-price text-sm sm:text-2xl lg:pt-5 md:pt-3 md:text-3xl lg:text-4xl" style="color: chocolate;">{{cat.prix}}</div>
         </div>
       </div>
