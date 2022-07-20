@@ -264,7 +264,7 @@
 <div class="p-1 py-5">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a href="/texasgrillz/?session={{app}}"
+      <a href="/texasgrillz/menudetails/1/?session={{app}}"
         ><i class="bi bi-arrow-left font-bold text-2xl md:text-3xl lg:text-5xl flex items-center gap-x-2"><span class="font-normal text-xl lg:text-2xl">{{items.category.name}}</span></i></a
       >
     </div>
@@ -292,10 +292,28 @@
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
         <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
-        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} ({{i.get_total_item}})</div>
+        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} <span class="item-price-item">({{i.get_total_item}})</span></div>
         <!-- Accompagement -->
         {% if i.accompagnememt %}
-        <small class="accompa" style="color: coral"><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} (+{{i.get_total_accomp}})</strong></small>
+        <small class="accompa" style="color: coral"
+          ><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} <span class="total-item-accomp">(+{{i.get_total_accomp}})</span></strong></small
+        >
+        <i
+          class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart-side"
+          data-ingredient="{{i.ingredient}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-product="{{i.item.id}}"
+          data-action="remove"
+        ></i>
+        <i
+          class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart-side"
+          data-ingredient="{{i.ingredient}}"
+          data-product="{{i.item.id}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-action="add"
+        ></i>
         {% endif %}
         <!-- Accompagement -->
 
@@ -371,7 +389,7 @@
     <a href="/texasgrillz/myorder/?session={{app}}">
       <div class="orderTotal-box">
         <div class="orderTotal-content p-2">
-          <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
+          <h1 class="md:text-2xl" style="font-size: 25px"><b>Order Total</b></h1>
           <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b id="finalPrice" style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
         </div>
       </div>
@@ -427,13 +445,22 @@
 </div>
 {% else %}
 
-<div>There is No Items in your cart</div>
-<div class="total-order">
+<div class="text-center mt-4">
+  <div class="justify-center">
+    <div class="logofield py-5 p-2">
+      <span class="businesslogo"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="150px" height="150px" /></span>
+    </div>
+  </div>
+  <p class="mb-4" style="font-size: 2.3rem; color: chocolate">{{request.user.customer}}</p>
+  <p class="mb-4" style="font-size: 2.3rem; color: chocolate">Votre pannier est vide</p>
+</div>
+
+<div class="total-order text-center mb-4">
   <!-- Order Total -->
   <a href="/texasgrillz/myorder/?session={{app}}">
     <div class="orderTotal-box">
       <div class="orderTotal-content p-2">
-        <h1 class="md:text-2xl" style="font-size: 25px"><b>Total Price</b></h1>
+        <h1 class="md:text-2xl" style="font-size: 25px"><b>Total a payer</b></h1>
         <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl">
           <b style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b>
         </div>
@@ -443,7 +470,11 @@
   <!-- Order Total -->
 </div>
 
-<div>Return to Menu</div>
+<div class="text-center mt-5">
+  <button>
+    <a href="/texasgrillz/?session={{app}}"> <p style="font-size: 2rem; color: green">Voir Menu</p> </a>
+  </button>
+</div>
 {% endif%}
 
 <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>

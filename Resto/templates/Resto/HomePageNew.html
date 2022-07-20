@@ -30,12 +30,23 @@
         text-align: center;
       }
 
+
       .username {
         background-color: cornflowerblue;
         border-radius: 3px;
         color: white;
         padding: 5px 10px;
       }
+
+      .btn {
+        background-color:chocolate;
+        border-radius: 3px;
+        color: white;
+        padding: 5px 10px;
+      }
+
+
+    
  
       .info {
         margin-top: 25px;
@@ -98,7 +109,9 @@
       <div class="flex justify-between userBox items-center">
         {% if user.is_authenticated %}
         <div class="userfield">
-          <div class="username lg:text-3xl"> <span class="p-1  lg:text-3xl text-center"><i class="bi bi-person-fill"></i></span>{{request.user.first_name}} {{request.user.last_name}}</div>
+          <a href="{% url 'user_profile'%}">
+            <div class="username lg:text-3xl"> <span class="p-1  lg:text-3xl text-center"><i class="bi bi-person-fill"></i></span>{{request.user.first_name}} {{request.user.last_name}}</div>
+          </a>
         </div>
         {% endif %}
        
@@ -111,8 +124,8 @@
         <div class="logOutfield">
           <div class="logOutlogo lg:text-3xl">
             {% if user.is_authenticated %}
-            <a class="btn btn-sm btn-outline-secondary" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
-            <a class="btn btn-sm btn-outline-secondary" href="/login/?session={{app}}">Connexion</a> {% endif %}
+            <a class="btn btn-sm btn lg:text-3xl" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
+            <a class="btn btn-sm btn lg:text-3xl" href="/login/?session={{app}}">Connexion</a> {% endif %}
           </div>
         </div>
       </div>
@@ -175,6 +188,29 @@
             </div>
         </div>
       <!-- Image Slider -->
+
+ {% if order %}
+<div class="showOrder mt-3">
+  <div class="spinner-grow text-muted"></div>
+  <div class="spinner-grow text-primary"></div>
+  <div class="spinner-grow text-success"></div>
+  <div class="spinner-grow text-info"></div>
+  <div class="spinner-grow text-warning"></div>
+  <div class="spinner-grow text-danger"></div>
+  <div class="spinner-grow text-secondary"></div>
+
+  <div class="mt-4">
+    <h6 style="color: rgb(209, 112, 131)">My Order - ({{order.date_ordered}})</h6>
+    <h6>Reference ID: <small>{{order.transaction_id}}</small></h6>
+    <h6>Table: {{order.table}}</h6>
+    <h6>Total: {{order.get_order_total}} FCFA</h6>
+    {% for order in order.orderitem_set.all%}
+    <h6 style="color: darkseagreen">*{{order}} ({{order.quantity}})</h6>
+    <p style="color: black">{{order.ingredient}}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
       
 
 
@@ -205,8 +241,18 @@
             </div>
           </div>
           {% endfor %}
+          <div class="flex justify-center">
+            <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60">
+              <a href="/texasgrillz/menudetails/4/?session={{app}}">
+                <img class="rounded-full" src="https://www.seriouseats.com/thmb/sQ_5MV-c0N_8kLLSas6Pr-fbrcY=/735x0/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2013__03__20130305-fried-plantains-mint-mojo-recipe-3-941b0e98a44743e18cb967d7ac677a95.jpg" alt="Cinque Terre" width="600" height="400" />
+              </a>
+              <div class="desc font-bold lg:text-3xl">Accompagement</div>
+            </div>
+          </div>
         </div>
         <!-- Menu -->
+
+        
 
 
 
@@ -244,6 +290,22 @@
         }
 
         imageSlider();
+
+
+        async function daily_info(){
+          var url =  "/cinetpayapi/"
+          let keys = await fetch(url)
+          let result = await keys.json()
+          //console.log(result)
+          return result
+        }
+
+        daily_info().then(data=>{
+          console.log('THIS MY DATA',data)
+        })
+
+
+
    </script>
   
    {% endblock content %}

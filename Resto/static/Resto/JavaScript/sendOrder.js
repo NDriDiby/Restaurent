@@ -3,7 +3,6 @@
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
-var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
 var total_item = null;
 var orderItem = null;
@@ -47,8 +46,8 @@ for (let i = 0; i < sendOrder.length; i++) {
     var order = this.dataset.order;
 
     //CINETPAY API
-    cinetpayAPI();
-    //sendMyOrder(action, order);
+    //cinetpayAPI();
+    sendMyOrder(action, order);
   });
 }
 
@@ -104,15 +103,24 @@ for (let i = 0; i < update_but.length; i++) {
         accomp: accompa,
       },
       success: function (response) {
+        console.log(response);
         orderItem = response.orderItem;
         active_item = null;
 
         for (var ord in orderItem) {
           var total_item = document.getElementsByClassName("quantity-field")[ord];
           var item_total_price = document.getElementsByClassName("item-price")[ord];
+          var item_price_item = document.getElementsByClassName("item-price-item")[ord];
+          var total_item_accomp = document.getElementsByClassName("total-item-accomp")[ord];
 
           total_item.innerHTML = orderItem[ord]["quantity"];
           item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
+          item_price_item.innerHTML = "(" + orderItem[ord]["item_price_item"] + ")";
+          if (total_item_accomp) {
+            total_item_accomp.innerHTML = "(" + orderItem[ord]["total_item_accomp"] + ")";
+          }
+
+          console.log("NEW PRICE ALERT", orderItem[ord]["item_price_item"]);
         }
 
         activeItem = document.getElementById(`item-total-price-${response.active_orderItem}`);
@@ -342,4 +350,15 @@ function checkout(api, site, amount) {
   });
 
   return "Caisse Ouverte";
+}
+
+// UPDATE SIDE ORDER
+var updateSide = document.getElementsByClassName("update-cart-side");
+
+for (let i = 0; i < updateSide.length; i++) {
+  updateSide[i].addEventListener("click", () => {
+    console.log(updateSide[i].dataset.accomp);
+
+    console.log(this.data);
+  });
 }
