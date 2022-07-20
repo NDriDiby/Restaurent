@@ -96,9 +96,9 @@ for (var i = 0; i < updated_but.length; i++) {
         console.log("NEW VAL", new_total);
 
         msg.innerHTML = `
-        <div class='justify-center items-center gap-x-2 bg-gray-500 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
-          <p class="text-white"><strong>(${tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
-          <span><i class="bi bi-check-circle text-2xl font-bold text-green-300"></i></span>
+        <div class='justify-center text-sm w-full items-center bg-gray-500 px-2 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
+          <p class="text-white pr-1"><strong>(${tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
+          <span><i class="bi bi-check-circle text-xl font-bold text-green-300"></i></span>
         </div>`;
 
         total_item_box = document.getElementById("total-item");

@@ -23,7 +23,7 @@
     background-color:chocolate;
     border-radius: 3px;
     color: white;
-    padding: 5px 10px;
+    padding: 10px 10px;
   }
 
 
@@ -117,8 +117,8 @@
 <div class="logOutfield">
       <div class="logOutlogo md:text-2xl lg:text-3xl">
         {% if user.is_authenticated %}
-        <a class="btn btn-sm btn" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
-        <a class="btn btn-sm btn" href="/login/?session={{app}}">Connexion</a> {% endif %}
+        <a class="btn" href="/logout/?session={{app}}">Deconnexion</a> {% else%}
+        <a class="btn" href="/login/?session={{app}}">Connexion</a> {% endif %}
       </div>
     </div>
   </div>
@@ -145,8 +145,7 @@
 <section id='menu-{{m.id}}' class="w-full font-bold text-3xl">
   {% for cat in m.item_set.all  %}
   <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
-      <div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
-        
+      <div class="menudetails-items relative flex justify-between gap-x-3 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
         <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
           <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
         </div>
@@ -156,8 +155,8 @@
         </div>
 
         <div class="menu-leftside w-80 sm:w-1/2 leading-normal">
-          <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name}}</div>
-          <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:5}}</div>
+          <div class="item-name font-bold text-xl md:text-2xl lg:text-4xl">{{cat.name | truncatewords:3}}</div>
+          <div id='trunc-{{cat.id}}' class="trunc text-sm text-gray-500 sm:text-xl lg:pt-2 md:text-2xl lg:text-3xl pb-2">{{cat.description|truncatewords:3}}</div>
           <div class="item-price text-sm sm:text-2xl lg:pt-5 md:pt-3 md:text-3xl lg:text-4xl" style="color: chocolate;">{{cat.prix}}</div>
         </div>
       </div>

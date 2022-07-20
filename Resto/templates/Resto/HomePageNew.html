@@ -38,16 +38,13 @@
         padding: 5px 10px;
       }
 
+    
       .btn {
-        background-color:chocolate;
+        background-color: chocolate;
         border-radius: 3px;
         color: white;
-        padding: 5px 10px;
+        padding: 8px 10px;
       }
-
-
-    
- 
       .info {
         margin-top: 25px;
         width: 100%;
@@ -115,12 +112,7 @@
         </div>
         {% endif %}
        
-        <div class="justify-center">
-          <div class="logofield py-5">
-            <span class="businesslogo"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="100px" height="100px" /></span>
-          </div>
-        </div>
-
+        
         <div class="logOutfield">
           <div class="logOutlogo lg:text-3xl">
             {% if user.is_authenticated %}
@@ -130,7 +122,12 @@
         </div>
       </div>
     </div>
-      <!-- UserBox -->
+    <!-- UserBox -->
+    <div class="flex items-center justify-center mt-5">
+      <div class="logofield py-5">
+        <span class="businesslogo"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="130px" height="100px" /></span>
+      </div>
+    </div>
 
      
 
@@ -257,9 +254,9 @@
 
 
          <!-- Footer -->
-      <footer class="blog-footer mt-1 flex justify-center h-full">
+      <footer class="blog-footer mt-1  h-full">
         <div>
-          <div class="nova_cloud_logo">
+          <div class="nova_cloud_logo w-full">
             <img src="{% static 'Resto/Logo.png' %}" alt="" width="140px">
           </div>
           <p class="text-muted lg:text-2xl">Powered by Nova Cloud Artificial Intelligence</p>
