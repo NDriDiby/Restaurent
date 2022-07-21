@@ -560,12 +560,30 @@
         <img class="w-full h-[250px] sm:h-80 md:h-[450px] lg:h-[600px] bg-white " src="{{items.img.url }}"
           alt="{{items.name}}" style="border-radius: 20px;"/>
         <div class="absolute top-0 left-0 font-bold p-2"></div>
+
+        </div>
+   </div>
+</div>
+
+
+    <div class="iteminfo-box p-1 m-2 rounded-md mx-2 flex justify-between">
+      <div>
+        <h1 class="italic font-bold text-xl sm:text-3xl lg:text-5xl">{{items.name}}</h1>
+        <p class="text-gray-500 text-md lg:text-2xl">{{items.description}}</p>
+      </div>
+      <div>
+        <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl lg:text-2xl" style="color: chocolate;">{{items.prix}}</p>
+
       </div>
     </div>
   </div>
 
 
+<<<<<<< HEAD
   <div class="iteminfo-box pt-5 p-1 md:p-10 m-2 rounded-md mx-2 flex justify-between">
+=======
+  <!-- <div class="iteminfo-box p-1 m-2 rounded-md mx-2 flex justify-between">
+>>>>>>> 6e2c213830bf3c7b79dafeb055ff7ec8372650bf
     <div>
       <h1 class="italic font-bold text-xl sm:text-3xl md:text-4xl lg:text-5xl">{{items.name}}</h1>
       <p class="text-gray-500 text-md sm:text-2xl lg:text-3xl">{{items.description}}</p>
@@ -574,7 +592,7 @@
       <p id='item-price' class="item-price w-full font-bold text-xl sm:text-3xl md:text-4xl lg:text-5xl text-orange-500">
         {{items.prix}}</p>
     </div>
-  </div>
+  </div> -->
 
   <!-- Menu Info -->
 
@@ -738,11 +756,18 @@
       </div>
     </div>
   </div>
+
 </div>
+
   <!-- popular choices -->
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<<<<<<< HEAD
   <h1 class="text-left pt-5 md:px-10 md:pt-10 font-bold text-lg md:text-2xl lg:text-3xl" style="color: chocolate;">Popular Items</h1>
   <div class="pop-item flex overflow-x-scroll md:px-10 gap-2 lg:gap-y-4  w-full">
+=======
+  <!-- <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Popular Items</h1>
+  <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
+>>>>>>> 6e2c213830bf3c7b79dafeb055ff7ec8372650bf
     {% for pop in show_pop_item %}
     <div class="flex justify-center">
       <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60" style="border: solid chocolate 1px;">
@@ -751,6 +776,20 @@
         </a>
         <div class="desc font-bold lg:text-3xl">{{pop.name}}</div>
       </div>
+  </div> 
+  </div> -->
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Top 5 Popular Items</h1>
+<div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
+  {% for pop in show_pop_item %}
+  <div class="flex justify-center">
+    <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60" style="border: solid chocolate 1px;">
+      <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}">
+        <img class="rounded-full" src="{{pop.img.url}}" alt="Cinque Terre" width="600" height="400" />
+      </a>
+      <div class="desc font-bold lg:text-3xl">{{pop.name}}</div>
+
     </div>
     {% endfor %}
   </div>
