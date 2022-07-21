@@ -563,7 +563,7 @@
         <p class="text-gray-500 text-md lg:text-2xl">{{items.description}}</p>
       </div>
       <div>
-        <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl lg:text-2xl text-orange-500">{{items.prix}}</p>
+        <p id='item-price' class="item-price w-full font-bold text-xl sm:text-xl lg:text-2xl" style="color: chocolate;">{{items.prix}}</p>
       </div>
   </div>
 
@@ -752,7 +752,7 @@
 </div> -->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Popular Items</h1>
+<h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Top 5 Popular Items</h1>
 <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
   {% for pop in show_pop_item %}
   <div class="flex justify-center">
