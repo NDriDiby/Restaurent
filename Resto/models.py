@@ -104,10 +104,10 @@ class Order(models.Model):
     
     
     #Total value of cart
-    def get_order_total(self):
-        order = self.orderitem_set.all()
-        total = sum([item.get_total() for item in order])
-        return total
+    # def get_order_total(self):
+    #     order = self.orderitem_set.all()
+    #     total = sum([item.get_total() for item in order])
+    #     return total
 
 
     #Total quantity in the cart
@@ -123,42 +123,42 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     ingredient = models.CharField(null = True, blank = True,max_length=150)
-    accompagnememt = models.CharField(null = True, blank = True,max_length=150)
+    accompagnememt = models.ManyToManyField(Accompagnement,blank=True)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.item)
     
-    def total_accomp(self):
-        acc = None
-        if self.accompagnememt:
-            for i in self.accompagnememt:
-                acc = self.accompagnememt.split(",")
-            my_acc = Accompagnement.objects.filter(name__in=acc)
-            total_acc = sum([x.prix for x in my_acc])
-            return total_acc 
-        else:
-            return 0
+    # def total_accomp(self):
+    #     acc = None
+    #     if self.accompagnememt:
+    #         for i in self.accompagnememt:
+    #             acc = self.accompagnememt.split(",")
+    #         my_acc = Accompagnement.objects.filter(name__in=acc)
+    #         total_acc = sum([x.prix for x in my_acc])
+    #         return total_acc 
+    #     else:
+    #         return 0
     
     
     #Get total
-    def get_total(self):
-        total = (self.item.prix * self.quantity) 
-        acc = self.total_accomp()
-        global_total = total + acc
-        if acc!=0:
-            acc = self.quantity * self.total_accomp()
-            global_total = total + acc
-        return global_total 
+    # def get_total(self):
+    #     total = (self.item.prix * self.quantity) 
+    #     acc = self.total_accomp()
+    #     global_total = total + acc
+    #     if acc!=0:
+    #         acc = self.quantity * self.total_accomp()
+    #         global_total = total + acc
+    #     return global_total 
     
     
     def get_total_item(self):
         total = (self.item.prix * self.quantity)
         return total
     
-    def get_total_accomp(self):
-        total = self.quantity * self.total_accomp()
-        return total
+    # def get_total_accomp(self):
+    #     total = self.quantity * self.total_accomp()
+    #     return total
     
     
 

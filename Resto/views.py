@@ -259,7 +259,7 @@ def ItemDetails(request,item_id):
     
     
     item = Item.objects.get(id=item_id)
-    print('THIS IS MY ITEM-ACCOMP',item.accompagnement.all())
+    
    
     cartItem = 0
     myItem = None
@@ -372,7 +372,6 @@ def UpdatedItem(request):
     total_accomp = 0
     accomp = None
     
-    
     if request.method == 'POST':
         
         itemId = request.POST['itemId']
@@ -380,87 +379,89 @@ def UpdatedItem(request):
         choice = request.POST.get('choice')
         accompagment = request.POST.get('accomp')
         
-        # for i in accompagment:
-        #     acc = accompagment.split(",")
-        # print(acc)
-        # my_acc = Accompagnement.objects.filter(name__in=acc)
-        # print(my_acc)
+        print('THIS MY CHOICE:',accompagment)
+        
+        
+        acc = accompagment.split(",")
+        my_acc = Accompagnement.objects.filter(name__in=acc)
+        print(my_acc)
+        accomp_id = tuple([x.id for x in my_acc])
+        print(accomp_id)
         # total_acc = sum([x.prix for x in my_acc])
         # print(total_acc)
 
     
         #Update the Cart of the current user
-        #customer = request.user
+        customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
         item_name = item.name
         order = Order.objects.filter(customer__id = customer.id).last()
-        # order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice,accompagnememt = accompagment)
-        print('MT TOTAL ACCOMP',orderItem.total_accomp())
+        order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
+        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        orderItem.accompagnememt.add(1,3)
+        orderItem.save()
+        print('Print my ACC',orderItem.accompagnememt.all())
+        print(orderItem)
+
         
         
-                    
-                
-        #Increase item
-        if action =='add':
+        # #Increase item
+        # if action =='add':
             
-            orderItem.quantity = (orderItem.quantity + 1)
-            orderItem.save()
+        #     orderItem.quantity = (orderItem.quantity + 1)
+        #     orderItem.save()
             
             
-        #Decrease item
-        elif action == 'remove':
-            orderItem.quantity = (orderItem.quantity - 1)
-            orderItem.save()
+        # #Decrease item
+        # elif action == 'remove':
+        #     orderItem.quantity = (orderItem.quantity - 1)
+        #     orderItem.save()
 
 
-        print("MY ITEM TOTAL PRICE ACCOM",orderItem.get_total_accomp())
-        #Delete item
-        # if orderItem.quantity== 0:
-        #      orderItem.delete()
+
         
-        
-        my_order_item = OrderItem.objects.filter(order= order, item = item)
-        tot_item = [sum(x.quantity for x in my_order_item)][0]
-        tot_ind_item = orderItem.quantity
-        total_cart = order.get_order_quantity()
+        # my_order_item = OrderItem.objects.filter(order= order, item = item)
+        # tot_item = [sum(x.quantity for x in my_order_item)][0]
+        # tot_ind_item = orderItem.quantity
+        # total_cart = order.get_order_quantity()
         
     
-        total = order.get_order_total()
+        # total = order.get_order_total()
         
-        print("MY TOTAL",total)
+        # print("MY TOTAL",total)
         
 
-        active_orderItem = orderItem.id
-        item_selected = list()
-        item = order.orderitem_set.all()
-        for i in range(0,len(item)): 
-            data = { 
-                    'orderItem_id':item[i].id,
-                    'order_id':item[i].order.id,
-                    'description':item[i].item.description,
-                    #'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
-                    'item':item[i].item.name,
-                    'quantity':item[i].quantity,
-                    'ingredient':item[i].ingredient,
-                    'total':item[i].get_total(),
-                    'item_price':item[i].item.prix,
-                    'item_price_item':item[i].get_total_item(),
-                    'total_item_accomp':item[i].get_total_accomp(),
-                    }
-            item_selected.append(data)
+        # active_orderItem = orderItem.id
+        # item_selected = list()
+        # item = order.orderitem_set.all()
+        # for i in range(0,len(item)): 
+        #     data = { 
+        #             'orderItem_id':item[i].id,
+        #             'order_id':item[i].order.id,
+        #             'description':item[i].item.description,
+        #             #'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+        #             'item':item[i].item.name,
+        #             'quantity':item[i].quantity,
+        #             'ingredient':item[i].ingredient,
+        #             'total':item[i].get_total(),
+        #             'item_price':item[i].item.prix,
+        #             'item_price_item':item[i].get_total_item(),
+        #             'total_item_accomp':item[i].get_total_accomp(),
+        #             }
+        #     item_selected.append(data)
             
         
     return JsonResponse({"item_name":item_name,
-                         'total_cart':total_cart,
-                         'tot_item':tot_item,
-                         'tot_ind_item':tot_ind_item,
-                         'total':total,
-                         'orderItem':item_selected,
-                         'active_orderItem':active_orderItem,
-                         'total_accomp':total_accomp,
-                         },safe=False)
+    #                      'total_cart':total_cart,
+    #                      'tot_item':tot_item,
+    #                      'tot_ind_item':tot_ind_item,
+    #                      'total':total,
+    #                      'orderItem':item_selected,
+    #                      'active_orderItem':active_orderItem,
+    #                      'total_accomp':total_accomp,
+                            'test':10}
+                         ,safe=False)
 
 
 
