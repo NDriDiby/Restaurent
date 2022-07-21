@@ -1,9 +1,9 @@
 body {
-  background: rgb(28, 163, 250);
-  background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
+  /* background: rgb(28, 163, 250); */
+  /* background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%); */
   background-repeat: no-repeat;
   background-size: cover;
-  height: 150vh;
+  /* height: 100vh; */
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 img {
