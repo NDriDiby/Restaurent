@@ -85,15 +85,13 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
 
+        console.log(response);
+
         var old_total = document.getElementById("orderTotal-total").innerText;
         old_total = parseInt(old_total.split("FCFA")[0]);
 
-        console.log("OLD VAL", old_total);
-
         item_price = parseInt(document.getElementById("item-price").innerText);
         var new_total = response.total;
-
-        console.log("NEW VAL", new_total);
 
         msg.innerHTML = `
         <div class='justify-center text-sm w-full items-center bg-gray-500 px-2 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
