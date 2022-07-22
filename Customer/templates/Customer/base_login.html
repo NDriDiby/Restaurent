@@ -28,8 +28,6 @@
       </svg>
 
       <div >
-            <!-- <img src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud"> -->
-
             {% if messages %}
             <div class="col-12 mt-3">
                 {% for message in messages %}
@@ -44,6 +42,7 @@
             </div>
             {% endif %}
         </div>
+       
 
         <div>
           {% block content %} {% endblock content %}

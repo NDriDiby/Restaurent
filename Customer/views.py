@@ -49,12 +49,10 @@ def Login(request):
                 if user.has_perm('resto.view_order'):
                     return HttpResponseRedirect(f'/texasgrillz/cuisine/')
                 else:
-                    messages.info(request, f"Vous êtes maintenant connecté en tant que {user.first_name}")
                     return HttpResponseRedirect(f'/{session}/?session={targetApp}')
         else:
             messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
             
-        
     else:
         form = AuthenticationForm()
         if 'connected' in request.GET:

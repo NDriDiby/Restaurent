@@ -41,7 +41,6 @@ class CustomerForm(UserCreationForm):
       email = self.cleaned_data.get('username')
       allUser= User.objects.values_list('username',flat=True)
       
-      
       if email in allUser:
          raise forms.ValidationError(f"{email} exist deja. Veuillez choisir une autre addresse e-mail.")
       
