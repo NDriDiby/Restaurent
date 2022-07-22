@@ -101,7 +101,7 @@
 
     
 
-    <div class="p-3 pt-5">
+    <div class="p-5 pt-5">
       <!-- UserBox -->
       <div class="flex justify-between userBox items-center">
         {% if user.is_authenticated %}
@@ -202,10 +202,11 @@
 </div> -->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
-
-<button class="block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="small-modal">
-  Small modal
-  </button>
+<div class="relative">
+  <button class="block fixed bottom-0 left-0 w-20 h-20 animate-bounce m-5 rounded-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="small-modal">
+    Your Order
+    </button>
+</div>
 <!-- Small Modal -->
 <div id="small-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
   <div class="relative p-4 w-full max-w-md h-full md:h-auto">
@@ -265,10 +266,10 @@
       
       <!-- Menu -->
       <div class="text-center my-3 sm:pt-20 lg:pt-40 ">
-        <h1 class="font-bold sm:text-xl lg:text-3xl text-left px-3 py-2" style="color: chocolate;">MENU</h1>
+        <h1 class="font-bold sm:text-xl lg:text-3xl text-left px-5 py-2" style="color: chocolate;">MENU</h1>
       </div>
 
-        <div class="grid grid-cols-2 justify-center gap-2 lg:gap-y-4 md:grid-cols-3  w-full px-2">
+        <div class="grid grid-cols-2 justify-center gap-2 lg:gap-y-4 md:grid-cols-3  w-full px-5">
           {% for cat in category %}
           <div class="flex justify-center">
             <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60">
