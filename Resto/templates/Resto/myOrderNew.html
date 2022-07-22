@@ -35,6 +35,7 @@
     /* border-radius: 8px; */
     margin-top: 2px;
     /* background-color: white; */
+    height: 25px;
   }
 
   .price {
@@ -272,9 +273,18 @@
   .item-image img{
     border-radius: 15px;
   }
+
+  @media screen and (min-width: 760px) {
+    .quantity {
+    padding: 0px 30px;
+    margin-top: 2px;
+    height: 45px;
+  }
+    
+  }
 </style>
 <!-- UserBox -->
-<div class="p-6 py-5 flex justify-between items-center">
+<div class="p-6 md:px-10 py-5 flex justify-between items-center">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
       <a href="/texasgrillz/menudetails/1/?session={{app}}"
@@ -291,7 +301,7 @@
 
   <div class="menudetails-content items-center sm:pt-10 py-1">
     {% for i in items %}
-    <div class="menudetails-items flex justify-between items-center bg-gray-100 py-6 lg:py-10 m-6 relative">
+    <div class="menudetails-items md:mx-10 flex justify-between items-center bg-gray-100 py-1 lg:py-10 m-4 relative">
       <form method="POST" class="absolute top-2 right-2">
         {% csrf_token %}
         <div class="delet-item text-center bg-white w-8 h-8 md:w-14 md:h-14 flex justify-center items-center rounded-full">
@@ -300,11 +310,11 @@
       </form>
 
       <div class="item-image">
-        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] md:h-[200px] lg:h-[250px]" src="{{i.item.img.url}}" />
+        <img class="p-1 w-[250px] h-[120px] sm:h-[160px] sm:w-[300px] lg:w-[400px] md:h-[200px] lg:h-[250px]" src="{{i.item.img.url}}" />
       </div>
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
-        <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
+        <div class="item-price price text-sm sm:text-2xl md:text-4xl lg:text-5xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
         <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} <span class="item-price-item">({{i.get_total_item}})</span></div>
         <!-- Accompagement -->
         {% if i.accompagnememt %}
@@ -366,16 +376,16 @@
 
 <div class="paiement-box w-full my-5">
   <h4 class="text-center px-6 mb-2 text-xl md:text-3xl lg:text-4xl" style="color: chocolate"><b>Paiement Method</b></h4>
-  <div class="paiment-content flex justify-center gap-x-2">
+  <div class="paiment-content flex justify-center md:mt-5 gap-x-2">
     <div
-      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-cash border border-2 rounded-2 rounded-lg w-40 md:w-60 text-center"
+      class="flex justify-center gap-x-2 items-center h-10 md:h-24 md:block payment paiment-cash border border-2 rounded-2 rounded-lg w-40 md:w-60 text-center"
       style="font-size: 20px; color: white"
     >
       <i class="pointer-events-none bi bi-wallet2 md:text-6xl"></i>
       <h1 class="pointer-events-none">Cash</h1>
     </div>
     <div
-      class="flex justify-center gap-x-2 items-center h-10 md:h-32 md:block payment paiment-mobile-card border border-2 rounded-2 rounded-lg w-40 md:w-60 text-center"
+      class="flex justify-center gap-x-2 items-center h-10 md:h-24 md:block payment paiment-mobile-card border border-2 rounded-2 rounded-lg w-40 md:w-60 text-center"
       style="font-size: 20px; color: white"
     >
       <i class="pointer-events-none bi bi-credit-card md:text-6xl"></i>
@@ -386,13 +396,13 @@
 
 <!-- Paiement -->
 
-<div class="flex items-center p-6">
+<div class="flex justify-around md:justify-between items-center px-5">
   <div class="total-order">
     <!-- Order Total -->
     <a href="/texasgrillz/myorder/?session={{app}}">
       <div class="orderTotal-box">
         <div class="orderTotal-content">
-          <h1 class="md:text-2xl" style="font-size: 25px"><b>Order Total</b></h1>
+          <h1 class="md:text-4xl" style="font-size: 25px"><b>Order Total</b></h1>
           <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b id="finalPrice" style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
         </div>
       </div>
@@ -400,9 +410,9 @@
     <!-- Order Total -->
   </div>
 
-  <div class="add-to-cartBtn opacity-0 mt-8 p-2">
+  <div class="add-to-cartBtn opacity-0 mt-8">
     <input id="order_id" type="hidden" name="order_id" value="{{order.id}}" />
-    <button data-totalToPay="{{order.get_order_total}}" data-action="sent" data-order="{{order.id}}" class="send-order w-[180px] md:w-[280px] md:h-[100px]">
+    <button data-totalToPay="{{order.get_order_total}}" data-action="sent" data-order="{{order.id}}" class="send-order w-[160px] md:w-[210px] md:h-[70px]">
       <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
         <path
           fill="#ffffff"

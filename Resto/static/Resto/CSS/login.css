@@ -11,18 +11,18 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 200px;
+  width: 235px;
 }
 .login-container {
   text-align: center;
   background-color: white;
   width: 350px;
-  height: auto;
+  /*  */
   margin-left: auto;
   margin-right: auto;
-  border-radius: 5px;
-  padding-top: 10px;
-  margin-top: 90px;
+  /* /* border-radius: 5px; */
+  /* padding-top: 10px;
+  margin-top: 90px;  */
   animation: slide 1s forwards;
 }
 @keyframes slide {
@@ -100,10 +100,11 @@ button {
   /* margin-left: 38px; */
   padding: 10px 0;
   border-radius: 20px;
-  text-align: center;
   outline: none;
   border: none;
   cursor: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* button:hover {

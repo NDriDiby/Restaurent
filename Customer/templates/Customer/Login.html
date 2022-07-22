@@ -1,31 +1,35 @@
 {% extends "Customer/base_login.html" %}{% load static %} {% load crispy_forms_tags %}{% block content %}
 <div class="">
 
-  <h4 class="mt-2" style="color: sandybrown">
+  <div>
+    <img class ='mb-5' src="{% static 'Resto/Logo.png' %}"  alt="Nova_Cloud">
+  </div>
+
+  <h3 class="mt-2 text-center" style="color: sandybrown">
     Icarus
     <small class="text-muted"
-      ><i> <strong> Bar & Restaurant</strong> </i></small
+      ><i> <strong > Bar & Restaurant</strong> </i></small
     >
-  </h4>
+  </h3>
   
-  <small class="text-muted" style="padding-left: 10px">Merci d'utiliser notre service.</small>
+  <p class="text-muted text-center"><small>Merci d'utiliser notre service.</small></p>
   
   <h1>Connexion</h1>
   
-  <form method="POST" id="login">
+  <form class="text-center" method="POST" id="login">
     {% csrf_token %}
     <div class="flex justify-center items-center">
       <i class="fas fa-envelope text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
       <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
-      <!-- <label style="padding-right: 225px" for="Email">Email</label><br /> -->
     </div>
+
     <div class="two flex justify-center items-center">
       <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
       <!-- <label style="padding-right: 165px" for="Password">Mot de passe</label><br /> -->
       <input class="rounded-r-full p-4 border-0" type="password" placeholder="Tapez votre mot de passe" {{form.password}}<br />
     </div>
   
-    <a href="{% url 'password_reset' %}"><p id="forget">Mot de passe oublié?</p></a>
+    <a href="{% url 'password_reset' %}"><p class="underline text-blue-300" id="forget">Mot de passe oublié?</p></a>
   
     <button class="bg-orange-300 text-white  px-4 py-2 mt-3" type="submit">Connexion</button>
   
@@ -49,7 +53,6 @@
         <a
           class="bg-blue-500 rounded-full font-bold py-3 px-24 text-white mt-5 mb-2"
           href="/register/?session={{app}}"
-      
         >
           S'inscrire
         </a>
