@@ -101,7 +101,7 @@
 
     
 
-    <div class="p-3 pt-5">
+    <div class="p-5 pt-5">
       <!-- UserBox -->
       <div class="flex justify-between userBox items-center">
         {% if user.is_authenticated %}
@@ -202,10 +202,11 @@
 </div> -->
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
-
-<button class="block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="small-modal">
-  Small modal
-  </button>
+<div class="relative">
+  <button class="block fixed bottom-0 left-0 w-20 h-20 animate-bounce m-5 rounded-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="small-modal">
+    Your Order
+    </button>
+</div>
 <!-- Small Modal -->
 <div id="small-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
   <div class="relative p-4 w-full max-w-md h-full md:h-auto">
@@ -214,7 +215,7 @@
           <!-- Modal header -->
           <div class="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
               <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-                  Small modal
+                 My Order
               </h3>
               <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="small-modal">
                   <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -226,7 +227,7 @@
             {% if order %}
             <div class="showOrder mt-3 text-center">
               <div class="mt-4">
-                <h6 style="color: rgb(209, 112, 131)">My Order - ({{order.date_ordered}})</h6>
+                <h6 style="color: rgb(209, 112, 131)">Date & Time: ({{order.date_ordered}})</h6>
                 <h6>Reference ID: <small>{{order.transaction_id}}</small></h6>
                 <h6>Table: {{order.table}}</h6>
                 <h6>Total: {{order.get_order_total}} FCFA</h6>
@@ -265,10 +266,10 @@
       
       <!-- Menu -->
       <div class="text-center my-3 sm:pt-20 lg:pt-40 ">
-        <h1 class="font-bold sm:text-xl lg:text-3xl text-left px-3 py-2" style="color: chocolate;">MENU</h1>
+        <h1 class="font-bold sm:text-xl lg:text-3xl text-left px-5 py-2" style="color: chocolate;">MENU</h1>
       </div>
 
-        <div class="grid grid-cols-2 justify-center gap-2 lg:gap-y-4 md:grid-cols-3  w-full px-2">
+        <div class="grid grid-cols-2 justify-center gap-2 lg:gap-y-4 md:grid-cols-3  w-full px-5">
           {% for cat in category %}
           <div class="flex justify-center">
             <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60">
