@@ -1,62 +1,63 @@
 {% extends 'Customer/base_login.html' %} {% load static %} {% load crispy_forms_tags %} {% block content %}
 
-<h4 class="mt-2" style="color: sandybrown">
+
+<div>
+  <img class ='mb-5' src="{% static 'Resto/Logo.png' %}"  alt="Nova_Cloud">
+</div>
+
+<h3 class="mt-2 text-center" style="color: sandybrown">
   Icarus
   <small class="text-muted"
-    ><i> <strong> Bar & Restaurant</strong> </i></small
+    ><i> <strong > Bar & Restaurant</strong> </i></small
   >
-</h4>
+</h3>
 
-<small class="text-muted" style="padding-left: 10px">Nous avons presque terminé. Avant d'utiliser nos services, vous devez créer un compte.</small>
-
+<p class="text-muted text-center"><small>  Nous avons presque terminé. Avant d'utiliser nos services, vous devez créer un compte.</small></p>
 <form method="POST" class="mt-5">
   {% csrf_token %}
 
-  <div class="one">
-    <i class="fas fa-user-circle"></i>
-    <label style="padding-right: 230px" for="Email">Nom</label><br />
-    <input type="text" placeholder="Tapez votre nom de famille" {{form.nom}} <br />
+  <div class="flex justify-center items-center">
+    <i class="fas fa-user-circle text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+    <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre nom de famille" {{form.nom}} <br />
   </div>
 
-  <div class="two">
-    <i class="fas fa-user-circle"></i>
-    <label style="padding-right: 210px" for="Password">Prenom</label><br />
-    <input type="text" placeholder="Tapez votre prénom" {{form.prenom}} <br />
+  <div class="flex justify-center items-center">
+    <i class="fas fa-user-circle text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+    <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre prénom" {{form.prenom}}  <br />
   </div>
 
-  <div class="two">
-    <div class="message p-2" style="color: brown">{{form.username.errors}}</div>
-
-    <i class="fas fa-envelope"></i>
-    <label style="padding-right: 225px" for="username">{{form.username.label}}</label><br />
-    <input type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
+  <!-- ~~~~~~~~~~~~~~~ username ~~~~~~~~~~~~~~~~ -->
+  <div class="message p-2" style="color: brown">{{form.username.errors}}</div>
+  <div class="flex justify-center items-center">
+    <i class="fas fa-envelope text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+    <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
+  </div>
+  <!-- ~~~~~~~~~~~~~~~ phone number ~~~~~~~~~~~~~~~~ -->
+  <div class="message p-2" style="color: brown">{{form.phone_number.errors}}</div>
+  <div class="flex justify-center items-center">
+    <i class="fas fa-phone text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+    <input class="px-4 rounded-r-full py-4 border-0"  id="phone_number" type="text" name="phone_number" placeholder="+225" {{form.phone_number}}<br />
+  </div>
+  <!-- ~~~~~~~~~~~~~~~ password ~~~~~~~~~~~~~~~~ -->
+  <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
+  <div class="flex justify-center items-center">
+    <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+    <input class="px-4 rounded-r-full py-4 border-0" type="password" placeholder="Tapez votre mot de passe" {{form.password1}}<br />
+  </div>
+  <!-- ~~~~~~~~~~~~~~~ confirm password ~~~~~~~~~~~~~~~~ -->
+  <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
+  <div class="flex justify-center items-center">
+    <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+    <input class="px-4 rounded-r-full py-4 border-0" type="password" placeholder="Confirmer votre mot de passe" {{form.password2}}<br />
   </div>
 
-  <div class="two">
-    <div class="message p-2" style="color: brown">{{form.phone_number.errors}}</div>
 
-    <i class="fas fa-phone-square-alt"></i>
-    <label style="padding-right: 100px" for="phone_number">Numéro de téléphone</label><br />
-    <input id="phone_number" type="text" name="phone_number" placeholder="+225" {{form.phone_number}} <br />
-  </div>
-
-  <div class="two">
-    <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
-    <i class="fas fa-lock"></i>
-    <label style="padding-right: 163px" for="Password1">Mot de passe</label><br />
-    <input type="password" placeholder="Tapez votre mot de passe" {{form.password1}} <br />
-  </div>
-
-  <div class="two">
-    <i class="fas fa-lock"></i>
-    <label style="padding-right: 76px" for="Password2">Confirmez mot de passe</label><br />
-    <input type="password" placeholder="Confirmer votre mot de passe" {{form.password2}}
-  </div>
-
-  <button id="inscrire" class="mt-2" type="submit">S'inscrire</button>
-
+  <button class="bg-blue-500 rounded-full font-bold py-3 text-white mt-5 mb-2" id="inscrire">S'inscrire</button>
+  
+  
+  
   <div style="text-align: center">
-    <small class="text-muted">Vous avez déjà un compte? <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
+    <small class="text-muted underline text-blue-300">Vous avez déjà un compte?<br> <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
   </div>
 </form>
 
