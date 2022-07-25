@@ -12,52 +12,54 @@
   >
 </h3>
 
-<p class="text-muted text-center"><small>  Nous avons presque terminé. Avant d'utiliser nos services, vous devez créer un compte.</small></p>
-<form method="POST" class="mt-5">
-  {% csrf_token %}
-
-  <div class="flex justify-center items-center">
-    <i class="fas fa-user-circle text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-    <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre nom de famille" {{form.nom}} <br />
-  </div>
-
-  <div class="flex justify-center items-center">
-    <i class="fas fa-user-circle text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-    <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre prénom" {{form.prenom}}  <br />
-  </div>
-
-  <!-- ~~~~~~~~~~~~~~~ username ~~~~~~~~~~~~~~~~ -->
-  <div class="message p-2" style="color: brown">{{form.username.errors}}</div>
-  <div class="flex justify-center items-center">
-    <i class="fas fa-envelope text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-    <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
-  </div>
-  <!-- ~~~~~~~~~~~~~~~ phone number ~~~~~~~~~~~~~~~~ -->
-  <div class="message p-2" style="color: brown">{{form.phone_number.errors}}</div>
-  <div class="flex justify-center items-center">
-    <i class="fas fa-phone text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-    <input class="px-4 rounded-r-full py-4 border-0"  id="phone_number" type="text" name="phone_number" placeholder="+225" {{form.phone_number}}<br />
-  </div>
-  <!-- ~~~~~~~~~~~~~~~ password ~~~~~~~~~~~~~~~~ -->
-  <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
-  <div class="flex justify-center items-center">
-    <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-    <input class="px-4 rounded-r-full py-4 border-0" type="password" placeholder="Tapez votre mot de passe" {{form.password1}}<br />
-  </div>
-  <!-- ~~~~~~~~~~~~~~~ confirm password ~~~~~~~~~~~~~~~~ -->
-  <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
-  <div class="flex justify-center items-center">
-    <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-    <input class="px-4 rounded-r-full py-4 border-0" type="password" placeholder="Confirmer votre mot de passe" {{form.password2}}<br />
-  </div>
-
-
-  <button class="bg-blue-500 rounded-full font-bold py-3 text-white mt-5 mb-2" id="inscrire">S'inscrire</button>
+<p class="text-muted text-center px-10"><small>  Nous avons presque terminé. Avant d'utiliser nos services, vous devez créer un compte.</small></p>
+<form class="flex justify-center items-center" method="POST" class="mt-5">
+  <div>
+    {% csrf_token %}
+    <div class="flex justify-center items-center my-5">
+      <i class="fas fa-user-circle text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre nom de famille" {{form.nom}} <br />
+    </div>
+  
+    <div class="flex justify-center items-center">
+      <i class="fas fa-user-circle text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre prénom" {{form.prenom}}  <br />
+    </div>
+  
+    <!-- ~~~~~~~~~~~~~~~ username ~~~~~~~~~~~~~~~~ -->
+    <div class="message p-2" style="color: brown">{{form.username.errors}}</div>
+    <div class="flex justify-center items-center">
+      <i class="fas fa-envelope text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
+    </div>
+    <!-- ~~~~~~~~~~~~~~~ phone number ~~~~~~~~~~~~~~~~ -->
+    <div class="message p-2" style="color: brown">{{form.phone_number.errors}}</div>
+    <div class="flex justify-center items-center ">
+      <i class="fas fa-phone text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0"  id="phone_number" type="text" name="phone_number" placeholder="+225" {{form.phone_number}}<br />
+    </div>
+    <!-- ~~~~~~~~~~~~~~~ password ~~~~~~~~~~~~~~~~ -->
+    <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
+    <div class="flex justify-center items-center">
+      <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0" type="password" placeholder="Tapez votre mot de passe" {{form.password1}}<br />
+    </div>
+    <!-- ~~~~~~~~~~~~~~~ confirm password ~~~~~~~~~~~~~~~~ -->
+    <div class="message p-2" style="color: brown">{{form.password2.errors}}</div>
+    <div class="flex justify-center items-center">
+      <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0" type="password" placeholder="Confirmer votre mot de passe" {{form.password2}}<br />
+    </div>
   
   
-  
-  <div style="text-align: center">
-    <small class="text-muted underline text-blue-300">Vous avez déjà un compte?<br> <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
+    <button class="bg-blue-500 rounded-full font-bold py-3 text-white mt-5 mb-2" id="inscrire">S'inscrire</button>
+    
+    
+    
+    <div style="text-align: center">
+      <small class="text-muted underline text-blue-300">Vous avez déjà un compte?<br> <a class="ml-2" href="/login/?session={{app}}"> S'identifier </a> </small>
+    </div>
+
   </div>
 </form>
 
