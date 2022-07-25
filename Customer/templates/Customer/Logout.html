@@ -1,14 +1,9 @@
 {% extends "Customer/base_login.html" %} {% block content %} {% load static %}
 
-
-
 <div class="flex justify-center items-center w-full min-h-screen">
-
-
   <div class="product" style="text-align: center">
-
     <div>
-      <img class ='mb-5' src="{% static 'Resto/Logo.png' %}"  alt="Nova_Cloud">
+      <img class="mb-5" src="{% static 'Resto/Logo.png' %}" alt="Nova_Cloud" />
     </div>
     <h4 class="mt-2" style="color: sandybrown">
       Icarus
@@ -22,9 +17,7 @@
     <div class="border-top pt-4" style="text-align: center">
       <small class="text-muted">
         <a class="btn btn-success mb-2" href="/login/?session={{app}}">
-          <button class="bg-orange-300 text-white  px-4 py-2 mt-3" type="submit">
-            Connexion
-          </button>
+          <button class="bg-orange-300 text-white px-4 py-2 mt-3" type="submit">Connexion</button>
         </a>
       </small>
     </div>
