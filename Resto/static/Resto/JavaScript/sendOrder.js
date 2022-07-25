@@ -307,7 +307,7 @@ function cinetpayAPI() {
       site = response.site_id;
 
       //PAY FOR ORDER
-      checkout(api, site, 100);
+      checkout(api, site, toPay);
     },
   });
 }
