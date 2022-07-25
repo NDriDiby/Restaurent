@@ -16,21 +16,20 @@
   
   <h1>Connexion</h1>
   
+  {% csrf_token %}
   <form class="text-center" method="POST" id="login">
-    {% csrf_token %}
     <div class="flex justify-center items-center">
       <i class="fas fa-envelope text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-      <input class="px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
+      <input class="bg-orange-100 px-4 rounded-r-full py-4 border-0" type="text" placeholder="Tapez votre e-mail" {{form.username}} <br />
     </div>
 
-    <div class="two flex justify-center items-center">
+    <div class="mt-5 flex justify-center items-center">
       <i class="fas fa-lock text-2xl bg-gray-100 p-[12px] rounded-l-full" style="color: sandybrown"></i>
-      <!-- <label style="padding-right: 165px" for="Password">Mot de passe</label><br /> -->
-      <input class="rounded-r-full p-4 border-0" type="password" placeholder="Tapez votre mot de passe" {{form.password}}<br />
+      <input class="bg-orange-100 rounded-r-full p-4 border-0" type="password" placeholder="Tapez votre mot de passe" {{form.password}}<br />
     </div>
   
     <a href="{% url 'password_reset' %}"><p class="underline text-blue-300" id="forget">Mot de passe oublié?</p></a>
-  
+
     <button class="bg-orange-300 text-white  px-4 py-2 mt-3" type="submit">Connexion</button>
   
     
