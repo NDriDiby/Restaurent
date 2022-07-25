@@ -365,7 +365,6 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
-    
     item_name = None
     total_cart = None
     tot_item= None
@@ -381,10 +380,9 @@ def UpdatedItem(request):
         
         print('THIS MY CHOICE:',accompagment)
         
-        
         acc = accompagment.split(",")
         my_acc = Accompagnement.objects.filter(name__in=acc)
-        print(my_acc)
+        print('ACCOMP',my_acc)
         accomp_id = tuple([x.id for x in my_acc])
         print(accomp_id)
         # total_acc = sum([x.prix for x in my_acc])
@@ -396,13 +394,13 @@ def UpdatedItem(request):
         customer,created= Customer.objects.get_or_create(user = request.user)
         item = Item.objects.get(id=itemId)
         item_name = item.name
-        order = Order.objects.filter(customer__id = customer.id).last()
         order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-        orderItem.accompagnememt.add(1,3)
+
+        orderItem= OrderItem.objects.create(order = order,item = item, ingredient = choice)
+        orderItem.accompagnememt.add(*accomp_id)
         orderItem.save()
-        print('Print my ACC',orderItem.accompagnememt.all())
-        print(orderItem)
+        # print('Print my ACC',orderItem.accompagnememt.all())
+        # print(orderItem)
 
         
         
