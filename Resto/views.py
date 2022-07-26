@@ -365,7 +365,6 @@ def MyOrder(request):
 #Backend Process of Item
 def UpdatedItem(request):
     
-    
     item_name = None
     total_cart = None
     tot_item= None
@@ -381,10 +380,9 @@ def UpdatedItem(request):
         
         print('THIS MY CHOICE:',accompagment)
         
-        
         acc = accompagment.split(",")
         my_acc = Accompagnement.objects.filter(name__in=acc)
-        print(my_acc)
+        print('ACCOMP',my_acc)
         accomp_id = tuple([x.id for x in my_acc])
         print(accomp_id)
         # total_acc = sum([x.prix for x in my_acc])
@@ -394,29 +392,37 @@ def UpdatedItem(request):
         #Update the Cart of the current user
         customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
+        print('WHO IS ORDERING',customer)
         item = Item.objects.get(id=itemId)
         item_name = item.name
-        order = Order.objects.filter(customer__id = customer.id).last()
         order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-        orderItem.accompagnememt.add(1,3)
-        orderItem.save()
-        print('Print my ACC',orderItem.accompagnememt.all())
-        print(orderItem)
+        if my_acc:
+            orderItem= OrderItem.objects.create(customer = customer,order = order)
+            orderItem.accompagnememt.add(*accomp_id)
+            orderItem.item = item  
+            orderItem.ingredient = choice
+            orderItem.save()
+            print('TOTAL_ACCOMP',orderItem.total_accomp())
+        else:
+            orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+            print('PRINT NO ACCOMP',created)
+        # print('Print my ACC',orderItem.accompagnememt.all())
+        # print(orderItem)
 
         
         
         # #Increase item
-        # if action =='add':
+        if action =='add':
+            orderItem = OrderItem.objects.get(id = orderItem.id)
+            print('WHAT ITEM IS IT',orderItem.id)
+            orderItem.quantity = (orderItem.quantity + 1)
+            orderItem.save()
             
-        #     orderItem.quantity = (orderItem.quantity + 1)
-        #     orderItem.save()
             
-            
-        # #Decrease item
-        # elif action == 'remove':
-        #     orderItem.quantity = (orderItem.quantity - 1)
-        #     orderItem.save()
+        #Decrease item
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - 1)
+            orderItem.save()
 
 
 

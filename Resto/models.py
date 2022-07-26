@@ -129,16 +129,15 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.item)
     
-    # def total_accomp(self):
-    #     acc = None
-    #     if self.accompagnememt:
-    #         for i in self.accompagnememt:
-    #             acc = self.accompagnememt.split(",")
-    #         my_acc = Accompagnement.objects.filter(name__in=acc)
-    #         total_acc = sum([x.prix for x in my_acc])
-    #         return total_acc 
-    #     else:
-    #         return 0
+    def total_accomp(self):
+        if self.accompagnememt:
+            all_accomp = self.accompagnememt.all()
+            print("MY ACCOMPAGEMENT METHOD",self.accompagnememt.all())
+            total_acc = sum([x.prix for x in all_accomp])
+            print('HERE IS MY TOTAL',total_acc)
+            return total_acc
+        return 0
+   
     
     
     #Get total
