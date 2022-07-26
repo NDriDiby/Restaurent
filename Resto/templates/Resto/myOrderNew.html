@@ -478,6 +478,8 @@
   let paymentCash = document.querySelector(".paiment-cash");
   let paymentCard = document.querySelector(".paiment-mobile-card");
   let payments = document.querySelectorAll(".payment");
+  var paiement_method;
+
   payments.forEach((element) => {
     if (sendOrderBtn.classList.contains("opacity-0")) {
       sendOrderBtn.classList.add("disableClick");
@@ -498,7 +500,15 @@
         sendOrderBtn.classList.remove("opacity-0");
         sendOrderBtn.classList.remove("disableClick");
       }
+
+      paiement_method = target
+
+
     });
+
+        
+        
+
   });
 </script>
 <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>

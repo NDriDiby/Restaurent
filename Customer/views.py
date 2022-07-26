@@ -187,23 +187,23 @@ def NoAccess(request):
 
 
 
-def csrf_failure(request,reason=" no token"):
+# def csrf_failure(request,reason=" no token"):
     
-    #Table Number
-    table = get_table_number(request)
-    if table == None:
-        pass
+#     #Table Number
+#     table = get_table_number(request)
+#     if table == None:
+#         pass
     
-    #Tracking user session
-    targetApp = target_app(request)
-    session = track_session(request)
+#     #Tracking user session
+#     targetApp = target_app(request)
+#     session = track_session(request)
     
-    context={
-        'session':session,
-        'app':targetApp
-    }
+#     context={
+#         'session':session,
+#         'app':targetApp
+#     }
     
-    return render(request,'Customer/csrf_token_error.html',context)
+#     return render(request,'Customer/csrf_token_error.html',context)
 
 
 # def PasswordResetRequest(request):

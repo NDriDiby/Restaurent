@@ -45,9 +45,14 @@ for (let i = 0; i < sendOrder.length; i++) {
     var action = this.dataset.action;
     var order = this.dataset.order;
 
-    //CINETPAY API
-    //cinetpayAPI();
-    sendMyOrder(action, order);
+    console.log("Paiement_method", paiement_method.innerText);
+
+    if (paiement_method.innerText === "Mobile") {
+      //CINETPAY API
+      cinetpayAPI();
+    } else {
+      sendMyOrder(action, order);
+    }
   });
 }
 
@@ -302,7 +307,7 @@ function cinetpayAPI() {
       site = response.site_id;
 
       //PAY FOR ORDER
-      checkout(api, site, 100);
+      checkout(api, site, toPay);
     },
   });
 }

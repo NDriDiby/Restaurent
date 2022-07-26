@@ -55,7 +55,7 @@ CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacl
 
 # CSRF_COOKIE_DOMAIN =['novacloudlab.com']
 
-CSRF_FAILURE_VIEW = 'Customer.views.csrf_failure'
+# CSRF_FAILURE_VIEW = 'Customer.views.csrf_failure'
 
 
 # Application definition
