@@ -392,29 +392,37 @@ def UpdatedItem(request):
         #Update the Cart of the current user
         customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
+        print('WHO IS ORDERING',customer)
         item = Item.objects.get(id=itemId)
         item_name = item.name
         order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-
-        orderItem= OrderItem.objects.create(order = order,item = item, ingredient = choice)
-        orderItem.accompagnememt.add(*accomp_id)
-        orderItem.save()
+        if my_acc:
+            orderItem= OrderItem.objects.create(customer = customer,order = order)
+            orderItem.accompagnememt.add(*accomp_id)
+            orderItem.item = item  
+            orderItem.ingredient = choice
+            orderItem.save()
+            print('TOTAL_ACCOMP',orderItem.total_accomp())
+        else:
+            orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+            print('PRINT NO ACCOMP',created)
         # print('Print my ACC',orderItem.accompagnememt.all())
         # print(orderItem)
 
         
         
         # #Increase item
-        # if action =='add':
+        if action =='add':
+            orderItem = OrderItem.objects.get(id = orderItem.id)
+            print('WHAT ITEM IS IT',orderItem.id)
+            orderItem.quantity = (orderItem.quantity + 1)
+            orderItem.save()
             
-        #     orderItem.quantity = (orderItem.quantity + 1)
-        #     orderItem.save()
             
-            
-        # #Decrease item
-        # elif action == 'remove':
-        #     orderItem.quantity = (orderItem.quantity - 1)
-        #     orderItem.save()
+        #Decrease item
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - 1)
+            orderItem.save()
 
 
 
