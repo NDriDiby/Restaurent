@@ -52,21 +52,21 @@ for (var i = 0; i < updated_but.length; i++) {
       }
     }
 
-    //From order page (ingredient)
-    if (custChoice[0] == null) {
-      custChoice = ingre;
-    }
+    // //From order page (ingredient)
+    // if (custChoice[0] == null) {
+    //   custChoice = ingre;
+    // }
 
-    //No ingredient item (choice)
-    if (custChoice == undefined) {
-      custChoice = "None";
-    }
+    // //No ingredient item (choice)
+    // if (custChoice == undefined) {
+    //   custChoice = "None";
+    // }
 
-    //From order page (ingredient) - (no choice)
-    if (ingre == "None") {
-      ingre = " ";
-      custChoice = ingre;
-    }
+    // //From order page (ingredient) - (no choice)
+    // if (ingre == "None") {
+    //   ingre = " ";
+    //   custChoice = ingre;
+    // }
 
     console.log(custChoice);
     console.log(accomp_id);
