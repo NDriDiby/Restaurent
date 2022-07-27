@@ -363,6 +363,7 @@ def MyOrder(request):
 
 
 #Backend Process of Item
+my_order_item = []
 def UpdatedItem(request):
     
     item_name = None
@@ -387,7 +388,10 @@ def UpdatedItem(request):
         print(accomp_id)
         # total_acc = sum([x.prix for x in my_acc])
         # print(total_acc)
-
+        
+       
+        
+       
     
         #Update the Cart of the current user
         customer = request.user
@@ -401,16 +405,18 @@ def UpdatedItem(request):
             orderItem.accompagnememt.add(*accomp_id)
             orderItem.item = item  
             orderItem.ingredient = choice
+            my_order_item.append(orderItem)
             orderItem.save()
             print('TOTAL_ACCOMP',orderItem.total_accomp())
+            
         else:
             orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
             print('PRINT NO ACCOMP',created)
         # print('Print my ACC',orderItem.accompagnememt.all())
         # print(orderItem)
-
+        print('ALL_MY_ODER_ITEM',my_order_item)
         
-        
+         
         # #Increase item
         if action =='add':
             orderItem = OrderItem.objects.get(id = orderItem.id)
