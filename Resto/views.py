@@ -366,15 +366,18 @@ def UpdatedItem(request):
     tot_item= None
     total_accomp = 0
     accomp = None
+    choice = None
     
     if request.method == 'POST':
         
-        itemId = request.POST['itemId']
-        action = request.POST['action']
-        choice = request.POST.get('choice')
-        accompagment = request.POST.get('accomp')
+        #Data from FrontEnd
+        itemId = request.POST['itemId'] # Item_id
+        action = request.POST['action'] #add or remove
+        choice = request.POST.get('choice') #ingredient
+        accompagment = request.POST.get('accomp') # Accompagement
         
-        print('THIS MY CHOICE:',accompagment)
+        print('THIS MY ACCOMP:',type(accompagment))
+        print('THIS MY CHOICE:',type(choice))
         
         acc = accompagment.split(",")
         my_acc = Accompagnement.objects.filter(name__in=acc)
@@ -393,36 +396,46 @@ def UpdatedItem(request):
         item = Item.objects.get(id=itemId)
         item_name = item.name
         order,created= Order.objects.get_or_create(customer=customer,status = 'Pending')
-        if my_acc:
-            orderItem= OrderItem.objects.create(customer = customer,order = order)
-            orderItem.accompagnememt.add(*accomp_id)
-            orderItem.item = item  
-            orderItem.ingredient = choice
-            my_order_item.append(orderItem)
-            orderItem.save()
-            print('TOTAL_ACCOMP',orderItem.total_accomp())
+        
+        if (accompagment == ' '):
+                orderItem,created= OrderItem.objects.get_or_create(customer=customer,order = order,item = item)
+                print("ORDER ITEM INSIDE IF",orderItem)
+        
+        # if choice and not my_acc:
+        #     orderItem,created= OrderItem.objects.get_or_create(custumer=customer,order = order,item = item, ingredient = choice)
             
-        else:
-            orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
-            print('PRINT NO ACCOMP',created)
-            print('PRINT NO ACCOMP',orderItem.accompagnememt.all())
+        # if my_acc and choice:
+        #     retrive_order = OrderItem.objects.filter(customer=customer,order=order,item = item, ingredient = choice,accompagnememt = accomp_id)
+        #     if retrive_order:
+        #         print('I exist',retrive_order)
+        #         orderItem= OrderItem.objects.get(customer = customer,order = order, item=item, ingredient = choice, accompagnememt = accomp_id)
+        #     else:
+        #         orderItem= OrderItem.objects.create(customer = customer,order = order)
+        #         orderItem.accompagnememt.add(*accomp_id)
+        #         orderItem.item = item  
+        #         orderItem.ingredient = choice
+        #         orderItem.save()
+        #         print('TOTAL_ACCOMP',orderItem.total_accomp())
+            
+        # else:
+        #     orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
+        #     print('PRINT NO ACCOMP',created)
+        #     print('PRINT NO ACCOMP',orderItem.accompagnememt.all())
         # print('Print my ACC',orderItem.accompagnememt.all())
         # print(orderItem)
         print('ALL_MY_ODER_ITEM',my_order_item)
         
          
         # #Increase item
-        if action =='add':
-            orderItem = OrderItem.objects.get(id = orderItem.id)
-            print('WHAT ITEM IS IT',orderItem.id)
-            orderItem.quantity = (orderItem.quantity + 1)
-            orderItem.save()
+        # if action =='add':
+        #     orderItem.quantity = (orderItem.quantity + 1)
+        #     orderItem.save()
             
             
-        #Decrease item
-        elif action == 'remove':
-            orderItem.quantity = (orderItem.quantity - 1)
-            orderItem.save()
+        # #Decrease item
+        # elif action == 'remove':
+        #     orderItem.quantity = (orderItem.quantity - 1)
+        #     orderItem.save()
 
 
 

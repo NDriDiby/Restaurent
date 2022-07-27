@@ -59,7 +59,7 @@ for (var i = 0; i < updated_but.length; i++) {
 
     //No ingredient item (choice)
     if (custChoice == undefined) {
-      custChoice = " ";
+      custChoice = "None";
     }
 
     //From order page (ingredient) - (no choice)
@@ -67,6 +67,9 @@ for (var i = 0; i < updated_but.length; i++) {
       ingre = " ";
       custChoice = ingre;
     }
+
+    console.log(custChoice);
+    console.log(accomp_id);
 
     $.ajax({
       url: "/texasgrillz/updateitem/",
