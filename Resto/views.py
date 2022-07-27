@@ -137,7 +137,8 @@ def HomePage(request):
         'app':targetApp,
         'side':sides
     }
-    return render(request,'Resto/HomePageNew.html',context)
+    # return render(request,'Resto/HomePageNew.html',context)
+    return render(request,'Resto/LandingPage.html', context)
 
 
 def UserProfile(request):
