@@ -274,8 +274,12 @@ def ItemDetails(request,item_id):
             cartItem = order.get_order_quantity()
             my_total = order.get_order_total()
             
+            
+            
             popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
             show_pop_item = Item.objects.filter(name__in=list(popular_item))
+            
+            
             
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')
@@ -285,18 +289,8 @@ def ItemDetails(request,item_id):
                 messages.success(request,f"Votre nouveau numéro de table est {table}")
                 order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
                 return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
-                
-                
             
-            if request.method == 'POST':
-                order_table = request.POST.get('item')
-                
-                
-                myitem = Item.objects.get(id=order_table)
-                my_order_item = OrderItem.objects.filter(order= order, item = myitem)
-                tot_item = [sum(x.quantity for x in my_order_item)][0]
-                messages.success(request,f"({tot_item}) {myitem} ajouté votre table")
-                
+            
                 
         except:
             pass
@@ -362,6 +356,7 @@ def MyOrder(request):
     return render(request,'Resto/myOrderNew.html',context)
 
 
+
 #Backend Process of Item
 my_order_item = []
 def UpdatedItem(request):
@@ -390,8 +385,6 @@ def UpdatedItem(request):
         # print(total_acc)
         
        
-        
-       
     
         #Update the Cart of the current user
         customer = request.user
@@ -412,6 +405,7 @@ def UpdatedItem(request):
         else:
             orderItem,created= OrderItem.objects.get_or_create(order = order,item = item, ingredient = choice)
             print('PRINT NO ACCOMP',created)
+            print('PRINT NO ACCOMP',orderItem.accompagnememt.all())
         # print('Print my ACC',orderItem.accompagnememt.all())
         # print(orderItem)
         print('ALL_MY_ODER_ITEM',my_order_item)
