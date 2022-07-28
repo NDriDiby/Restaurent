@@ -5,9 +5,42 @@
     border-top: 900px solid white;
 }
 
+@media screen and (min-width: 768px) {
+    .rec{
+    border-right: 1100px solid rgb(234 88 12);
+    border-top: 980px solid white;
+}  
+}
+@media screen and (min-width: 820px) {
+    .rec{
+    border-right: 980px solid rgb(234 88 12);
+    border-top: 1300px solid white;
+}  
+}
+@media screen and (min-height: 813px) {
+    body{
+        overflow: hidden;
+    } 
+}
+.animate{
+
+    transform: scale(5);
+    transform: translate(-10px, 40px);
+    transition: all 2s;
+  
+}
 </style>
-<body class="overflow-hidden">
-<nav class="bg-white border-gray-200 py-2.5 px-5 dark:bg-gray-900 overflow-hidden">
+<script>
+    function myOnscroll(){
+        let col = document.querySelector('.big') 
+        console.log(window.pageYOffset)
+        window.pageYOffset > 110 ? col.classList.add('animate') : col.classList.remove('animate');
+    }
+</script>
+<body onscroll="myOnscroll()">
+
+<!-- ~~~~~~~~~~~~~~~~~~ navbar ~~~~~~~~~~~~~~~~~~  -->
+<nav class="z-10 bg-white sticky top-0 border-gray-200 py-2.5 px-5 dark:bg-gray-900 overflow-hidden">
     <div class="flex flex-wrap justify-between items-center">
       <a class="flex items-center">
           <span class="self-center businesslogo text-xl font-semibold whitespace-nowrap dark:text-white"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="100px" height="100px" /></span>
@@ -37,15 +70,15 @@
         </ul>
       </div>
     </div>
-  </nav>
-  <div class="px-5 flex flex-col gap-y-2 relative overflow-hidden min-h-screen">
+</nav>
+<!-- ~~~~~~~~~~~~~~~~~~ navbar ~~~~~~~~~~~~~~~~~~  -->
+
+<!-- ~~~~~~~~~~~~~~~~~~ info ~~~~~~~~~~~~~~~~~~  -->
+  <div class="py-5 px-5 flex flex-col gap-y-2 relative overflow-hidden min-h-screen">
     <div class="rec absolute bg-orange-600 top-0 right-0 -z-10"></div>
-    <h1 class="text-4xl w-72 font-bold text-gray-600 py-5">We make the double cheesy burger.</h1>
-    <img class="h-[350px]" src="{%static 'Resto/burger-background.png' %}"  alt="">
-
-   
-
-    <div class="flex overflow-auto pt-5">
+    <h1 class="text-4xl w-72 font-bold text-gray-600 py-5 md:w-[500px] md:px-4 md:text-5xl">We make the double cheesy burger.</h1>
+    <img class=" big h-[280px] md:h-[400px] md:w-[600px] md:ml-auto" src="{%static 'Resto/burger-background.png' %}"  alt="">
+    <div class="list-burger flex overflow-auto md:ml-auto items-center pt-5">
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
       <img class="w-20 h-20" src="{%static 'Resto/burger-background.png' %}" alt="">
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
@@ -53,24 +86,16 @@
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png' %}" alt="">
       <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt="">
     </div>
-
-   
-    <p class="font-bold text-white p-2 w-96 ml-auto">Best cheesy burger we serve in the heart of LA.
+    <p class="font-bold text-white py-2  max-w-6xl md:text-3xl md:w-[600px]">Best cheesy burger we serve in the heart of LA.
       Welcome and enjoy our tasteful burger thatbring joys at every moment
     </p>
-
     <div class="flex justify-center">
-
       <a href="/texasgrillz/menudetails/{{1}}/?session={{app}}">
-        <button class="w-32 py-3 rounded-lg bg-green-500 text-white">View Menu</button>
+        <button class="w-32 md:w-44 md:py-4 md:text-xl py-3 rounded-lg bg-green-500 text-white">View Menu</button>
       </a>
-
     </div>
-   
-    
-    
   </div>
- 
+ <!-- ~~~~~~~~~~~~~~~~~~ info ~~~~~~~~~~~~~~~~~~  -->
 </body>
 </html>
 
