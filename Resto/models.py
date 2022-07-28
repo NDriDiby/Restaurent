@@ -124,7 +124,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=0,null = True, blank = True )
     ingredient = models.CharField(null = True, blank = True,max_length=150)
     accompagnememt = models.ManyToManyField(Accompagnement,blank=True)
-    date_added = models.DateTimeField(auto_now=True)
+    date_added = models.DateTimeField(auto_now=True,)
 
     def __str__(self):
         return str(self.item)
@@ -132,7 +132,7 @@ class OrderItem(models.Model):
     def total_accomp(self):
         if self.accompagnememt:
             all_accomp = self.accompagnememt.all()
-            print("MY ACCOMPAGEMENT METHOD",self.accompagnememt.all())
+            # print("MY ACCOMPAGEMENT METHOD",self.accompagnememt.all())
             total_acc = sum([x.prix for x in all_accomp])
             print('HERE IS MY TOTAL',total_acc)
             return total_acc

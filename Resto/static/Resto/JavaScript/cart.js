@@ -5,7 +5,6 @@ var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var accompagnement = document.getElementsByClassName("accompagement");
-var form = document.getElementById("choiceOptions");
 
 var form = $("#item-details-form");
 console.log(form[0]);
