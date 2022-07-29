@@ -69,6 +69,8 @@ for (var i = 0; i < updated_but.length; i++) {
 
     console.log(custChoice);
     console.log(accomp_id);
+    console.log(location.href.split("&")[1].split("=")[1]);
+    table = location.href.split("&")[1].split("=")[1];
 
     $.ajax({
       url: "/texasgrillz/updateitem/",
@@ -79,6 +81,7 @@ for (var i = 0; i < updated_but.length; i++) {
         action: action,
         choice: custChoice.toString(),
         accomp: accomp_id.toString(),
+        table: table,
       },
       dataType: "json",
       success: function (response) {

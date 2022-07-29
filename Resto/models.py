@@ -129,6 +129,13 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.item)
     
+    
+    def retrieve_orderItem(self,order):
+        if self.accompagnememt:
+            all_accomp = list(self.accompagnememt.all())
+            self.assertQuerysetEqual(list(all_accomp), list(order))
+        
+    
     def total_accomp(self):
         if self.accompagnememt:
             all_accomp = self.accompagnememt.all()
