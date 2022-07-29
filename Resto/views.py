@@ -450,7 +450,7 @@ def UpdatedItem(request):
                             my_order_item.quantity = (my_order_item.quantity + 1)
                             my_order_item.save()
                         break
-                    temp_order_item = 0
+                    # temp_order_item = 0
                     # else:
                     #     print("ORDER_ITEM_RETRIVE_ACCOMP")
                     #     print('I AM ALREADY THERE')
