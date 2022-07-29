@@ -104,10 +104,10 @@ class Order(models.Model):
     
     
     #Total value of cart
-    # def get_order_total(self):
-    #     order = self.orderitem_set.all()
-    #     total = sum([item.get_total() for item in order])
-    #     return total
+    def get_order_total(self):
+        order = self.orderitem_set.all()
+        total = sum([item.get_total() for item in order])
+        return total
 
 
     #Total quantity in the cart
@@ -130,16 +130,11 @@ class OrderItem(models.Model):
         return str(self.item)
     
     
-    def retrieve_orderItem(self,order):
-        if self.accompagnememt:
-            all_accomp = list(self.accompagnememt.all())
-            self.assertQuerysetEqual(list(all_accomp), list(order))
-        
+    
     
     def total_accomp(self):
         if self.accompagnememt:
             all_accomp = self.accompagnememt.all()
-            # print("MY ACCOMPAGEMENT METHOD",self.accompagnememt.all())
             total_acc = sum([x.prix for x in all_accomp])
             print('HERE IS MY TOTAL',total_acc)
             return total_acc
@@ -148,23 +143,23 @@ class OrderItem(models.Model):
     
     
     #Get total
-    # def get_total(self):
-    #     total = (self.item.prix * self.quantity) 
-    #     acc = self.total_accomp()
-    #     global_total = total + acc
-    #     if acc!=0:
-    #         acc = self.quantity * self.total_accomp()
-    #         global_total = total + acc
-    #     return global_total 
+    def get_total(self):
+        total = (self.item.prix * self.quantity) 
+        acc = self.total_accomp()
+        global_total = total + acc
+        if acc!=0:
+            acc = self.quantity * self.total_accomp()
+            global_total = total + acc
+        return global_total 
     
     
     def get_total_item(self):
         total = (self.item.prix * self.quantity)
         return total
     
-    # def get_total_accomp(self):
-    #     total = self.quantity * self.total_accomp()
-    #     return total
+    def get_total_accomp(self):
+        total = self.quantity * self.total_accomp()
+        return total
     
     
 
