@@ -366,6 +366,7 @@ def UpdatedItem(request):
     total_accomp = 0
     accomp = None
     choice = None
+    order_item_exist = False
   
     
     
@@ -440,6 +441,7 @@ def UpdatedItem(request):
                     # print(set(order.accompagnememt.all()))
                 
                     if set(order_item.accompagnememt.all()) == set(my_acc):
+                        order_item_exist = True
                         print(order_item.id,'I GOT YOU')
                         print('COMPARE ITEM:',order_item.accompagnememt.all(),my_acc)
                         my_order_item = OrderItem.objects.get(id = order_item.id)
@@ -450,7 +452,12 @@ def UpdatedItem(request):
                             my_order_item.quantity = (my_order_item.quantity + 1)
                             my_order_item.save()
                         break
-                    temp_order_item = 0
+                if order_item_exist == False:
+                    print("retrieve items exist but no order item match")
+                    orderItem = OrderItem.objects.create(customer = customer,order = order, quantity =1)
+                    orderItem.accompagnememt.add(*accomp_id_tuple)
+                    orderItem.item = item 
+                    orderItem.save()
                     # else:
                     #     print("ORDER_ITEM_RETRIVE_ACCOMP")
                     #     print('I AM ALREADY THERE')
