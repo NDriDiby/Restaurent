@@ -5,7 +5,6 @@ var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var accompagnement = document.getElementsByClassName("accompagement");
-var form = document.getElementById("choiceOptions");
 
 var form = $("#item-details-form");
 console.log(form[0]);
@@ -52,21 +51,26 @@ for (var i = 0; i < updated_but.length; i++) {
       }
     }
 
-    //From order page (ingredient)
-    if (custChoice[0] == null) {
-      custChoice = ingre;
-    }
+    // //From order page (ingredient)
+    // if (custChoice[0] == null) {
+    //   custChoice = ingre;
+    // }
 
-    //No ingredient item (choice)
-    if (custChoice == undefined) {
-      custChoice = " ";
-    }
+    // //No ingredient item (choice)
+    // if (custChoice == undefined) {
+    //   custChoice = "None";
+    // }
 
-    //From order page (ingredient) - (no choice)
-    if (ingre == "None") {
-      ingre = " ";
-      custChoice = ingre;
-    }
+    // //From order page (ingredient) - (no choice)
+    // if (ingre == "None") {
+    //   ingre = " ";
+    //   custChoice = ingre;
+    // }
+
+    console.log(custChoice);
+    console.log(accomp_id);
+    console.log(location.href.split("&")[1].split("=")[1]);
+    table = location.href.split("&")[1].split("=")[1];
 
     $.ajax({
       url: "/texasgrillz/updateitem/",
@@ -77,6 +81,7 @@ for (var i = 0; i < updated_but.length; i++) {
         action: action,
         choice: custChoice.toString(),
         accomp: accomp_id.toString(),
+        table: table,
       },
       dataType: "json",
       success: function (response) {
