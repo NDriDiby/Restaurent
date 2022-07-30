@@ -8,6 +8,7 @@ urlpatterns = [
     path('texasgrillz/menudetails/<menu_id>/', views.MenuDetails,name='menu_details-texasgrillz'),
     path('texasgrillz/myorder/', views.MyOrder,name='order-texasgrillz'),
     path('texasgrillz/itemdetails/<item_id>/', views.ItemDetails, name='item_details-texasgrillz'),
+    path('texasgrillz/sidedetails/<side_id>/', views.SideDetails, name='side_details-texasgrillz'),
     path('texasgrillz/updateitem/', views.UpdatedItem, name='update_item-texasgrillz'),
     path('texasgrillz/sendorder/', views.SendOrder, name='send_order-texasgrillz'),
     path('texasgrillz/cuisine/', views.Cuisine, name='cuisine-texasgrillz'),

@@ -50,26 +50,7 @@ for (var i = 0; i < updated_but.length; i++) {
         custChoice.push(ingredients[i].value);
       }
     }
-
-    // //From order page (ingredient)
-    // if (custChoice[0] == null) {
-    //   custChoice = ingre;
-    // }
-
-    // //No ingredient item (choice)
-    // if (custChoice == undefined) {
-    //   custChoice = "None";
-    // }
-
-    // //From order page (ingredient) - (no choice)
-    // if (ingre == "None") {
-    //   ingre = " ";
-    //   custChoice = ingre;
-    // }
-
-    console.log(custChoice);
-    console.log(accomp_id);
-    console.log(location.href.split("&")[1].split("=")[1]);
+    // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
 
     $.ajax({

@@ -131,7 +131,6 @@ class OrderItem(models.Model):
     
     
     
-    
     def total_accomp(self):
         if self.accompagnememt:
             all_accomp = self.accompagnememt.all()

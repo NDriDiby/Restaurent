@@ -204,6 +204,58 @@ def MenuDetails(request,menu_id):
     return render(request,'Resto/MenuDetailsNew.html',context)
 
 
+#Menu Details
+def SideDetails(request,side_id):
+    
+    
+    #Get Table Number
+    table = get_table_number(request)
+    
+    #Track user
+    targetApp = target_app(request)
+
+    #Get and show the item in each category
+    side = Accompagnement.objects.get(id = side_id)
+    # category = Category.objects.all().order_by("name")
+    # item = Item.objects.filter(category__id = menu_id)
+    # sides = Accompagnement.objects.all()
+    
+
+
+    order = None
+    cartItem = 0
+    cartTotal = 0
+    
+    #Create customer and order
+    
+    # Authenticate then create an order
+    if request.user.is_authenticated:
+        try:
+            username = User.objects.get(id=request.user.id)
+            cust,created = Customer.objects.get_or_create(user =request.user)
+            order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+            cartItem = order.get_order_quantity()
+            cartTotal = order.get_order_total()
+            
+        
+        except:
+            pass
+        
+        
+    context = {
+        # 'menu':menu,
+        # 'category':category,
+        'side':side,
+        'orders':order,
+        'cart_quantity':cartItem,
+        'cart_total':cartTotal,
+        'app':targetApp,
+        # 'sides':sides
+        
+    }
+    return render(request,'Resto/sideDetails.html',context)
+
+
 def MenuDetailsData(request,menu_id):
     
     #Get and show the item in each category
@@ -412,26 +464,35 @@ def UpdatedItem(request):
         #NO INGRE AND NO ACCOMP
         if not choice and not accompagment:
             print('NO INGRE AND ACCOMP')
-            orderItem,created= OrderItem.objects.get_or_create(customer=customer,order = order,item = item)
+            orderItem,created= OrderItem.objects.get_or_create(customer=customer,order = order,item = item,ingredient = None)
             
             if action =='add':
                 orderItem.quantity = (orderItem.quantity + 1)
                 orderItem.save()
                 tot_ind_item = orderItem.quantity
                 total = order.get_order_total()
+                tot_item = tot_ind_item
                 active_orderItem = orderItem.id
             
         
         #ONLY INGRE
         if choice and not accompagment:
             print('THIS MY INGRE:',choice)
-            orderItem,created= OrderItem.objects.get_or_create(customer=customer,order = order,item = item, ingredient = choice)
-            
+            retrieve_orderItem= OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = choice).all()
+            if not retrieve_orderItem:
+                orderItem= OrderItem.objects.create(customer=customer,order = order,item = item, ingredient = choice)
+            else:
+                for item in retrieve_orderItem:
+                    if not item.accompagnememt.all():
+                        orderItem = item
+                    
+            # print("DOUBLE CHECK",orderItem)
             if action =='add':
                 orderItem.quantity = (orderItem.quantity + 1)
                 orderItem.save()
                 tot_ind_item = orderItem.quantity
                 total = order.get_order_total()
+                tot_item = tot_ind_item
                 active_orderItem = orderItem.id
         
         
@@ -439,7 +500,7 @@ def UpdatedItem(request):
         if accompagment and not choice:
             print('THIS MY ACCOMP_NAME:',accompagment)          
             # accomp_id = 1
-            retrieve_order_item = OrderItem.objects.filter(customer=customer,order=order,item = item,accompagnememt__in=accomp_id)
+            retrieve_order_item = OrderItem.objects.filter(customer=customer,order=order,item = item,accompagnememt__in=accomp_id , ingredient= None)
             print('RETRIVE ORDER',retrieve_order_item.values())
             if retrieve_order_item:
                 for order_item in retrieve_order_item:
@@ -457,6 +518,7 @@ def UpdatedItem(request):
                             my_order_item.quantity = (my_order_item.quantity + 1)
                             my_order_item.save()
                             tot_ind_item = my_order_item.quantity
+                            tot_item = tot_ind_item
                             total = order.get_order_total()
                             active_orderItem = my_order_item.id
                         break
@@ -501,6 +563,7 @@ def UpdatedItem(request):
                             my_order_item.quantity = (my_order_item.quantity + 1)
                             my_order_item.save()
                             tot_ind_item = my_order_item.quantity
+                            tot_item = tot_ind_item
                             total = order.get_order_total()
                             active_orderItem = my_order_item.id
                         break
