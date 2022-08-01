@@ -106,16 +106,28 @@ class Order(models.Model):
     
     #Total value of cart
     def get_order_total(self):
-        order = self.orderitem_set.all()
-        total = sum([item.get_total() for item in order])
-        return total
+        order_item = self.orderitem_set.all()
+        total = sum([item.get_total() for item in order_item])
+        if self.sideorderitem_set.all():
+            side_item = self.sideorderitem_set.all()
+            total_side = sum([item.total_side_order() for item in side_item])
+            return total + total_side
+        else:
+            return total
+        
+        
 
 
     #Total quantity in the cart
     def get_order_quantity(self):
-        order = self.orderitem_set.all()
-        total = sum([item.quantity for item in order])
-        return total
+        order_item = self.orderitem_set.all()
+        total = sum([item.quantity for item in order_item])
+        if self.sideorderitem_set.all():
+            side_item = self.sideorderitem_set.all()
+            total_side = sum([item.quantity for item in side_item])
+            return total + total_side
+        else:
+            return total
 
     
 class OrderItem(models.Model):
@@ -136,7 +148,6 @@ class OrderItem(models.Model):
         if self.accompagnememt:
             all_accomp = self.accompagnememt.all()
             total_acc = sum([x.prix for x in all_accomp])
-            print('HERE IS MY TOTAL',total_acc)
             return total_acc
         return 0
    

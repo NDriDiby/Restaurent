@@ -589,7 +589,7 @@ def UpdatedItem(request):
             # my_order_item = OrderItem.objects.filter(order= order, item = item)
             # tot_item = [sum(x.quantity for x in my_order_item)][0]
             #tot_ind_item = orderItem.quantity
-            total_cart = order.get_order_quantity()
+            
             
         
             item_selected = list()
@@ -619,7 +619,8 @@ def UpdatedItem(request):
                     sideOrderItem.quantity = (sideOrderItem.quantity + 1)
                     sideOrderItem.save()
                     tot_ind_item = sideOrderItem.quantity
-                    total = sideOrderItem.total_side_order()
+                    total = order.get_order_total()
+                    #total_cart = order.get_order_quantity()
                     tot_item = tot_ind_item
                     active_orderItem = sideOrderItem.id
                     item_selected = 'Okay'
@@ -629,6 +630,7 @@ def UpdatedItem(request):
             # total_cart = order.get_order_quantity() + 1
             # tot_ind_item = tot_ind_item + 1
             
+        total_cart = order.get_order_quantity()
             
             
     return JsonResponse({"item_name":item_name,
