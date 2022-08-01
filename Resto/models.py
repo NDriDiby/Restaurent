@@ -45,6 +45,7 @@ class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0,blank=True)
+    # img = models.ImageField(upload_to='images/',blank = True)
     
     def __str__(self):
         return self.name
@@ -159,6 +160,27 @@ class OrderItem(models.Model):
     def get_total_accomp(self):
         total = self.quantity * self.total_accomp()
         return total
+    
+    
+class SideOrderItem(models.Model):
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
+    item = models.ForeignKey(Accompagnement, on_delete=CASCADE,blank=True,null=True)
+    quantity = models.IntegerField(default=0,null = True, blank = True )
+    date_added = models.DateTimeField(auto_now=True,)
+    
+    def __str__(self):
+        return str(self.item)
+    
+    
+    def total_side_order(self):
+        total = (self.item.prix) * (self.quantity)
+        return total
+    
+    
+    # def total_side_order_item(self):
+    #     total = (self.item.prix) * (self.quantity)
+    #     return total
     
     
 

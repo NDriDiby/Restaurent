@@ -35,6 +35,7 @@ for (var i = 0; i < updated_but.length; i++) {
 
     e.preventDefault();
     var itemId = this.dataset.product;
+    var side_itemId = this.dataset.product_side;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
 
@@ -52,18 +53,33 @@ for (var i = 0; i < updated_but.length; i++) {
     }
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
+    console.log("ACCOMP_ID", side_itemId);
 
-    $.ajax({
-      url: "/texasgrillz/updateitem/",
-      method: "POST",
-      data: {
+    // DATA TO PROCESS
+    if (side_itemId) {
+      data = {
+        csrfmiddlewaretoken: csrfToken,
+        side_itemId: side_itemId,
+        action: action,
+        table: table,
+      };
+    } else {
+      data = {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
         action: action,
         choice: custChoice.toString(),
         accomp: accomp_id.toString(),
         table: table,
-      },
+      };
+    }
+
+    console.log(data);
+
+    $.ajax({
+      url: "/texasgrillz/updateitem/",
+      method: "POST",
+      data: data,
       dataType: "json",
       success: function (response) {
         orderItem = response.orderItem;
