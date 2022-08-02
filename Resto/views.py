@@ -423,7 +423,6 @@ def UpdatedItem(request):
     tot_item= None
     total_accomp = 0
     tot_ind_item =0
-    
     accomp = None
     choice = None
     active_orderItem = None
