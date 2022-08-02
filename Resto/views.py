@@ -57,6 +57,9 @@ def HomePage(request):
     request.session['num_visits'] = num_visits + 1
     print(num_visits)
     
+    popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+    show_pop_item = Item.objects.filter(name__in=list(popular_item))
+    
     #get_daily_revenu.delay()
     # fetch_key.delay()
     
@@ -113,6 +116,8 @@ def HomePage(request):
         cust.save()
         
         
+        
+        
         #odd_even = Permission.objects.get(name='can_view_even_ids')
         
         if username.email == 'ndiby65@gmail.com':
@@ -135,7 +140,8 @@ def HomePage(request):
         'category':category,
         'order':order_sent,
         'app':targetApp,
-        'side':sides
+        'side':sides,
+        'show_pop_item':show_pop_item,
     }
     # return render(request,'Resto/HomePageNew.html',context)
     return render(request,'Resto/landingPage.html', context)
