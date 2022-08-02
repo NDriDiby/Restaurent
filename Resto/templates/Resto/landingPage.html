@@ -147,12 +147,13 @@
  <!-- ~~~~~~~~~~~~~~~~~~ javascript ~~~~~~~~~~~~~~~~~~  -->
 <script>
   //this is for on scroll effect when scrollable
-  function myOnscroll(){
+   function myOnscroll(){
       let col = document.querySelector('.big') 
       console.log(window.pageYOffset)
       window.pageYOffset > 110 ? col.classList.add('animate') : col.classList.remove('animate');
-  }
+  } 
 
+  
   //adding classes to each image by looping
   let burgers = document.querySelector('.list-burger');
   [...burgers.children].forEach(burger => {
@@ -160,6 +161,5 @@
   });
 </script>
  <!-- ~~~~~~~~~~~~~~~~~~ javascript ~~~~~~~~~~~~~~~~~~  -->
-
 
 {% endblock content %}
