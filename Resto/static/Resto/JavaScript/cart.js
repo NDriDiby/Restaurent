@@ -5,12 +5,14 @@ var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var updated_but = document.getElementsByClassName("update-cart");
 var ingredients = document.querySelectorAll("input");
 var accompagnement = document.getElementsByClassName("accompagement");
+var supplement = document.getElementsByClassName("supplement-item");
 
 var form = $("#item-details-form");
 console.log(form[0]);
 
-//Accompagement
+console.log(supplement);
 
+//Accompagement
 $(".accompagement").on("click", function () {
   $(this).toggleClass("active");
 });
@@ -31,6 +33,7 @@ for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
     var custChoice = [];
     var accomp_id = [];
+    var supplements = [];
     msg = document.getElementById("message");
 
     e.preventDefault();
@@ -51,9 +54,17 @@ for (var i = 0; i < updated_but.length; i++) {
         custChoice.push(ingredients[i].value);
       }
     }
+
+    //Customer supplement choice
+    for (let i = 0; i < supplement.length; i++) {
+      if (supplement[i].checked === true) {
+        //supplements.push(supplement[i].value);
+        console.log(supplement[i].value);
+      }
+    }
+
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
-    console.log("ACCOMP_ID", side_itemId);
 
     // DATA TO PROCESS
     if (side_itemId) {

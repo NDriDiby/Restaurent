@@ -552,7 +552,7 @@
 
 
 <!-- Menu Info -->
-<div class="info my-4 ">
+
   <div class=" my-2">
     <div class="text-white">
       <div class="relative">
@@ -583,12 +583,12 @@
   <!-- Item Choices -->
 
 <div class="itemChoice-box py-3 p-2">
-  <div class="itemChoice-box py-0 min-h-full">
-    <div class="itemChoice-content">
-      <div class="itemChoice-choice">
-        <form method="POST" class='choiceOptions' id="item-details-form">
-          <div class="rounded-md">
+    <div class="itemChoice-box py-0 min-h-full">
+      <div class="itemChoice-content">
+        <div class="itemChoice-choice">
+           <form method="POST" class='choiceOptions' id="item-details-form">
               {% csrf_token %}
+
               <!-- accompagement -->
               {% if items.accompagnement.all %}
               <p class="text-gray-500 mb-3 lg:text-2xl">Accompagner de votre choix:</p>
@@ -599,10 +599,10 @@
                     {{acc.name}}
                   </p>
                 </div>
-
                 {% endfor %}
               </div>
               {% endif %}
+               <!-- accompagement -->
 
             
 
@@ -627,15 +627,20 @@
                 {% endfor %}
               </div>
               {% endif %}
+              <!-- ingredients  -->
 
 
               <!-- seasoning  -->
               {% if assaisonement %}
-              <div id="saissoning" class="saissoning">
-                <h5 class="flex items-center" style="color: black"><span
-                    class="item-cat-name">Assaisonnement</span><span
-                    class="item-cat-number">({{assaisonement|length}})</span>
-                  <span><small class="item-cat-instruction-onechoice italic">1 choice</small></span>
+              <div id="saissoning" class="saissoning relative mt-2">
+                <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2"
+                  src="{% static 'Resto/icons8-tomatoes-48.png'%}" alt="">
+                <div class="item-cat-instruction-multiplechoice">
+                  <small class="italic">Multiple choices</small>
+                </div>
+                <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
+                  class="item-cat-name">Saisonning</span><span
+                  class="item-cat-number">({{assaisonement|length}})</span>
                 </h5>
                 {% for saissoning in assaisonement %}
                 <div class="ingredient-item show" id="sassoning-item">
@@ -651,10 +656,13 @@
               {% if cuisson %}
               <div id="cuisson" class='cuisson relative mt-2'>
                 <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
+                <div>
+                  <small class="item-cat-instruction-onechoice italic">1 choice</small></span>
+                </div>
                 <h5 class="flex items-center bg-gray-500 " style="color: black;"><span
                     class="item-cat-name">Cuisson</span><span class="item-cat-number">
                     ({{cuisson|length}})</span><span>
-                    <small class="item-cat-instruction-onechoice italic">1 choice</small></span></h5>
+                   </h5>
 
                 {% for cuiss in cuisson %}
                 <div class="ingredient-item show" id="cuisson-item">
@@ -702,20 +710,20 @@
 
                           <!-- Supplement -->
                           {% if supplements %}
-                          <div id="supplements" class="supplements relative mt-2">
+                          <div id="supplement" class="supplement relative mt-2">
                             <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2"
                               src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
                             <div class="item-cat-instruction-multiplechoice">
                               <small class="italic">Multiple choices</small>
                             </div>
-                            <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
+                            <h5 class="flex items-center bg-gray-500" style="color:black;"><span
                                 class="item-cat-name">Supplements</span><span
                                 class="item-cat-number">({{supplements|length}})</span>
                             </h5>
             
                             {% for sup in supplements %}
-                            <div class="supplements-item show" id="supplements-item">
-                              <input id="supplements{{sup.id}}" type="checkbox" name="ingredient" value="{{sup.name}}">
+                            <div class="supplement-item show " id="supplement-item">
+                              <input id="supplement{{sup.id}}" type="checkbox" name="supplement" value="{{sup.name}}">
                               <label>{{sup.name}} (+{{sup.prix}})</label><br />
                             </div>
                             {% endfor %}
@@ -727,26 +735,30 @@
               <div id="message"></div>
               <!-- Notification Box -->
 
+              <!-- Checkout Button + Total -->
               <div id="box" class="box flex justify-around w-full">
+                <div class="py-2 checkOut-box">
+                  <div class=" flex justify-around sm:gap-x-40 items-center">
+                    <!-- Add Button -->
+                    <div class="add-to-cartBtn mt-8">
+                      <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add"
+                        class="update-cart w-[180px]">
+                        <svg style="width:40px;height:24px" viewBox="0 0 24 24" id="cart">
+                        <path fill="#ffffff"
+                        d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                        </svg>
+                        <span class="pl-4">Add Cart</span>
+                        <svg id="check" style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12" />
+                        </svg>
+                    </button>
+                  </div>
+                   <!-- Add Button -->
 
-              <div class="py-2 checkOut-box">
-                <div class=" flex justify-around sm:gap-x-40 items-center">
-                  <div class="add-to-cartBtn mt-8">
-                    <button data-product="{{items.id}}" name="item" value="{{items.id}}" data-action="add"
-                      class="update-cart w-[180px]">
-                      <svg style="width:40px;height:24px" viewBox="0 0 24 24" id="cart">
-                      <path fill="#ffffff"
-                      d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
-                      </svg>
-                      <span class="pl-4">Add Cart</span>
-                      <svg id="check" style="width:24px;height:24px" viewBox="0 0 24 24">
-                          <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12" />
-                      </svg>
-                  </button>
-                </div>
-
-                <div class="total-order">
+                  
+                
                   <!-- Order Total -->
+                <div class="total-order">
                   <a href="/texasgrillz/myorder/?session={{app}}">
                     <div class="orderTotal-box">
                       <div class="orderTotal-content">
@@ -757,31 +769,22 @@
                       </div>
                     </div>
                   </a>
+                </div>
                 <!-- Order Total -->
+
+              </div>
                 </div>
               </div>
+               <!-- Checkout Button + Total -->
           </form>
         </div>
       </div>
     </div>
   </div>
-</div>
-  <!-- popular choices -->
-  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  <!-- <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Popular Items</h1>
-  <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
-    {% for pop in show_pop_item %}
-    <div class="flex justify-center">
-      <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60" style="border: solid chocolate 1px;">
-        <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}">
-          <img class="rounded-full" src="{{pop.img.url}}" alt="Cinque Terre" width="600" height="400" />
-        </a>
-        <div class="desc font-bold lg:text-3xl">{{pop.name}}</div>
-      </div>
-      {% endfor%}
-</div> 
-  </div> -->
 
+
+
+  <!-- popular choices -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Top 5 Popular Items</h1>
 <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
@@ -796,7 +799,6 @@
     </div>
     {% endfor %}
   </div>
-
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 
