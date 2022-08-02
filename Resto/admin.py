@@ -2,7 +2,7 @@ from django.contrib import admin
 from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
                     ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagnement,
-                    Transactions,SideOrderItem)
+                    Transactions,SideOrderItem,Supplement)
 
 
 # Register your models here.
@@ -40,6 +40,11 @@ admin.site.register(OrderItem,OrderItemAdmin)
 class SideOrderItemAdmin(admin.ModelAdmin):
     list_display = ('id','order','item','quantity','date_added')
 admin.site.register(SideOrderItem,SideOrderItemAdmin)
+
+
+class SupplementItemAdmin(admin.ModelAdmin):
+    list_display = ('name','prix','img')
+admin.site.register(Supplement,SupplementItemAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):

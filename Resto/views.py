@@ -7,7 +7,7 @@ from django.db import reset_queries
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
-                    IventoryItem,IventoryItemCategory, SideOrderItem,Transactions)
+                    IventoryItem,IventoryItemCategory, SideOrderItem, Supplement,Transactions)
 from django.contrib import messages
 from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
@@ -302,6 +302,10 @@ def ItemDetails(request,item_id):
     ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
     eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
     coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
+    supplement = Supplement.objects.filter(item = item_id)
+    
+    
+    print("EXTRA",supplement.all())
     
 
     #Get Table Number
@@ -367,6 +371,7 @@ def ItemDetails(request,item_id):
         'myitem':myItem,
         'my_total':my_total,
         'show_pop_item':show_pop_item,
+        'supplements':supplement
         
     }
     
@@ -473,7 +478,6 @@ def UpdatedItem(request):
             
             #ONLY INGRE
             if choice and not accompagment:
-                print('THIS MY INGRE:',choice)
                 retrieve_orderItem= OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = choice).all()
                 if not retrieve_orderItem:
                     orderItem= OrderItem.objects.create(customer=customer,order = order,item = item, ingredient = choice)
@@ -497,20 +501,14 @@ def UpdatedItem(request):
                 print('THIS MY ACCOMP_NAME:',accompagment)          
                 # accomp_id = 1
                 retrieve_order_item = OrderItem.objects.filter(customer=customer,order=order,item = item,accompagnememt__in=accomp_id , ingredient= None)
-                print('RETRIVE ORDER',retrieve_order_item.values())
                 if retrieve_order_item:
                     for order_item in retrieve_order_item:
-                        print(order_item.id,order_item.accompagnememt.all())
                         
                         if set(order_item.accompagnememt.all()) == set(my_acc):
                             order_item_exist = True
-                            print(order_item.id,'I GOT YOU')
-                            print('COMPARE ITEM:',order_item.accompagnememt.all(),my_acc)
                             my_order_item = OrderItem.objects.get(id = order_item.id)
-                            print('HOW MANY:',my_order_item.quantity)
-                            
+                           
                             if action =='add':
-                                print('I ADDED +1')
                                 my_order_item.quantity = (my_order_item.quantity + 1)
                                 my_order_item.save()
                                 tot_ind_item = my_order_item.quantity
@@ -520,7 +518,6 @@ def UpdatedItem(request):
                             break
                         
                     if order_item_exist == False:
-                        print("retrieve items exist but no order item match")
                         orderItem = OrderItem.objects.create(customer = customer,order = order, quantity =1)
                         orderItem.accompagnememt.add(*accomp_id_tuple)
                         orderItem.item = item 
@@ -529,7 +526,6 @@ def UpdatedItem(request):
                         total = order.get_order_total()
                         
                 else:
-                    print("LETS START HERE")
                     orderItem= OrderItem.objects.create(customer = customer,order = order, quantity =1)
                     orderItem.accompagnememt.add(*accomp_id_tuple)
                     orderItem.item = item 

@@ -45,7 +45,7 @@ class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0,blank=True)
-    # img = models.ImageField(upload_to='images/',blank = True)
+    img = models.ImageField(upload_to='images/',blank = True)
     
     def __str__(self):
         return self.name
@@ -148,7 +148,7 @@ class OrderItem(models.Model):
         if self.accompagnememt:
             all_accomp = self.accompagnememt.all()
             total_acc = sum([x.prix for x in all_accomp])
-            return total_acc
+            return 0
         return 0
    
     
@@ -179,6 +179,7 @@ class SideOrderItem(models.Model):
     item = models.ForeignKey(Accompagnement, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     date_added = models.DateTimeField(auto_now=True,)
+    img = models.ImageField(upload_to='images/',blank = True)
     
     def __str__(self):
         return str(self.item)
@@ -189,9 +190,18 @@ class SideOrderItem(models.Model):
         return total
     
     
-    # def total_side_order_item(self):
-    #     total = (self.item.prix) * (self.quantity)
-    #     return total
+class Supplement(models.Model):
+    name = models.CharField(max_length = 150)
+    prix = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0,blank=True)
+    item = models.ManyToManyField(Item,blank = True)
+    img = models.ImageField(upload_to='images/',blank = True)
+    
+    def __str__(self):
+        return self.name
+    
+    
+    
     
     
 

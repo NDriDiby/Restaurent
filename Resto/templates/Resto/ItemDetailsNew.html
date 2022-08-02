@@ -589,6 +589,7 @@
         <form method="POST" class='choiceOptions' id="item-details-form">
           <div class="rounded-md">
               {% csrf_token %}
+              <!-- accompagement -->
               {% if items.accompagnement.all %}
               <p class="text-gray-500 mb-3 lg:text-2xl">Accompagner de votre choix:</p>
               <div class="accompagement-box">
@@ -596,13 +597,14 @@
                 <div data-accomp_id="{{acc.id}}" data-accomp_name="{{acc.name}}" class='accompagement'>
                   <p id="accompagement{{acc.id}}" data-accomp_name="{{acc.name}}" class='accompagement-name'>
                     {{acc.name}}
-                    ({{acc.prix}})
                   </p>
                 </div>
 
                 {% endfor %}
               </div>
               {% endif %}
+
+            
 
               <!-- ingredients  -->
               {% if ingredients %}
@@ -646,7 +648,7 @@
               {% endif %}
 
               <!-- cuisson  -->
-              <!-- {% if cuisson %} -->
+              {% if cuisson %}
               <div id="cuisson" class='cuisson relative mt-2'>
                 <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
                 <h5 class="flex items-center bg-gray-500 " style="color: black;"><span
@@ -696,6 +698,30 @@
                         {% endfor %}
                         <div>
                           {% endif %}
+
+
+                          <!-- Supplement -->
+                          {% if supplements %}
+                          <div id="supplements" class="supplements relative mt-2">
+                            <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2"
+                              src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
+                            <div class="item-cat-instruction-multiplechoice">
+                              <small class="italic">Multiple choices</small>
+                            </div>
+                            <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
+                                class="item-cat-name">Supplements</span><span
+                                class="item-cat-number">({{supplements|length}})</span>
+                            </h5>
+            
+                            {% for sup in supplements %}
+                            <div class="supplements-item show" id="supplements-item">
+                              <input id="supplements{{sup.id}}" type="checkbox" name="ingredient" value="{{sup.name}}">
+                              <label>{{sup.name}} (+{{sup.prix}})</label><br />
+                            </div>
+                            {% endfor %}
+                          </div>
+                          {% endif %}
+                          
 
               <!-- Notification Box -->
               <div id="message"></div>
