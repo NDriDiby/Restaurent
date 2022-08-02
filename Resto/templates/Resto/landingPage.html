@@ -60,15 +60,20 @@
 <!-- ~~~~~~~~~~~~~~~~~~ info ~~~~~~~~~~~~~~~~~~  -->
   <div class="py-5 px-5 flex flex-col gap-y-2 relative overflow-hidden min-h-screen">
     <div class="rec absolute bg-orange-600 top-0 right-0 -z-10"></div>
-    <h1 class="text-4xl w-72 font-bold text-gray-600 py-5 md:w-[500px] md:px-4 md:text-5xl lg:text-6xl lg:w-full">We make the double cheesy burger.</h1>
+    <h1 class="text-4xl w-72 font-bold text-gray-600 py-5 md:w-[500px] md:px-4 md:text-5xl lg:text-6xl lg:w-full">Most Popular Items</h1>
     <img class=" big h-[280px] md:h-[400px] md:w-[600px] md:ml-auto lg:ml-auto lg:mr-auto lg:w-[670px] lg:h-[550px]" src="{%static 'Resto/burger-background.png' %}"  alt="">
     <div class="list-burger flex overflow-auto md:ml-auto items-center pt-5">
-      <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
-      <img class="w-20 h-20" src="{%static 'Resto/burger-background.png' %}" alt="">
+      {% for pop_item in show_pop_item  %}
+      <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
+        <img class="rounded-full" src="{{pop_item.img.url}}" alt="Cinque Terre" width="600" height="400" />
+      </a>
+      {% endfor %}
+      
+      <!-- <img class="w-20 h-20" src="{%static 'Resto/burger-background.png' %}" alt="">
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
       <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt="">
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png' %}" alt="">
-      <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt="">
+      <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt=""> -->
     </div>
     <p class="font-bold text-white py-2  max-w-6xl md:text-3xl md:w-[600px] lg:text-4xl lg:text-center lg:w-full lg:px-10 lg:py-10">Best cheesy burger we serve in the heart of LA.
       Welcome and enjoy our tasteful burger thatbring joys at every moment
