@@ -5,9 +5,42 @@
     border-top: 900px solid white;
 }
 
+@media screen and (min-width: 768px) {
+    .rec{
+    border-right: 1100px solid rgb(234 88 12);
+    border-top: 980px solid white;
+}  
+}
+@media screen and (min-width: 820px) {
+    .rec{
+    border-right:1550px solid rgb(234 88 12);
+    border-top: 1300px solid white;
+}  
+.burger{
+  width: 150px;
+  height: 110px;
+}
+}
+@media screen and (min-height: 813px) {
+    body{
+        overflow: hidden;
+        
+    } 
+    
+}
+.animate{
+
+    transform: scale(5);
+    transform: translate(-10px, 40px);
+    transition: all 2s;
+  
+}
+
 </style>
-<body class="overflow-hidden">
-<nav class="bg-white border-gray-200 py-2.5 px-5 dark:bg-gray-900 overflow-hidden">
+<body onscroll="myOnscroll()">
+
+<!-- ~~~~~~~~~~~~~~~~~~ navbar ~~~~~~~~~~~~~~~~~~  -->
+<nav class="z-10 bg-white sticky top-0 border-gray-200 py-2.5 px-5 dark:bg-gray-900 overflow-hidden">
     <div class="flex flex-wrap justify-between items-center">
       <a class="flex items-center">
           <span class="self-center businesslogo text-xl font-semibold whitespace-nowrap dark:text-white"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="100px" height="100px" /></span>
@@ -18,34 +51,18 @@
         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
       </button>
       <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-        <ul class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-          <li>
-            <a href="#" class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Home</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
-          </li>
-          <li>
-            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
-          </li>
-        </ul>
+       
       </div>
     </div>
-  </nav>
-  <div class="px-5 flex flex-col gap-y-2 relative overflow-hidden min-h-screen">
+</nav>
+<!-- ~~~~~~~~~~~~~~~~~~ navbar ~~~~~~~~~~~~~~~~~~  -->
+
+<!-- ~~~~~~~~~~~~~~~~~~ info ~~~~~~~~~~~~~~~~~~  -->
+  <div class="py-5 px-5 flex flex-col gap-y-2 relative overflow-hidden min-h-screen">
     <div class="rec absolute bg-orange-600 top-0 right-0 -z-10"></div>
-    <h1 class="text-4xl w-72 font-bold text-gray-600 py-5">We make the double cheesy burger.</h1>
-    <img class="h-[350px]" src="{%static 'Resto/burger-background.png' %}"  alt="">
-
-   
-
-    <div class="flex overflow-auto pt-5">
+    <h1 class="text-4xl w-72 font-bold text-gray-600 py-5 md:w-[500px] md:px-4 md:text-5xl lg:text-6xl lg:w-full">We make the double cheesy burger.</h1>
+    <img class=" big h-[280px] md:h-[400px] md:w-[600px] md:ml-auto lg:ml-auto lg:mr-auto lg:w-[670px] lg:h-[550px]" src="{%static 'Resto/burger-background.png' %}"  alt="">
+    <div class="list-burger flex overflow-auto md:ml-auto items-center pt-5">
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
       <img class="w-20 h-20" src="{%static 'Resto/burger-background.png' %}" alt="">
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
@@ -53,29 +70,91 @@
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png' %}" alt="">
       <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt="">
     </div>
-
-   
-    <p class="font-bold text-white p-2 w-96 ml-auto">Best cheesy burger we serve in the heart of LA.
+    <p class="font-bold text-white py-2  max-w-6xl md:text-3xl md:w-[600px] lg:text-4xl lg:text-center lg:w-full lg:px-10 lg:py-10">Best cheesy burger we serve in the heart of LA.
       Welcome and enjoy our tasteful burger thatbring joys at every moment
     </p>
-
     <div class="flex justify-center">
-
       <a href="/texasgrillz/menudetails/{{1}}/?session={{app}}">
-        <button class="w-32 py-3 rounded-lg bg-green-500 text-white">View Menu</button>
+        <button class="w-32 md:w-44 md:py-4 md:text-xl py-3 rounded-lg bg-green-500 text-white lg:w-60 lg:py-7 lg:text-3xl">View Menu</button>
       </a>
-
     </div>
-   
-    
-    
   </div>
- 
+ <!-- ~~~~~~~~~~~~~~~~~~ info ~~~~~~~~~~~~~~~~~~  -->
+
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
+<div class="relative">
+  <button class="block fixed bottom-0 left-0 w-20 h-20 animate-bounce m-5 rounded-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
+    Your Order
+    </button>
+</div>
+<!-- Small Modal -->
+<div id="small-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+  <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div class="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
+              <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                 My Order
+              </h3>
+              <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="small-modal">
+                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                  <span class="sr-only">Close modal</span>
+              </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-6 space-y-6">
+            {% if order %}
+            <div class="showOrder mt-3 text-center">
+              <div class="mt-4">
+                <h6 style="color: rgb(209, 112, 131)">Date & Time: ({{order.date_ordered}})</h6>
+                <h6>Reference ID: <small>{{order.transaction_id}}</small></h6>
+                <h6>Table: {{order.table}}</h6>
+                <h6>Total: {{order.get_order_total}} FCFA</h6>
+                {% for order in order.orderitem_set.all%}
+                <h6 style="color: darkseagreen">*{{order}} ({{order.quantity}})</h6>
+                <p style="color: black">{{order.ingredient}}</p>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+           
+           
+          </div>
+          <!-- Modal footer -->
+          <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+              <button data-modal-toggle="small-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Retour</button>
+              
+          </div>
+      </div>
+  </div>
+</div>
+   
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
+      
+
 </body>
 </html>
 
 
+ <!-- ~~~~~~~~~~~~~~~~~~ javascript ~~~~~~~~~~~~~~~~~~  -->
+<script>
+  //this is for on scroll effect when scrollable
+  function myOnscroll(){
+      let col = document.querySelector('.big') 
+      console.log(window.pageYOffset)
+      window.pageYOffset > 110 ? col.classList.add('animate') : col.classList.remove('animate');
+  }
 
+  //adding classes to each image by looping
+  let burgers = document.querySelector('.list-burger');
+  [...burgers.children].forEach(burger => {
+    burger.classList.add('burger');
+  });
+</script>
+ <!-- ~~~~~~~~~~~~~~~~~~ javascript ~~~~~~~~~~~~~~~~~~  -->
 
 
 {% endblock content %}
