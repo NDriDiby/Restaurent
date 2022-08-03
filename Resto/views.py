@@ -437,8 +437,11 @@ def UpdatedItem(request):
         action = request.POST.get('action',False) #Add or remove
         choice = request.POST.get('choice',False) #Ingredient
         accompagment = request.POST.get('accomp',False) # Accompagement
+        supplement = request.POST.get('sup',False) # Accompagement
         side_itemId = request.POST.get('side_itemId',False) #Side_ItemID
         table_numb = int(request.POST['table']) #Table
+        
+        
         
         
         #Retrieve Customer and Order
@@ -456,6 +459,14 @@ def UpdatedItem(request):
             accomp_id_tuple = tuple([x.id for x in my_acc])
             accomp_id = [x.id for x in my_acc]
             
+            
+            #Find Supplement
+            sup = supplement.split(",")
+            my_sup = Supplement.objects.filter(name__in=sup)
+            sup_id_tuple = tuple([x.id for x in my_sup])
+            sup_id = [x.id for x in my_sup]
+            
+   
             # Find Item
             item = Item.objects.get(id=itemId)
             item_name = item.name

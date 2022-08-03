@@ -2,15 +2,11 @@
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
 // Add item to your cart
-var updated_but = document.getElementsByClassName("update-cart");
-var ingredients = document.querySelectorAll("input");
-var accompagnement = document.getElementsByClassName("accompagement");
-var supplement = document.getElementsByClassName("supplement-item");
-
 var form = $("#item-details-form");
-console.log(form[0]);
-
-console.log(supplement);
+var updated_but = document.getElementsByClassName("update-cart");
+var ingredients = document.getElementsByClassName("ingredient-input");
+var accompagnement = document.getElementsByClassName("accompagement");
+var supplement = document.getElementsByClassName("supplement-input");
 
 //Accompagement
 $(".accompagement").on("click", function () {
@@ -18,15 +14,12 @@ $(".accompagement").on("click", function () {
 });
 
 //Cuisson
-var cuisson = [];
+var cuisson;
 $(".cuisson input").click(function () {
   $(".cuisson input").not(this).prop("checked", false);
-  if (cuisson.length == 0) {
-    //cuisson.push($(this).val());
-  } else {
-    cuisson[0] = $(this).val();
-  }
-  //console.log(bag.concat(cuisson).toString());
+
+  cuisson = $(this).val();
+  console.log(cuisson);
 });
 
 for (var i = 0; i < updated_but.length; i++) {
@@ -42,6 +35,9 @@ for (var i = 0; i < updated_but.length; i++) {
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
 
+    if (cuisson) {
+    }
+
     for (let i = 0; i < accompagnement.length; i++) {
       if (accompagnement[i].className == "accompagement active") {
         accomp_id.push(accompagnement[i].dataset.accomp_name);
@@ -49,7 +45,7 @@ for (var i = 0; i < updated_but.length; i++) {
     }
 
     //Customer ingredient choice
-    for (let i = 1; i < ingredients.length; i++) {
+    for (let i = 0; i < ingredients.length; i++) {
       if (ingredients[i].checked === true) {
         custChoice.push(ingredients[i].value);
       }
@@ -58,10 +54,11 @@ for (var i = 0; i < updated_but.length; i++) {
     //Customer supplement choice
     for (let i = 0; i < supplement.length; i++) {
       if (supplement[i].checked === true) {
-        //supplements.push(supplement[i].value);
+        supplements.push(supplement[i].value);
         console.log(supplement[i].value);
       }
     }
+    console.log(supplements);
 
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
@@ -81,11 +78,10 @@ for (var i = 0; i < updated_but.length; i++) {
         action: action,
         choice: custChoice.toString(),
         accomp: accomp_id.toString(),
+        sup: supplements.toString(),
         table: table,
       };
     }
-
-    console.log(data);
 
     $.ajax({
       url: "/texasgrillz/updateitem/",

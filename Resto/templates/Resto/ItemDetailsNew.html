@@ -618,10 +618,9 @@
                     class="item-cat-name">Ingredients</span><span
                     class="item-cat-number">({{ingredients|length}})</span>
                 </h5>
-
                 {% for ingredient in ingredients %}
                 <div class="ingredient-item show" id="ingredient-item">
-                  <input id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}">
+                  <input class="ingredient-input" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}">
                   <label>{{ingredient.name}}</label><br />
                 </div>
                 {% endfor %}
@@ -644,7 +643,7 @@
                 </h5>
                 {% for saissoning in assaisonement %}
                 <div class="ingredient-item show" id="sassoning-item">
-                  <input id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement"
+                  <input class="ingredient-input" id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement"
                     value="{{saissoning.name}}" />
                   <label for="saissoning">{{saissoning.name}}</label><br />
                 </div>
@@ -652,26 +651,27 @@
               </div>
               {% endif %}
 
+
               <!-- cuisson  -->
               {% if cuisson %}
               <div id="cuisson" class='cuisson relative mt-2'>
                 <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
-                <div>
-                  <small class="item-cat-instruction-onechoice italic">1 choice</small></span>
+                <div >
+                  <small class="item-cat-instruction-onechoice italic">1 choice</small>
                 </div>
-                <h5 class="flex items-center bg-gray-500 " style="color: black;"><span
-                    class="item-cat-name">Cuisson</span><span class="item-cat-number">
-                    ({{cuisson|length}})</span><span>
-                   </h5>
+                <h5 class="flex items-center bg-gray-500" style="color: black;"><span
+                  class="item-cat-name">Cuisson</span><span class="item-cat-number">
+                  ({{cuisson|length}})</span><span>
+              </h5>
+              {% for cuiss in cuisson %}
+              <div class="ingredient-item show" id="cuisson-item">
+                <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
+                <label for="cuisson">{{cuiss.name}}</label><br />
+              </div>
+              {% endfor %}
+              </div>
+              {% endif %}
 
-                {% for cuiss in cuisson %}
-                <div class="ingredient-item show" id="cuisson-item">
-                  <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
-                  <label for="cuisson">{{cuiss.name}}</label><br />
-                </div>
-                {% endfor %}
-                <div>
-                  {% endif %}
 
                   <!-- Water -->
                   {% if eau_mineral %}
@@ -723,7 +723,7 @@
             
                             {% for sup in supplements %}
                             <div class="supplement-item show " id="supplement-item">
-                              <input id="supplement{{sup.id}}" type="checkbox" name="supplement" value="{{sup.name}}">
+                              <input class="supplement-input" id="supplement{{sup.id}}" type="checkbox" name="supplement" value="{{sup.name}}">
                               <label>{{sup.name}} (+{{sup.prix}})</label><br />
                             </div>
                             {% endfor %}
@@ -804,8 +804,14 @@
 
   <script>
 
+
+
+
     let addToCartBtn = document.querySelector('.add-to-cartBtn');
     addToCartBtn.addEventListener('click', () => {
+      if(cuisson){
+        
+      }
       document.documentElement.classList.add('checked-out');
       setTimeout(() => {
         document.documentElement.classList.remove('checked-out');
