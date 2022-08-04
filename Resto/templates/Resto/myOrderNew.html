@@ -308,22 +308,10 @@
         <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} <span class="item-price-item">({{i.get_total_item}})</span></div>
         <!-- Accompagement -->
         {% if i.accompagnememt.all %}
-<<<<<<< HEAD
         {% for acc in i.accompagnememt.all  %}
-          
-        
         <small class="accompa" style="color: coral"
           ><strong id="item-accomp-{{i.id}}">{{acc.name}}<span class="total-item-accomp"></span></strong></small
         >
-       
-=======
-        {% for acc in i.accompagnememt.all %}
-          
-       
-        <small class="accompa" style="color: coral"
-          ><strong id="item-accomp-{{i.id}}">{{acc.name}} <span class="total-item-accomp"></span></strong></small
-        >
->>>>>>> 60aa678961d0a47bd62f2754dbc02c97542a91f6
         {% endfor %}
         {% endif %}
         <!-- Accompagement -->
@@ -337,18 +325,10 @@
         <!-- Supplements -->
         {% if i.supplement.all %}
         {% for sup in i.supplement.all %}
-<<<<<<< HEAD
         <h6 style="color: rgb(209, 112, 131)"><strong> * {{sup.name}} ({{sup.prix}}) </strong></h6>
         {% endfor %}
-        
         {% endif %}
         <!-- Supplemts -->
-=======
-        <h6 style="color: rgb(209, 112, 131)"><strong>*{{sup.name}} ({{sup.prix}})</strong></h6>
-        {% endfor %}
-        {% endif %}
-        <!-- Supplements -->
->>>>>>> 60aa678961d0a47bd62f2754dbc02c97542a91f6
       </div>
 
       <div class="quantity m-2 md:text-3xl flex bg-gray-300  absolute -bottom-2 -right-2">
