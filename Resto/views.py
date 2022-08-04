@@ -475,18 +475,19 @@ def UpdatedItem(request):
                 print('NO INGRE AND ACCOMP')
                 if not supplement:
                     print("we are in the case of NO supplement")
-                    orderItem_withSup= OrderItem.objects.filter(customer=customer,order = order,item = item,ingredient = None).all()
-                    print("orderItem_withSup are :", orderItem_withSup)
-                    if not orderItem_withSup:
+                    orderItem_all= OrderItem.objects.filter(customer=customer,order = order,item = item,ingredient = None).all()
+                    print("orderItem_withSup are :", orderItem_all)
+                    if not orderItem_all:
                         orderItem= OrderItem.objects.create(customer=customer,order = order,item = item, ingredient = None)
                         print("we have created a new orderItem")
                         
                     else:
-                        for item in orderItem_withSup:
+                        for item in orderItem_all:
                             print("we are looking for orderItem without supplements")
                             if not item.supplement.all():
                                 print("order item without suplement found!")
                                 orderItem = item
+                                break
                     if action =='add':
                         orderItem.quantity = (orderItem.quantity + 1)
                         orderItem.save()
@@ -498,11 +499,10 @@ def UpdatedItem(request):
                
                 else:
                     # retrieve_orderItem= OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = None, supplement__in=sup_id).all()
-                    print("we are in the case with supplement and the retrieve_roderItem are:", OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = None, supplement__in=sup_id).all())
+                    print("we are in the case with supplement and the retrieve_oderItem are:", OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = None, supplement__in=sup_id).all())
                     retrieve_order_item = OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = None, supplement__in=sup_id).all()
                     if retrieve_order_item:
                         for order_item in retrieve_order_item:
-                            
                             if set(order_item.supplement.all()) == set(my_sup):
                                 order_item_exist = True
                                 my_order_item = OrderItem.objects.get(id = order_item.id)
@@ -531,15 +531,8 @@ def UpdatedItem(request):
                         orderItem.save()
                         tot_ind_item = 1
                         total = order.get_order_total()
-                # if action =='add':
-                #     orderItem.quantity = (orderItem.quantity + 1)
-                #     orderItem.save()
-                #     tot_ind_item = orderItem.quantity
-                #     total = order.get_order_total()
-                #     tot_item = tot_ind_item
-                #     active_orderItem = orderItem.id
+               
                 
-            
             #ONLY INGRE
             if choice and not accompagment:
                 retrieve_orderItem= OrderItem.objects.filter(customer=customer,order = order,item = item, ingredient = choice).all()
@@ -562,15 +555,25 @@ def UpdatedItem(request):
             
             #ONLY ACCOMP
             if accompagment and not choice:
-                print('THIS MY ACCOMP_NAME:',accompagment)          
-                retrieve_order_item = OrderItem.objects.filter(customer=customer,order=order,item = item,accompagnememt__in=accomp_id , ingredient= None)
-                if retrieve_order_item:
-                    for order_item in retrieve_order_item:
-                        
-                        if set(order_item.accompagnememt.all()) == set(my_acc):
-                            order_item_exist = True
-                            my_order_item = OrderItem.objects.get(id = order_item.id)
-                           
+                    print('THIS MY ACCOMP_NAME:',accompagment)          
+                    retrieve_order_item_all = OrderItem.objects.filter(customer=customer,order=order,item = item,accompagnememt__in=accomp_id , ingredient= None)
+                    if retrieve_order_item_all:
+                        for order_item in retrieve_order_item_all:
+                            # if not supplement:
+                            if ((set(order_item.accompagnememt.all()) == set(my_acc))  & (set(order_item.supplement.all()) == set(my_sup))):
+                                if not supplement:
+                                    order_item_exist = True
+                                    my_order_item = OrderItem.objects.get(id = order_item.id)
+                                else:
+                                    order_item_exist = True
+                                    orderItem= OrderItem.objects.create(customer = customer,order = order, quantity =1)
+                                    orderItem.accompagnememt.add(*accomp_id_tuple)
+                                    orderItem.supplement.add(*sup_id_tuple)
+                                    orderItem.item = item 
+                                    orderItem.save()
+                                    tot_ind_item = 1
+                                    total = order.get_order_total()
+                                    
                             if action =='add':
                                 my_order_item.quantity = (my_order_item.quantity + 1)
                                 my_order_item.save()
@@ -578,25 +581,34 @@ def UpdatedItem(request):
                                 tot_item = tot_ind_item
                                 total = order.get_order_total()
                                 active_orderItem = my_order_item.id
-                            break
-                        
-                    if order_item_exist == False:
-                        orderItem = OrderItem.objects.create(customer = customer,order = order, quantity =1)
+                                break
+                       
+                        if order_item_exist == False:
+                            if not supplement:
+                                orderItem = OrderItem.objects.create(customer = customer,order = order, quantity =1)
+                                orderItem.accompagnememt.add(*accomp_id_tuple)
+                                orderItem.item = item 
+                                orderItem.save()
+                                tot_ind_item = 1
+                                total = order.get_order_total()
+                            else:
+                                orderItem = OrderItem.objects.create(customer = customer,order = order, quantity =1)
+                                orderItem.accompagnememt.add(*accomp_id_tuple)
+                                orderItem.item = item 
+                                orderItem.save()
+                                tot_ind_item = 1
+                                total = order.get_order_total()
+                                
+                            
+                    else:
+                        orderItem= OrderItem.objects.create(customer = customer,order = order, quantity =1)
                         orderItem.accompagnememt.add(*accomp_id_tuple)
                         orderItem.item = item 
                         orderItem.save()
                         tot_ind_item = 1
                         total = order.get_order_total()
-                        
-                else:
-                    orderItem= OrderItem.objects.create(customer = customer,order = order, quantity =1)
-                    orderItem.accompagnememt.add(*accomp_id_tuple)
-                    orderItem.item = item 
-                    orderItem.save()
-                    tot_ind_item = 1
-                    total = order.get_order_total()
-        
-        
+            
+            
             #ACCOMP + INGRE
             if accompagment and choice:
                 print('THIS MY ACCOMP + CHOICE:',accompagment,choice)      
