@@ -627,10 +627,7 @@ def UpdatedItem(request):
                                 
             
             
-            
-            
-            
-            
+    
             #ACCOMP + INGRE
             if accompagment and choice:
                 print('THIS MY ACCOMP + CHOICE:',accompagment,choice)      
