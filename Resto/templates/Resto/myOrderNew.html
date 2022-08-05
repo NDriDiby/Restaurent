@@ -1,16 +1,10 @@
-{% extends "Resto/base.html" %} {% load static %} {% block content %} {% if items %}
+{% extends "Resto/base.html" %} {% load static %} {% block content %} {% if items or side_items %}
 
 <style>
   .order-item-container {
     padding: 2px;
   }
 
-  /* div.item-image img {
-    border-radius: 5px 5px 0 0px;
-    width: 250px;
-    height: 100px;
-    object-fit: cover;
-  } */
 
   .page-title {
     font-weight: bold;
@@ -229,28 +223,7 @@
     background: gray;
   }
 
-  /*
-  .order-item-info {
-    padding-top: 27px;
-  }
 
-  .quantity {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: fit-content;
-    padding: 0px 15px;
-    border-radius: 20px;
-    margin-top: 10px;
-    background-color: white;
-  }
-  .order-item-content .quantity {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-
-  */
   .payment_active {
     background-color: green;
   }
@@ -295,10 +268,8 @@
 </div>
 <!-- UserBox -->
 <div class="page-title text-center">
-  <div class="md:text-3xl lg:text-4xl" style="color: chocolate">My Order</div>
+  <div class="md:text-3xl lg:text-4xl" style="color: chocolate"><i class="bi bi-bag text-3xl md:text-7xl"></i> Mon Pannier</div>
 </div>
-
-
   <div class="menudetails-content items-center sm:pt-10 py-1">
     {% for i in items %}
     <div class="menudetails-items md:mx-10 flex justify-between items-center bg-gray-100 py-1 lg:py-10 m-4 relative">
@@ -316,35 +287,30 @@
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
         <div class="item-price price text-sm sm:text-2xl md:text-4xl lg:text-5xl" id="item-total-price-{{i.id}}">{{i.get_total}} FCFA</div>
         <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{i.item.name}} <span class="item-price-item">({{i.get_total_item}})</span></div>
-        <!-- Accompagement -->
-        {% if i.accompagnememt %}
-        <small class="accompa" style="color: coral"
-          ><strong id="item-accomp-{{i.id}}">{{i.accompagnememt}} <span class="total-item-accomp">(+{{i.get_total_accomp}})</span></strong></small
-        >
-        <i
-          class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart-side"
-          data-ingredient="{{i.ingredient}}"
-          data-orderItemID="{{i.id}}"
-          data-accomp="{{i.accompagnememt}}"
-          data-product="{{i.item.id}}"
-          data-action="remove"
-        ></i>
-        <i
-          class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart-side"
-          data-ingredient="{{i.ingredient}}"
-          data-product="{{i.item.id}}"
-          data-orderItemID="{{i.id}}"
-          data-accomp="{{i.accompagnememt}}"
-          data-action="add"
-        ></i>
-        {% endif %}
-        <!-- Accompagement -->
+       <!-- Accompagement -->
+       {% if i.accompagnememt.all %}
+       {% for acc in i.accompagnememt.all  %}
+       <small class="accompa" style="color: coral"
+         ><strong id="item-accomp-{{i.id}}">{{acc.name}}<span class="total-item-accomp"></span></strong></small
+       >
+       {% endfor %}
+       {% endif %}
+       <!-- Accompagement -->
 
         <!-- Ingredients -->
         {% if i.ingredient %}
         <h6 style="color: rgb(209, 112, 131)"><strong>{{i.ingredient}}</strong></h6>
         {% endif %}
         <!-- Ingredients -->
+
+
+         <!-- Supplements -->
+         {% if i.supplement.all %}
+         {% for sup in i.supplement.all %}
+         <h6 style="color: rgb(209, 112, 131)"><strong> * {{sup.name}} ({{sup.prix}}) </strong></h6>
+         {% endfor %}
+         {% endif %}
+         <!-- Supplemts -->
       </div>
 
       <div class="quantity m-2 md:text-3xl flex bg-gray-300  absolute -bottom-2 -right-2">
@@ -371,11 +337,58 @@
   </div>
 
 
+     <!-- Side Items -->
+     {% if side_items %}
+       <div class="menudetails-content items-center sm:pt-10 py-0">
+        <p class="p-3" style="font-size: 15px; color:chocolate">Mes accompagement(s) ({{total_side_item}})</p>
+         {% for side in side_items %}
+         <div class="menudetails-items flex justify-between items-center bg-gray-100 py-6 lg:py-10 m-6 relative">
+           <form method="POST" class="absolute top-2 right-2">
+             {% csrf_token %}
+             <div class="delet-item text-center bg-white w-8 h-8 md:w-14 md:h-14 flex justify-center items-center rounded-full">
+               <p data-delete="{{side.id}}" data-item_name="{{side.item.name}}" class="btn btn-outline-danger delete-order"><i class="bi bi-trash text-xl md:text-3xl lg:text-4xl"></i></p>
+             </div>
+           </form>
+     
+           <div class="item-image">
+             <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] md:h-[200px] lg:h-[250px]" src="{{side.item.img.url}}" />
+           </div>
+     
+           <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
+             <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{side.total_side_order}} FCFA</div>
+             <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{side.item.name}} <span class="item-price-item">({{side.item.prix}})</span></div>
+           </div>
+     
+           <div class="quantity m-2 md:text-3xl flex bg-gray-300  absolute -bottom-2 -right-2">
+             <i
+               class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart"
+               data-ingredient="{{i.ingredient}}"
+               data-orderItemID="{{i.id}}"
+               data-accomp="{{i.accompagnememt}}"
+               data-product="{{i.item.id}}"
+               data-action="remove"
+             ></i>
+             <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{side.quantity}}</p>
+             <i
+               class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart"
+               data-ingredient="{{i.ingredient}}"
+               data-product="{{i.item.id}}"
+               data-orderItemID="{{i.id}}"
+               data-accomp="{{i.accompagnememt}}"
+               data-action="add"
+             ></i>
+           </div>
+         </div>
+         {% endfor %}
+       </div>
+        <!-- Side Items -->
+    {%endif%}
+
 
 <!-- Paiement -->
 
 <div class="paiement-box w-full my-5">
-  <h4 class="text-center px-6 mb-2 text-xl md:text-3xl lg:text-4xl" style="color: chocolate"><b>Paiement Method</b></h4>
+  <h4 class="text-center px-6 mb-2 text-xl md:text-3xl lg:text-4xl" style="color: chocolate"><b>Method de paiement</b></h4>
   <div class="paiment-content flex justify-center md:mt-5 gap-x-2">
     <div
       class="flex justify-center gap-x-2 items-center h-10 md:h-24 md:block payment paiment-cash border border-2 rounded-2 rounded-lg w-40 md:w-60 text-center"
@@ -395,7 +408,6 @@
 </div>
 
 <!-- Paiement -->
-
 <div class="flex justify-around md:justify-between items-center px-5">
   <div class="total-order">
     <!-- Order Total -->
@@ -413,20 +425,24 @@
   <div class="add-to-cartBtn opacity-0 mt-8">
     <input id="order_id" type="hidden" name="order_id" value="{{order.id}}" />
     <button data-totalToPay="{{order.get_order_total}}" data-action="sent" data-order="{{order.id}}" class="send-order w-[160px] md:w-[210px] md:h-[70px]">
-      <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
+      <!-- <svg style="width: 40px; height: 24px" viewBox="0 0 24 24" id="cart">
         <path
           fill="#ffffff"
           d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z"
         />
-      </svg>
-      <span class="md:text-2xl">Send To Kitchen</span>
+      </svg> -->
+      <span class="md:text-2xl">Envoyer en cuisine</span>
       <svg id="check" style="width: 24px; height: 24px" viewBox="0 0 24 24">
         <path stroke-width="2" fill="none" stroke="#ffffff" d="M 3,12 l 6,6 l 12, -12" />
       </svg>
     </button>
   </div>
-
 </div>
+<!-- paiement -->
+
+
+
+
 <!-- IF NO ITEM IN CART -->
 {% else %}
 <div class="no-items flex justify-center items-center w-full min-h-screen">
@@ -466,10 +482,10 @@
 
   </div>
 
-
+  {% endif%}
 </div>
 
-{% endif%}
+
 
 
 <script>

@@ -1,28 +1,28 @@
 {% extends "Resto/base.html" %} {% load static %}{% block content %}
 <style>
   body{
-    background-color: #ea580c;
+    background-color:#d2691e;
   }
     .rec{
-    border-right: 799px solid #ea580c;
+    border-right: 799px solid #d2691e;
     border-top: 900px solid white;
 }
 
 @media screen and (min-width: 768px) {
     .rec{
-    border-right: 1300px solid rgb(234 88 12);
+    border-right: 1300px solid #d2691e;
     border-top: 980px solid white;
 }  
 }
 @media screen and (min-width: 820px) {
     .rec{
-    border-right:1790px solid rgb(234 88 12);
+    border-right:1790px solid #d2691e;
     border-top: 1300px solid white;
 } 
 }
 @media screen and (min-width: 1200px) {
     .rec{
-    border-right:2890px solid rgb(234 88 12);
+    border-right:2890px solid #d2691e;
     border-top: 1300px solid white;
   }  
   .burger{
@@ -45,7 +45,7 @@
 }
 
 .btn {
-  background-color:chocolate;
+  background-color:#d2691e;
   border-radius: 3px;
   color: white;
   padding: 10px 10px;
@@ -184,24 +184,12 @@
 </div>
 
 
-
-  <div class="flex gap-x-5 md:ml-auto items-center">
-      <!-- <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
-        <img class="rounded-full w-20 h-14" src="{{pop_item.img.url}}" alt="Cinque Terre" />
-      </a> -->
-      
-      <!-- <img class="w-20 h-20" src="{%static 'Resto/burger-background.png' %}" alt="">
-      <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png'%}" alt="">
-      <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt="">
-      <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png' %}" alt="">
-      <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt=""> -->
-    </div>
-    <p class="font-bold text-white py-3 md:py-10 text-2xl ml-auto mr-auto text-center px-5  max-w-6xl md:text-4xl md:w-[600px] lg:text-6xl lg:text-center lg:w-full lg:px-10 lg:py-10">Best burger in town.
-      Welcome and enjoy our tasty burger that bring joys at every bite!
+    <p class="font-bold text-white py-3 md:py-10 text-2xl ml-auto mr-auto text-center px-5  max-w-6xl md:text-4xl md:w-[600px] lg:text-6xl lg:text-center lg:w-full lg:px-10 lg:py-10">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout
+      les jours
     </p>
     <div class="flex justify-center">
       <a href="/texasgrillz/menudetails/{{1}}/?session={{app}}">
-        <button class="w-32 md:w-44 md:py-4 md:text-2xl py-3 rounded-lg bg-green-500 text-white lg:w-60 lg:py-7 lg:text-3xl">View Menu</button>
+        <button class="w-32 md:w-44 md:py-4 md:text-2xl py-3 rounded-lg bg-green-500 text-white lg:w-60 lg:py-7 lg:text-3xl">Voir Menu</button>
       </a>
     </div>
   </div>

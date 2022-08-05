@@ -1,5 +1,4 @@
 // Start here
-
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
@@ -85,6 +84,9 @@ function sendMyOrder(action, order) {
   });
 }
 
+// Current Page
+console.log(location.href.split("/")[4]);
+
 //UPDATE (INC - DEC) ITEM IN CART
 update_but = document.getElementsByClassName("update-cart");
 for (let i = 0; i < update_but.length; i++) {
@@ -97,6 +99,9 @@ for (let i = 0; i < update_but.length; i++) {
     var ordItem = this.dataset.orderItemID;
     var accompa = this.dataset.accomp;
 
+    // GET TABLE NUMBER
+    table = location.href.split("&")[1].split("=")[1];
+
     $.ajax({
       url: "/texasgrillz/updateitem/",
       method: "POST",
@@ -106,6 +111,7 @@ for (let i = 0; i < update_but.length; i++) {
         action: action,
         choice: ingre,
         accomp: accompa,
+        table: table,
       },
       success: function (response) {
         console.log(response);
