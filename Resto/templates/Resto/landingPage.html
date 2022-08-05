@@ -1,25 +1,33 @@
 {% extends "Resto/base.html" %} {% load static %}{% block content %}
 <style>
+  body{
+    background-color: #ea580c;
+  }
     .rec{
-    border-right: 680px solid rgb(234 88 12);
+    border-right: 799px solid #ea580c;
     border-top: 900px solid white;
 }
 
 @media screen and (min-width: 768px) {
     .rec{
-    border-right: 1100px solid rgb(234 88 12);
+    border-right: 1300px solid rgb(234 88 12);
     border-top: 980px solid white;
 }  
 }
 @media screen and (min-width: 820px) {
     .rec{
-    border-right:1550px solid rgb(234 88 12);
+    border-right:1790px solid rgb(234 88 12);
     border-top: 1300px solid white;
 }  
-.burger{
+@media screen and (min-width: 1200px) {
+    .rec{
+    border-right:2890px solid rgb(234 88 12);
+    border-top: 1300px solid white;
+  }  
+  .burger{
   width: 150px;
   height: 110px;
-}
+  }
 }
 @media screen and (min-height: 813px) {
     body{
@@ -42,11 +50,64 @@
   padding: 10px 10px;
 }
 
-</style>
-<body>
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 350px solid transparent;
+  border-right: 350px solid transparent;
+  
+  border-bottom: 850px solid rgb(245, 132, 26);
+}
+.custom-shape-divider-top-1659550928 {
+  position: absolute;
+    bottom: 90px;
+    left: 0;
+    width: 100%;
+    /* overflow: hidden; */
+    line-height: 0;
+    z-index: -10;
+}
+.custom-shape-divider-top-1659550928 svg{
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 150px;
+  transform: rotate(180deg);
+}
 
+.custom-shape-divider-top-1659550928 .shape-fill{
+  fill: white;
+}
+.custom-shape-divider-top-1659560449{
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    /* overflow: hidden; */
+    line-height: 0;
+    z-index: -10;
+}
+.custom-shape-divider-top-1659560449 svg{
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 80px;
+  /* transform: rotate(90deg); */
+ 
+}
+.custom-shape-divider-top-1659560449 .shape-fill{
+  fill: white;
+}
+
+.rounded{
+  border-radius: 15px;
+}
+</style>
+<body class="relative">
+  <!-- <div class="rec absolute top-[180px] right-[-150px]  -z-50 arrow-up"></div> -->
+  <!-- <div class="absolute rotate-[180deg] top-[0px] right-[-150px]  -z-50 arrow-up"></div> -->
 <!-- ~~~~~~~~~~~~~~~~~~ navbar ~~~~~~~~~~~~~~~~~~  -->
-<nav class="z-10 bg-white sticky top-0 border-gray-200 py-2.5 px-5 dark:bg-gray-900 overflow-hidden">
+<nav class="z-50 bg-white sticky top-0 border-gray-200 py-2.5 px-5 overflow-hidden">
     <div class="flex flex-wrap justify-between items-center">
       <a class="flex items-center">
           <span class="self-center businesslogo text-xl font-semibold whitespace-nowrap dark:text-white"><img src="{% static 'Resto/Icarus.png' %}" alt="" width="100px" height="100px" /></span>
@@ -65,42 +126,55 @@
 <!-- ~~~~~~~~~~~~~~~~~~ navbar ~~~~~~~~~~~~~~~~~~  -->
 
 <!-- ~~~~~~~~~~~~~~~~~~ info ~~~~~~~~~~~~~~~~~~  -->
-  <div class="py-5 px-5 flex flex-col gap-y-2 relative overflow-hidden min-h-screen">
+  <div class="py-5 px-5 flex flex-col gap-y-2 relative min-h-screen">
     <div class="rec absolute bg-orange-600 top-0 right-0 -z-10"></div>
-    <h1 class="text-3xl text-left font-bold text-gray-600 py-5 md:w-[500px] md:px-4 md:text-5xl lg:text-6xl lg:w-full">Most Popular Items</h1>
+    <!-- <div class="custom-shape-divider-top-1659550928">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+      </svg>
+      <div class="bg absolute top-[100px] w-full h-40 bg-green-500"></div>
+  </div>
+  <div class="custom-shape-divider-top-1659560449">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+    </svg>
+</div> -->
+  
+    <h1 class=" text-3xl font-bold text-gray-700 py-5 pt-7 md:w-[500px] md:px-4 md:text-5xl lg:text-6xl lg:w-full">Most Popular Items</h1>
   
   
-<div id="default-carousel" class="relative" data-carousel="static">
+<div id="default-carousel" class="relative md:h-[450px] lg:h-[500px]" data-carousel="static">
   <!-- Carousel wrapper -->
-  <div class="relative h-80 overflow-hidden rounded-lg md:h-96">
+  <div class="relative h-96 overflow-hidden rounded-lg md:h-96">
        <!-- Item 1 -->
        {% for pop_item in show_pop_item %}
-       <div class="duration-700 ease-in-out absolute inset-0 transition-all transform translate-x-0 z-20" data-carousel-item="">
-        <span class="absolute text-2xl font-semibold text-white -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 sm:text-3xl dark:text-gray-800">First Slide</span>
+      <div class=" duration-700 ease-in-out absolute inset-0 transition-all transform translate-x-0 z-20" data-carousel-item="">
         <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
-        <img src="{{pop_item.img.url}}" class="absolute block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..." width="150px" height="120px">
-      </a>
-        <p class="text-2xl text-gray-900">{{pop_item.name}}</p>
-        <p class="text-3xl" style="color: chocolate;">{{pop_item.prix}}</p>
+          <img src="{{pop_item.img.url}}" class="md:pt-14 absolute -z-10 w-72 h-60 rounded md:w-5/6 md:h-[400px] lg:h-[450px] object-cover block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </a>
+        <div class="bg-green-500 w-56 md:w-60 md:ml-5 flex gap-x-2 px-1 items-center text-white rounded-br-full">
+          <p class="z-100 text-xl text-gray-800">{{pop_item.name}}</p>
+          <p class="z-100 text-3xl text-white">{{pop_item.prix}}</p>
+        </div>
       </div>
        {% endfor %}
   </div>
   <!-- Slider indicators -->
   <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
     {% for pop_item in show_pop_item %}
-      <button type="button" class="w-3 h-3 rounded-full bg-white dark:bg-gray-800" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+      <button type="button" class=" w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
       {% endfor %}
   </div>
   <!-- Slider controls -->
   <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev="">
-      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-green-500 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-green-500 dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-          <svg aria-hidden="true" class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-green-500 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-green-500 group-focus:outline-none">
+          <svg aria-hidden="true" class="w-5 h-5 text-white sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
           <span class="sr-only">Previous</span>
       </span>
   </button>
   <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next="">
-      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-green-500 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-green-500 dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-          <svg aria-hidden="true" class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-green-500  group-hover:bg-white/50  group-focus:ring-4 group-focus:ring-green-500  group-focus:outline-none">
+          <svg aria-hidden="true" class="w-5 h-5 text-white sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
           <span class="sr-only">Next</span>
       </span>
   </button>
@@ -108,7 +182,7 @@
 
 
 
-    <div class="flex gap-x-5 md:ml-auto items-center pt-5">
+  <div class="flex gap-x-5 md:ml-auto items-center">
       <!-- <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
         <img class="rounded-full w-20 h-14" src="{{pop_item.img.url}}" alt="Cinque Terre" />
       </a> -->
@@ -119,12 +193,12 @@
       <img class="w-20 h-20" src="{%static 'Resto/burger1-removebg-preview.png' %}" alt="">
       <img class="w-40 h-20" src="{%static 'Resto/burger-removebg-preview.png' %}"  alt=""> -->
     </div>
-    <p class="font-bold text-white py-7 text-2xl text-center px-5  max-w-6xl md:text-3xl md:w-[600px] lg:text-4xl lg:text-center lg:w-full lg:px-10 lg:py-10">Best cheesy burger we serve in the heart of LA.
-      Welcome and enjoy our tasteful burger that bring joys at every moment
+    <p class="font-bold text-white py-3 md:py-10 text-2xl ml-auto mr-auto text-center px-5  max-w-6xl md:text-4xl md:w-[600px] lg:text-6xl lg:text-center lg:w-full lg:px-10 lg:py-10">Best burger in town.
+      Welcome and enjoy our tasty burger that bring joys at every bite!
     </p>
     <div class="flex justify-center">
       <a href="/texasgrillz/menudetails/{{1}}/?session={{app}}">
-        <button class="w-32 md:w-44 md:py-4 md:text-xl py-3 rounded-lg bg-green-500 text-white lg:w-60 lg:py-7 lg:text-3xl">View Menu</button>
+        <button class="w-32 md:w-44 md:py-4 md:text-2xl py-3 rounded-lg bg-green-500 text-white lg:w-60 lg:py-7 lg:text-3xl">View Menu</button>
       </a>
     </div>
   </div>
