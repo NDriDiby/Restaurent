@@ -486,17 +486,18 @@ def UpdatedItem(request):
                         for item in orderItem_all:
                             if not item.supplement.all(): #if no supplement is attached to the orderItem then we have our orderItem with no supplement
                                 orderItem = item
-                                
-                                if action =='add':
-                                    orderItem.quantity = (orderItem.quantity + 1)
-                                    orderItem.save()
-                                    tot_ind_item = orderItem.quantity
-                                    total = order.get_order_total()
-                                    # my_order_item = OrderItem.objects.filter(order= order, item = item)
-                                    # tot_item = [sum(x.quantity for x in my_order_item)][0]
-                                    tot_item = tot_ind_item
-                                    active_orderItem = orderItem.id
                                 break
+                                
+                    if action =='add':
+                        orderItem.quantity = (orderItem.quantity + 1)
+                        orderItem.save()
+                        tot_ind_item = orderItem.quantity
+                        total = order.get_order_total()
+                        # my_order_item = OrderItem.objects.filter(order= order, item = item)
+                        # tot_item = [sum(x.quantity for x in my_order_item)][0]
+                        tot_item = tot_ind_item
+                        active_orderItem = orderItem.id
+                    
                
                 else: #If there is supplement
                    #find all orderitem that have a supplement
@@ -680,9 +681,7 @@ def UpdatedItem(request):
                                     my_order_item.quantity = (my_order_item.quantity + 1)
                                     my_order_item.save()
                                     tot_ind_item = my_order_item.quantity
-                                    my_order_item = OrderItem.objects.filter(order= order, item = item)
-                                    tot_item = [sum(x.quantity for x in my_order_item)][0]
-                                    # tot_item = tot_ind_item
+                                    tot_item = tot_ind_item
                                     total = order.get_order_total()
                                     active_orderItem = my_order_item.id
                                 break
@@ -708,9 +707,7 @@ def UpdatedItem(request):
                                     my_order_item.quantity = (my_order_item.quantity + 1)
                                     my_order_item.save()
                                     tot_ind_item = my_order_item.quantity
-                                    my_order_item = OrderItem.objects.filter(order= order, item = item)
-                                    tot_item = [sum(x.quantity for x in my_order_item)][0]
-                                    # tot_item = tot_ind_item
+                                    tot_item = tot_ind_item
                                     total = order.get_order_total()
                                     active_orderItem = my_order_item.id
                                 break
@@ -789,6 +786,15 @@ def UpdatedItem(request):
                         'total_accomp':total_accomp,
                         'test':10}
                         ,safe=False)
+
+def CheckoutPageUpdateItem(request):
+
+
+
+     return JsonResponse({'test':10}
+                        ,safe=False)
+
+
 
 
 
@@ -1108,9 +1114,13 @@ def DeleteOrderItem(request):
     
     if request.method == 'POST':
         order_item_id = request.POST['item_id']
+        try:
+            del_items = OrderItem.objects.get(id = order_item_id)
+            del_items.delete()
+        except:
+            del_items = SideOrderItem.objects.get(id = order_item_id)
+            del_items.delete()
         
-        del_items = OrderItem.objects.get(id = order_item_id)
-        del_items.delete()
         print('DELETING',order_item_id)
     return JsonResponse('item deleted',safe=False)
 
