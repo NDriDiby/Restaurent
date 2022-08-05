@@ -402,12 +402,14 @@ def MyOrder(request):
         order,created= Order.objects.get_or_create(customer=customer,status='Pending',table=table)
         items = order.orderitem_set.all()
         cartItem = order.get_order_quantity()
+        side_item = order.sideorderitem_set.all()
         
 
         
     context = {
         'order':order,
         'items':items,
+        'side_items': side_item,
         'cart_quantity':cartItem,
         'app':targetApp
     }    
@@ -477,7 +479,6 @@ def UpdatedItem(request):
                 if not supplement:  #If there is no supplement
                     #filter all order with no supplement
                     orderItem_all= OrderItem.objects.filter(customer=customer,order = order,item = item,ingredient = None).all()
-
                     if not orderItem_all: #if there is nothing then create orderitem with no supplement
                         orderItem= OrderItem.objects.create(customer=customer,order = order,item = item, ingredient = None)
                     
@@ -485,15 +486,17 @@ def UpdatedItem(request):
                         for item in orderItem_all:
                             if not item.supplement.all(): #if no supplement is attached to the orderItem then we have our orderItem with no supplement
                                 orderItem = item
+                                
+                                if action =='add':
+                                    orderItem.quantity = (orderItem.quantity + 1)
+                                    orderItem.save()
+                                    tot_ind_item = orderItem.quantity
+                                    total = order.get_order_total()
+                                    # my_order_item = OrderItem.objects.filter(order= order, item = item)
+                                    # tot_item = [sum(x.quantity for x in my_order_item)][0]
+                                    tot_item = tot_ind_item
+                                    active_orderItem = orderItem.id
                                 break
-                    if action =='add':
-                        orderItem.quantity = (orderItem.quantity + 1)
-                        orderItem.save()
-                        tot_ind_item = orderItem.quantity
-                        total = order.get_order_total()
-                        tot_item = tot_ind_item
-                        active_orderItem = orderItem.id
-
                
                 else: #If there is supplement
                    #find all orderitem that have a supplement
@@ -667,9 +670,8 @@ def UpdatedItem(request):
                 if not supplement:     
                     retrieve_order_item = OrderItem.objects.filter(customer=customer,order=order,item = item, ingredient = choice,accompagnememt__in=accomp_id)
                     if retrieve_order_item:
-                        
                         for order_item in retrieve_order_item:
-                            if set(order_item.accompagnememt.all()) == set(my_acc) and not order_item.supplement.all():
+                            if (set(order_item.accompagnememt.all()) == set(my_acc) and not order_item.supplement.all()):
                                 order_item_exist = True
                                 my_order_item = OrderItem.objects.get(id = order_item.id)
 
@@ -678,7 +680,9 @@ def UpdatedItem(request):
                                     my_order_item.quantity = (my_order_item.quantity + 1)
                                     my_order_item.save()
                                     tot_ind_item = my_order_item.quantity
-                                    tot_item = tot_ind_item
+                                    my_order_item = OrderItem.objects.filter(order= order, item = item)
+                                    tot_item = [sum(x.quantity for x in my_order_item)][0]
+                                    # tot_item = tot_ind_item
                                     total = order.get_order_total()
                                     active_orderItem = my_order_item.id
                                 break
@@ -691,12 +695,41 @@ def UpdatedItem(request):
                             orderItem.save()
                             tot_ind_item = 1
                             total = order.get_order_total()
+                else: 
+                    retrieve_order_item = OrderItem.objects.filter(customer=customer,order=order,item = item, ingredient = choice,accompagnememt__in=accomp_id, supplement__in = sup_id)
+                    if retrieve_order_item:
+                        for order_item in retrieve_order_item:
+                            if ( (set(order_item.accompagnememt.all()) == set(my_acc)) and (set(order_item.supplement.all()) == set(my_sup))):
+                                order_item_exist = True
+                                my_order_item = OrderItem.objects.get(id = order_item.id)
+                                
+                                if action =='add':
+                                    print('I ADDED +1')
+                                    my_order_item.quantity = (my_order_item.quantity + 1)
+                                    my_order_item.save()
+                                    tot_ind_item = my_order_item.quantity
+                                    my_order_item = OrderItem.objects.filter(order= order, item = item)
+                                    tot_item = [sum(x.quantity for x in my_order_item)][0]
+                                    # tot_item = tot_ind_item
+                                    total = order.get_order_total()
+                                    active_orderItem = my_order_item.id
+                                break
                         
+                        if order_item_exist == False:
+                            orderItem= OrderItem.objects.create(customer = customer,order = order, quantity =1)
+                            orderItem.accompagnememt.add(*accomp_id_tuple)
+                            orderItem.supplement.add(*sup_id_tuple)
+                            orderItem.item = item
+                            orderItem.ingredient = choice
+                            orderItem.save()
+                            tot_ind_item = 1
+                            total = order.get_order_total()
                             
                     else:
                         print("LETS START HERE")
                         orderItem= OrderItem.objects.create(customer = customer,order = order, quantity =1)
                         orderItem.accompagnememt.add(*accomp_id_tuple)
+                        orderItem.supplement.add(*sup_id_tuple)
                         orderItem.item = item
                         orderItem.ingredient = choice
                         orderItem.save()
@@ -708,7 +741,6 @@ def UpdatedItem(request):
             #tot_ind_item = orderItem.quantity
             
             
-        
             item_selected = list()
             item = order.orderitem_set.all()
             for i in range(0,len(item)): 
@@ -728,7 +760,6 @@ def UpdatedItem(request):
                 item_selected.append(data)
                 
         else:
-            
             sideItem = Accompagnement.objects.get(id = side_itemId)
             sideOrderItem,created = SideOrderItem.objects.get_or_create(customer = customer, order = order, item = sideItem)
             item_name = sideItem.name
@@ -743,10 +774,7 @@ def UpdatedItem(request):
                     active_orderItem = sideOrderItem.id
                     item_selected = 'Okay'
             
-            # total= order.get_order_quantity() + 1000
-            # item_selected = 'Okay'
-            # total_cart = order.get_order_quantity() + 1
-            # tot_ind_item = tot_ind_item + 1
+           
             
         total_cart = order.get_order_quantity()
             

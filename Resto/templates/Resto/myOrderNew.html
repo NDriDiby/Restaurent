@@ -354,7 +354,56 @@
     {% endfor %}
   </div>
 
-{{items.order.}}
+   <!-- Side Items -->
+  {% if side_items %}
+  <div class="menudetails-content items-center sm:pt-10 py-1">
+    {% for side in side_items %}
+    <div class="menudetails-items flex justify-between items-center bg-gray-100 py-6 lg:py-10 m-6 relative">
+      <form method="POST" class="absolute top-2 right-2">
+        {% csrf_token %}
+        <div class="delet-item text-center bg-white w-8 h-8 md:w-14 md:h-14 flex justify-center items-center rounded-full">
+          <p data-delete="{{side.id}}" data-item_name="{{side.item.name}}" class="btn btn-outline-danger delete-order"><i class="bi bi-trash text-xl md:text-3xl lg:text-4xl"></i></p>
+        </div>
+      </form>
+
+      <div class="item-image">
+        <img class="p-1 w-[220px] h-[100px] sm:h-[160px] sm:w-[300px] lg:w-[400px] md:h-[200px] lg:h-[250px]" src="https://www.seriouseats.com/thmb/sQ_5MV-c0N_8kLLSas6Pr-fbrcY=/735x0/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2013__03__20130305-fried-plantains-mint-mojo-recipe-3-941b0e98a44743e18cb967d7ac677a95.jpg" />
+      </div>
+
+      <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
+        <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{side.total_side_order}} FCFA</div>
+        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{side.item.name}} <span class="item-price-item">({{side.item.prix}})</span></div>
+      </div>
+
+      <div class="quantity m-2 md:text-3xl flex bg-gray-300  absolute -bottom-2 -right-2">
+        <i
+          class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart"
+          data-ingredient="{{i.ingredient}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-product="{{i.item.id}}"
+          data-action="remove"
+        ></i>
+        <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{side.quantity}}</p>
+        <i
+          class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart"
+          data-ingredient="{{i.ingredient}}"
+          data-product="{{i.item.id}}"
+          data-orderItemID="{{i.id}}"
+          data-accomp="{{i.accompagnememt}}"
+          data-action="add"
+        ></i>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% endif %}
+
+   <!-- Side Items -->
+ 
+
+    
   
 
 

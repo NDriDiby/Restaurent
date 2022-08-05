@@ -92,6 +92,9 @@ for (let i = 0; i < update_but.length; i++) {
     var ordItem = this.dataset.orderItemID;
     var accompa = this.dataset.accomp;
 
+    // GET TABLE NUMBER
+    table = location.href.split("&")[1].split("=")[1];
+
     $.ajax({
       url: "/texasgrillz/updateitem/",
       method: "POST",
@@ -101,6 +104,7 @@ for (let i = 0; i < update_but.length; i++) {
         action: action,
         choice: ingre,
         accomp: accompa,
+        table: table,
       },
       success: function (response) {
         console.log(response);
