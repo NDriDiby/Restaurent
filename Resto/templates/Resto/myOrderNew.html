@@ -354,8 +354,11 @@
     {% endfor %}
   </div>
 
+
+
    <!-- Side Items -->
   {% if side_items %}
+<p>Mes accompagement</p>
   <div class="menudetails-content items-center sm:pt-10 py-1">
     {% for side in side_items %}
     <div class="menudetails-items flex justify-between items-center bg-gray-100 py-6 lg:py-10 m-6 relative">
@@ -397,9 +400,6 @@
     </div>
     {% endfor %}
   </div>
-
-  {% endif %}
-
    <!-- Side Items -->
  
 
@@ -536,4 +536,5 @@
   });
 </script>
 <script type="text/javascript" src="{% static 'Resto/JavaScript/sendOrder.js'%}"></script>
+{%endif%}
 {% endblock content %}

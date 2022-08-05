@@ -212,6 +212,12 @@ class SideOrderItem(models.Model):
         return total
     
     
+    def total_side_order_item(self):
+        
+        side = self.order.orderitem_set.all()
+        total = sum([x.quantity for x in side])
+        print('Yes I see')
+    
 
     
     
