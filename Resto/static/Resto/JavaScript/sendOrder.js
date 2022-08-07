@@ -96,22 +96,23 @@ for (let i = 0; i < update_but.length; i++) {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
-    var ordItem = this.dataset.orderItemID;
+    var ordItem = this.dataset.orderItem;
     var accompa = this.dataset.accomp;
+
+    console.log("ORDER ITEM ID", ordItem);
+    console.log("action", itemId);
 
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
 
     $.ajax({
-      url: "/texasgrillz/updateitem/",
+      url: "/texasgrillz/checkoutpage/",
       method: "POST",
       data: {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
+        ordItem: ordItem,
         action: action,
-        choice: ingre,
-        accomp: accompa,
-        table: table,
       },
       success: function (response) {
         console.log(response);

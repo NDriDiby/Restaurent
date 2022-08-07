@@ -27,7 +27,8 @@ $(".cuisson input").click(function () {
 });
 
 // Current Page
-console.log(location.href.split("/")[4]);
+page = location.href.split("/")[4];
+console.log(page);
 
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
@@ -76,6 +77,7 @@ for (var i = 0; i < updated_but.length; i++) {
         side_itemId: side_itemId,
         action: action,
         table: table,
+        page: page,
       };
     } else {
       data = {

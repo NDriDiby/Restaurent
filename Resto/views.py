@@ -445,7 +445,9 @@ def UpdatedItem(request):
         accompagment = request.POST.get('accomp',False) # Accompagement
         supplement = request.POST.get('sup',False) # Supplement
         side_itemId = request.POST.get('side_itemId',False) #Side_ItemID
-        table_numb = int(request.POST['table']) #Table       
+        table_numb = int(request.POST['table']) #Table 
+        page = request.POST.get('page',False)
+        
         
         #Retrieve Customer and Order
         customer = request.user
@@ -453,8 +455,8 @@ def UpdatedItem(request):
         order= Order.objects.get(customer=customer,status = 'Pending',table = table_numb)
         total = order.get_order_total()
         
-        
-        
+       
+
         # If no Side Item ordered
         if side_itemId == False:
            
@@ -800,6 +802,16 @@ def UpdatedItem(request):
                         'test':10}
                         ,safe=False)
 
+
+def CheckoutPageUpdate(request):
+    
+    if request.POST:
+        
+        orderItemID = request.POST.get('ordItem',False)
+        
+        print('MY ORDER ITEM ID',orderItemID)
+    
+    return JsonResponse({'check':"GOOD"})
 
 
 
