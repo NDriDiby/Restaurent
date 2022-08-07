@@ -222,18 +222,13 @@ def SideDetails(request,side_id):
 
     #Get and show the item in each category
     side = Accompagnement.objects.get(id = side_id)
-    side_items = Accompagnement.objects.all()
-    # category = Category.objects.all().order_by("name")
-    # item = Item.objects.filter(category__id = menu_id)
-    # sides = Accompagnement.objects.all()
+    side_items = Accompagnement.objects.exclude(id = side_id)
+   
     
-
-
     order = None
     cartItem = 0
     cartTotal = 0
     
-    #Create customer and order
     
     # Authenticate then create an order
     if request.user.is_authenticated:
@@ -245,14 +240,11 @@ def SideDetails(request,side_id):
             cartTotal = order.get_order_total()
             my_total = order.get_order_total()
             
-        
         except:
             pass
         
         
     context = {
-        # 'menu':menu,
-        # 'category':category,
         'side':side,
         'orders':order,
         'cart_quantity':cartItem,
@@ -260,7 +252,6 @@ def SideDetails(request,side_id):
         'app':targetApp,
         'my_total':my_total,
         'side_items':side_items,
-        
     }
     return render(request,'Resto/sideDetails.html',context)
 
@@ -320,6 +311,9 @@ def ItemDetails(request,item_id):
     
     item = Item.objects.get(id=item_id)
     print('THIS IS MY ITEM-ACCOMP',item.accompagnement.all())
+    my_item_accompID = [acc.id for acc in item.accompagnement.all()]
+    side_item = Accompagnement.objects.exclude(id__in=my_item_accompID)
+ 
    
     cartItem = 0
     myItem = None
@@ -335,7 +329,9 @@ def ItemDetails(request,item_id):
             my_total = order.get_order_total()
             
             popular_item = OrderItem.objects.values_list('item__name',flat=True).annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
-            side_item = Accompagnement.objects.all()
+           
+            
+            
             
             #Check for past or pending order for the user
             pending_order = Order.objects.filter(customer=cust,status='Pending')

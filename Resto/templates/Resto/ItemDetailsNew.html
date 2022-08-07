@@ -792,7 +792,7 @@
   </div> 
   </div> -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
+{% if side_item %}
 <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Other Sides</h1>
 <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
   {% for side in side_item %}
@@ -806,6 +806,7 @@
     </div>
     {% endfor %}
   </div>
+  {% endif %}
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 
