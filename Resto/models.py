@@ -45,6 +45,8 @@ class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
     prix = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0,blank=True)
+    img = models.ImageField(upload_to='images/',blank=True)
+    
     
     def __str__(self):
         return self.name
@@ -105,16 +107,44 @@ class Order(models.Model):
     
     #Total value of cart
     def get_order_total(self):
-        order = self.orderitem_set.all()
-        total = sum([item.get_total() for item in order])
-        return total
+        order_item = self.orderitem_set.all()
+        total = sum([item.get_total() for item in order_item])
+        if self.sideorderitem_set.all():
+            side_item = self.sideorderitem_set.all()
+            total_side = sum([item.total_side_order() for item in side_item])
+            return total + total_side
+        else:
+            return total
 
 
     #Total quantity in the cart
     def get_order_quantity(self):
-        order = self.orderitem_set.all()
-        total = sum([item.quantity for item in order])
+        order_item = self.orderitem_set.all()
+        total = sum([item.quantity for item in order_item])
+        if self.sideorderitem_set.all():
+            side_item = self.sideorderitem_set.all()
+            total_side = sum([item.quantity for item in side_item])
+            return total + total_side
+        else:
+            return total
+        
+    def total_side_order_item(self):
+        side = self.sideorderitem_set.all()
+        total = sum([x.quantity for x in side])
         return total
+    
+    
+class Supplement(models.Model):
+    name = models.CharField(max_length = 150)
+    prix = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0,blank=True)
+    item = models.ManyToManyField(Item,blank = True)
+    img = models.ImageField(upload_to='images/',blank = True)
+    
+    def __str__(self):
+        return self.name
+    
+    
 
     
 class OrderItem(models.Model):
@@ -123,32 +153,34 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
     ingredient = models.CharField(null = True, blank = True,max_length=150)
-    accompagnememt = models.CharField(null = True, blank = True,max_length=150)
+    accompagnememt = models.ManyToManyField(Accompagnement,blank=True)
+    supplement = models.ManyToManyField(Supplement,blank=True)
     date_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.item)
     
-    def total_accomp(self):
-        acc = None
-        if self.accompagnememt:
-            for i in self.accompagnememt:
-                acc = self.accompagnememt.split(",")
-            my_acc = Accompagnement.objects.filter(name__in=acc)
-            total_acc = sum([x.prix for x in my_acc])
-            return total_acc 
-        else:
-            return 0
+    def total_supplement(self):
+        if self.supplement:
+            all_sup = self.supplement.all()
+            total_sup = sum([x.prix for x in all_sup])
+            return total_sup
+        return 0
     
+    
+    def total_ind_sup(self):
+        if self.supplement:
+            total = self.quantity * self.supplement.prix
+            return total
     
     #Get total
     def get_total(self):
         total = (self.item.prix * self.quantity) 
-        acc = self.total_accomp()
-        global_total = total + acc
-        if acc!=0:
-            acc = self.quantity * self.total_accomp()
-            global_total = total + acc
+        sup = self.total_supplement()
+        global_total = total + sup
+        if sup!=0:
+            sup = self.quantity * self.total_supplement()
+            global_total = total + sup
         return global_total 
     
     
@@ -157,12 +189,27 @@ class OrderItem(models.Model):
         return total
     
     def get_total_accomp(self):
-        total = self.quantity * self.total_accomp()
+        total = self.quantity * self.total_supplement()
         return total
     
     
-
-
+class SideOrderItem(models.Model):
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
+    order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
+    item = models.ForeignKey(Accompagnement, on_delete=CASCADE,blank=True,null=True)
+    quantity = models.IntegerField(default=0,null = True, blank = True )
+    date_added = models.DateTimeField(auto_now=True,)
+    img = models.ImageField(upload_to='images/',blank = True)
+    
+    def __str__(self):
+        return str(self.item)
+    
+    
+    def total_side_order(self):
+        total = (self.item.prix) * (self.quantity)
+        return total
+    
+    
 class IventoryItemCategory(models.Model):
     name = models.CharField(max_length=150,null = True, blank = True)
     description = models.CharField(max_length=150,null = True, blank = True)
