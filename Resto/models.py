@@ -143,6 +143,8 @@ class Supplement(models.Model):
     
     def __str__(self):
         return self.name
+    
+    
 
     
 class OrderItem(models.Model):
@@ -165,6 +167,11 @@ class OrderItem(models.Model):
             return total_sup
         return 0
     
+    
+    def total_ind_sup(self):
+        if self.supplement:
+            total = self.quantity * self.supplement.prix
+            return total
     
     #Get total
     def get_total(self):
@@ -203,9 +210,6 @@ class SideOrderItem(models.Model):
         return total
     
     
-    
-    
-
 class IventoryItemCategory(models.Model):
     name = models.CharField(max_length=150,null = True, blank = True)
     description = models.CharField(max_length=150,null = True, blank = True)

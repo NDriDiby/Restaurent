@@ -287,20 +287,23 @@
 
       <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
         <div class="item-price price text-sm sm:text-2xl md:text-4xl lg:text-5xl" id="item-total-price-{{orderItem.id}}">{{orderItem.get_total}} FCFA</div>
-        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{orderItem.item.name}} <span class="item-price-item">({{orderItem.get_total_item}})</span></div>
+        <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{orderItem.item.name}} <span id="item-price-item-{{orderItem.id}}">({{orderItem.item.prix}})</span></div>
+
        <!-- Accompagement -->
        {% if orderItem.accompagnememt.all %}
        {% for acc in orderItem.accompagnememt.all  %}
-       <small class="accompa" style="color: coral"
+       <small class="accompa" style="color: chocolate"
          ><strong id="item-accomp-{{orderItem.id}}">{{acc.name}}<span class="total-item-accomp"></span></strong></small
        >
+       <br>
        {% endfor %}
+    
        {% endif %}
        <!-- Accompagement -->
 
         <!-- Ingredients -->
         {% if orderItem.ingredient %}
-        <h6 style="color: rgb(209, 112, 131)"><strong>{{orderItem.ingredient}}</strong></h6>
+        <h6 style="color: rgb(209, 112, 131)"><strong><em>{{orderItem.ingredient}}</em> </strong></h6>
         {% endif %}
         <!-- Ingredients -->
 
@@ -308,22 +311,23 @@
          <!-- Supplements -->
          {% if orderItem.supplement.all %}
          {% for sup in orderItem.supplement.all %}
-         <h6 style="color: rgb(209, 112, 131)"><strong>{{sup.name}} ({{sup.prix}}) </strong></h6>
+         <h6 style="color: rgb(209, 112, 131)"><strong> * {{sup.name}} <span id ='total-item-sup-{{orderItem.id}}'>({{sup.prix}})</span> </strong></h6>
          {% endfor %}
          {% endif %}
          <!-- Supplemts -->
+         
       </div>
 
       <div class="quantity m-2 md:text-3xl flex bg-gray-300  absolute -bottom-2 -right-2">
         <i
           class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart"
           data-ingredient="{{orderItem.ingredient}}"
-          data-orderItem="{{orderItem.id}}"
+          data-orderitem="{{orderItem.id}}"
           data-accomp="{{orderItem.accompagnememt}}"
           data-product="{{orderItem.item.id}}"
           data-action="remove"
         ></i>
-        <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{orderItem.quantity}}</p>
+        <p class="font-bold quantity-field" id="item-quantity-{{orderItem.id}}">{{orderItem.quantity}}</p>
         <i
           class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart"
           data-ingredient="{{orderItem.ingredient}}"
@@ -358,26 +362,20 @@
            </div>
      
            <div class="menu-leftside w-80 sm:w-1/2 leading-10 p-3">
-             <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{i.id}}">{{side.total_side_order}} FCFA</div>
+             <div class="item-price price text-sm sm:text-2xl lg:text-4xl" id="item-total-price-{{side.id}}">{{side.total_side_order}} FCFA</div>
              <div class="item-name font-bold sm:text-2xl lg:text-4xl">{{side.item.name}} <span class="item-price-item">({{side.item.prix}})</span></div>
            </div>
      
            <div class="quantity m-2 md:text-3xl flex bg-gray-300  absolute -bottom-2 -right-2">
              <i
                class="bi bi-dash font-bold text-2xl lg:text-5xl md:text-3xl update-cart"
-               data-ingredient="{{i.ingredient}}"
-               data-orderItemID="{{i.id}}"
-               data-accomp="{{i.accompagnememt}}"
-               data-product="{{i.item.id}}"
+               data-sideorderitem="{{side.id}}"
                data-action="remove"
              ></i>
-             <p class="font-bold quantity-field" id="item-quantity-{{i.id}}">{{side.quantity}}</p>
+             <p class="font-bold quantity-field" id="item-quantity-{{side.id}}">{{side.quantity}}</p>
              <i
                class="bi bi-plus font-bold md:text-3xl lg:text-5xl text-2xl update-cart"
-               data-ingredient="{{i.ingredient}}"
-               data-product="{{i.item.id}}"
-               data-orderItemID="{{i.id}}"
-               data-accomp="{{i.accompagnememt}}"
+               data-sideorderitem="{{side.id}}"
                data-action="add"
              ></i>
            </div>
@@ -417,7 +415,7 @@
     <a href="/texasgrillz/myorder/?session={{app}}">
       <div class="orderTotal-box">
         <div class="orderTotal-content">
-          <h1 class="md:text-4xl" style="font-size: 25px"><b>Order Total</b></h1>
+          <h1 class="md:text-4xl" style="font-size: 25px"><b>Prix Total</b></h1>
           <div id="orderTotal-total" class="orderTotal-total text-xl md:text-3xl lg:text-4xl"><b id="finalPrice" style="color: green; font-size: 25px">{{order.get_order_total}} FCFA</b></div>
         </div>
       </div>

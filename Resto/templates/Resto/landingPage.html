@@ -197,6 +197,8 @@
 
 
  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
+ <!-- VIEW ORDER -->
+ {% if order %}
 <div class="relative">
   <button class="fixed bottom-0 animate-bounce left-2 w-20 m-5 mx-auto h-20 text-xl font-bold rounded-full text-white bg-white text-black focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
     <p class="font-bold">Your Order</p>
@@ -209,7 +211,7 @@
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
           <div class="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
-              <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+              <h3 class="text-xl text-center font-medium text-gray-900 dark:text-white" style="color: chocolate">
                  My Order
               </h3>
               <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="small-modal">
@@ -219,7 +221,7 @@
           </div>
           <!-- Modal body -->
           <div class="p-6 space-y-6">
-            {% if order %}
+          
             <div class="showOrder mt-3 text-center">
               <div class="mt-4">
                 <h6 style="color: rgb(209, 112, 131)">Date & Time: ({{order.date_ordered}})</h6>
@@ -244,8 +246,7 @@
       </div>
   </div>
 </div>
-   
-
+ <!-- VIEW ORDER -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
       
 

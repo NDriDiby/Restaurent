@@ -805,13 +805,103 @@ def UpdatedItem(request):
 
 def CheckoutPageUpdate(request):
     
+    item_name = None
+    total_cart = None
+    tot_item= None
+    total_item = 0
+    total_accomp = 0
+    tot_ind_item =0
+    choice = None
+    active_orderItem = None
+    order_item_exist = False
+    total_order_item = 0
+    total_sup = 0
+    
     if request.POST:
         
+        #Get Data from frontend
         orderItemID = request.POST.get('ordItem',False)
+        sideorderitem = request.POST.get('sideorderitem',False)
+        table_numb = int(request.POST.get('table')) #Table
+        action = request.POST.get('action',False) #Add or remove
         
-        print('MY ORDER ITEM ID',orderItemID)
+        print('SIDEORDERID',sideorderitem)
+        print('ORDERID',orderItemID)
+       
+       
+        #retrieve the OrderItem
+        customer,created= Customer.objects.get_or_create(user = request.user)
+        order= Order.objects.get(customer=customer,status = 'Pending',table = table_numb)
+       
+        
+        if orderItemID:
+            my_order_item = OrderItem.objects.get(id = orderItemID)
+            
+            if action =='add':
+                my_order_item.quantity = (my_order_item.quantity + 1)
+                my_order_item.save()
+
+            
+            if action =='remove':
+                my_order_item.quantity = (my_order_item.quantity - 1)
+                my_order_item.save()
+                
+            tot_ind_item = my_order_item.quantity
+                
+            total_item = my_order_item.get_total_item()
+            total_order_item = my_order_item.get_total()
+            total_sup = my_order_item.get_total_accomp()
+            active_orderItem = my_order_item.id
+        
+        else:
+            
+            print('SIDE ORDER ITEM')
+            my_order_item = SideOrderItem.objects.get(id = sideorderitem)
+            
+            if action =='add':
+                my_order_item.quantity = (my_order_item.quantity + 1)
+                my_order_item.save()
+            
+            if action =='remove':
+                my_order_item.quantity = (my_order_item.quantity - 1)
+                my_order_item.save()
+            
+            total_item = my_order_item.quantity
+            tot_ind_item = my_order_item.quantity
+            active_orderItem = my_order_item.id
+            total_order_item = my_order_item.total_side_order()
+            orderItemID = sideorderitem
+            
+        total_cart = order.get_order_total()
+        total = order.get_order_total()
+        
+        
+        # if sideorderitem:
+        #     my_order_item = SideOrderItem.objects.get(id = sideorderitem)
+            
+        #     if action =='add':
+        #         my_order_item.quantity = (my_order_item.quantity + 1)
+        #         my_order_item.save()
+            
+        #     if action =='remove':
+        #         my_order_item.quantity = (my_order_item.quantity - 1)
+        #         my_order_item.save()
+                
+        # total = order.get_order_total()
+            
+        
+        # print(my_order_item)
+        
     
-    return JsonResponse({'check':"GOOD"})
+    return JsonResponse({"order_item_id":orderItemID,
+                        'total_cart':total_cart,
+                        'tot_ind_item':tot_ind_item,
+                        'total':total,
+                        'total_item':total_item,
+                        'active_orderItem':active_orderItem,
+                        'total_order_item':total_order_item,
+                        'total_supplement':total_sup}
+                        ,safe=False)
 
 
 

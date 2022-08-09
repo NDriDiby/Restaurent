@@ -96,11 +96,12 @@ for (let i = 0; i < update_but.length; i++) {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
-    var ordItem = this.dataset.orderItem;
+    var ordItem = this.dataset.orderitem;
+    var sideorderitem = this.dataset.sideorderitem;
     var accompa = this.dataset.accomp;
 
     console.log("ORDER ITEM ID", ordItem);
-    console.log("action", itemId);
+    console.log("action:", action);
 
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
@@ -113,27 +114,44 @@ for (let i = 0; i < update_but.length; i++) {
         itemId: itemId,
         ordItem: ordItem,
         action: action,
+        table: table,
+        sideorderitem: sideorderitem,
       },
       success: function (response) {
         console.log(response);
-        orderItem = response.orderItem;
         active_item = null;
 
-        for (var ord in orderItem) {
-          var total_item = document.getElementsByClassName("quantity-field")[ord];
-          var item_total_price = document.getElementsByClassName("item-price")[ord];
-          var item_price_item = document.getElementsByClassName("item-price-item")[ord];
-          var total_item_accomp = document.getElementsByClassName("total-item-accomp")[ord];
+        // Get Response from backend
+        orderitem_id = response.order_item_id;
+        orderitem_quantity = response.tot_ind_item;
+        total_orderitem = response.total_order_item;
+        total_sup = response.total_supplement;
 
-          total_item.innerHTML = orderItem[ord]["quantity"];
-          item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
-          item_price_item.innerHTML = "(" + orderItem[ord]["item_price_item"] + ")";
-          if (total_item_accomp) {
-            total_item_accomp.innerHTML = "(" + orderItem[ord]["total_item_accomp"] + ")";
-          }
+        var total_item = document.getElementById(`item-quantity-${orderitem_id}`);
+        var item_total_price = document.getElementById(`item-total-price-${orderitem_id}`);
+        // var item_price_item = document.getElementsByClassName("item-price-item")[ord];
+        // var total_item_sup = document.getElementById(`total-item-sup-${orderitem_id}`);
 
-          console.log("NEW PRICE ALERT", orderItem[ord]["item_price_item"]);
-        }
+        total_item.innerHTML = orderitem_quantity;
+        item_total_price.innerHTML = `${total_orderitem} FCFA`;
+
+        console.log(total_item);
+
+        // for (var ord in orderItem) {
+        //   var total_item = document.getElementsByClassName("quantity-field")[ord];
+        //   var item_total_price = document.getElementsByClassName("item-price")[ord];
+        //   var item_price_item = document.getElementsByClassName("item-price-item")[ord];
+        //   var total_item_accomp = document.getElementsByClassName("total-item-accomp")[ord];
+
+        //   total_item.innerHTML = ordItem["tot_item"];
+        //   item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
+        //   item_price_item.innerHTML = "(" + orderItem[ord]["item_price_item"] + ")";
+        //   if (total_item_accomp) {
+        //     total_item_accomp.innerHTML = "(" + orderItem[ord]["total_item_accomp"] + ")";
+        //   }
+
+        //   console.log("NEW PRICE ALERT", orderItem[ord]["item_price_item"]);
+        // }
 
         activeItem = document.getElementById(`item-total-price-${response.active_orderItem}`);
 
@@ -204,7 +222,6 @@ function deleteItem(itemID, itemName) {
 }
 
 //Verify paiement
-
 function verifyPaiement(api, site, transaction) {
   $.ajax({
     url: `https://api-checkout.cinetpay.com/v2/payment/check?apikey=${api}&site_id=${site}&transaction_id=${transaction}`,
@@ -365,12 +382,11 @@ function checkout(api, site, amount) {
 }
 
 // UPDATE SIDE ORDER
-var updateSide = document.getElementsByClassName("update-cart-side");
+// var updateSide = document.getElementsByClassName("update-cart-side");
+// for (let i = 0; i < updateSide.length; i++) {
+//   updateSide[i].addEventListener("click", () => {
+//     console.log(updateSide[i].dataset.accomp);
 
-for (let i = 0; i < updateSide.length; i++) {
-  updateSide[i].addEventListener("click", () => {
-    console.log(updateSide[i].dataset.accomp);
-
-    console.log(this.data);
-  });
-}
+//     console.log(this.data);
+//   });
+// }
