@@ -75,7 +75,10 @@ INSTALLED_APPS = [
     # 'django_extensions',
     'django.contrib.humanize',
     'django_resized',
-     'django_celery_beat',
+    'django_celery_beat',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
    
 
 
@@ -91,6 +94,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'Restaurent.urls'
@@ -112,6 +116,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Restaurent.wsgi.application'
+
+
+# Tailwind setup
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+TAILWIND_APP_NAME = 'theme'
 
 
 # Database
