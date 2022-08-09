@@ -107,17 +107,13 @@ for (var i = 0; i < updated_but.length; i++) {
         var old_total = document.getElementById("orderTotal-total").innerText;
         old_total = parseInt(old_total.split("FCFA")[0]);
 
-        console.log("OLD VAL", old_total);
-
         item_price = parseInt(document.getElementById("item-price").innerText);
         var new_total = response.total;
 
-        console.log("NEW VAL", new_total);
-
         msg.innerHTML = `
         <div class='justify-center text-sm w-full items-center bg-gray-500 px-2 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
-          <p class="text-white pr-1"><strong>${item_name} ajouté(es) a votre table</strong> </p>
-          <span><i class="bi bi-check-circle text-xl font-bold text-green-300"></i></span>
+          <p class="text-white pr-1"><strong>${item_name} ajouté(es) a votre table </strong> </p>
+          <span><i class="bi bi-check-circle text-xl font-bold pl-5 text-green-300" style="color:orange"></i></span>
         </div>`;
 
         total_item_box = document.getElementById("total-item");
