@@ -40,6 +40,11 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
     
+    
+    def full_name(self):
+        
+        return self.user.get_full_name()
+    
 
 class Accompagnement(models.Model):
     name = models.CharField(max_length = 150)
