@@ -1036,12 +1036,15 @@ def CompletedOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
+        
+        uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).count()
     
-        #TASK
-        send_paiement_receipt.delay(order_numb)
+        # #TASK
+        # send_paiement_receipt.delay(order_numb)
         
 
-    return JsonResponse("Order Completed",safe=False)
+    return JsonResponse({'response':"Order Completed",
+                         'uncompleted_order':uncompleted_order},safe=False)
 
 
 
