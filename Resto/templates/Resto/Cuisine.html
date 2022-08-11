@@ -15,8 +15,8 @@
 
   <div class="box">
     <div class="right-side">
-        <div class="box-topic">Uncompleted Order</div>
-        <div class="number">{{all_order|length}}</div>
+      <div class="box-topic">Uncompleted Order</div>
+      <div class="number">{{all_order|length}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">15%</div>
         <i class="bx bx-up-arrow-alt"></i>
@@ -28,8 +28,8 @@
 
   <div class="box">
     <div class="right-side">
-        <div class="box-topic">Completed Order</div>
-        <div class="number">{{total_completed_order}}</div>
+      <div class="box-topic">Completed Order</div>
+      <div class="number">{{total_completed_order}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">10%</div>
         <i class="bx bx-up-arrow-alt"></i>
@@ -41,8 +41,8 @@
 
   <div class="box">
     <div class="right-side">
-        <div class="box-topic">Performance</div>
-        <div class="number">85%</div>
+      <div class="box-topic">Performance</div>
+      <div class="number">85%</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">25%</div>
         <i class="bx bx-down-arrow-alt down"></i>
@@ -108,35 +108,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="dataviz-content">
-    <div class="topmeals">
-      <div class="title">
-        <h1>Customer orders</h1>
-
-        <div class="viz">
-          <!-- <table>
-            <tr>
-              <th>Customer</th>
-              <th>Order</th>
-              <th>Total</th>
-              <th>status</th>
-            </tr>
-            {% for order in all_order %}
-            <tr>
-              <td>{{order.customer.user.first_name}} {{order.customer.user.last_name}}</td>
-              <td>{{order.id}}</td>
-              <td>{{order.get_order_total}}</td>
-              <td><span class="status">{{order.status}}</span></td>
-            </tr>
-            {% endfor %}
-          </table> -->
-  <!-- </div>
-      </div>
-    </div>
-  </div> -->
-</div>
-
 </div>
 
 {% endblock content %}

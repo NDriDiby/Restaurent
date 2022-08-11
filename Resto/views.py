@@ -820,15 +820,13 @@ def CheckoutPageUpdate(request):
     if request.POST:
         
         #Get Data from frontend
-        orderItemID = request.POST.get('ordItem',False)
-        sideorderitem = request.POST.get('sideorderitem',False)
+        orderItemID = request.POST.get('ordItem',False) #OrderItem ID
+        sideorderitem = request.POST.get('sideorderitem',False) #SideItem ID
         table_numb = int(request.POST.get('table')) #Table
         action = request.POST.get('action',False) #Add or remove
         
-        print('SIDEORDERID',sideorderitem)
-        print('ORDERID',orderItemID)
        
-       
+    
         #retrieve the OrderItem
         customer,created= Customer.objects.get_or_create(user = request.user)
         order= Order.objects.get(customer=customer,status = 'Pending',table = table_numb)
@@ -836,6 +834,7 @@ def CheckoutPageUpdate(request):
         
         if orderItemID:
             my_order_item = OrderItem.objects.get(id = orderItemID)
+            
             
             if action =='add':
                 my_order_item.quantity = (my_order_item.quantity + 1)
@@ -847,15 +846,12 @@ def CheckoutPageUpdate(request):
                 my_order_item.save()
                 
             tot_ind_item = my_order_item.quantity
-                
             total_item = my_order_item.get_total_item()
             total_order_item = my_order_item.get_total()
             total_sup = my_order_item.get_total_accomp()
             active_orderItem = my_order_item.id
-        
+    
         else:
-            
-            print('SIDE ORDER ITEM')
             my_order_item = SideOrderItem.objects.get(id = sideorderitem)
             
             if action =='add':
@@ -871,28 +867,12 @@ def CheckoutPageUpdate(request):
             active_orderItem = my_order_item.id
             total_order_item = my_order_item.total_side_order()
             orderItemID = sideorderitem
-            
+        
+        item_name = my_order_item.item.name
         total_cart = order.get_order_total()
         total = order.get_order_total()
         
         
-        # if sideorderitem:
-        #     my_order_item = SideOrderItem.objects.get(id = sideorderitem)
-            
-        #     if action =='add':
-        #         my_order_item.quantity = (my_order_item.quantity + 1)
-        #         my_order_item.save()
-            
-        #     if action =='remove':
-        #         my_order_item.quantity = (my_order_item.quantity - 1)
-        #         my_order_item.save()
-                
-        # total = order.get_order_total()
-            
-        
-        # print(my_order_item)
-        
-    
     return JsonResponse({"order_item_id":orderItemID,
                         'total_cart':total_cart,
                         'tot_ind_item':tot_ind_item,
@@ -900,7 +880,8 @@ def CheckoutPageUpdate(request):
                         'total_item':total_item,
                         'active_orderItem':active_orderItem,
                         'total_order_item':total_order_item,
-                        'total_supplement':total_sup}
+                        'total_supplement':total_sup,
+                        'item_name':item_name}
                         ,safe=False)
 
 
@@ -908,77 +889,140 @@ def CheckoutPageUpdate(request):
 def GetOrderCuisine(request):
     
     #Uncompleted Order
-    order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
-    #Uncompleted Order Item
-    item_selected = list()
-    for ord in range(0,len(order)):
-        item = order[ord].orderitem_set.all()
-        for i in range(0,len(item)): 
-            data = { 
-                    'orderItem_id':item[i].id,
-                    'order_id':item[i].order.id,
-                    'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
-                    'item':item[i].item.name,
-                    'quantity':item[i].quantity,
-                    'ingredient':item[i].ingredient,
-                    }
-            item_selected.append(data)
+    uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
+    
+    uncompleted = list()
+    for order in range(0,len(uncompleted_order)):
+        data = {
+            'order_id':uncompleted_order[order].id,
+            'order_table':uncompleted_order[order].table,
+            'order_name':uncompleted_order[order].customer.full_name(),
+            'order_date':uncompleted_order[order].date_ordered,
+            'transaction_id':uncompleted_order[order].transaction_id,
+            'order_item':[]
+        }
+        all_orderitem = uncompleted_order[order].orderitem_set.all()
+        for orderitem in range(0,len(all_orderitem)):
+            if data['order_id'] == uncompleted_order[order].id:
+                orderItem = {
+                   'order_id':all_orderitem[orderitem].order.id,
+                    'orderItem_id':all_orderitem[orderitem].id,
+                   'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
+                    'item':all_orderitem[orderitem].item.name,
+                    'quantity':all_orderitem[orderitem].quantity,
+                }
+                
+                if all_orderitem[orderitem].ingredient:
+                    orderItem['ingredient'] = all_orderitem[orderitem].ingredient
+                    
+                if all_orderitem[orderitem].accompagnememt:
+                    for accomp in all_orderitem[orderitem].accompagnememt.all():
+                        
+                        orderItem['accompagnement'] = list(all_orderitem[orderitem].accompagnememt.values_list('name',flat=True))
+                        
+                if all_orderitem[orderitem].supplement:
+                    for sup in all_orderitem[orderitem].supplement.all():
+                        orderItem['supplement'] = list(all_orderitem[orderitem].supplement.values_list('name',flat=True))
+                        
+                       
+                data['order_item'].append(orderItem)
+          
+            
+            
+                
+                # data = {
+                #     'orderDetails':{
+                #         'order_id':all_orderitem[orderitem].order.id,
+                #         # 'order_name':all_orderitem[orderitem]
+                #     }
+                # }
+                #     'orderItem':{
+                #     'order_id':all_orderitem[orderitem].order.id,
+                #     'orderItem_id':all_orderitem[orderitem].id,
+                #     'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
+                #     'item':all_orderitem[orderitem].item.name,
+                #     'quantity':all_orderitem[orderitem].quantity,
+                #     'ingredient':all_orderitem[orderitem].ingredient,
+                
+                # #     
+                # # 
+                # print(data)
+        uncompleted.append(data)
+            
+          
+    
+    # #Uncompleted Order Item
+    # item_selected = list()
+    # for ord in range(0,len(order)):
+    #     item = order[ord].orderitem_set.all()
+    #     for i in range(0,len(item)): 
+    #         data = { 
+    #                 'orderItem_id':item[i].id,
+    #                 'order_id':item[i].order.id,
+    #                 'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
+    #                 'item':item[i].item.name,
+    #                 'quantity':item[i].quantity,
+    #                 'ingredient':item[i].ingredient,
+    #                 }
+    #         item_selected.append(data)
     
     
-    #Completed order
-    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('-id')
-    #Completed order item
-    completed_order_item = list()
-    for ord in range(0,len(complete_order)):
-        item = complete_order[ord].orderitem_set.all()
-        for i in range(0,len(item)): 
-            data = { 
-                    'order_id':item[i].order.id,
-                    'order':complete_order[ord].customer.user.first_name +" "+ complete_order[ord].customer.user.last_name,
-                    'item':item[i].item.name,
-                    'quantity':item[i].quantity,
-                    'ingredient':item[i].ingredient,
-                    }
-            completed_order_item.append(data)
+    # #Completed order
+    # complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('-id')
     
-    total_uncompleted_order = {
-        'total_uncomplete' : order.count()
-    }
+    # #Completed order item
+    # completed_order_item = list()
+    # for ord in range(0,len(complete_order)):
+    #     item = complete_order[ord].orderitem_set.all()
+    #     for i in range(0,len(item)): 
+    #         data = { 
+    #                 'order_id':item[i].order.id,
+    #                 'order':complete_order[ord].customer.user.first_name +" "+ complete_order[ord].customer.user.last_name,
+    #                 'item':item[i].item.name,
+    #                 'quantity':item[i].quantity,
+    #                 'ingredient':item[i].ingredient,
+    #                 }
+    #         completed_order_item.append(data)
     
-    total_completed_order = {
-        'total_complete' : complete_order.count()
-    }
+    # total_uncompleted_order = {
+    #     'total_uncomplete' : order.count()
+    # }
     
+    # total_completed_order = {
+    #     'total_complete' : complete_order.count()
+    # }
     
-    return JsonResponse({"order":list(order.values()),
-                         'myorder':list(item_selected),
-                         'total_uncompleted_order':list(total_uncompleted_order.values()),
-                         'total_completed_order':list(total_completed_order.values()),
-                         'completed_order':list(complete_order.values()),
-                         'completed_order_item':list(completed_order_item),})
+  
+    return JsonResponse({"uncompleted_order":list(uncompleted)})
+
+                        #  'order_item':list(item_selected),
+                        #  'total_uncompleted_order':list(total_uncompleted_order.values()),
+                        #  'total_completed_order':list(total_completed_order.values()),
+                        #  'completed_order':list(complete_order.values()),
+                        #  'completed_order_item':list(completed_order_item)
+                         
 
 
 
 
 def CuisineOptimize(request):
     
-    all_order = Order.objects.filter(status='Sent',date_ordered__date = today)
-    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
+    uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today)
+    completed_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
     
-    total_completed_order = len(complete_order)
-    total_uncompleted_order = len(all_order)
+    # total_completed_order = len(complete_order)
+    # total_uncompleted_order = len(uncompleted_order)
     
    
     
     context ={
-        'all_order':all_order,
-        'complete':complete_order,
-         'total_completed_order':total_completed_order,
-         'total_uncompleted_order':total_uncompleted_order,
+        'all_order':uncompleted_order,
+        # 'complete':complete_order,
+         'completed_order':completed_order,
+         'uncompleted_order':uncompleted_order,
     }
     
-   
-    return render(request,"Resto/CuisineOptimize.html",context)
+    return render(request,"Resto/MyCuisine.html",context)
 
 
 @csrf_exempt

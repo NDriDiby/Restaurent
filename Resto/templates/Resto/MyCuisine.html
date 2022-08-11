@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div>CHECK</div>
+
+      <!-- BackEnd Job -->
+      <!-- 
+      <div class="mt-2" style="width: 23rem; height: auto">
+        <div class="order-uncompleted">
+          <div id="uncompleted_order" class="row justify-content-evenly g-lg-3 align-items-lg-baseline"></div>
+        </div>
+      </div> -->
+      <!-- BackEnd Job -->
+
+      <div id="data" class="row justify-content-start g-lg-3 align-items-lg-baseline"></div>
+      <div id="order-item" class="card-text mb-2" style="color: black; text-align: center"></div>
+    </div>
+
+    <!-- <h1>Uncompleted Order</h1>
+      <div class="d-flex justify-content-evenly">
+        {% for order in uncompleted_order %}
+        <div class="card mt-2" style="width: 23rem; height: auto">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><span>Table: </span> {{order.table}}</h6>
+            <hr />
+            {% for orderitem in order.orderitem_set.all %}
+
+            <p class="card-text">{{orderitem.quantity}}-{{orderitem.item.name}}</p>
+            <p class="card-text"></p> -->
+
+    <!-- ingredients -->
+    <!-- {% if orderitem.ingredient %}
+            <p>{{orderitem.ingredient}}</p>
+            {% endif %} -->
+    <!-- ingredients -->
+
+    <!-- Accompagnements -->
+    <!-- {% if orderitem.accompagnememt %} {% for accomp in orderitem.accompagnememt.all %}
+            <p>{{accomp.name}}</p>
+            {% endfor %} {% endif %} -->
+    <!-- Accompagnements -->
+
+    <!-- Accompagnements -->
+    <!-- {% if orderitem.supplement %} {% for sup in orderitem.supplement.all %}
+            <p>{{sup.name}}</p>
+            {% endfor %} {% endif %} -->
+    <!-- Accompagnements -->
+
+    <!-- <hr />
+            {% endfor %}
+
+            <a href="#" class="btn btn-success">Terminer</a>
+            <a href="#" class="btn btn-danger">Rejeter</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div> -->
+
+    <!-- <div>
+      <h1>completed Order</h1>
+      {{completed_order}}
+    </div> -->
+  </body>
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"
+  ></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="text/javascript" src="{% static 'Resto/JavaScript/MyCuisine.js'%}"></script>
+</html>
