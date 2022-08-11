@@ -22,15 +22,19 @@
       <div>CHECK</div>
 
       <!-- BackEnd Job -->
-
+      <!-- 
       <div class="mt-2" style="width: 23rem; height: auto">
-        <div class="row d-flex justify-content-between order-uncompleted">
-          <div id="uncompleted_order"></div>
+        <div class="order-uncompleted">
+          <div id="uncompleted_order" class="row justify-content-evenly g-lg-3 align-items-lg-baseline"></div>
         </div>
-      </div>
+      </div> -->
       <!-- BackEnd Job -->
 
-      <h1>Uncompleted Order</h1>
+      <div id="data" class="row justify-content-start g-lg-3 align-items-lg-baseline"></div>
+      <div id="order-item" class="card-text mb-2" style="color: black; text-align: center"></div>
+    </div>
+
+    <!-- <h1>Uncompleted Order</h1>
       <div class="d-flex justify-content-evenly">
         {% for order in uncompleted_order %}
         <div class="card mt-2" style="width: 23rem; height: auto">
@@ -41,27 +45,27 @@
             {% for orderitem in order.orderitem_set.all %}
 
             <p class="card-text">{{orderitem.quantity}}-{{orderitem.item.name}}</p>
-            <p class="card-text"></p>
+            <p class="card-text"></p> -->
 
-            <!-- ingredients -->
-            {% if orderitem.ingredient %}
+    <!-- ingredients -->
+    <!-- {% if orderitem.ingredient %}
             <p>{{orderitem.ingredient}}</p>
-            {% endif %}
-            <!-- ingredients -->
+            {% endif %} -->
+    <!-- ingredients -->
 
-            <!-- Accompagnements -->
-            {% if orderitem.accompagnememt %} {% for accomp in orderitem.accompagnememt.all %}
+    <!-- Accompagnements -->
+    <!-- {% if orderitem.accompagnememt %} {% for accomp in orderitem.accompagnememt.all %}
             <p>{{accomp.name}}</p>
-            {% endfor %} {% endif %}
-            <!-- Accompagnements -->
+            {% endfor %} {% endif %} -->
+    <!-- Accompagnements -->
 
-            <!-- Accompagnements -->
-            {% if orderitem.supplement %} {% for sup in orderitem.supplement.all %}
+    <!-- Accompagnements -->
+    <!-- {% if orderitem.supplement %} {% for sup in orderitem.supplement.all %}
             <p>{{sup.name}}</p>
-            {% endfor %} {% endif %}
-            <!-- Accompagnements -->
+            {% endfor %} {% endif %} -->
+    <!-- Accompagnements -->
 
-            <hr />
+    <!-- <hr />
             {% endfor %}
 
             <a href="#" class="btn btn-success">Terminer</a>
@@ -70,12 +74,12 @@
         </div>
         {% endfor %}
       </div>
-    </div>
+    </div> -->
 
-    <div>
+    <!-- <div>
       <h1>completed Order</h1>
       {{completed_order}}
-    </div>
+    </div> -->
   </body>
 
   <!-- Option 1: Bootstrap Bundle with Popper -->

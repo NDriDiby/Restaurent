@@ -897,6 +897,7 @@ def GetOrderCuisine(request):
             'order_id':uncompleted_order[order].id,
             'order_table':uncompleted_order[order].table,
             'order_name':uncompleted_order[order].customer.full_name(),
+            'order_date':uncompleted_order[order].date_ordered,
             'transaction_id':uncompleted_order[order].transaction_id,
             'order_item':[]
         }
@@ -905,7 +906,7 @@ def GetOrderCuisine(request):
             if data['order_id'] == uncompleted_order[order].id:
                 orderItem = {
                    'order_id':all_orderitem[orderitem].order.id,
-                     'orderItem_id':all_orderitem[orderitem].id,
+                    'orderItem_id':all_orderitem[orderitem].id,
                    'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
                     'item':all_orderitem[orderitem].item.name,
                     'quantity':all_orderitem[orderitem].quantity,
