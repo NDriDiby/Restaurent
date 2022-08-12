@@ -67,6 +67,7 @@ function sendMyOrder(action, order) {
     },
 
     success: function (response) {
+      console.log(response);
       console.log("total Item:", total_item);
 
       if (total_item > 0) {

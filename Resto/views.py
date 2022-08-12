@@ -899,11 +899,15 @@ def GetOrderCuisine(request):
             'order_name':uncompleted_order[order].customer.full_name(),
             'order_date':uncompleted_order[order].date_ordered,
             'transaction_id':uncompleted_order[order].transaction_id,
-            'order_item':[]
+            'order_item':[],
+            'side_orderitem':[],
+            
         }
+        
+        #ORDER ITEM
         all_orderitem = uncompleted_order[order].orderitem_set.all()
         for orderitem in range(0,len(all_orderitem)):
-            if data['order_id'] == uncompleted_order[order].id:
+            if data['order_id'] == all_orderitem[orderitem].order.id:
                 orderItem = {
                    'order_id':all_orderitem[orderitem].order.id,
                     'orderItem_id':all_orderitem[orderitem].id,
@@ -926,83 +930,26 @@ def GetOrderCuisine(request):
                         
                        
                 data['order_item'].append(orderItem)
+        
+        # SIDE ORDER ITEM
+        if uncompleted_order[order].sideorderitem_set.all():
+            all_side = uncompleted_order[order].sideorderitem_set.all()
+            for side in range(0,len(all_side)):
+                if data['order_id'] == all_side[side].order.id:
+                    my_side = {
+                        'order_id':all_side[side].order.id,
+                        'name':all_side[side].item.name,
+                        'quantity':all_side[side].quantity,
+                    }
+                    print(my_side)
+                    data['side_orderitem'].append(my_side)
+                    
           
-            
-            
-                
-                # data = {
-                #     'orderDetails':{
-                #         'order_id':all_orderitem[orderitem].order.id,
-                #         # 'order_name':all_orderitem[orderitem]
-                #     }
-                # }
-                #     'orderItem':{
-                #     'order_id':all_orderitem[orderitem].order.id,
-                #     'orderItem_id':all_orderitem[orderitem].id,
-                #     'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
-                #     'item':all_orderitem[orderitem].item.name,
-                #     'quantity':all_orderitem[orderitem].quantity,
-                #     'ingredient':all_orderitem[orderitem].ingredient,
-                
-                # #     
-                # # 
-                # print(data)
         uncompleted.append(data)
-            
-          
-    
-    # #Uncompleted Order Item
-    # item_selected = list()
-    # for ord in range(0,len(order)):
-    #     item = order[ord].orderitem_set.all()
-    #     for i in range(0,len(item)): 
-    #         data = { 
-    #                 'orderItem_id':item[i].id,
-    #                 'order_id':item[i].order.id,
-    #                 'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
-    #                 'item':item[i].item.name,
-    #                 'quantity':item[i].quantity,
-    #                 'ingredient':item[i].ingredient,
-    #                 }
-    #         item_selected.append(data)
-    
-    
-    # #Completed order
-    # complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('-id')
-    
-    # #Completed order item
-    # completed_order_item = list()
-    # for ord in range(0,len(complete_order)):
-    #     item = complete_order[ord].orderitem_set.all()
-    #     for i in range(0,len(item)): 
-    #         data = { 
-    #                 'order_id':item[i].order.id,
-    #                 'order':complete_order[ord].customer.user.first_name +" "+ complete_order[ord].customer.user.last_name,
-    #                 'item':item[i].item.name,
-    #                 'quantity':item[i].quantity,
-    #                 'ingredient':item[i].ingredient,
-    #                 }
-    #         completed_order_item.append(data)
-    
-    # total_uncompleted_order = {
-    #     'total_uncomplete' : order.count()
-    # }
-    
-    # total_completed_order = {
-    #     'total_complete' : complete_order.count()
-    # }
     
   
     return JsonResponse({"uncompleted_order":list(uncompleted)})
-
-                        #  'order_item':list(item_selected),
-                        #  'total_uncompleted_order':list(total_uncompleted_order.values()),
-                        #  'total_completed_order':list(total_completed_order.values()),
-                        #  'completed_order':list(complete_order.values()),
-                        #  'completed_order_item':list(completed_order_item)
                          
-
-
 
 
 def CuisineOptimize(request):
@@ -1017,7 +964,7 @@ def CuisineOptimize(request):
     
     context ={
         'all_order':uncompleted_order,
-        # 'complete':complete_order,
+         'total_completed_order':uncompleted_order.count,
          'completed_order':completed_order,
          'uncompleted_order':uncompleted_order,
     }
@@ -1086,6 +1033,8 @@ def SendOrder(request):
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
             order.save()
+            
+        return JsonResponse({'Status':'Sent to kitchen'})
             
             
         

@@ -6,23 +6,31 @@ async function fetchCuisineOrder() {
   var url = "/texasgrillz/GetOrderCuisine/";
   orders = await fetch(url);
   result = await orders.json();
+  console.log(result);
   return result;
 }
 
-async function fetchUncompletedOrder() {
-  var url = "/texasgrillz/GetOrderCuisine/";
-  orders = await fetch(url);
-  result = await orders.json();
-  data = result["uncompleted_order"];
-  console.log("NY DATA:", data.length);
+// async function fetchUncompletedOrder() {
+//   var url = "/texasgrillz/GetOrderCuisine/";
+//   orders = await fetch(url);
+//   result = await orders.json();
+//   data = result["uncompleted_order"];
+//   console.log("MY DATA:", data.length);
 
-  if (parseInt(total_uncompleted_order) > data.length) {
-    console.log("REFRESHING....");
-    fetchCuisineOrder().then((data) => {
-      displayUncompletedOrder(data);
-      console.log("DISPLAY....");
-    });
-  }
+//   if (parseInt(total_uncompleted_order) > data.length) {
+//     console.log("REFRESHING....");
+//     fetchCuisineOrder().then((data) => {
+//       displayUncompletedOrder(data);
+//       console.log("DISPLAY....");
+//     });
+//   }
+// }
+
+async function GetUpComingOrder() {
+  var url = "/texasgrillz/sendorder/";
+  orders = await fetch(url);
+  result = orders.json();
+  console.log(result);
 }
 
 //COMPLETED ORDER : AJAX
@@ -37,10 +45,12 @@ function completeOrder(orderID) {
     },
     dataType: "json",
     success: function (response) {
-      console.log(response);
       $("#total_uncompleted_order").empty();
 
-      fetchUncompletedOrder();
+      fetchCuisineOrder().then((data) => {
+        displayUncompletedOrder(data);
+        console.log("DISPLAY....");
+      });
       $("#total_uncompleted_order").append(response.uncompleted_order);
     },
     error: function () {
@@ -55,6 +65,10 @@ function displayUncompletedOrder(orders) {
   //   console.log(uncompleted_order);
 
   $("#data").empty();
+  $("#total_uncompleted_order").empty();
+
+  console.log("HOW MANY NOW:", uncompleted_order.length);
+  $("#total_uncompleted_order").append(uncompleted_order.length);
 
   uncompleted_order.forEach((order) => {
     my_uncomp = {
@@ -90,6 +104,15 @@ function displayUncompletedOrder(orders) {
       }
     });
 
+    if (order.side_orderitem.length > 0) {
+      items.push(`<p class ='mt-0'> <b> Other Accomp(s):</b></p>`);
+      order.side_orderitem.forEach((side) => {
+        if (order.order_id == side.order_id) {
+          items.push(`<p class ='mt-0'> <span style = 'font-size:25px ;color:chocolate; font-weight:bold'>${side.quantity}</span> - ${side.name}<p>`);
+        }
+      });
+    }
+
     //ORDER ITEMS
     for (var i in items) {
       my_items = items.join("");
@@ -120,7 +143,6 @@ function displayUncompletedOrder(orders) {
   });
 
   var completed_order_btn = document.getElementsByClassName("orderDone");
-  console.log(completed_order_btn);
   for (let i = 0; i < completed_order_btn.length; i++) {
     completed_order_btn[i].addEventListener("click", (e) => {
       e.preventDefault();
@@ -131,6 +153,15 @@ function displayUncompletedOrder(orders) {
   }
 }
 
-fetchCuisineOrder().then((data) => {
-  displayUncompletedOrder(data);
-});
+function GetOrderData() {
+  fetchCuisineOrder().then((data) => {
+    displayUncompletedOrder(data);
+  });
+}
+
+GetOrderData();
+
+setInterval(() => {
+  console.log("GETTING DATA");
+  GetOrderData();
+}, 6000);
