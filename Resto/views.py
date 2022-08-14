@@ -31,6 +31,7 @@ from plotly.offline import plot
 import plotly.express as px
 import pandas as pd
 import calendar
+from dateutil.relativedelta import relativedelta
 
 
 #TASK
@@ -383,7 +384,6 @@ def ItemDetails(request,item_id):
     return render (request,'Resto/ItemDetailsNew.html',context)
     
 
-
 #My Order
 def MyOrder(request):
     
@@ -453,6 +453,8 @@ def UpdatedItem(request):
         customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
         order= Order.objects.get(customer=customer,status = 'Pending',table = table_numb)
+        # order.date_ordered = datetime.now().time()
+        # order.save()
         total = order.get_order_total()
         
        
@@ -891,18 +893,31 @@ def GetOrderCuisine(request):
     #Uncompleted Order
     uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
     
+    current_time = datetime.strftime(datetime.today().now(),'%H:%M')
+    current_time= datetime.strptime(current_time,'%H:%M')
+    
     uncompleted = list()
     for order in range(0,len(uncompleted_order)):
+        
+        order_date = datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        #order_date= datetime.strptime(order_date,'%H:%M')
+        
+        #time_since = current_time - order_date
         data = {
             'order_id':uncompleted_order[order].id,
             'order_table':uncompleted_order[order].table,
             'order_name':uncompleted_order[order].customer.full_name(),
-            'order_date':uncompleted_order[order].date_ordered,
+            'order_date':order_date,
             'transaction_id':uncompleted_order[order].transaction_id,
             'order_item':[],
             'side_orderitem':[],
-            
         }
+        
+        # data['order_date'] = datetime.strftime(data['order_date'],'%H:%M')
+    #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        # print('DateOrdered:',current_time)
+        # print('DateOrdered_since:',time_since)
+        print(order_date)
         
         #ORDER ITEM
         all_orderitem = uncompleted_order[order].orderitem_set.all()

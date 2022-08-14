@@ -10,27 +10,37 @@ async function fetchCuisineOrder() {
   return result;
 }
 
-// async function fetchUncompletedOrder() {
-//   var url = "/texasgrillz/GetOrderCuisine/";
-//   orders = await fetch(url);
-//   result = await orders.json();
-//   data = result["uncompleted_order"];
-//   console.log("MY DATA:", data.length);
+async function fetchUncompletedOrder() {
+  var url = "/texasgrillz/GetOrderCuisine/";
+  orders = await fetch(url);
+  result = await orders.json();
+  data = result["uncompleted_order"];
+  console.log("MY DATA:", data.length);
 
-//   if (parseInt(total_uncompleted_order) > data.length) {
-//     console.log("REFRESHING....");
-//     fetchCuisineOrder().then((data) => {
-//       displayUncompletedOrder(data);
-//       console.log("DISPLAY....");
-//     });
-//   }
-// }
+  if (parseInt(total_uncompleted_order) < data.length) {
+    console.log("REFRESHING....");
+    fetchCuisineOrder().then((data) => {
+      displayUncompletedOrder(data);
+      console.log("DISPLAY....");
+    });
+  }
+
+  fetchCuisineOrder().then((data) => {
+    displayUncompletedOrder(data);
+    console.log("DISPLAY....");
+  });
+}
 
 async function GetUpComingOrder() {
   var url = "/texasgrillz/sendorder/";
   orders = await fetch(url);
   result = orders.json();
+  data = result["uncompleted_order"];
   console.log(result);
+
+  if (parseInt(total_uncompleted_order) < data.length) {
+    return 1;
+  }
 }
 
 //COMPLETED ORDER : AJAX
@@ -133,13 +143,14 @@ function displayUncompletedOrder(orders) {
         <div id="order-item" class="card-text mb-2" style="color: black; text-align: center">${my_items}</div>
         <div class="mt-4" style="text-align: center">
           <form class = 'ordercompleted-form' method ='POST' >
-            <small class="text-muted mb-4" >${order.order_name}</small><br>
+            <small class="text-muted mb-4" >${order.order_date}</small><br>
             <button type="submit" data-action="completed" data-order=${order.order_id} class="btn mb-3 orderDone">Terminer</button>
           </form>
               </div>
             </div>
           </div>
-      </div>`);
+      </div>
+      `);
   });
 
   var completed_order_btn = document.getElementsByClassName("orderDone");
@@ -154,14 +165,12 @@ function displayUncompletedOrder(orders) {
 }
 
 function GetOrderData() {
-  fetchCuisineOrder().then((data) => {
-    displayUncompletedOrder(data);
-  });
+  fetchUncompletedOrder();
 }
 
 GetOrderData();
 
 setInterval(() => {
-  console.log("GETTING DATA");
+  console.log("GETTING DATA....");
   GetOrderData();
-}, 6000);
+}, 100000);
