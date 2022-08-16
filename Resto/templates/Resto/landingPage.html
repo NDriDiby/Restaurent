@@ -8,27 +8,82 @@
     border-top: 900px solid white;
 }
 
+
+@media screen and (max-width: 414px) {
+  
+    .intro{
+      padding-top: 40px;
+      padding-bottom: 5px;
+    }
+    .btn-modal{
+  width: 300px;
+  left: 45px;
+}
+
+
+}
 @media screen and (min-width: 768px) {
     .rec{
     border-right: 1300px solid #d2691e;
     border-top: 980px solid white;
-}  
+    } 
+    .slider-indicators{
+      margin-top: 20px;
+    }
+    .intro{
+      padding-top: 90px;
+      padding-bottom: 10px;
+    }
+    .btn-modal{
+  width: 753px;
+  height: 80px;
+}
+
 }
 @media screen and (min-width: 820px) {
-    .rec{
+.rec{
     border-right:1790px solid #d2691e;
     border-top: 1300px solid white;
 } 
+.intro{
+      padding-top: 100px;
+      padding-bottom: 50px;
+      font-size: 40px;
+  }
+.btn-modal{
+  width: 805px;
+  height: 80px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .rec{
+    border-right:2290px solid #d2691e;
+    border-top: 1300px solid white;
+} 
+.intro{
+      padding-top: 100px;
+      padding-bottom: 50px;
+      font-size: 40px;
+  }
+.btn-modal{
+  width: 805px;
+  height: 80px;
+  left: 95px;
+  }
 }
 @media screen and (min-width: 1200px) {
     .rec{
     border-right:2890px solid #d2691e;
     border-top: 1300px solid white;
   }  
-  .burger{
-  width: 150px;
-  height: 110px;
+  .btn-modal{
+  left: 305px;
   }
+  .courasel-image {
+    width: 800px;
+    border-radius: 100px;
+  }
+
 }
 @media screen and (min-height: 813px) {
     body{
@@ -36,12 +91,6 @@
         
     } 
     
-}
-.animate{
-
-    transform: scale(5);
-    transform: translate(-10px, 40px);
-    transition: all 2s;
 }
 
 .btn {
@@ -51,58 +100,16 @@
   padding: 10px 10px;
 }
 
-.arrow-up {
-  width: 0; 
-  height: 0; 
-  border-left: 350px solid transparent;
-  border-right: 350px solid transparent;
-  
-  border-bottom: 850px solid rgb(245, 132, 26);
-}
-.custom-shape-divider-top-1659550928 {
-  position: absolute;
-    bottom: 90px;
-    left: 0;
-    width: 100%;
-    /* overflow: hidden; */
-    line-height: 0;
-    z-index: -10;
-}
-.custom-shape-divider-top-1659550928 svg{
-  position: relative;
-  display: block;
-  width: calc(100% + 1.3px);
-  height: 150px;
-  transform: rotate(180deg);
-}
-
-.custom-shape-divider-top-1659550928 .shape-fill{
-  fill: white;
-}
-.custom-shape-divider-top-1659560449{
-    position: absolute;
-    top: -30px;
-    left: 0;
-    width: 100%;
-    /* overflow: hidden; */
-    line-height: 0;
-    z-index: -10;
-}
-.custom-shape-divider-top-1659560449 svg{
-  position: relative;
-  display: block;
-  width: calc(100% + 1.3px);
-  height: 80px;
-  /* transform: rotate(90deg); */
- 
-}
-.custom-shape-divider-top-1659560449 .shape-fill{
-  fill: white;
-}
 
 .rounded{
-  border-radius: 15px;
+  border-radius: 30px;
 }
+.btn-slider{
+  border: 2px solid white;
+}
+
+
+
 </style>
 
 
@@ -146,14 +153,14 @@
     <h1 class=" text-2xl font-bold text-gray-700 py-5 pt-7 md:w-[700px] md:px-4 md:text-5xl lg:text-4xl lg:w-full">Nos meilleurs recettes</h1>
   
   
-<div id="default-carousel" class="relative md:h-[450px] lg:h-[500px]" data-carousel="static">
+<div id="default-carousel" class="relative md:h-[490px] lg:h-[500px]" data-carousel="static">
   <!-- Carousel wrapper -->
-  <div class="relative h-96 overflow-hidden rounded-lg md:h-96">
+  <div class="relative h-96 carousel-wrapper overflow-hidden">
        <!-- Item 1 -->
        {% for pop_item in show_pop_item %}
       <div class=" duration-700 ease-in-out absolute inset-0 transition-all transform translate-x-0 z-20" data-carousel-item="">
         <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
-          <img src="{{pop_item.img.url}}" class="md:pt-14 absolute -z-10 w-72 h-60 rounded md:w-5/6 md:h-[400px] lg:h-[450px] object-cover block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+          <img src="{{pop_item.img.url}}" class="courasel-image absolute -z-10 w-72 h-60 rounded md:w-5/6 md:h-[400px] lg:h-[450px] object-cover block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </a>
         <div class="bg-green-500 w-56 md:w-60 md:ml-5 flex gap-x-2 px-1 items-center text-white rounded-br-full">
           <p class="z-100 text-xl text-gray-800">{{pop_item.name}}</p>
@@ -163,9 +170,9 @@
        {% endfor %}
   </div>
   <!-- Slider indicators -->
-  <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+  <div class="slider-indicators absolute z-50 flex space-x-3 -translate-x-1/2 bottom-20 pt-10 left-1/2">
     {% for pop_item in show_pop_item %}
-      <button type="button" class=" w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+      <button type="button" class="btn-slider w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
       {% endfor %}
   </div>
   <!-- Slider controls -->
@@ -184,7 +191,7 @@
 </div>
 
 
-    <p class="font-bold lg:pt-20 text-white py-3 md:py-10 text-2xl ml-auto mr-auto text-center px-5  max-w-6xl md:text-4xl md:w-[600px] lg:text-6xl lg:text-center lg:w-full lg:px-10 lg:py-10">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout
+    <p class="intro font-bold text-white text-2xl ml-auto mr-auto text-center px-5  max-w-6xl md:text-4xl md:w-[600px] lg:text-6xl lg:text-center lg:w-full lg:px-10 lg:py-10">Le meilleur Grill d'Abidjan, du poulets, Ribs, Steaks et Cheeseburgers tout
       les jours
     </p>
     <div class="flex justify-center">
@@ -199,8 +206,8 @@
  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
  <!-- VIEW ORDER -->
  {% if order %}
-<div class="relative">
-  <button class="fixed bottom-0 animate-bounce left-2 w-20 m-5 mx-auto h-20 text-xl font-bold rounded-full text-white bg-white text-black focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
+<div class="btn-modal-parent relative">
+  <button class="btn-modal z-50 animate-bounce fixed bottom-0 mb-2 left-2 w-40 h-14 text-xl font-bold rounded-full text-white bg-white text-black focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
     <p class="font-bold">Ma Commande</p>
     </button>
 </div>
