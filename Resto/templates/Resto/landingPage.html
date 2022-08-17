@@ -12,13 +12,20 @@
 @media screen and (max-width: 414px) {
   
     .intro{
-      padding-top: 40px;
+      padding-top: 20px;
       padding-bottom: 5px;
     }
     .btn-modal{
-  width: 300px;
-  left: 45px;
-}
+    width: 300px;
+    left: 45px;
+  }
+  .slider-indicators{
+    top: 360px;
+  }
+  .courasel-image{
+    height: 280px;
+    width: 320px;
+  }
 
 
 }
@@ -46,13 +53,27 @@
     border-top: 1300px solid white;
 } 
 .intro{
-      padding-top: 100px;
+      padding-top: 160px;
       padding-bottom: 50px;
       font-size: 40px;
   }
 .btn-modal{
   width: 805px;
   height: 80px;
+  }
+  .courasel-image{
+    top: 250px;
+  }
+  .slider-controls{
+    top: 70px;
+  }
+  .slider-indicators{
+    top: 460px;
+
+  }
+  .btn-slider{
+    width: 15px;
+    height: 15px;
   }
 }
 @media screen and (min-width: 1000px) {
@@ -61,7 +82,7 @@
     border-top: 1300px solid white;
 } 
 .intro{
-      padding-top: 100px;
+      padding-top: 290px;
       padding-bottom: 50px;
       font-size: 40px;
   }
@@ -69,6 +90,33 @@
   width: 805px;
   height: 80px;
   left: 95px;
+  }
+  .courasel-wrapper{
+    height: 100px;
+  }
+  .courasel-image {
+    top: 310px;
+    width: 850px;
+    height: 500px;
+    border-radius: 100px;
+  }
+  .slider-controls{
+    top: 140px;
+  }
+  .slider-indicators{
+    top: 570px;
+
+  }
+  .btn-slider{
+    width: 20px;
+    height: 20px;
+  }
+  .tag-box{
+    height: 50px;
+    width: 390px;
+  }
+  .tag-name, .tag-price{
+    font-size: 35px;
   }
 }
 @media screen and (min-width: 1200px) {
@@ -83,6 +131,7 @@
     width: 800px;
     border-radius: 100px;
   }
+
 
 }
 @media screen and (min-height: 813px) {
@@ -153,18 +202,18 @@
     <h1 class=" text-2xl font-bold text-gray-700 py-5 pt-7 md:w-[700px] md:px-4 md:text-5xl lg:text-4xl lg:w-full">Nos meilleurs recettes</h1>
   
   
-<div id="default-carousel" class="relative md:h-[490px] lg:h-[500px]" data-carousel="static">
+<div id="default-carousel" class="relative courasel-container" data-carousel="static">
   <!-- Carousel wrapper -->
-  <div class="relative h-96 carousel-wrapper overflow-hidden">
+  <div class="relative h-96 carousel-wrapper">
        <!-- Item 1 -->
        {% for pop_item in show_pop_item %}
       <div class=" duration-700 ease-in-out absolute inset-0 transition-all transform translate-x-0 z-20" data-carousel-item="">
         <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
           <img src="{{pop_item.img.url}}" class="courasel-image absolute -z-10 w-72 h-60 rounded md:w-5/6 md:h-[400px] lg:h-[450px] object-cover block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </a>
-        <div class="bg-green-500 w-56 md:w-60 md:ml-5 flex gap-x-2 px-1 items-center text-white rounded-br-full">
-          <p class="z-100 text-xl text-gray-800">{{pop_item.name}}</p>
-          <p class="z-100 text-3xl text-white">{{pop_item.prix}}</p>
+        <div class="tag-box bg-green-500 w-56 md:w-60 md:ml-5 flex gap-x-2 px-1 items-center text-white rounded-br-full">
+          <p class="tag-name z-100 text-xl text-gray-800">{{pop_item.name}}</p>
+          <p class="tag-price z-100 text-3xl text-white">{{pop_item.prix}}</p>
         </div>
       </div>
        {% endfor %}
@@ -176,13 +225,13 @@
       {% endfor %}
   </div>
   <!-- Slider controls -->
-  <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev="">
+  <button type="button" class="slider-controls absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev="">
       <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-green-500 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-green-500 group-focus:outline-none">
           <svg aria-hidden="true" class="w-5 h-5 text-white sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
           <span class="sr-only">Previous</span>
       </span>
   </button>
-  <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next="">
+  <button type="button" class="slider-controls absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next="">
       <span class="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-green-500  group-hover:bg-white/50  group-focus:ring-4 group-focus:ring-green-500  group-focus:outline-none">
           <svg aria-hidden="true" class="w-5 h-5 text-white sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
           <span class="sr-only">Next</span>
@@ -207,7 +256,7 @@
  <!-- VIEW ORDER -->
  {% if order %}
 <div class="btn-modal-parent relative">
-  <button class="btn-modal z-50 animate-bounce fixed bottom-0 mb-2 left-2 w-40 h-14 text-xl font-bold rounded-full text-white bg-white text-black focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
+  <button class="btn-modal z-50 animate-bounce fixed bottom-0 mb-2 left-0 w-40 h-14 text-xl font-bold rounded-full text-white bg-white text-black focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
     <p class="font-bold">Ma Commande</p>
     </button>
 </div>
@@ -245,11 +294,6 @@
             </div>
            
            
-          </div>
-          <!-- Modal footer -->
-          <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-              <button data-modal-toggle="small-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 btn">Retour</button>
-              
           </div>
       </div>
   </div>
