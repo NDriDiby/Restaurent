@@ -92,12 +92,12 @@ p {
     transform: translateY(-10px);
   }
 }
-button {
+/* button {
   background: rgb(28, 163, 250);
   background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
   color: white;
   width: 275px;
-  /* margin-left: 38px; */
+  margin-left: 38px;
   padding: 10px 0;
   border-radius: 20px;
   outline: none;
@@ -105,7 +105,7 @@ button {
   cursor: none;
   margin-left: auto;
   margin-right: auto;
-}
+} */
 
 /* button:hover {
   font-size: 10px;
