@@ -112,8 +112,8 @@ for (var i = 0; i < updated_but.length; i++) {
 
         msg.innerHTML = `
         <div class='justify-center text-sm w-full items-center bg-gray-500 px-2 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
-          <p class="text-white pr-1"><strong>${item_name} ajouté(es) a votre table </strong> </p>
-          <span><i class="bi bi-check-circle text-xl font-bold pl-5 text-green-300" style="color:orange"></i></span>
+          <p class="text-white"><strong>${item_name} ajouté(es) au pannier </strong> </p>
+          <span><i class="bi bi-check-circle text-xl font-bold pl-3" style="color:orange"></i></span>
         </div>`;
 
         total_item_box = document.getElementById("total-item");
