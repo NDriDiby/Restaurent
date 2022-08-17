@@ -1,4 +1,14 @@
 {% extends 'Resto/base_dashboard.html' %} {% block content %}
+
+<style>
+  .chartBox {
+    background-color: #fff;
+    border-radius: 12px;
+    width: 500px;
+    margin: 10px;
+  }
+</style>
+
 <div class="overview-boxes">
   <div class="box">
     <div class="right-side">
@@ -60,6 +70,11 @@
     <div class="right-side">
       <div class="box-topic">Total Revenue</div>
       <div class="number">150.000</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bx-money cart three"></i>
   </div>
@@ -68,6 +83,11 @@
     <div class="right-side">
       <div class="box-topic">Total Customer</div>
       <div class="number">{{total_customer}}</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bxs-user cart two"></i>
   </div>
@@ -76,37 +96,36 @@
     <div class="right-side">
       <div class="box-topic">Total Visit</div>
       <div class="number">30</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bxs-user-check cart one"></i>
   </div>
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Average Time Per Order</div>
+      <div class="box-topic">Avg. Time Per Order</div>
       <div class="number">5 min</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bx-time-five cart two"></i>
   </div>
 </div>
 
-<div class="dataviz">
-  <div class="dataviz-content">
-    <div class="topmeals">
-      <div class="title">
-        <h1>Top 5 Meals</h1>
-      </div>
-
-      <div class="viz">{{vizTop5meals|safe}}</div>
-    </div>
+<div class="d-flex justify-content-around">
+  <div class="chartBox">
+    <canvas id="pop-items"></canvas>
   </div>
 
-  <div class="dataviz-content">
-    <div class="topmeals">
-      <div class="title">
-        <h1>Upcoming orders</h1>
-        <div class="viz">{{vizOrder|safe}}</div>
-      </div>
-    </div>
+  <div class="chartBox">
+    <canvas id="order-time"></canvas>
   </div>
 </div>
 

@@ -74,7 +74,7 @@ function displayUncompletedOrder(orders) {
   uncompleted_order = orders["uncompleted_order"];
   //   console.log(uncompleted_order);
 
-  $("#data").empty();
+  $("#completedOrder").empty();
   $("#total_uncompleted_order").empty();
 
   console.log("HOW MANY NOW:", uncompleted_order.length);
@@ -129,7 +129,7 @@ function displayUncompletedOrder(orders) {
     }
 
     // Uncompleted Order List
-    $("#data").append(`<div class="col-auto mt-3">
+    $("#completedOrder").append(`<div class="col-auto mt-3">
     <div class="card shadow rounded-3 border border-danger" style="width:auto; height: auto; background-color: white">
       <div class="card-body mb-1">
 

@@ -917,7 +917,7 @@ def GetOrderCuisine(request):
     #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
         # print('DateOrdered:',current_time)
         # print('DateOrdered_since:',time_since)
-        print(order_date)
+        # print(order_date)
         
         #ORDER ITEM
         all_orderitem = uncompleted_order[order].orderitem_set.all()
@@ -956,7 +956,7 @@ def GetOrderCuisine(request):
                         'name':all_side[side].item.name,
                         'quantity':all_side[side].quantity,
                     }
-                    print(my_side)
+            
                     data['side_orderitem'].append(my_side)
                     
           
@@ -1077,68 +1077,69 @@ def Cuisine(request):
     
     
     #Top 5 Meals
-    orderItem = OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+    orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
+    print(list(orderItem))
     
     
     #viz Top 5 meals
-    df = pd.DataFrame(orderItem)
-    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
-                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
-    plt = plot(fig,output_type='div')
+    # df = pd.DataFrame(orderItem)
+    # fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+    #              color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    # plt = plot(fig,output_type='div')
     
-    # continuous
-    ['aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance',
-             'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg',
-             'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl',
-             'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric',
-             'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys',
-             'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet',
-             'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges',
-             'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl',
-             'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn',
-             'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu',
-             'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar',
-             'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn',
-             'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid',
-             'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr',
-             'ylorrd']
+    # # continuous
+    # ['aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance',
+    #          'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg',
+    #          'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl',
+    #          'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric',
+    #          'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys',
+    #          'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet',
+    #          'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges',
+    #          'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl',
+    #          'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn',
+    #          'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu',
+    #          'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar',
+    #          'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn',
+    #          'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid',
+    #          'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr',
+    #          'ylorrd']
     
-    #descrete
-    # [aliceblue, antiquewhite, aqua, aquamarine, azure,
-    #         beige, bisque, black, blanchedalmond, blue,
-    #         blueviolet, brown, burlywood, cadetblue,
-    #         chartreuse, chocolate, coral, cornflowerblue,
-    #         cornsilk, crimson, cyan, darkblue, darkcyan,
-    #         darkgoldenrod, darkgray, darkgrey, darkgreen,
-    #         darkkhaki, darkmagenta, darkolivegreen, darkorange,
-    #         darkorchid, darkred, darksalmon, darkseagreen,
-    #         darkslateblue, darkslategray, darkslategrey,
-    #         darkturquoise, darkviolet, deeppink, deepskyblue,
-    #         dimgray, dimgrey, dodgerblue, firebrick,
-    #         floralwhite, forestgreen, fuchsia, gainsboro,
-    #         ghostwhite, gold, goldenrod, gray, grey, green,
-    #         greenyellow, honeydew, hotpink, indianred, indigo,
-    #         ivory, khaki, lavender, lavenderblush, lawngreen,
-    #         lemonchiffon, lightblue, lightcoral, lightcyan,
-    #         lightgoldenrodyellow, lightgray, lightgrey,
-    #         lightgreen, lightpink, lightsalmon, lightseagreen,
-    #         lightskyblue, lightslategray, lightslategrey,
-    #         lightsteelblue, lightyellow, lime, limegreen,
-    #         linen, magenta, maroon, mediumaquamarine,
-    #         mediumblue, mediumorchid, mediumpurple,
-    #         mediumseagreen, mediumslateblue, mediumspringgreen,
-    #         mediumturquoise, mediumvioletred, midnightblue,
-    #         mintcream, mistyrose, moccasin, navajowhite, navy,
-    #         oldlace, olive, olivedrab, orange, orangered,
-    #         orchid, palegoldenrod, palegreen, paleturquoise,
-    #         palevioletred, papayawhip, peachpuff, peru, pink,
-    #         plum, powderblue, purple, red, rosybrown,
-    #         royalblue, rebeccapurple, saddlebrown, salmon,
-    #         sandybrown, seagreen, seashell, sienna, silver,
-    #         skyblue, slateblue, slategray, slategrey, snow,
-    #         springgreen, steelblue, tan, teal, thistle, tomato,
-    #         turquoise, violet, wheat, white, whitesmoke,
-    #         yellow, yellowgreen]
+    # #descrete
+    # # [aliceblue, antiquewhite, aqua, aquamarine, azure,
+    # #         beige, bisque, black, blanchedalmond, blue,
+    # #         blueviolet, brown, burlywood, cadetblue,
+    # #         chartreuse, chocolate, coral, cornflowerblue,
+    # #         cornsilk, crimson, cyan, darkblue, darkcyan,
+    # #         darkgoldenrod, darkgray, darkgrey, darkgreen,
+    # #         darkkhaki, darkmagenta, darkolivegreen, darkorange,
+    # #         darkorchid, darkred, darksalmon, darkseagreen,
+    # #         darkslateblue, darkslategray, darkslategrey,
+    # #         darkturquoise, darkviolet, deeppink, deepskyblue,
+    # #         dimgray, dimgrey, dodgerblue, firebrick,
+    # #         floralwhite, forestgreen, fuchsia, gainsboro,
+    # #         ghostwhite, gold, goldenrod, gray, grey, green,
+    # #         greenyellow, honeydew, hotpink, indianred, indigo,
+    # #         ivory, khaki, lavender, lavenderblush, lawngreen,
+    # #         lemonchiffon, lightblue, lightcoral, lightcyan,
+    # #         lightgoldenrodyellow, lightgray, lightgrey,
+    # #         lightgreen, lightpink, lightsalmon, lightseagreen,
+    # #         lightskyblue, lightslategray, lightslategrey,
+    # #         lightsteelblue, lightyellow, lime, limegreen,
+    # #         linen, magenta, maroon, mediumaquamarine,
+    # #         mediumblue, mediumorchid, mediumpurple,
+    # #         mediumseagreen, mediumslateblue, mediumspringgreen,
+    # #         mediumturquoise, mediumvioletred, midnightblue,
+    # #         mintcream, mistyrose, moccasin, navajowhite, navy,
+    # #         oldlace, olive, olivedrab, orange, orangered,
+    # #         orchid, palegoldenrod, palegreen, paleturquoise,
+    # #         palevioletred, papayawhip, peachpuff, peru, pink,
+    # #         plum, powderblue, purple, red, rosybrown,
+    # #         royalblue, rebeccapurple, saddlebrown, salmon,
+    # #         sandybrown, seagreen, seashell, sienna, silver,
+    # #         skyblue, slateblue, slategray, slategrey, snow,
+    # #         springgreen, steelblue, tan, teal, thistle, tomato,
+    # #         turquoise, violet, wheat, white, whitesmoke,
+    # #         yellow, yellowgreen]
     
 
     # Total order of the day
@@ -1146,44 +1147,44 @@ def Cuisine(request):
     total_uncompleted_order = all_order.count()
     total_order = total_completed_order + total_uncompleted_order
     
-    # Total order from the yesteray day
-    total_completed_order_ystd = complete_order_ystd.count()
-    total_uncompleted_order_ystd = all_order_ystd.count()
-    total_order_ystd = total_completed_order + total_uncompleted_order
+    # # Total order from the yesteray day
+    # total_completed_order_ystd = complete_order_ystd.count()
+    # total_uncompleted_order_ystd = all_order_ystd.count()
+    # total_order_ystd = total_completed_order + total_uncompleted_order
     
-    #Total customer
+    # #Total customer
     total_customer = Customer.objects.distinct().count()
-    print("MY CUST",total_customer)
+    # print("MY CUST",total_customer)
     
-    #Order in an hour
-    orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
-    print(orderHour)
-    plt2 = "There is upcoming order"
-    if orderHour:
-        df2 = pd.DataFrame(orderHour)
-        fig2 = px.line(df2,x='date_ordered__hour', y='count_order',markers=True,text='count_order',
-                    color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
+    # #Order in an hour
+    # orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
+    # print(orderHour)
+    # plt2 = "There is upcoming order"
+    # if orderHour:
+    #     df2 = pd.DataFrame(orderHour)
+    #     fig2 = px.line(df2,x='date_ordered__hour', y='count_order',markers=True,text='count_order',
+    #                 color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
         
-        fig2.update_traces(textposition="bottom right")
-        fig2.update_xaxes(
-        rangeslider_visible=False,
-        rangeselector=dict(
-            buttons=list([
-                dict(count=1, label="1h", step="hour", stepmode="backward"),
-                dict(count=6, label="6m", step="month", stepmode="backward"),
-                dict(count=1, label="YTD", step="year", stepmode="todate"),
-                dict(count=1, label="1y", step="year", stepmode="backward"),
-                dict(step="all")
-            ])
-        )
-    )
-        plt2 = plot(fig2,output_type='div')
+    #     fig2.update_traces(textposition="bottom right")
+    #     fig2.update_xaxes(
+    #     rangeslider_visible=False,
+    #     rangeselector=dict(
+    #         buttons=list([
+    #             dict(count=1, label="1h", step="hour", stepmode="backward"),
+    #             dict(count=6, label="6m", step="month", stepmode="backward"),
+    #             dict(count=1, label="YTD", step="year", stepmode="todate"),
+    #             dict(count=1, label="1y", step="year", stepmode="backward"),
+    #             dict(step="all")
+    #         ])
+    #     )
+    # )
+    #     plt2 = plot(fig2,output_type='div')
         
     
-    print("TOTAL  ORDER",total_order,total_completed_order_ystd)
-    print("TOTAL COMP ORDER",total_completed_order,total_completed_order_ystd)
+    # print("TOTAL  ORDER",total_order,total_completed_order_ystd)
+    # print("TOTAL COMP ORDER",total_completed_order,total_completed_order_ystd)
     
-    print(complete_order_ystd)
+    # print(complete_order_ystd)
    
    
     
@@ -1194,11 +1195,12 @@ def Cuisine(request):
         'total_completed_order':total_completed_order,
         'total_uncompleted_order':total_uncompleted_order,
         'total_order':total_order,
-        'vizTop5meals':plt,
-        'vizOrder':plt2,
+        # 'vizTop5meals':plt,
+        # 'vizOrder':plt2,
         'today':today,
         'visit':visit_number,
         'total_customer':total_customer,
+        'orderitem':orderItem,
         
     }
     return render(request,'Resto/Cuisine.html',context)
@@ -1505,10 +1507,14 @@ def CinetPayCredential(request):
 
 
 #TASKS + JOBS
-def daily_data(request):
+def DashBoardData(request):
     
+    orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
+    # print(list(orderItem))
     
+    orderHour = list(Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id')))
+    print(orderHour)
     
-    
-    
-    return JsonResponse({''})
+
+    return JsonResponse({'dashboard':orderItem,
+                         'ordertime':orderHour,})

@@ -25,6 +25,7 @@ urlpatterns = [
     path('texasgrillz/menuDetailsData/<menu_id>', views.MenuDetailsData, name='item_details_data-texasgrillz'),
     path('cinetpayapi/',views.CinetPayCredential,name='cinetpayapi'),#Backend process
     path('process_transaction/',views.ProcessTransaction,name='process_transaction'), #Backend process
+    path('texasgrillz/dashBoard_data/',views.DashBoardData, name ='dashboard_data'),
     
 ]
 
