@@ -62,7 +62,7 @@ for (var i = 0; i < updated_but.length; i++) {
         console.log(supplement[i].value);
       }
     }
-    console.log(supplements);
+    console.log(custChoice);
 
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];

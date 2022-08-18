@@ -1,4 +1,5 @@
 console.log("what do you see");
+
 var total_uncompleted_order = document.getElementById("total_uncompleted_order").innerHTML;
 let url = `ws://${window.location.host}/ws/sendOrder/`;
 
@@ -190,7 +191,7 @@ function GetOrderData() {
 
 GetOrderData();
 
-// setInterval(() => {
-//   console.log("GETTING DATA....");
-//   GetOrderData();
-// }, 100000);
+setInterval(() => {
+  console.log("GETTING DATA....");
+  GetOrderData();
+}, 5000);
