@@ -82,8 +82,7 @@ INSTALLED_APPS = [
     'channels',#Server-Client
 ]
 
-#Django Channel
-ASGI_APPLICATION = 'Restaurent.asgi.application'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -118,7 +117,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Restaurent.wsgi.application'
 
 
+#Django Channel
+ASGI_APPLICATION = 'Restaurent.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
 
 # CHANNEL_LAYERS = {
 #     'default': {

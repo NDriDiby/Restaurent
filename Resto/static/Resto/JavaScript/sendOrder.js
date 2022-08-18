@@ -8,6 +8,11 @@ const sendOrderSocket = new WebSocket(url);
 var total_item = null;
 var orderItem = null;
 
+// OPEN DJANGO-CHANNELS
+sendOrderSocket.onopen = (e) => {
+  console.log("I am connected to websocket");
+};
+
 //Get total item
 function getTotalItem() {
   $.ajax({
@@ -87,25 +92,6 @@ function sendMyOrder(action, order) {
   });
 }
 
-// Current Page
-// MESSAGE FROM CLIENT DJANGO-CHANNEL
-// sendOrderSocket.onmessage = (e) => {
-//   var data = JSON.parse(e.data);
-//   console.log("Data:", data);
-//   if (data.type == "send order") {
-//     console.log("AJAX REQUEST");
-//     var message = document.getElementById("messages");
-//     message.insertAdjacentHTML(
-//       "beforeend",
-//       `
-//     <div>
-//     <p>${data.message}</p>
-//      </div>
-//     `
-//     );
-//   }
-// };
-
 //UPDATE (INC - DEC) ITEM IN CART
 update_but = document.getElementsByClassName("update-cart");
 for (let i = 0; i < update_but.length; i++) {
@@ -121,6 +107,24 @@ for (let i = 0; i < update_but.length; i++) {
 
     console.log("ORDER ITEM ID", ordItem);
     console.log("action:", action);
+
+    // MESSAGE FROM CLIENT DJANGO-CHANNEL
+    sendOrderSocket.onmessage = (e) => {
+      var data = JSON.parse(e.data);
+      console.log("Data:", data);
+      if (data.type == "order_status") {
+        console.log("AJAX REQUEST");
+        var message = document.getElementById("messages");
+        message.insertAdjacentHTML(
+          "beforeend",
+          `
+    <div>
+    <p>${data.message}</p>
+     </div>
+    `
+        );
+      }
+    };
 
     //SEND MESSAGE TO SERVER DJANGO-CHANNEL
     sendOrderSocket.send(
