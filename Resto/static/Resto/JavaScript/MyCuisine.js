@@ -1,5 +1,25 @@
 console.log("what do you see");
 var total_uncompleted_order = document.getElementById("total_uncompleted_order").innerHTML;
+let url = `ws://${window.location.host}/ws/sendOrder/`;
+
+const sendOrderSocket = new WebSocket(url);
+
+sendOrderSocket.onmessage = (e) => {
+  var data = JSON.parse(e.data);
+  console.log("Data:", data);
+  if (data.type == "send order") {
+    console.log("AJAX REQUEST");
+    var message = document.getElementById("messages");
+    message.insertAdjacentHTML(
+      "beforeend",
+      `
+    <div>
+    <p>${data.message}</p>
+     </div>
+    `
+    );
+  }
+};
 
 //FETCH DATA
 async function fetchCuisineOrder() {
@@ -170,7 +190,7 @@ function GetOrderData() {
 
 GetOrderData();
 
-setInterval(() => {
-  console.log("GETTING DATA....");
-  GetOrderData();
-}, 100000);
+// setInterval(() => {
+//   console.log("GETTING DATA....");
+//   GetOrderData();
+// }, 100000);

@@ -7,12 +7,19 @@
     width: 500px;
     margin: 10px;
   }
+
+  .chart {
+    border-color: black;
+    background-color: #f9f0ee;
+    margin: 12px;
+    border-radius: 12px;
+  }
 </style>
 
 <div class="overview-boxes">
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Order</div>
+      <div class="box-topic">Commande Total</div>
       <div class="number">{{total_order}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">25%</div>
@@ -25,7 +32,7 @@
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Uncompleted Order</div>
+      <div class="box-topic">Commande Terminer</div>
       <div class="number">{{all_order|length}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">15%</div>
@@ -38,7 +45,7 @@
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Completed Order</div>
+      <div class="box-topic">Commande incompletes</div>
       <div class="number">{{total_completed_order}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">10%</div>
@@ -51,7 +58,7 @@
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Performance</div>
+      <div class="box-topic">Performance Cuisine</div>
       <div class="number">85%</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">25%</div>
@@ -68,7 +75,12 @@
 <div class="overview-boxes">
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Revenue</div>
+      <div class="d-flex justify-content-evenly">
+        <div class="p-1">Jour</div>
+        <div class="p-1">Mois</div>
+        <div class="p-1">Année</div>
+      </div>
+      <div class="box-topic">Revenue Total</div>
       <div class="number">150.000</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">10%</div>
@@ -81,11 +93,16 @@
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Customer</div>
+      <div class="d-flex justify-content-evenly">
+        <div class="p-1">Jour</div>
+        <div class="p-1">Mois</div>
+        <div class="p-1">Année</div>
+      </div>
+      <div class="box-topic">Total Client</div>
       <div class="number">{{total_customer}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">10%</div>
-        <i class="bx bx-up-arrow-alt"></i>
+        <i class="bx bx-down-arrow-alt down"></i>
         <span class="text">Up from yesterday</span>
       </div>
     </div>
@@ -94,7 +111,12 @@
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Visit</div>
+      <div class="d-flex justify-content-evenly">
+        <div class="p-1">Jour</div>
+        <div class="p-1">Mois</div>
+        <div class="p-1">Année</div>
+      </div>
+      <div class="box-topic">Visite Total</div>
       <div class="number">30</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">10%</div>
@@ -119,14 +141,51 @@
   </div>
 </div>
 
-<div class="d-flex justify-content-around">
-  <div class="chartBox">
+<div class="chart d-flex justify-content-around">
+  <div class="chartBox shadow">
     <canvas id="pop-items"></canvas>
   </div>
 
-  <div class="chartBox">
+  <div class="chartBox shadow">
     <canvas id="order-time"></canvas>
   </div>
 </div>
+
+<!-- <div>
+  <textarea name="ta" id="results" cols="30" rows="10"> </textarea><br />
+  Enter the expression: <input type="text" id="exp" />
+  <input type="button" id="submit" value="Get Results" />
+</div> -->
+
+<!-- <script>
+  const socket = new WebSocket("ws://localhost:8000/ws/livec/");
+  socket.onmessage = (e) => {
+    result = JSON.parse(e.data).result;
+    document.getElementById("results").value += "Server: " + result + "\n";
+  };
+
+  socket.onclose = (e) => {
+    console.log("Socket closed!");
+  };
+
+  document.querySelector("#exp").onkeyup = function (e) {
+    if (e.keyCode === 13) {
+      // enter, return
+      document.querySelector("#submit ").click();
+    }
+  };
+
+  document.querySelector("#submit").onclick = (e) => {
+    inputfield = document.querySelector("#exp");
+    exp = inputfield.value;
+    socket.send(
+      JSON.stringify({
+        expression: exp,
+      })
+    );
+    document.querySelector("#results").value += "You: " + exp + "\n";
+    inputfield.value = "";
+  };
+</script> -->
 
 {% endblock content %}

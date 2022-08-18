@@ -196,16 +196,25 @@ nav .profile-details i {
 .overview-boxes .box-topic {
   font-size: 13px;
   font-weight: 500;
+  color: #34487a;
 }
+
+.overview-boxes .comparePercentage {
+  font-weight: bold;
+}
+
 .home-content .box .number {
   display: inline-block;
   font-size: 35px;
   margin-top: -6px;
   font-weight: 500;
+  color: #cf5a47;
 }
+
 .home-content .box .indicator {
   display: flex;
   align-items: center;
+  color: #34487a;
 }
 .home-content .box .indicator i {
   height: 20px;
@@ -411,60 +420,4 @@ nav .profile-details i {
   .sidebar.active ~ .home-section nav .profile-details {
     display: none;
   }
-}
-
-.dataviz .dataviz-content {
-  margin-left: 15px;
-  margin-top: 20px;
-  height: 5200px;
-  padding: 10px;
-  width: fit-content;
-}
-
-.dataviz {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.dataviz .dataviz-content .topmeals {
-  border-radius: 12px;
-  width: 590px;
-  height: 320px;
-  background: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-.dataviz .dataviz-content .topmeals .title {
-  font-size: 20px;
-  text-align: center;
-  font-weight: 500;
-  border-radius: 2px;
-  color: #0d3073;
-}
-
-.dataviz .dataviz-content .topmeals .title span {
-  padding: 2px;
-}
-
-.dataviz .dataviz-content .topmeals .title span i {
-  color: orange;
-}
-
-.dataviz .dataviz-content .viz table {
-  padding: 10px;
-  margin-left: 70px;
-  font-size: 20px;
-}
-
-.dataviz .dataviz-content .viz table th,
-td {
-  padding: 10px;
-  margin-left: 25px;
-  text-align: center;
-}
-
-.dataviz .dataviz-content .viz table span {
-  color: #2bd47d;
-  border: 2px solid black;
 }

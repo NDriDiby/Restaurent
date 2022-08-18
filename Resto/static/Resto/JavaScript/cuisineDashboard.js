@@ -55,6 +55,10 @@ var my_category = [];
 const ctx = document.getElementById("pop-items").getContext("2d");
 const orderTime = document.getElementById("order-time").getContext("2d");
 
+Chart.defaults.font.size = 10;
+Chart.defaults.font.family = "poppins";
+Chart.defaults.plugins.title.align = "center";
+
 // DataBar
 var data = {
   labels: my_item,
@@ -72,7 +76,7 @@ var data = {
   ],
 };
 
-var options = {
+var optionsBar = {
   layout: {
     padding: 10,
   },
@@ -82,14 +86,14 @@ var options = {
     },
     x: {
       title: {
-        color: "rgb(210, 105, 30)",
+        color: "#34487A",
         display: true,
         text: "Order Items",
       },
     },
     y: {
       title: {
-        color: "rgb(210, 105, 30)",
+        color: "#34487A",
         display: true,
         text: "Nombre Total Vendus",
       },
@@ -99,9 +103,9 @@ var options = {
     title: {
       display: true,
       text: "Les 5 repas les plus adorés",
-      color: "rgb(210, 105, 30)",
+      color: "#CF5A47",
       font: {
-        size: 18,
+        size: 12,
         family: "Poppins",
       },
     },
@@ -116,7 +120,7 @@ var options = {
 var config = {
   type: "bar",
   data,
-  options,
+  options: optionsBar,
 };
 
 // Render
@@ -145,12 +149,12 @@ var dataHour = {
     {
       label: "Nombre total",
       data: count,
-      backgroundColor: ["#7893AD"],
+      backgroundColor: ["#34487A", "#B7BFD5", "#F9F0EE", "#F2C5BD", "#CF5A47"],
       borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)"],
       borderWidth: 1.5,
       tension: 0.2,
-      fill: true,
-      pointRadius: 3.5,
+      fill: false,
+      pointRadius: 5,
       pointHoverRadius: 5,
       borderColor: "#777",
       hoverBorderWidth: 3,
@@ -159,11 +163,51 @@ var dataHour = {
   ],
 };
 
+var optionsLine = {
+  layout: {
+    padding: 10,
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+    x: {
+      title: {
+        color: "#34487A",
+        display: true,
+        text: "Heure de Commande",
+      },
+    },
+    y: {
+      title: {
+        color: "#34487A",
+        display: true,
+        text: "Nombre total de commande",
+      },
+    },
+  },
+  plugins: {
+    title: {
+      display: true,
+      text: "Commande par heure",
+      color: "#CF5A47",
+      font: {
+        size: 12,
+        family: "Poppins",
+      },
+    },
+    legend: {
+      display: false,
+    },
+    responsive: true,
+  },
+};
+
 // Config
 var configHour = {
   type: "line",
   data: dataHour,
-  options,
+  options: optionsLine,
 };
 
 dashBordData().then((data) => {

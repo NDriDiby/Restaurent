@@ -2,6 +2,8 @@
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
+let url = `ws://${window.location.host}/ws/sendOrder/`;
+const sendOrderSocket = new WebSocket(url);
 
 var total_item = null;
 var orderItem = null;
@@ -86,7 +88,23 @@ function sendMyOrder(action, order) {
 }
 
 // Current Page
-console.log(location.href.split("/")[4]);
+// MESSAGE FROM CLIENT DJANGO-CHANNEL
+// sendOrderSocket.onmessage = (e) => {
+//   var data = JSON.parse(e.data);
+//   console.log("Data:", data);
+//   if (data.type == "send order") {
+//     console.log("AJAX REQUEST");
+//     var message = document.getElementById("messages");
+//     message.insertAdjacentHTML(
+//       "beforeend",
+//       `
+//     <div>
+//     <p>${data.message}</p>
+//      </div>
+//     `
+//     );
+//   }
+// };
 
 //UPDATE (INC - DEC) ITEM IN CART
 update_but = document.getElementsByClassName("update-cart");
@@ -103,6 +121,14 @@ for (let i = 0; i < update_but.length; i++) {
 
     console.log("ORDER ITEM ID", ordItem);
     console.log("action:", action);
+
+    //SEND MESSAGE TO SERVER DJANGO-CHANNEL
+    sendOrderSocket.send(
+      JSON.stringify({
+        message: "Order Sent",
+        type: "send order",
+      })
+    );
 
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
@@ -381,13 +407,3 @@ function checkout(api, site, amount) {
 
   return "Caisse Ouverte";
 }
-
-// UPDATE SIDE ORDER
-// var updateSide = document.getElementsByClassName("update-cart-side");
-// for (let i = 0; i < updateSide.length; i++) {
-//   updateSide[i].addEventListener("click", () => {
-//     console.log(updateSide[i].dataset.accomp);
-
-//     console.log(this.data);
-//   });
-// }
