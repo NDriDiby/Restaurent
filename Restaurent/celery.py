@@ -2,11 +2,17 @@ import os
 
 from celery import Celery
 from celery.schedules import crontab
+import os, ssl
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Restaurent.settings')
 
-app = Celery('Restaurent')
+app = Celery('Restaurent',broker_use_ssl = {
+        'ssl_cert_reqs': ssl.CERT_NONE
+     },
+     redis_backend_use_ssl = {
+        'ssl_cert_reqs': ssl.CERT_NONE
+     })
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
@@ -25,33 +31,33 @@ def debug_task(self):
 
 
 #Scheduling Task
-app.conf.beat_schedule = {
-    "add-task": {
-        "task": "Resto.tasks.add_number",
-        "schedule": crontab(minute="*"),
-        "args":(10,10),
-        "queue":"daily"
+# app.conf.beat_schedule = {
+#     "add-task": {
+#         "task": "Resto.tasks.add_number",
+#         "schedule": crontab(minute="*"),
+#         "args":(10,10),
+#         "queue":"daily"
         
-    }
-}
+#     }
+# }
 
 
-app.conf.beat_schedule = {
-    "daily-revenu": {
-        "task": "Resto.tasks.get_daily_revenu",
-        "schedule": crontab(minute="*"),
-        "queue":"daily"
-    }
-}
+# app.conf.beat_schedule = {
+#     "daily-revenu": {
+#         "task": "Resto.tasks.get_daily_revenu",
+#         "schedule": crontab(minute="*"),
+#         "queue":"daily"
+#     }
+# }
 
 
-app.conf.beat_schedule = {
-    "transfert-amount": {
-        "task": "Resto.tasks.transfert_amount",
-        "schedule": crontab(minute="*"),
-        "queue":"daily"
-    }
-}
+# app.conf.beat_schedule = {
+#     "transfert-amount": {
+#         "task": "Resto.tasks.transfert_amount",
+#         "schedule": crontab(minute="*"),
+#         "queue":"daily"
+#     }
+# }
 
 
 

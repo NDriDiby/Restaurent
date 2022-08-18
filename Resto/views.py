@@ -31,6 +31,7 @@ from plotly.offline import plot
 import plotly.express as px
 import pandas as pd
 import calendar
+from dateutil.relativedelta import relativedelta
 
 
 #TASK
@@ -383,7 +384,6 @@ def ItemDetails(request,item_id):
     return render (request,'Resto/ItemDetailsNew.html',context)
     
 
-
 #My Order
 def MyOrder(request):
     
@@ -453,6 +453,8 @@ def UpdatedItem(request):
         customer = request.user
         customer,created= Customer.objects.get_or_create(user = request.user)
         order= Order.objects.get(customer=customer,status = 'Pending',table = table_numb)
+        # order.date_ordered = datetime.now().time()
+        # order.save()
         total = order.get_order_total()
         
        
@@ -891,19 +893,36 @@ def GetOrderCuisine(request):
     #Uncompleted Order
     uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
     
+    current_time = datetime.strftime(datetime.today().now(),'%H:%M')
+    current_time= datetime.strptime(current_time,'%H:%M')
+    
     uncompleted = list()
     for order in range(0,len(uncompleted_order)):
+        
+        order_date = datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        #order_date= datetime.strptime(order_date,'%H:%M')
+        
+        #time_since = current_time - order_date
         data = {
             'order_id':uncompleted_order[order].id,
             'order_table':uncompleted_order[order].table,
             'order_name':uncompleted_order[order].customer.full_name(),
-            'order_date':uncompleted_order[order].date_ordered,
+            'order_date':order_date,
             'transaction_id':uncompleted_order[order].transaction_id,
-            'order_item':[]
+            'order_item':[],
+            'side_orderitem':[],
         }
+        
+        # data['order_date'] = datetime.strftime(data['order_date'],'%H:%M')
+    #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        # print('DateOrdered:',current_time)
+        # print('DateOrdered_since:',time_since)
+        # print(order_date)
+        
+        #ORDER ITEM
         all_orderitem = uncompleted_order[order].orderitem_set.all()
         for orderitem in range(0,len(all_orderitem)):
-            if data['order_id'] == uncompleted_order[order].id:
+            if data['order_id'] == all_orderitem[orderitem].order.id:
                 orderItem = {
                    'order_id':all_orderitem[orderitem].order.id,
                     'orderItem_id':all_orderitem[orderitem].id,
@@ -926,83 +945,26 @@ def GetOrderCuisine(request):
                         
                        
                 data['order_item'].append(orderItem)
+        
+        # SIDE ORDER ITEM
+        if uncompleted_order[order].sideorderitem_set.all():
+            all_side = uncompleted_order[order].sideorderitem_set.all()
+            for side in range(0,len(all_side)):
+                if data['order_id'] == all_side[side].order.id:
+                    my_side = {
+                        'order_id':all_side[side].order.id,
+                        'name':all_side[side].item.name,
+                        'quantity':all_side[side].quantity,
+                    }
+            
+                    data['side_orderitem'].append(my_side)
+                    
           
-            
-            
-                
-                # data = {
-                #     'orderDetails':{
-                #         'order_id':all_orderitem[orderitem].order.id,
-                #         # 'order_name':all_orderitem[orderitem]
-                #     }
-                # }
-                #     'orderItem':{
-                #     'order_id':all_orderitem[orderitem].order.id,
-                #     'orderItem_id':all_orderitem[orderitem].id,
-                #     'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
-                #     'item':all_orderitem[orderitem].item.name,
-                #     'quantity':all_orderitem[orderitem].quantity,
-                #     'ingredient':all_orderitem[orderitem].ingredient,
-                
-                # #     
-                # # 
-                # print(data)
         uncompleted.append(data)
-            
-          
-    
-    # #Uncompleted Order Item
-    # item_selected = list()
-    # for ord in range(0,len(order)):
-    #     item = order[ord].orderitem_set.all()
-    #     for i in range(0,len(item)): 
-    #         data = { 
-    #                 'orderItem_id':item[i].id,
-    #                 'order_id':item[i].order.id,
-    #                 'order':order[ord].customer.user.first_name +" "+ order[ord].customer.user.last_name,
-    #                 'item':item[i].item.name,
-    #                 'quantity':item[i].quantity,
-    #                 'ingredient':item[i].ingredient,
-    #                 }
-    #         item_selected.append(data)
-    
-    
-    # #Completed order
-    # complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('-id')
-    
-    # #Completed order item
-    # completed_order_item = list()
-    # for ord in range(0,len(complete_order)):
-    #     item = complete_order[ord].orderitem_set.all()
-    #     for i in range(0,len(item)): 
-    #         data = { 
-    #                 'order_id':item[i].order.id,
-    #                 'order':complete_order[ord].customer.user.first_name +" "+ complete_order[ord].customer.user.last_name,
-    #                 'item':item[i].item.name,
-    #                 'quantity':item[i].quantity,
-    #                 'ingredient':item[i].ingredient,
-    #                 }
-    #         completed_order_item.append(data)
-    
-    # total_uncompleted_order = {
-    #     'total_uncomplete' : order.count()
-    # }
-    
-    # total_completed_order = {
-    #     'total_complete' : complete_order.count()
-    # }
     
   
     return JsonResponse({"uncompleted_order":list(uncompleted)})
-
-                        #  'order_item':list(item_selected),
-                        #  'total_uncompleted_order':list(total_uncompleted_order.values()),
-                        #  'total_completed_order':list(total_completed_order.values()),
-                        #  'completed_order':list(complete_order.values()),
-                        #  'completed_order_item':list(completed_order_item)
                          
-
-
 
 
 def CuisineOptimize(request):
@@ -1017,7 +979,7 @@ def CuisineOptimize(request):
     
     context ={
         'all_order':uncompleted_order,
-        # 'complete':complete_order,
+         'total_completed_order':uncompleted_order.count,
          'completed_order':completed_order,
          'uncompleted_order':uncompleted_order,
     }
@@ -1036,12 +998,15 @@ def CompletedOrder(request):
         order.complete = True
         order.date_completed = timezone.localtime()
         order.save()
+        
+        uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).count()
     
-        #TASK
+        # #TASK
         send_paiement_receipt.delay(order_numb)
         
 
-    return JsonResponse("Order Completed",safe=False)
+    return JsonResponse({'response':"Order Completed",
+                         'uncompleted_order':uncompleted_order},safe=False)
 
 
 
@@ -1084,6 +1049,8 @@ def SendOrder(request):
             order.transaction_id = order_number('texasgrillz')
             order.save()
             
+        return JsonResponse({'Status':'Sent to kitchen'})
+            
             
         
     # order = model_to_dict(order)
@@ -1110,68 +1077,69 @@ def Cuisine(request):
     
     
     #Top 5 Meals
-    orderItem = OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5]
+    orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
+    print(list(orderItem))
     
     
     #viz Top 5 meals
-    df = pd.DataFrame(orderItem)
-    fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
-                 color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
-    plt = plot(fig,output_type='div')
+    # df = pd.DataFrame(orderItem)
+    # fig = px.bar(df,x='item__name', y='Quantity',color='item__category__name',text_auto='Quantity',
+    #              color_discrete_sequence=['bisque','crimson', 'turquoise','green','darkgreen'],opacity=0.7)
+    # plt = plot(fig,output_type='div')
     
-    # continuous
-    ['aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance',
-             'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg',
-             'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl',
-             'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric',
-             'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys',
-             'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet',
-             'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges',
-             'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl',
-             'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn',
-             'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu',
-             'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar',
-             'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn',
-             'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid',
-             'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr',
-             'ylorrd']
+    # # continuous
+    # ['aggrnyl', 'agsunset', 'algae', 'amp', 'armyrose', 'balance',
+    #          'blackbody', 'bluered', 'blues', 'blugrn', 'bluyl', 'brbg',
+    #          'brwnyl', 'bugn', 'bupu', 'burg', 'burgyl', 'cividis', 'curl',
+    #          'darkmint', 'deep', 'delta', 'dense', 'earth', 'edge', 'electric',
+    #          'emrld', 'fall', 'geyser', 'gnbu', 'gray', 'greens', 'greys',
+    #          'haline', 'hot', 'hsv', 'ice', 'icefire', 'inferno', 'jet',
+    #          'magenta', 'magma', 'matter', 'mint', 'mrybm', 'mygbm', 'oranges',
+    #          'orrd', 'oryel', 'oxy', 'peach', 'phase', 'picnic', 'pinkyl',
+    #          'piyg', 'plasma', 'plotly3', 'portland', 'prgn', 'pubu', 'pubugn',
+    #          'puor', 'purd', 'purp', 'purples', 'purpor', 'rainbow', 'rdbu',
+    #          'rdgy', 'rdpu', 'rdylbu', 'rdylgn', 'redor', 'reds', 'solar',
+    #          'spectral', 'speed', 'sunset', 'sunsetdark', 'teal', 'tealgrn',
+    #          'tealrose', 'tempo', 'temps', 'thermal', 'tropic', 'turbid',
+    #          'turbo', 'twilight', 'viridis', 'ylgn', 'ylgnbu', 'ylorbr',
+    #          'ylorrd']
     
-    #descrete
-    # [aliceblue, antiquewhite, aqua, aquamarine, azure,
-    #         beige, bisque, black, blanchedalmond, blue,
-    #         blueviolet, brown, burlywood, cadetblue,
-    #         chartreuse, chocolate, coral, cornflowerblue,
-    #         cornsilk, crimson, cyan, darkblue, darkcyan,
-    #         darkgoldenrod, darkgray, darkgrey, darkgreen,
-    #         darkkhaki, darkmagenta, darkolivegreen, darkorange,
-    #         darkorchid, darkred, darksalmon, darkseagreen,
-    #         darkslateblue, darkslategray, darkslategrey,
-    #         darkturquoise, darkviolet, deeppink, deepskyblue,
-    #         dimgray, dimgrey, dodgerblue, firebrick,
-    #         floralwhite, forestgreen, fuchsia, gainsboro,
-    #         ghostwhite, gold, goldenrod, gray, grey, green,
-    #         greenyellow, honeydew, hotpink, indianred, indigo,
-    #         ivory, khaki, lavender, lavenderblush, lawngreen,
-    #         lemonchiffon, lightblue, lightcoral, lightcyan,
-    #         lightgoldenrodyellow, lightgray, lightgrey,
-    #         lightgreen, lightpink, lightsalmon, lightseagreen,
-    #         lightskyblue, lightslategray, lightslategrey,
-    #         lightsteelblue, lightyellow, lime, limegreen,
-    #         linen, magenta, maroon, mediumaquamarine,
-    #         mediumblue, mediumorchid, mediumpurple,
-    #         mediumseagreen, mediumslateblue, mediumspringgreen,
-    #         mediumturquoise, mediumvioletred, midnightblue,
-    #         mintcream, mistyrose, moccasin, navajowhite, navy,
-    #         oldlace, olive, olivedrab, orange, orangered,
-    #         orchid, palegoldenrod, palegreen, paleturquoise,
-    #         palevioletred, papayawhip, peachpuff, peru, pink,
-    #         plum, powderblue, purple, red, rosybrown,
-    #         royalblue, rebeccapurple, saddlebrown, salmon,
-    #         sandybrown, seagreen, seashell, sienna, silver,
-    #         skyblue, slateblue, slategray, slategrey, snow,
-    #         springgreen, steelblue, tan, teal, thistle, tomato,
-    #         turquoise, violet, wheat, white, whitesmoke,
-    #         yellow, yellowgreen]
+    # #descrete
+    # # [aliceblue, antiquewhite, aqua, aquamarine, azure,
+    # #         beige, bisque, black, blanchedalmond, blue,
+    # #         blueviolet, brown, burlywood, cadetblue,
+    # #         chartreuse, chocolate, coral, cornflowerblue,
+    # #         cornsilk, crimson, cyan, darkblue, darkcyan,
+    # #         darkgoldenrod, darkgray, darkgrey, darkgreen,
+    # #         darkkhaki, darkmagenta, darkolivegreen, darkorange,
+    # #         darkorchid, darkred, darksalmon, darkseagreen,
+    # #         darkslateblue, darkslategray, darkslategrey,
+    # #         darkturquoise, darkviolet, deeppink, deepskyblue,
+    # #         dimgray, dimgrey, dodgerblue, firebrick,
+    # #         floralwhite, forestgreen, fuchsia, gainsboro,
+    # #         ghostwhite, gold, goldenrod, gray, grey, green,
+    # #         greenyellow, honeydew, hotpink, indianred, indigo,
+    # #         ivory, khaki, lavender, lavenderblush, lawngreen,
+    # #         lemonchiffon, lightblue, lightcoral, lightcyan,
+    # #         lightgoldenrodyellow, lightgray, lightgrey,
+    # #         lightgreen, lightpink, lightsalmon, lightseagreen,
+    # #         lightskyblue, lightslategray, lightslategrey,
+    # #         lightsteelblue, lightyellow, lime, limegreen,
+    # #         linen, magenta, maroon, mediumaquamarine,
+    # #         mediumblue, mediumorchid, mediumpurple,
+    # #         mediumseagreen, mediumslateblue, mediumspringgreen,
+    # #         mediumturquoise, mediumvioletred, midnightblue,
+    # #         mintcream, mistyrose, moccasin, navajowhite, navy,
+    # #         oldlace, olive, olivedrab, orange, orangered,
+    # #         orchid, palegoldenrod, palegreen, paleturquoise,
+    # #         palevioletred, papayawhip, peachpuff, peru, pink,
+    # #         plum, powderblue, purple, red, rosybrown,
+    # #         royalblue, rebeccapurple, saddlebrown, salmon,
+    # #         sandybrown, seagreen, seashell, sienna, silver,
+    # #         skyblue, slateblue, slategray, slategrey, snow,
+    # #         springgreen, steelblue, tan, teal, thistle, tomato,
+    # #         turquoise, violet, wheat, white, whitesmoke,
+    # #         yellow, yellowgreen]
     
 
     # Total order of the day
@@ -1179,44 +1147,44 @@ def Cuisine(request):
     total_uncompleted_order = all_order.count()
     total_order = total_completed_order + total_uncompleted_order
     
-    # Total order from the yesteray day
-    total_completed_order_ystd = complete_order_ystd.count()
-    total_uncompleted_order_ystd = all_order_ystd.count()
-    total_order_ystd = total_completed_order + total_uncompleted_order
+    # # Total order from the yesteray day
+    # total_completed_order_ystd = complete_order_ystd.count()
+    # total_uncompleted_order_ystd = all_order_ystd.count()
+    # total_order_ystd = total_completed_order + total_uncompleted_order
     
-    #Total customer
+    # #Total customer
     total_customer = Customer.objects.distinct().count()
-    print("MY CUST",total_customer)
+    # print("MY CUST",total_customer)
     
-    #Order in an hour
-    orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
-    print(orderHour)
-    plt2 = "There is upcoming order"
-    if orderHour:
-        df2 = pd.DataFrame(orderHour)
-        fig2 = px.line(df2,x='date_ordered__hour', y='count_order',markers=True,text='count_order',
-                    color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
+    # #Order in an hour
+    # orderHour = Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id'))
+    # print(orderHour)
+    # plt2 = "There is upcoming order"
+    # if orderHour:
+    #     df2 = pd.DataFrame(orderHour)
+    #     fig2 = px.line(df2,x='date_ordered__hour', y='count_order',markers=True,text='count_order',
+    #                 color_discrete_sequence=['crimson', 'turquoise','green','darkgreen'])
         
-        fig2.update_traces(textposition="bottom right")
-        fig2.update_xaxes(
-        rangeslider_visible=False,
-        rangeselector=dict(
-            buttons=list([
-                dict(count=1, label="1h", step="hour", stepmode="backward"),
-                dict(count=6, label="6m", step="month", stepmode="backward"),
-                dict(count=1, label="YTD", step="year", stepmode="todate"),
-                dict(count=1, label="1y", step="year", stepmode="backward"),
-                dict(step="all")
-            ])
-        )
-    )
-        plt2 = plot(fig2,output_type='div')
+    #     fig2.update_traces(textposition="bottom right")
+    #     fig2.update_xaxes(
+    #     rangeslider_visible=False,
+    #     rangeselector=dict(
+    #         buttons=list([
+    #             dict(count=1, label="1h", step="hour", stepmode="backward"),
+    #             dict(count=6, label="6m", step="month", stepmode="backward"),
+    #             dict(count=1, label="YTD", step="year", stepmode="todate"),
+    #             dict(count=1, label="1y", step="year", stepmode="backward"),
+    #             dict(step="all")
+    #         ])
+    #     )
+    # )
+    #     plt2 = plot(fig2,output_type='div')
         
     
-    print("TOTAL  ORDER",total_order,total_completed_order_ystd)
-    print("TOTAL COMP ORDER",total_completed_order,total_completed_order_ystd)
+    # print("TOTAL  ORDER",total_order,total_completed_order_ystd)
+    # print("TOTAL COMP ORDER",total_completed_order,total_completed_order_ystd)
     
-    print(complete_order_ystd)
+    # print(complete_order_ystd)
    
    
     
@@ -1227,11 +1195,12 @@ def Cuisine(request):
         'total_completed_order':total_completed_order,
         'total_uncompleted_order':total_uncompleted_order,
         'total_order':total_order,
-        'vizTop5meals':plt,
-        'vizOrder':plt2,
+        # 'vizTop5meals':plt,
+        # 'vizOrder':plt2,
         'today':today,
         'visit':visit_number,
         'total_customer':total_customer,
+        'orderitem':orderItem,
         
     }
     return render(request,'Resto/Cuisine.html',context)
@@ -1538,10 +1507,14 @@ def CinetPayCredential(request):
 
 
 #TASKS + JOBS
-def daily_data(request):
+def DashBoardData(request):
     
+    orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
+    # print(list(orderItem))
     
+    orderHour = list(Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id')))
+    print(orderHour)
     
-    
-    
-    return JsonResponse({''})
+
+    return JsonResponse({'dashboard':orderItem,
+                         'ordertime':orderHour,})

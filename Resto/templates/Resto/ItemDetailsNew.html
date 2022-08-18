@@ -512,7 +512,7 @@
 
 
     .btn {
-      background-color: chocolate;
+      background-color: rgb(210, 105, 30);
       border-radius: 3px;
       color: white;
       padding: 5px 10px;
@@ -567,7 +567,6 @@
   </div>
 
 
-   
 
     <div class="iteminfo-box p-1 m-2 rounded-md mx-2 flex justify-between">
       <div>
@@ -673,7 +672,7 @@
 
                   <!-- Water -->
                   {% if eau_mineral %}
-                  <div class='eau_mineral'>
+                  <div class='eau_mineral' >
                     <h5 style="color: black;"><span class="item-cat-name">Eau Mineral </span><span
                         class="item-cat-number">({{eau_mineral|length}})</span>
                       <span><small class="item-cat-instruction-onechoice italic" style="color: coral;">1 choice</small></span>
@@ -690,20 +689,44 @@
 
                       <!-- Coca Cola product -->
                       {% if coca_cola_produit %}
-                      <div class='coca_cola_produit'>
-                        <h5 style="color: black;"><span class="item-cat-name">Coca-cola Produit </span><span
-                            class="item-cat-number">({{coca_cola_produit|length}})</span>
-                          <span><small class="item-cat-instruction-onechoice italic" style="color: coral;" >1 choice</small></span>
-                        </h5>
+                      <div id="coca_cola_produit" class='coca_cola_produit relative mt-2'>
+                        <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
+                        <div >
+                          <small class="item-cat-instruction-onechoice italic" style="color: coral">1 choice</small>
+                        </div>
+                        <h5 class="flex items-center bg-gray-500" style="color:black;"><span
+                          class="item-cat-name">Coca Cola Produit</span><span
+                          class="item-cat-number">({{coca_cola_produit|length}})</span>
+                      </h5>
+                      {% for coca in coca_cola_produit %}
+                      <div class="coca_cola_produit-item show" id="coca_cola_produit-item">
+                        <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit"
+                            value="{{coca.name}}" />
+                            <label for="coca_cola_produit">{{coca.name}}</label><br />
+                      </div>
+                      {% endfor %}
+                      </div>
+                      {% endif %}
+
+                      <!-- {% if coca_cola_produit %}
+                      <div class='coca_cola_produit' class='cuisson relative mt-2'>
+                        <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
+                        <div >
+                          <small class="item-cat-instruction-onechoice italic" style="color: coral">1 choice</small>
+                        </div>
+                        <h5 class="flex items-center bg-gray-500" style="color:black;"><span
+                          class="item-cat-name">Coca Cola Produit</span><span
+                          class="item-cat-number">({{coca_cola_produit|length}})</span>
+                      </h5>
                         {% for coca in coca_cola_produit %}
-                        <div class="ingredient-item show">
+                        <div class="coca_cola_produit-item show">
                           <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit"
                             value="{{coca.name}}" />
                           <label for="coca_cola_produit">{{coca.name}}</label><br />
                         </div>
                         {% endfor %}
                         <div>
-                          {% endif %}
+                          {% endif %} -->
 
 
                          <!-- Supplement -->

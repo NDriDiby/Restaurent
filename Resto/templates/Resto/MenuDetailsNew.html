@@ -180,10 +180,10 @@
 <!-- sides -->
 <h1 class="text-left font-bold sm:text-2xl md:text-3xl lg:text-4xl cat-tile px-4 pt-2">Sides</h1>
 
-
+<section class="w-full font-bold text-3xl p-3">
 {% for side in sides  %}
 <a  href="/texasgrillz/sidedetails/{{side.id}}/?session={{app}}" style="text-decoration: none; color: black">
-<div class="menudetails-items relative flex justify-between gap-x-10 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
+<div class="menudetails-items relative flex justify-around font-bold gap-x-3 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
   <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
     <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
   </div>
@@ -200,8 +200,11 @@
 </div>
 </a>
 {% endfor %}
+</section>
 
 <!-- sides -->
+
+
 
 
 

@@ -23,7 +23,7 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('',include('Resto.urls')),
     path('',include('Customer.urls')),
-     path('',include('Bakerys.urls')),
+    path('',include('Bakerys.urls')),
     
 ]
 
