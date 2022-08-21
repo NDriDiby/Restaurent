@@ -2,16 +2,30 @@
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
-let url = `ws://${window.location.host}/ws/sendOrder/`;
-const sendOrderSocket = new WebSocket(url);
 
 var total_item = null;
 var orderItem = null;
 
+//  WEBSOCKET ROOTING
+let url = `ws://${window.location.host}/ws/sendOrder/uncompleted-order/`;
+const sendOrderSocket = new WebSocket(url);
+
 // OPEN DJANGO-CHANNELS
-sendOrderSocket.onopen = (e) => {
-  console.log("I am connected to websocket");
-};
+// sendOrderSocket.onopen = (e) => {
+//   console.log("I am connected to websocket", url);
+//   sendOrderSocket.onmessage = (e) => {
+//     console.log(JSON.parse(e.data));
+//   };
+// };
+
+// sendOrderSocket.onclose = (e) => {
+//   console.log("Reconnecting....");
+// };
+
+// sendOrderSocket.onerror = (error) => {
+//   console.log(error);
+//   sendOrderSocket.close();
+// };
 
 //Get total item
 function getTotalItem() {
@@ -78,8 +92,18 @@ function sendMyOrder(action, order) {
       console.log("total Item:", total_item);
 
       if (total_item > 0) {
-        console.log("I can send your order");
+        // DJANGO CHANNEL
+
+        //SEND MESSAGE TO SERVER DJANGO-CHANNEL
+        sendOrderSocket.send(
+          JSON.stringify({
+            message: order,
+            type: "order_status",
+          })
+        );
       }
+
+      //sendOderToServer(order);
     },
 
     complete: function () {
@@ -108,32 +132,6 @@ for (let i = 0; i < update_but.length; i++) {
     console.log("ORDER ITEM ID", ordItem);
     console.log("action:", action);
 
-    // MESSAGE FROM CLIENT DJANGO-CHANNEL
-    sendOrderSocket.onmessage = (e) => {
-      var data = JSON.parse(e.data);
-      console.log("Data:", data);
-      if (data.type == "order_status") {
-        console.log("AJAX REQUEST");
-        var message = document.getElementById("messages");
-        message.insertAdjacentHTML(
-          "beforeend",
-          `
-    <div>
-    <p>${data.message}</p>
-     </div>
-    `
-        );
-      }
-    };
-
-    //SEND MESSAGE TO SERVER DJANGO-CHANNEL
-    sendOrderSocket.send(
-      JSON.stringify({
-        message: "Order Sent",
-        type: "send order",
-      })
-    );
-
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
 
@@ -160,29 +158,9 @@ for (let i = 0; i < update_but.length; i++) {
 
         var total_item = document.getElementById(`item-quantity-${orderitem_id}`);
         var item_total_price = document.getElementById(`item-total-price-${orderitem_id}`);
-        // var item_price_item = document.getElementsByClassName("item-price-item")[ord];
-        // var total_item_sup = document.getElementById(`total-item-sup-${orderitem_id}`);
 
         total_item.innerHTML = orderitem_quantity;
         item_total_price.innerHTML = `${total_orderitem} FCFA`;
-
-        console.log(total_item);
-
-        // for (var ord in orderItem) {
-        //   var total_item = document.getElementsByClassName("quantity-field")[ord];
-        //   var item_total_price = document.getElementsByClassName("item-price")[ord];
-        //   var item_price_item = document.getElementsByClassName("item-price-item")[ord];
-        //   var total_item_accomp = document.getElementsByClassName("total-item-accomp")[ord];
-
-        //   total_item.innerHTML = ordItem["tot_item"];
-        //   item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
-        //   item_price_item.innerHTML = "(" + orderItem[ord]["item_price_item"] + ")";
-        //   if (total_item_accomp) {
-        //     total_item_accomp.innerHTML = "(" + orderItem[ord]["total_item_accomp"] + ")";
-        //   }
-
-        //   console.log("NEW PRICE ALERT", orderItem[ord]["item_price_item"]);
-        // }
 
         activeItem = document.getElementById(`item-total-price-${response.active_orderItem}`);
 
@@ -362,7 +340,7 @@ function cinetpayAPI() {
       site = response.site_id;
 
       //PAY FOR ORDER
-      checkout(api, site, toPay);
+      checkout(api, site, 100);
     },
   });
 }
@@ -402,6 +380,7 @@ function checkout(api, site, amount) {
   CinetPay.waitResponse(function (data) {
     if (data.status == "REFUSED") {
       console.log("refused");
+      return;
     } else if (data.status == "ACCEPTED") {
       console.log("accepted");
       sendMyOrder("Sent", orderID);

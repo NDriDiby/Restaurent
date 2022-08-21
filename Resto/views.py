@@ -892,6 +892,12 @@ def GetOrderCuisine(request):
     
     #Uncompleted Order
     uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
+    completed_order = Order.objects.filter(complete=True,date_ordered__date = today).order_by('-date_ordered')
+    
+    if request.method == 'POST':
+        order_id = request.POST.get('id')
+        completed_order = Order.objects.filter(id =order_id )
+        
     
     current_time = datetime.strftime(datetime.today().now(),'%H:%M')
     current_time= datetime.strptime(current_time,'%H:%M')
@@ -958,12 +964,76 @@ def GetOrderCuisine(request):
                     }
             
                     data['side_orderitem'].append(my_side)
-                    
-          
         uncompleted.append(data)
+        
+        
+    completed = list()
+    for order in range(0,len(completed_order)):
+        
+        order_date = datetime.strftime(completed_order[order].date_completed,'%H:%M')
+        #order_date= datetime.strptime(order_date,'%H:%M')
+        
+        #time_since = current_time - order_date
+        data = {
+            'order_id':completed_order[order].id,
+            'order_table':completed_order[order].table,
+            'order_name':completed_order[order].customer.full_name(),
+            'order_date_completed':order_date,
+            'transaction_id':completed_order[order].transaction_id,
+            'order_item':[],
+            'side_orderitem':[],
+        }
+        
+        # data['order_date'] = datetime.strftime(data['order_date'],'%H:%M')
+    #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        # print('DateOrdered:',current_time)
+        # print('DateOrdered_since:',time_since)
+        # print(order_date)
+        
+        #ORDER ITEM
+        all_orderitem = completed_order[order].orderitem_set.all()
+        for orderitem in range(0,len(all_orderitem)):
+            if data['order_id'] == all_orderitem[orderitem].order.id:
+                orderItem = {
+                   'order_id':all_orderitem[orderitem].order.id,
+                    'orderItem_id':all_orderitem[orderitem].id,
+                   'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
+                    'item':all_orderitem[orderitem].item.name,
+                    'quantity':all_orderitem[orderitem].quantity,
+                }
+                
+                if all_orderitem[orderitem].ingredient:
+                    orderItem['ingredient'] = all_orderitem[orderitem].ingredient
+                    
+                if all_orderitem[orderitem].accompagnememt:
+                    for accomp in all_orderitem[orderitem].accompagnememt.all():
+                        
+                        orderItem['accompagnement'] = list(all_orderitem[orderitem].accompagnememt.values_list('name',flat=True))
+                        
+                if all_orderitem[orderitem].supplement:
+                    for sup in all_orderitem[orderitem].supplement.all():
+                        orderItem['supplement'] = list(all_orderitem[orderitem].supplement.values_list('name',flat=True))
+                        
+                       
+                data['order_item'].append(orderItem)
+        
+        # SIDE ORDER ITEM
+        if completed_order[order].sideorderitem_set.all():
+            all_side = completed_order[order].sideorderitem_set.all()
+            for side in range(0,len(all_side)):
+                if data['order_id'] == all_side[side].order.id:
+                    my_side = {
+                        'order_id':all_side[side].order.id,
+                        'name':all_side[side].item.name,
+                        'quantity':all_side[side].quantity,
+                    }
+            
+                    data['side_orderitem'].append(my_side)
+        completed.append(data)
     
   
-    return JsonResponse({"uncompleted_order":list(uncompleted)})
+    return JsonResponse({"uncompleted_order":list(uncompleted),
+                         "completed_order":list(completed)})
                          
 
 
@@ -1049,13 +1119,9 @@ def SendOrder(request):
             order.transaction_id = order_number('texasgrillz')
             order.save()
             
-        return JsonResponse({'Status':'Sent to kitchen'})
+        return JsonResponse({'Order_Status':'Sent to kitchen'})
             
             
-        
-    # order = model_to_dict(order)
-    
-        
 
     return JsonResponse({'order':10,'total_item':total_item,'orderItem':item_selected})
 

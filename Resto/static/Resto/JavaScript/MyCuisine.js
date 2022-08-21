@@ -1,67 +1,20 @@
 console.log("what do you see");
 
 var total_uncompleted_order = document.getElementById("total_uncompleted_order").innerHTML;
-let url = `ws://${window.location.host}/ws/sendOrder/`;
 
-const sendOrderSocket = new WebSocket(url);
-
-sendOrderSocket.onmessage = (e) => {
-  var data = JSON.parse(e.data);
-  console.log("Data:", data);
-  if (data.type == "send order") {
-    console.log("AJAX REQUEST");
-    var message = document.getElementById("messages");
-    message.insertAdjacentHTML(
-      "beforeend",
-      `
-    <div>
-    <p>${data.message}</p>
-     </div>
-    `
-    );
-  }
-};
+fetchCuisineOrder().then((data) => {
+  console.log("PLEASE STAY PATIENT WHILE WE'RE GETTING YOUR ORDER");
+  console.log(data);
+  displayUncompletedOrder(data["uncompleted_order"]);
+  displayCompletedOrder(data["completed_order"]);
+});
 
 //FETCH DATA
 async function fetchCuisineOrder() {
   var url = "/texasgrillz/GetOrderCuisine/";
   orders = await fetch(url);
   result = await orders.json();
-  console.log(result);
   return result;
-}
-
-async function fetchUncompletedOrder() {
-  var url = "/texasgrillz/GetOrderCuisine/";
-  orders = await fetch(url);
-  result = await orders.json();
-  data = result["uncompleted_order"];
-  console.log("MY DATA:", data.length);
-
-  if (parseInt(total_uncompleted_order) < data.length) {
-    console.log("REFRESHING....");
-    fetchCuisineOrder().then((data) => {
-      displayUncompletedOrder(data);
-      console.log("DISPLAY....");
-    });
-  }
-
-  fetchCuisineOrder().then((data) => {
-    displayUncompletedOrder(data);
-    console.log("DISPLAY....");
-  });
-}
-
-async function GetUpComingOrder() {
-  var url = "/texasgrillz/sendorder/";
-  orders = await fetch(url);
-  result = orders.json();
-  data = result["uncompleted_order"];
-  console.log(result);
-
-  if (parseInt(total_uncompleted_order) < data.length) {
-    return 1;
-  }
 }
 
 //COMPLETED ORDER : AJAX
@@ -77,12 +30,16 @@ function completeOrder(orderID) {
     dataType: "json",
     success: function (response) {
       $("#total_uncompleted_order").empty();
+      $("#total_completed_order").empty();
 
       fetchCuisineOrder().then((data) => {
-        displayUncompletedOrder(data);
-        console.log("DISPLAY....");
+        console.log("ORDER COMPLETED, AJAX TO UPDATE");
+        displayUncompletedOrder(data["uncompleted_order"]);
+        displayCompletedOrder(data["completed_order"]);
       });
+
       $("#total_uncompleted_order").append(response.uncompleted_order);
+      $("#total_completed_order").append(response.completed_order);
     },
     error: function () {
       console.log("AN ERROR HAS OCCURED");
@@ -92,13 +49,13 @@ function completeOrder(orderID) {
 
 //DISPLAY ORDER TO FRONT END
 function displayUncompletedOrder(orders) {
-  uncompleted_order = orders["uncompleted_order"];
-  //   console.log(uncompleted_order);
+  uncompleted_order = orders;
 
-  $("#completedOrder").empty();
   $("#total_uncompleted_order").empty();
+  $("#unCompletedOrder").empty();
 
-  console.log("HOW MANY NOW:", uncompleted_order.length);
+  // console.log("HOW MANY NOW:", uncompleted_order.length);
+
   $("#total_uncompleted_order").append(uncompleted_order.length);
 
   uncompleted_order.forEach((order) => {
@@ -150,7 +107,7 @@ function displayUncompletedOrder(orders) {
     }
 
     // Uncompleted Order List
-    $("#completedOrder").append(`<div class="col-auto mt-3">
+    $("#unCompletedOrder").append(`<div class="col-auto mt-3">
     <div class="card shadow rounded-3 border border-danger" style="width:auto; height: auto; background-color: white">
       <div class="card-body mb-1">
 
@@ -165,7 +122,7 @@ function displayUncompletedOrder(orders) {
         <div class="mt-4" style="text-align: center">
           <form class = 'ordercompleted-form' method ='POST' >
             <small class="text-muted mb-4" >${order.order_date}</small><br>
-            <button type="submit" data-action="completed" data-order=${order.order_id} class="btn mb-3 orderDone">Terminer</button>
+            <button type="submit" data-action="completed" data-order=${order.order_id} class="completedbtn shadow mb-3 orderDone">Terminer</button>
           </form>
               </div>
             </div>
@@ -174,24 +131,154 @@ function displayUncompletedOrder(orders) {
       `);
   });
 
+  connectWebSocket();
+
   var completed_order_btn = document.getElementsByClassName("orderDone");
   for (let i = 0; i < completed_order_btn.length; i++) {
     completed_order_btn[i].addEventListener("click", (e) => {
       e.preventDefault();
       orderID = completed_order_btn[i].dataset.order;
-      console.log("Order completed");
       completeOrder(orderID);
     });
   }
 }
 
-function GetOrderData() {
-  fetchUncompletedOrder();
+// DJANGO-CHANNEL WEBSOCKET
+function connectWebSocket() {
+  let url = `ws://${window.location.host}/ws/sendOrder/`;
+  const sendOrderSocket = new WebSocket(url);
+
+  console.log("Connecting to webSocket");
+  // OPEN DJANGO-CHANNELS
+  sendOrderSocket.onopen = (e) => {
+    console.log("I am connected to websocket.");
+  };
+
+  // MESSAGE FROM SERVER DJANGO-CHANNELS
+  sendOrderSocket.onmessage = (e) => {
+    var data = JSON.parse(e.data);
+    console.log("Data from server:", data);
+    if (data.type == "order_sent") {
+      var all_uncompleted_orders = data["uncompleted_order"];
+      displayUncompletedOrder(all_uncompleted_orders);
+    }
+  };
+
+  // CLOSE DJANGO-CHANNELS
+  sendOrderSocket.onclose = (e) => {
+    console.log("Reconnecting WebSocket...");
+    setTimeout(() => {
+      connectWebSocket();
+    }, 1000);
+  };
+
+  // ERROR DJANGO-CHANNELS
+  sendOrderSocket.onerror = (error) => {
+    console.log(error);
+    sendOrderSocket.close();
+  };
 }
 
-GetOrderData();
+function displayCompletedOrder(orders) {
+  completed_order = orders;
+  completed_order_id = [];
 
-setInterval(() => {
-  console.log("GETTING DATA....");
-  GetOrderData();
-}, 5000);
+  $("#total_completed_order").empty();
+  $("#completedOrder").empty();
+  $("#total_completed_order").append(completed_order.length);
+
+  completed_order.forEach((order) => {
+    my_comp = {
+      order_name: order.order_name,
+      order_table: order.order_table,
+    };
+
+    completed_order_id.push(order.order_id);
+
+    items = [];
+
+    order.order_item.forEach((orderitem) => {
+      if (order.order_id == orderitem.order_id) {
+        my_comp["quantity"] = orderitem.quantity;
+        my_comp["item"] = orderitem.item;
+        items.push(`<p class ='mt-0'> <span style = 'font-size:25px ;color:chocolate; font-weight:bold'>${orderitem.quantity}</span> - ${orderitem.item}<p>`);
+
+        if (orderitem.ingredient) {
+          my_comp["ingredient"] = orderitem.ingredient;
+          items.push(`
+          <p class ='mt-0'> <b>Ingredient:</b> ${orderitem.ingredient}</p>`);
+        }
+
+        if (orderitem.accompagnement) {
+          my_comp["accompagnement"] = orderitem.accompagnement;
+          items.push(`
+          <p class ='mt-0'> <b>Accompagement(s):</b> ${orderitem.accompagnement}</p>`);
+        }
+
+        if (orderitem.supplement) {
+          my_comp["supplement"] = orderitem.supplement;
+          items.push(`
+          <p class ='mt-0'> <b>Supplement(s):</b> ${orderitem.supplement}</p>`);
+        }
+      }
+    });
+
+    if (order.side_orderitem.length > 0) {
+      items.push(`<p class ='mt-0'> <b> Other Accomp(s):</b></p>`);
+      order.side_orderitem.forEach((side) => {
+        if (order.order_id == side.order_id) {
+          items.push(`<p class ='mt-0'> <span style = 'font-size:25px ;color:chocolate; font-weight:bold'>${side.quantity}</span> - ${side.name}<p>`);
+        }
+      });
+    }
+
+    //ORDER ITEMS
+    for (var i in items) {
+      my_items = items.join("");
+    }
+
+    // Uncompleted Order List
+    $("#completedOrder").append(`
+  <tr class='text-center'>
+    <td style='color' scope="row">${order.order_table}</td>
+    <td>${order.order_name}</td>
+    <td>${order.order_date_completed}</td>
+    <td>
+    <form method='POST'>
+    <button type='submit' data-order_id = ${order.order_id} class='completedbtn shadow order-details' data-bs-toggle="modal" data-bs-target="#staticBackdrop"> Details </button>
+    <form>
+    </td>
+   
+  </tr>
+      `);
+  });
+
+  // $(".modal-body").append(`
+  //   ${order.order_id}
+  //   `);
+
+  var details_order_btn = document.getElementsByClassName("order-details");
+  for (let i = 0; i < details_order_btn.length; i++) {
+    details_order_btn[i].addEventListener("click", (e) => {
+      var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+      var order_id = details_order_btn[i].dataset.order_id;
+      console.log("I want to see you", details_order_btn[i].dataset.order_id);
+
+      $.ajax({
+        url: "/texasgrillz/GetOrderCuisine/",
+        method: "POST",
+        data: {
+          csrfmiddlewaretoken: csrfToken,
+          id: order_id,
+        },
+        dataType: "json",
+        success: function (response) {
+          console.log(response);
+        },
+        error: function () {
+          console.log("AN ERROR HAS OCCURED");
+        },
+      });
+    });
+  }
+}
