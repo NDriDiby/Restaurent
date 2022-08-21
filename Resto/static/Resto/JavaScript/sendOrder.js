@@ -10,14 +10,6 @@ var orderItem = null;
 let url = `ws://${window.location.host}/ws/sendOrder/uncompleted-order/`;
 const sendOrderSocket = new WebSocket(url);
 
-// OPEN DJANGO-CHANNELS
-// sendOrderSocket.onopen = (e) => {
-//   console.log("I am connected to websocket", url);
-//   sendOrderSocket.onmessage = (e) => {
-//     console.log(JSON.parse(e.data));
-//   };
-// };
-
 // sendOrderSocket.onclose = (e) => {
 //   console.log("Reconnecting....");
 // };
@@ -73,6 +65,18 @@ for (let i = 0; i < sendOrder.length; i++) {
     } else {
       sendMyOrder(action, order);
     }
+
+    //OPEN DJANGO-CHANNELS
+    sendOrderSocket.onopen = (e) => {
+      console.log("I am connected to websocket", url);
+      //SEND MESSAGE TO SERVER DJANGO-CHANNEL
+      sendOrderSocket.send(
+        JSON.stringify({
+          message: order,
+          type: "order_status",
+        })
+      );
+    };
   });
 }
 
@@ -93,14 +97,6 @@ function sendMyOrder(action, order) {
 
       if (total_item > 0) {
         // DJANGO CHANNEL
-
-        //SEND MESSAGE TO SERVER DJANGO-CHANNEL
-        sendOrderSocket.send(
-          JSON.stringify({
-            message: order,
-            type: "order_status",
-          })
-        );
       }
 
       //sendOderToServer(order);

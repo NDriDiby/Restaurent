@@ -893,10 +893,6 @@ def GetOrderCuisine(request):
     #Uncompleted Order
     uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
     completed_order = Order.objects.filter(complete=True,date_ordered__date = today).order_by('-date_ordered')
-    
-    if request.method == 'POST':
-        order_id = request.POST.get('id')
-        completed_order = Order.objects.filter(id =order_id )
         
     
     current_time = datetime.strftime(datetime.today().now(),'%H:%M')
@@ -920,7 +916,7 @@ def GetOrderCuisine(request):
         }
         
         # data['order_date'] = datetime.strftime(data['order_date'],'%H:%M')
-    #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        #datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
         # print('DateOrdered:',current_time)
         # print('DateOrdered_since:',time_since)
         # print(order_date)
