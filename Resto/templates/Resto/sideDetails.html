@@ -521,6 +521,8 @@
   .pop-item {
     padding-top: 30px;
   }
+
+
 </style>
 
 
@@ -532,7 +534,8 @@
       <a href="/texasgrillz/menudetails/1/?session={{app}}"><i
           class="bi bi-arrow-left font-bold text-2xl md:3xl lg:text-4xl flex items-center gap-x-2"><span
           class="font-normal text-xl md:text-3xl lg:text-4xl"
-          style="color: chocolate;">{{side.name}}</span></i></a>
+          style="color: chocolate;">{{side.name}}</span></i>
+        </a>
     </div>
 
     <div class="logOutfield">
@@ -543,7 +546,8 @@
             class="mt-2 mt-1 font-bold absolute top-0 left-0 lg:top-2 pt-1 w-full lg:h-10 text-center bg-gray-500 text-white rounded-b-md md:text-3xl lg:text-4xl">
             {{cart_quantity}}</p>
         </div>
-    </div></a>
+      </a>
+    </div>
 
   </div>
 </div>
@@ -594,7 +598,7 @@
               <div id="box" class="box flex justify-around w-full">
 
               <div class="py-2 checkOut-box">
-                <div class="flex justify-around md:justify-between md:px-10 sm:gap-x-20 items-center">
+                <div class="total-order-container flex md:justify-between md:px-10 sm:gap-x-20 items-center">
                 <div class="total-order">
                   <!-- Order Total -->
                   <a href="/texasgrillz/myorder/?session={{app}}">
