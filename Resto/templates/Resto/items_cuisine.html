@@ -1,0 +1,407 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+    <!-- Boxicons CDN Link -->
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+      <!-- popup alert -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="50">
+    <style>
+
+      .completedbtn {
+        background-color: chocolate;
+        border-radius: 6px;
+        color: white;
+        padding: 3px 6px;
+        cursor: pointer;
+        box-shadow: 1px 2px;
+      }
+
+      .completedbtn:hover{
+       background-color: darkgreen;
+      }
+
+  
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 20px;
+        padding: 7px;
+      }
+
+      .nav-item-title {
+        font-size: 31px;
+        color: chocolate;
+        padding: 4px;
+       
+      }
+
+      
+      .table th {
+        color: chocolate;
+        font-weight:bold;
+   
+      }
+      .table tr {
+        color:#0a2558;
+      }
+
+
+
+      .table thead tr{
+        margin: 10px;
+      }
+
+      .add-icon{
+          cursor: pointer;
+      }
+
+      label{
+          color: #34487a ;
+          font-size: 22px;
+          font-weight: bold;
+      }
+
+      .modal-title{
+         
+        font-size: 25px;
+        text-align: center;
+      }
+
+      .modal-header{
+          background-color: #0a2558;
+      }
+
+      input[type='file'] {
+        color: rgba(0, 0, 0, 0)
+      }
+
+      .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #0a2558;;
+        background-color: #ffffff;
+        background-clip: padding-box;
+        border: 1px solid #0a2558;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .delete-recette{
+        cursor: pointer;
+    }
+    </style>
+
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+      <div class="container-fluid">
+        <ul class="navbar-nav">
+          <a class="navbar-brand nav-item-title" style="color: chocolate" href="#">
+            <span style="font-size: 30px"> <i class="fas fa-utensils p-2"></i>
+            Mes Recettes
+          </a>
+          <li class="nav-item">
+            <a class="nav-link" href="#Commande Incompletes">Recettes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#section2">Commande Terminer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cuisine-texasgrillz' %}">Tableau de Bord</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  <div class="container-fluid">
+
+    <!-- INCOMPLETE ORDER -->
+    <div id="Commande Incompletes" class="container-fluid" style="padding: 100px 20px">
+  
+        {% if items %}
+              <h3 style="color: chocolate"> Recettes <span class="bg-success badge" id="total_uncompleted_order"> {{items.count}}</span></h3>
+              {% else %}
+              <h3 style="color: chocolate"> Ajouter des recettes <span class="bg-success badge" id="total_uncompleted_order"></span></h3>
+        {% endif %}
+
+
+            <button data-bs-toggle="modal" data-bs-target="#addCategory" class="completedbtn btn-success" id="add-item" type="submit"> Ajouter une nouvelle recette <span class="add-icon" style="color:white;font-size:15px;font-weight:bold"> <i class="bi bi-plus-square"></i></span></button>
+        
+            
+             <!--Table -->
+             <div class="table-responsive" >
+                <table class="table table-hover mt-4 table shadow">
+                  <thead class="table-light">
+                    <tr class="text-center">
+                      <th scope="col">Name</th>
+                      <th scope="col">Prix</th>
+                      <th scope="col">Category</th>
+                      <th scope="col">Accompagnement</th>
+                      <th scope="col">Supplement</th>
+                    </tr>
+                  </thead>
+                  <!-- <tbody class="table-group-divider" id="mes-recettes">
+                  </tbody> -->
+                  <tbody class="table-group-divider">
+                    {% for item  in items   %}
+                    <tr class='text-center align-item-center'>
+                        <td scope="row">{{item.name}}</td>
+                        <td>{{item.prix}}</td>
+                        <td> {{item.category}}</td>
+                        <td>{{item.accompagnement.all|join:','}}</td>
+                        <td>{{item.supplement_set.all|join:','}}</td>
+                        <td class="p-0 mt-0">
+                        <form  method="POST">
+                        <p data-delete="{{item.id}}" data-item_name="{{item.name}}" style="font-size: 10px;" class="btn btn-outline-danger delete-recette mt-1 mb-1"><i style="font-size: 15px;" class="bi bi-trash"></i></p>
+                        </form>
+                       
+                        </td>
+                      </tr>
+                      {% endfor %}
+                </tbody>
+                </table>
+                <!-- END table -->
+              </div>
+     
+    </div>
+    <!-- INCOMPLETE ORDER -->
+    <div id="section2" class="container-fluid" style="padding: 10px 20px">
+       
+            
+    </div>
+    <!-- END accordion -->
+
+ </div>
+
+
+      <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button> -->
+
+
+<!-- Modal ADD CAT -->
+<div class="modal fade" id="addCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="." method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+   
+              <fieldset>
+                <legend><span style="color: chocolate; font-weight:bold">ETAPE 1:</span> Category</legend>
+            
+                <div class="col-12 mb-2">
+                    <label for="inputPassword4" class="form-label">Category</label>
+                    {{form.category}}
+                </div>
+
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Ajouter une nouvelle category</label>
+                  {{form_cat}}
+              </div> 
+  
+                
+              </fieldset>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id="add-cat-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Suivant</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal ADD CAT -->
+
+
+<!-- Modal ADD ITEM -->
+<div class="modal fade" id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+ 
+            <fieldset>
+                <legend><span style="color: chocolate; font-weight:bold">ETAPE 2:</span> Recette</legend>
+            <div class="col-12 mb-2">
+              <label for="inputPassword4" class="form-label">Nom</label>
+              {{form.name}}
+            </div>
+  
+            <div class="col-12 mb-2">
+              <label for="inputPassword4" class="form-label">Prix</label>
+              {{form.prix}}
+            </div>
+  
+
+            <div class="col-12 mb-2">
+              <label for="inputPassword4" class="form-label">Description</label>
+              {{form.description}}
+            </div>
+
+
+            <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Image</label>
+                {{form.img}}
+              </div>
+            </fieldset>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button data-bs-toggle="modal" data-bs-target="#addCategory" class ='completedbtn btn-success'>Retour</button>
+        <button id="add-item-form" data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Suivant</button>
+  
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Modal ADD ITEM -->
+
+
+
+
+
+
+<!-- Modal ADD ACCOMP -->
+<div class="modal fade" id="addAccomp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="." method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+   
+              <fieldset>
+                <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
+            
+                <div class="col-12 mt-3">
+                    <label for="inputPassword4" class="form-label">Accompagement</label>
+                    {{form.accompagnement}}
+                    <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+                  </div>
+
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
+                  {{form_cat}}
+              </div> 
+  
+                
+              </fieldset>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="add-item-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Retour</button>
+          <button id="add-accomp-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addSup">Suivant</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal ADD ACCOMP -->
+
+
+<!-- Modal ADD SUP -->
+<div class="modal fade" id="addSup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="." method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+   
+              <fieldset>
+                <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
+            
+                <div class="col-12 mt-3">
+                    <label for="inputPassword4" class="form-label">Supplement</label>
+                    {{form.supplement}}
+                    <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+                  </div>
+
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
+                  {{form_cat}}
+              </div> 
+  
+                
+              </fieldset>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Retour</button>
+            <button id="create-recette" type="submit" class="completedbtn" >Creer recette</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal ADD SUP -->
+
+
+
+
+  </body>
+
+ 
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"
+  ></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="text/javascript" src="{% static 'Resto/JavaScript/cuisineSettings.js'%}"></script>
+</html>

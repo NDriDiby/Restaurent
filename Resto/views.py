@@ -4,8 +4,10 @@ from itertools import count
 from multiprocessing import context
 import re
 from django.db import reset_queries
+from django.forms import formset_factory
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
+from django.urls import is_valid_path
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory,Transactions,SideOrderItem,Supplement)
 from django.contrib import messages
@@ -32,6 +34,7 @@ import plotly.express as px
 import pandas as pd
 import calendar
 from dateutil.relativedelta import relativedelta
+from django.forms.formsets import formset_factory
 
 
 #TASK
@@ -938,7 +941,6 @@ def GetOrderCuisine(request):
                     
                 if all_orderitem[orderitem].accompagnememt:
                     for accomp in all_orderitem[orderitem].accompagnememt.all():
-                        
                         orderItem['accompagnement'] = list(all_orderitem[orderitem].accompagnememt.values_list('name',flat=True))
                         
                 if all_orderitem[orderitem].supplement:
@@ -1270,26 +1272,15 @@ def Cuisine(request):
 
 
 #Delete Order
-def DeleteOrder(request,item_id):
+def DeleteItem(request):
     
-    #Track user
-    targetApp = target_app(request)
-
     #Get the item then delete
-    del_items = OrderItem.objects.get(id = item_id)
     if request.method == 'POST':
-        if request.POST.get('response') == 'Yes':
-            del_items.delete()
-            messages.success(request,f'{del_items} supprimé')
-        elif request.POST.get('response') == 'Cancel':
-            pass
-        return HttpResponseRedirect(f'/texasgrillz/myorder/?session={targetApp}')
+        item_id = request.POST['item_id']
+        del_items = Item.objects.get(id =item_id)
+        #del_items.delete()
     
-    context = {
-          'del_item':del_items,
-          'app':targetApp
-    }
-    return render(request, 'Resto/DeleteOrder.html',context)
+    return JsonResponse('item deleted',safe=False)
 
 
 def DeleteOrderItem(request):
@@ -1303,7 +1294,6 @@ def DeleteOrderItem(request):
             del_items = SideOrderItem.objects.get(id = order_item_id)
             del_items.delete()
         
-        print('DELETING',order_item_id)
     return JsonResponse('item deleted',safe=False)
 
 
@@ -1312,29 +1302,33 @@ def DeleteOrderItem(request):
 @login_required
 @permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
 def IventorySystem(request):
-    categories = IventoryItemCategory.objects.all()
+    my_items =  Item.objects.all().order_by('prix')
+    form_cat = formset_factory(AddMenu,extra=0,min_num=1)
     
     if request.method == 'POST':
-        form = AddProducts(request.POST)
-        if form.is_valid():
+        form = AddItem(request.POST)
+        formset_cat = form_cat(request.POST)
+        if all(form.is_valid(),formset_cat.is_valid()):
             product = form.cleaned_data.get('name')
             category = form.cleaned_data.get('category')
-            form.save()
             messages.success(request,f'{product} added to your inventory')
             return HttpResponseRedirect(f'/texasgrillz/inventory/')
     else:
-        form = AddProducts()
+        form = AddItem()
+        formset_cat = form_cat
 
     context = {
-        'categorie': categories,
-        'form':AddProducts
+        'form':AddItem,
+        'form_cat':formset_cat,
+        'items':my_items,
     }
     
-    return render(request,'Resto/IventorySystem.html',context)
+    return render(request,'Resto/items_cuisine.html',context)
 
 
 def CuisineSettings(request):
     categories = IventoryItemCategory.objects.all()
+    
     
     if request.method == 'POST':
         
@@ -1571,12 +1565,48 @@ def CinetPayCredential(request):
 #TASKS + JOBS
 def DashBoardData(request):
     
+    my_items =  Item.objects.all().order_by('prix')
+    
+    all_items = list()
+    for item in range(0,len(my_items)):
+        data ={
+             'name': my_items[item].name,
+              'prix': my_items[item].prix,
+              'category': my_items[item].category.name,
+              'accompagnement': [],
+              'supplement':[],
+            #   'date_created': my_items[item].date_created,
+        }
+        all_items.append(data)
+        
+        
+        accomp = my_items[item].accompagnement.all()
+        if accomp:
+            for acc in range(0,len(accomp)):
+                    my_accomp = {
+                        'accomp_name': accomp[acc].name,
+                    }
+                    data['accompagnement'].append(my_accomp)
+       
+        sup = Supplement.objects.filter(item__id = my_items[item].id)
+        if sup:
+            for s in range(0,len(sup)):
+                my_sup = {
+                    'sup_name':sup[s].name
+                }
+                data['supplement'].append(my_sup)
+                
+       
+        
+    
     orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
     # print(list(orderItem))
     
     orderHour = list(Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id')))
     print(orderHour)
     
-
     return JsonResponse({'dashboard':orderItem,
-                         'ordertime':orderHour,})
+                         'ordertime':orderHour,
+                         'my_items':all_items})
+    
+    
