@@ -304,7 +304,13 @@
 
         <!-- Ingredients -->
         {% if orderItem.ingredient %}
-        <h6 class="italic font-bold" style="color: rgb(209, 112, 131)">{{orderItem.ingredient}}</h6>
+              <!-- issue ~~~~~--------------------  -->
+        <h6 class="hidden ingredient-important italic font-bold" style="color: rgb(209, 112, 131)">{{orderItem.ingredient}}</h6>
+              <!-- issue ~~~~~--------------------  -->
+              
+              <!-- solved ~~~~~--------------------  -->
+        <div class="italic font-bold" style="color: rgb(209, 112, 131)" id="result">lijlkjl</div>
+              <!-- solved ~~~~~--------------------  -->
         {% endif %}
         <!-- Ingredients -->
 
@@ -481,9 +487,9 @@
       </button>
     </div>
   </div>
+  
 
   </div>
-
   {% endif%}
 </div>
 
@@ -491,12 +497,34 @@
 
 
 <script>
+  let ingredientImportant = document.querySelector('.ingredient-important');
+  let result = document.querySelector('#result');
   let hidden = document.querySelector(".hidden");
   let sendOrderBtn = document.querySelector(".add-to-cartBtn");
   let paymentCash = document.querySelector(".paiment-cash");
   let paymentCard = document.querySelector(".paiment-mobile-card");
   let payments = document.querySelectorAll(".payment");
   var paiement_method;
+
+  // solved -------------------- 
+  let contentArr = []
+  
+  let thisText= ingredientImportant.textContent;
+  contentArr.push(thisText)
+  contentArr.map(arr => {
+    let output = '';
+    let replaced = []
+    if(arr.includes(',')){
+      replaced.push(arr.replaceAll(',', `<br/>`))
+    }
+    output += `
+    <p>${replaced}</p>
+    `;
+    
+    result.innerHTML = output;
+  })
+  // solved -------------------- 
+
 
   payments.forEach((element) => {
     if (sendOrderBtn.classList.contains("opacity-0")) {
