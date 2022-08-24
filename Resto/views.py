@@ -4,8 +4,10 @@ from itertools import count
 from multiprocessing import context
 import re
 from django.db import reset_queries
+from django.forms import formset_factory
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
+from django.urls import is_valid_path
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory,Transactions,SideOrderItem,Supplement)
 from django.contrib import messages
@@ -32,6 +34,7 @@ import plotly.express as px
 import pandas as pd
 import calendar
 from dateutil.relativedelta import relativedelta
+from django.forms.formsets import formset_factory
 
 
 #TASK
@@ -892,6 +895,8 @@ def GetOrderCuisine(request):
     
     #Uncompleted Order
     uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
+    completed_order = Order.objects.filter(complete=True,date_ordered__date = today).order_by('-date_ordered')
+        
     
     current_time = datetime.strftime(datetime.today().now(),'%H:%M')
     current_time= datetime.strptime(current_time,'%H:%M')
@@ -914,13 +919,77 @@ def GetOrderCuisine(request):
         }
         
         # data['order_date'] = datetime.strftime(data['order_date'],'%H:%M')
-    #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        #datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
         # print('DateOrdered:',current_time)
         # print('DateOrdered_since:',time_since)
         # print(order_date)
         
         #ORDER ITEM
         all_orderitem = uncompleted_order[order].orderitem_set.all()
+        for orderitem in range(0,len(all_orderitem)):
+            if data['order_id'] == all_orderitem[orderitem].order.id:
+                orderItem = {
+                   'order_id':all_orderitem[orderitem].order.id,
+                    'orderItem_id':all_orderitem[orderitem].id,
+                   'order':all_orderitem[orderitem].customer.user.first_name +" "+ all_orderitem[orderitem].customer.user.last_name,
+                    'item':all_orderitem[orderitem].item.name,
+                    'quantity':all_orderitem[orderitem].quantity,
+                }
+                
+                if all_orderitem[orderitem].ingredient:
+                    orderItem['ingredient'] = all_orderitem[orderitem].ingredient
+                    
+                if all_orderitem[orderitem].accompagnememt:
+                    for accomp in all_orderitem[orderitem].accompagnememt.all():
+                        orderItem['accompagnement'] = list(all_orderitem[orderitem].accompagnememt.values_list('name',flat=True))
+                        
+                if all_orderitem[orderitem].supplement:
+                    for sup in all_orderitem[orderitem].supplement.all():
+                        orderItem['supplement'] = list(all_orderitem[orderitem].supplement.values_list('name',flat=True))
+                        
+                       
+                data['order_item'].append(orderItem)
+        
+        # SIDE ORDER ITEM
+        if uncompleted_order[order].sideorderitem_set.all():
+            all_side = uncompleted_order[order].sideorderitem_set.all()
+            for side in range(0,len(all_side)):
+                if data['order_id'] == all_side[side].order.id:
+                    my_side = {
+                        'order_id':all_side[side].order.id,
+                        'name':all_side[side].item.name,
+                        'quantity':all_side[side].quantity,
+                    }
+            
+                    data['side_orderitem'].append(my_side)
+        uncompleted.append(data)
+        
+        
+    completed = list()
+    for order in range(0,len(completed_order)):
+        
+        order_date = datetime.strftime(completed_order[order].date_completed,'%H:%M')
+        #order_date= datetime.strptime(order_date,'%H:%M')
+        
+        #time_since = current_time - order_date
+        data = {
+            'order_id':completed_order[order].id,
+            'order_table':completed_order[order].table,
+            'order_name':completed_order[order].customer.full_name(),
+            'order_date_completed':order_date,
+            'transaction_id':completed_order[order].transaction_id,
+            'order_item':[],
+            'side_orderitem':[],
+        }
+        
+        # data['order_date'] = datetime.strftime(data['order_date'],'%H:%M')
+    #    datetime.strftime(uncompleted_order[order].date_ordered,'%H:%M')
+        # print('DateOrdered:',current_time)
+        # print('DateOrdered_since:',time_since)
+        # print(order_date)
+        
+        #ORDER ITEM
+        all_orderitem = completed_order[order].orderitem_set.all()
         for orderitem in range(0,len(all_orderitem)):
             if data['order_id'] == all_orderitem[orderitem].order.id:
                 orderItem = {
@@ -947,8 +1016,8 @@ def GetOrderCuisine(request):
                 data['order_item'].append(orderItem)
         
         # SIDE ORDER ITEM
-        if uncompleted_order[order].sideorderitem_set.all():
-            all_side = uncompleted_order[order].sideorderitem_set.all()
+        if completed_order[order].sideorderitem_set.all():
+            all_side = completed_order[order].sideorderitem_set.all()
             for side in range(0,len(all_side)):
                 if data['order_id'] == all_side[side].order.id:
                     my_side = {
@@ -958,12 +1027,11 @@ def GetOrderCuisine(request):
                     }
             
                     data['side_orderitem'].append(my_side)
-                    
-          
-        uncompleted.append(data)
+        completed.append(data)
     
   
-    return JsonResponse({"uncompleted_order":list(uncompleted)})
+    return JsonResponse({"uncompleted_order":list(uncompleted),
+                         "completed_order":list(completed)})
                          
 
 
@@ -1049,13 +1117,9 @@ def SendOrder(request):
             order.transaction_id = order_number('texasgrillz')
             order.save()
             
-        return JsonResponse({'Status':'Sent to kitchen'})
+        return JsonResponse({'Order_Status':'Sent to kitchen'})
             
             
-        
-    # order = model_to_dict(order)
-    
-        
 
     return JsonResponse({'order':10,'total_item':total_item,'orderItem':item_selected})
 
@@ -1208,26 +1272,15 @@ def Cuisine(request):
 
 
 #Delete Order
-def DeleteOrder(request,item_id):
+def DeleteItem(request):
     
-    #Track user
-    targetApp = target_app(request)
-
     #Get the item then delete
-    del_items = OrderItem.objects.get(id = item_id)
     if request.method == 'POST':
-        if request.POST.get('response') == 'Yes':
-            del_items.delete()
-            messages.success(request,f'{del_items} supprimé')
-        elif request.POST.get('response') == 'Cancel':
-            pass
-        return HttpResponseRedirect(f'/texasgrillz/myorder/?session={targetApp}')
+        item_id = request.POST['item_id']
+        del_items = Item.objects.get(id =item_id)
+        #del_items.delete()
     
-    context = {
-          'del_item':del_items,
-          'app':targetApp
-    }
-    return render(request, 'Resto/DeleteOrder.html',context)
+    return JsonResponse('item deleted',safe=False)
 
 
 def DeleteOrderItem(request):
@@ -1241,7 +1294,6 @@ def DeleteOrderItem(request):
             del_items = SideOrderItem.objects.get(id = order_item_id)
             del_items.delete()
         
-        print('DELETING',order_item_id)
     return JsonResponse('item deleted',safe=False)
 
 
@@ -1250,29 +1302,33 @@ def DeleteOrderItem(request):
 @login_required
 @permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
 def IventorySystem(request):
-    categories = IventoryItemCategory.objects.all()
+    my_items =  Item.objects.all().order_by('prix')
+    form_cat = formset_factory(AddMenu,extra=0,min_num=1)
     
     if request.method == 'POST':
-        form = AddProducts(request.POST)
-        if form.is_valid():
+        form = AddItem(request.POST)
+        formset_cat = form_cat(request.POST)
+        if all(form.is_valid(),formset_cat.is_valid()):
             product = form.cleaned_data.get('name')
             category = form.cleaned_data.get('category')
-            form.save()
             messages.success(request,f'{product} added to your inventory')
             return HttpResponseRedirect(f'/texasgrillz/inventory/')
     else:
-        form = AddProducts()
+        form = AddItem()
+        formset_cat = form_cat
 
     context = {
-        'categorie': categories,
-        'form':AddProducts
+        'form':AddItem,
+        'form_cat':formset_cat,
+        'items':my_items,
     }
     
-    return render(request,'Resto/IventorySystem.html',context)
+    return render(request,'Resto/items_cuisine.html',context)
 
 
 def CuisineSettings(request):
     categories = IventoryItemCategory.objects.all()
+    
     
     if request.method == 'POST':
         
@@ -1509,12 +1565,48 @@ def CinetPayCredential(request):
 #TASKS + JOBS
 def DashBoardData(request):
     
+    my_items =  Item.objects.all().order_by('prix')
+    
+    all_items = list()
+    for item in range(0,len(my_items)):
+        data ={
+             'name': my_items[item].name,
+              'prix': my_items[item].prix,
+              'category': my_items[item].category.name,
+              'accompagnement': [],
+              'supplement':[],
+            #   'date_created': my_items[item].date_created,
+        }
+        all_items.append(data)
+        
+        
+        accomp = my_items[item].accompagnement.all()
+        if accomp:
+            for acc in range(0,len(accomp)):
+                    my_accomp = {
+                        'accomp_name': accomp[acc].name,
+                    }
+                    data['accompagnement'].append(my_accomp)
+       
+        sup = Supplement.objects.filter(item__id = my_items[item].id)
+        if sup:
+            for s in range(0,len(sup)):
+                my_sup = {
+                    'sup_name':sup[s].name
+                }
+                data['supplement'].append(my_sup)
+                
+       
+        
+    
     orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
     # print(list(orderItem))
     
     orderHour = list(Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id')))
     print(orderHour)
     
-
     return JsonResponse({'dashboard':orderItem,
-                         'ordertime':orderHour,})
+                         'ordertime':orderHour,
+                         'my_items':all_items})
+    
+    

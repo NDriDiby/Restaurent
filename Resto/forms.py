@@ -1,16 +1,18 @@
+from unicodedata import category
 from django import forms
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ImageField, ModelForm
 from django.db.models import fields
 from django.db.models.fields import DateTimeField
 from .forms import models
-from.models import Category, Item,ItemChoices,ItemChoiceCategory,IventoryItem
+from.models import Category, Item,ItemChoices,ItemChoiceCategory,IventoryItem, Supplement
 from django.contrib.auth.models import AbstractUser, User,AbstractBaseUser,BaseUserManager
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.forms.widgets import  TextInput, DateInput,NumberInput,DateTimeBaseInput,Textarea,Select,SelectMultiple
 
 
 
@@ -86,16 +88,43 @@ class AddProducts(forms.ModelForm):
       exclude = ['date_created','description']
       
 
+class AddSupplementForm(forms.ModelForm):
+   class Meta:
+      model = Supplement
+      exclude = ['img','item']
+      
+   widgets = {
+            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+            'prix': NumberInput(attrs={'type': 'number','class':'form-control form-control-lg'}),
+            }
+      
+      
+
 class AddItem(forms.ModelForm):
+   
+   supplement = forms.ModelMultipleChoiceField(queryset=Supplement.objects.all(),required=False, 
+                                               widget=forms.SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}))
    class Meta:
       model = Item
       exclude = ['itm_id']
+      
+      widgets = {
+            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+            'prix': NumberInput(attrs={'type': 'number','class':'form-control form-control-lg'}),
+            'description':Textarea(attrs={'type': 'text','class':'form-control form-control-lg','rows':"2", 'cols':"3"}),
+            'accompagnement': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
+            'category': Select(attrs={'type': 'option','class':'form-control form-control-lg'}),
+            }
       
 class AddMenu(forms.ModelForm):
    
    class Meta:
       model = Category
-      exclude = ['cat_id','date_created']
+      fields = ['name']
+      
+      widgets = {
+            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+        }
       
    
 
