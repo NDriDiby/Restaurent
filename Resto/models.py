@@ -56,7 +56,22 @@ class Accompagnement(models.Model):
     def __str__(self):
         return self.name
     
+
+class Ingredients(models.Model):
+    name = models.CharField(max_length = 150)
     
+    def __str__(self):
+        return self.name
+    
+
+class Seasonning(models.Model):
+    name = models.CharField(max_length=150)
+    
+    def __str__(self):
+        return self.name
+    
+
+ 
 class Item(models.Model):
     itm_id = models.IntegerField()
     name = models.CharField(max_length = 150)
