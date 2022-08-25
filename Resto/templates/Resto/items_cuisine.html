@@ -172,6 +172,7 @@
                       <th scope="col">Name</th>
                       <th scope="col">Prix</th>
                       <th scope="col">Category</th>
+                      <th scope="col">Ingredients</th>
                       <th scope="col">Accompagnement</th>
                       <th scope="col">Supplement</th>
                     </tr>
@@ -184,6 +185,7 @@
                         <td scope="row">{{item.name}}</td>
                         <td>{{item.prix}}</td>
                         <td> {{item.category}}</td>
+                        <td> {{item.itemchoices_set.all|join:','}}</td>
                         <td>{{item.accompagnement.all|join:','}}</td>
                         <td>{{item.supplement_set.all|join:','}}</td>
                         <td class="p-0 mt-0">
@@ -217,174 +219,174 @@
 
 
 <!-- Modal ADD CAT -->
-<div class="modal fade" id="addCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="." method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-   
-              <fieldset>
-                <legend><span style="color: chocolate; font-weight:bold">ETAPE 1:</span> Category</legend>
-            
-                <div class="col-12 mb-2">
-                    <label for="inputPassword4" class="form-label">Category</label>
-                    {{form.category}}
+<form action="." method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="modal fade" id="addCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+              
+        
+                    <fieldset>
+                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 1:</span> Category</legend>
+                    
+                        <div class="col-12 mb-2">
+                            <label for="inputPassword4" class="form-label">Category</label>
+                            {{form.category}}
+                        </div>
 
-              <div class="col-12 mt-3">
-                  <label for="inputPassword4" class="form-label">Ajouter une nouvelle category</label>
-                  {{form_cat}}
-              </div> 
-  
+                    <div class="col-12 mt-3">
+                        <label for="inputPassword4" class="form-label">Ajouter une nouvelle category</label>
+                        {{form_cat}}
+                    </div> 
+        
+                        
+                    </fieldset>
                 
-              </fieldset>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
-          <button id="add-cat-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Suivant</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- Modal ADD CAT -->
-
-
-<!-- Modal ADD ITEM -->
-<div class="modal fade" id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="." method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
- 
-            <fieldset>
-                <legend><span style="color: chocolate; font-weight:bold">ETAPE 2:</span> Recette</legend>
-            <div class="col-12 mb-2">
-              <label for="inputPassword4" class="form-label">Nom</label>
-              {{form.name}}
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+                <button id="add-cat-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Suivant</button>
+                </div>
             </div>
-  
-            <div class="col-12 mb-2">
-              <label for="inputPassword4" class="form-label">Prix</label>
-              {{form.prix}}
             </div>
-  
-
-            <div class="col-12 mb-2">
-              <label for="inputPassword4" class="form-label">Description</label>
-              {{form.description}}
-            </div>
-
-
-            <div class="col-12 mt-3">
-                <label for="inputPassword4" class="form-label">Image</label>
-                {{form.img}}
-              </div>
-            </fieldset>
-          </form>
-      </div>
-      <div class="modal-footer">
-        <button data-bs-toggle="modal" data-bs-target="#addCategory" class ='completedbtn btn-success'>Retour</button>
-        <button id="add-item-form" data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Suivant</button>
-  
-      </div>
-    </div>
-  </div>
-</div>
-<!-- END Modal ADD ITEM -->
-
-
-
-
-
-
-<!-- Modal ADD ACCOMP -->
-<div class="modal fade" id="addAccomp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <form action="." method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-   
-              <fieldset>
-                <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
+        <!-- Modal ADD CAT -->
+
+
+        <!-- Modal ADD ITEM -->
+        <div class="modal fade" id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
             
-                <div class="col-12 mt-3">
-                    <label for="inputPassword4" class="form-label">Accompagement</label>
-                    {{form.accompagnement}}
-                    <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
-                  </div>
+        
+                    <fieldset>
+                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 2:</span> Recette</legend>
+                    <div class="col-12 mb-2">
+                    <label for="inputPassword4" class="form-label">Nom</label>
+                    {{form.name}}
+                    </div>
+        
+                    <div class="col-12 mb-2">
+                    <label for="inputPassword4" class="form-label">Prix</label>
+                    {{form.prix}}
+                    </div>
+        
 
-              <div class="col-12 mt-3">
-                  <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
-                  {{form_cat}}
-              </div> 
-  
+                    <div class="col-12 mb-2">
+                    <label for="inputPassword4" class="form-label">Description</label>
+                    {{form.description}}
+                    </div>
+
+
+                    <div class="col-12 mt-3">
+                        <label for="inputPassword4" class="form-label">Image</label>
+                        {{form.img}}
+                    </div>
+                    </fieldset>
+
+            </div>
+            <div class="modal-footer">
+                <button data-bs-toggle="modal" data-bs-target="#addCategory" class ='completedbtn btn-success'>Retour</button>
+                <button id="add-item-form" data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Suivant</button>
+        
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- END Modal ADD ITEM -->
+
+
+
+
+
+
+        <!-- Modal ADD ACCOMP -->
+        <div class="modal fade" id="addAccomp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+        
+                    <fieldset>
+                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
+                    
+                        <div class="col-12 mt-3">
+                            <label for="inputPassword4" class="form-label">Accompagement</label>
+                            {{form.accompagnement}}
+                            <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+                        </div>
+
+                    <div class="col-12 mt-3">
+                        <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
+                        {{form_cat}}
+                    </div> 
+        
+                        
+                    </fieldset>
                 
-              </fieldset>
-            </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="add-item-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Retour</button>
+                <button id="add-accomp-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addSup">Suivant</button>
+                </div>
+            </div>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button id="add-item-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Retour</button>
-          <button id="add-accomp-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addSup">Suivant</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- Modal ADD ACCOMP -->
+        <!-- Modal ADD ACCOMP -->
 
 
-<!-- Modal ADD SUP -->
-<div class="modal fade" id="addSup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="." method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-   
-              <fieldset>
-                <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
-            
-                <div class="col-12 mt-3">
-                    <label for="inputPassword4" class="form-label">Supplement</label>
-                    {{form.supplement}}
-                    <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
-                  </div>
+        <!-- Modal ADD SUP -->
+        <div class="modal fade" id="addSup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+        
+                    <fieldset>
+                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
+                    
+                        <div class="col-12 mt-3">
+                            <label for="inputPassword4" class="form-label">Supplement</label>
+                            {{form.supplement}}
+                            <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+                        </div>
 
-              <div class="col-12 mt-3">
-                  <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
-                  {{form_cat}}
-              </div> 
-  
+                    <div class="col-12 mt-3">
+                        <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
+                        {{form_cat}}
+                    </div> 
+        
+                        
+                    </fieldset>
                 
-              </fieldset>
-            </form>
+                </div>
+                <div class="modal-footer">
+                    <button data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Retour</button>
+                    <button id="create-recette" type="submit" class="completedbtn" >Creer recette</button>
+                </div>
+            </div>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Retour</button>
-            <button id="create-recette" type="submit" class="completedbtn" >Creer recette</button>
-        </div>
-      </div>
-    </div>
-  </div>
+</form>
 <!-- Modal ADD SUP -->
 
 

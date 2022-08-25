@@ -57,18 +57,18 @@ class Accompagnement(models.Model):
         return self.name
     
 
-class Ingredients(models.Model):
-    name = models.CharField(max_length = 150)
+# class Ingredient(models.Model):
+#     name = models.CharField(max_length = 150)
     
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
 
-class Seasonning(models.Model):
-    name = models.CharField(max_length=150)
+# class Seasonning(models.Model):
+#     name = models.CharField(max_length=150)
     
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
 
  
@@ -81,6 +81,8 @@ class Item(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category,on_delete=CASCADE)
     accompagnement = models.ManyToManyField(Accompagnement,blank=True)
+    # ingredients = models.ManyToManyField(Ingredient,blank=True)
+   
     
     
 
@@ -166,7 +168,6 @@ class Supplement(models.Model):
     
     
 
-    
 class OrderItem(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE,null=True,blank=True)
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
