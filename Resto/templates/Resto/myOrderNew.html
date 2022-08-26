@@ -509,7 +509,7 @@
   // solved -------------------- 
   let contentArr = []
   
-  let thisText= ingredientImportant.textContent;
+  let thisText= ingredientImportant.innerHTML;
   contentArr.push(thisText)
   contentArr.map(arr => {
     let output = '';
@@ -533,6 +533,7 @@
 
     element.addEventListener("click", ({ target }) => {
       if (target.matches(".paiment-cash")) {
+        console.log('yeah')
         paymentCard.classList.remove("payment_active");
         target.classList.add("payment_active");
         sendOrderBtn.classList.remove("hidden");

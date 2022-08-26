@@ -4,13 +4,14 @@
   .chartBox {
     background-color: #fff;
     border-radius: 12px;
-    width: 500px;
-    /* height: 200px; */
+    width: 96%;
+    height: 300px;
     margin: 10px;
+    object-fit: contain;
   }
 
   #pop-items{
-    height: 300px;
+    height: 100%;
   }
   .chart {
     border-color: black;
@@ -18,7 +19,7 @@
     margin: 12px;
     border-radius: 12px;
   }
-/* 
+
   @media screen and (min-width: 768px) {
     .chartBox {
     background-color: #fff;
@@ -38,7 +39,7 @@
     margin: 10px;
   }
     
-  } */
+  }
 </style>
 
 <div class="overview-boxes">
@@ -166,13 +167,13 @@
   </div>
 </div>
 
-<div class="chart d-flex justify-content-around">
+<div class="chart d-lg-flex justify-content-around">
   <div class="chartBox shadow">
-    <canvas id="pop-items"></canvas>
+    <canvas id="pop-items" width="96%" height="90%" style="object-fit: contain; margin-bottom: 20px;"></canvas>
   </div>
 
   <div class="chartBox shadow">
-    <canvas id="order-time"></canvas>
+    <canvas id="order-time"  width="96%" height="90%" style="object-fit: contain; margin-top: 20px;"></canvas>
   </div>
 </div>
 
