@@ -13,7 +13,7 @@ admin.site.register(Customer,CustomerAdmin)
 
 
 class ItemChoicesAdmin(admin.ModelAdmin):
-    list_display = ('parent_food','name','choice_category','prix','date_created')
+    list_display = ('name','choice_category','prix','date_created')
 admin.site.register(ItemChoices,ItemChoicesAdmin)
 
 

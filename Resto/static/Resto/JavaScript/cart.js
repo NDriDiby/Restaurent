@@ -14,10 +14,25 @@ $(".accompagement").on("click", function () {
   $(this).toggleClass("active");
 });
 
+var one_choice = document.querySelectorAll(".cuisson input");
+console.log(one_choice);
+
+// for (let index = 0; index < one_choice.length; index++) {
+//   one_choice[index].addEventListener("click", () => {
+//     if (cuisson.length == 0) {
+//       //cuisson.push($(this).val());
+//     } else {
+//       cuisson[0] = one_choice[index].value;
+//     }
+//   });
+// }
+
 //Cuisson
 var cuisson = [];
 $(".cuisson input").click(function () {
+  console.log("I click you bro", $(this).val());
   $(".cuisson input").not(this).prop("checked", false);
+  cuisson[0] = $(this).val();
   if (cuisson.length == 0) {
     //cuisson.push($(this).val());
   } else {
@@ -63,9 +78,13 @@ for (var i = 0; i < updated_but.length; i++) {
       }
     }
     console.log(custChoice);
+    console.log(cuisson);
 
     // GET TABLE NUMBER
     table = location.href.split("&")[1].split("=")[1];
+
+    // Add cuisson
+    custChoice.push(cuisson[0]);
 
     // Current Page
     console.log(location.href);

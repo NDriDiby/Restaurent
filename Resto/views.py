@@ -295,15 +295,15 @@ def ItemDetails(request,item_id):
     cartItem = 0
 
     #Form
-    form = ItemChoiceForm()
-    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
+    # form = ItemChoiceForm()
+    # form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
     
     #Choice Category
-    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'assaisonement')
-    cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'cui')
-    ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
-    eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
-    coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
+    # assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'assaisonement')
+    # cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'cui')
+    # ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
+    # eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
+    # coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     supplement = Supplement.objects.filter(item = item_id)
 
     #Get Table Number
@@ -371,12 +371,12 @@ def ItemDetails(request,item_id):
         'orders':order,
         'cart_quantity':cartItem,
         'app':targetApp,
-        'form':form,
-        'assaisonement':assaisonement,
-        'cuisson':cuisson,
-        'ingredients':ingredients,
-        'eau_mineral':eau_mineral,
-        'coca_cola_produit':coca_cola_produit,
+        # 'form':form,
+        # 'assaisonement':assaisonement,
+        # 'cuisson':cuisson,
+        # 'ingredients':ingredients,
+        # 'eau_mineral':eau_mineral,
+        # 'coca_cola_produit':coca_cola_produit,
         'myitem':myItem,
         'my_total':my_total,
         'show_pop_item':show_pop_item,

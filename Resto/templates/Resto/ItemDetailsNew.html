@@ -605,6 +605,54 @@
               </div>
               {% endif %}
 
+            
+                <!-- <h3>CHECK</h3>
+
+              <h4>{{items.itemchoices_set.all}}</h4>
+              {{items.itemchoicecategory_set.all}} -->
+
+              {% if items.itemchoices_set.all %}
+              {% for item in items.itemchoicecategory_set.all %}
+
+              <div id="ingredient" class="ingredient relative mt-2">
+                
+                  <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2"
+                    src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
+
+                    {% if item.multiple_choice%}
+                    <div class="item-cat-instruction-multiplechoice" style="color: coral;">
+                    <small class="italic">Multiple choices</small>
+                  </div>
+                    {% else%}
+                    <div >
+                      <small class="item-cat-instruction-onechoice italic" style="color: coral">1 choice</small>
+                    </div>
+                    {% endif %}
+                
+                  <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
+                    class="item-cat-name">{{item.name}}</span><span
+                    class="item-cat-number">({{item.itemchoices_set.all|length}})</span>
+                   </h5>
+                  {% for choice in item.itemchoices_set.all  %}
+
+                  {% if item.multiple_choice%}
+                  <div class="ingredient-item show" id="ingredient-item">
+                    <input class="ingredient-input" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{choice.name}}">
+                    <label>{{choice.name}}</label><br />
+                  </div>
+                  {% else %}
+                  <div class="cuisson" id="ingredient-item">
+                    <input class="cuisson-input" id="ingredient{{ingredient.id}}" type="checkbox" name="cuisson" value="{{choice.name}}">
+                    <label>{{choice.name}}</label><br />
+                  </div>
+                  {% endif%}
+              </div>
+              {% endfor %}
+              {% endfor %}
+              {% endif %}
+
+
+
                   <!-- ingredients  -->
                   {% if ingredients %}
                   <div id="ingredient" class="ingredient relative mt-2">
@@ -708,25 +756,7 @@
                       </div>
                       {% endif %}
 
-                      <!-- {% if coca_cola_produit %}
-                      <div class='coca_cola_produit' class='cuisson relative mt-2'>
-                        <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
-                        <div >
-                          <small class="item-cat-instruction-onechoice italic" style="color: coral">1 choice</small>
-                        </div>
-                        <h5 class="flex items-center bg-gray-500" style="color:black;"><span
-                          class="item-cat-name">Coca Cola Produit</span><span
-                          class="item-cat-number">({{coca_cola_produit|length}})</span>
-                      </h5>
-                        {% for coca in coca_cola_produit %}
-                        <div class="coca_cola_produit-item show">
-                          <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit"
-                            value="{{coca.name}}" />
-                          <label for="coca_cola_produit">{{coca.name}}</label><br />
-                        </div>
-                        {% endfor %}
-                        <div>
-                          {% endif %} -->
+                  
 
 
                          <!-- Supplement -->
@@ -798,26 +828,7 @@
 
 </div>
 
-  <!-- popular choices -->
-  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!-- <<<<<<< HEAD -->
-  <!-- <h1 class="text-left pt-5 md:px-10 md:pt-10 font-bold text-lg md:text-2xl lg:text-3xl" style="color: chocolate;">Popular Items</h1>
-  <div class="pop-item flex overflow-x-scroll md:px-10 gap-2 lg:gap-y-4  w-full"> -->
 
-  <!-- <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Popular Items</h1>
-  <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
->>>>>>> 6e2c213830bf3c7b79dafeb055ff7ec8372650bf
-    {% for pop in show_pop_item %}
-    <div class="flex justify-center">
-      <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60" style="border: solid chocolate 1px;">
-        <a href="/texasgrillz/itemdetails/{{pop.id}}/?session={{app}}">
-          <img class="rounded-full" src="{{pop.img.url}}" alt="Cinque Terre" width="600" height="400" />
-        </a>
-        <div class="desc font-bold lg:text-3xl">{{pop.name}}</div>
-      </div>
-      {% endfor%}
-  </div> 
-  </div> -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 {% if side_item %}
 <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Accompagement(s)</h1>
