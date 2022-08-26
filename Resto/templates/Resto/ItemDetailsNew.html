@@ -609,11 +609,8 @@
               {% endif %}
 
             
-                <!-- <h3>CHECK</h3>
-
-              <h4>{{items.itemchoices_set.all}}</h4>
-              {{items.itemchoicecategory_set.all}} -->
-
+              
+              <!-- ITEM CHOICE -->
               {% if items.itemchoices_set.all %}
               {% for item in items.itemchoicecategory_set.all %}
 
@@ -653,111 +650,8 @@
               {% endfor %}
               {% endfor %}
               {% endif %}
+                  <!-- END ITEM CHOICE -->
 
-
-
-                  <!-- ingredients  -->
-                  {% if ingredients %}
-                  <div id="ingredient" class="ingredient relative mt-2">
-                    <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2"
-                      src="{% static 'Resto/icons8-tomatoes-48.png' %}" alt="">
-                    <div class="item-cat-instruction-multiplechoice" style="color: coral;">
-                      <small class="italic">Multiple choices</small>
-                    </div>
-                    <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
-                        class="item-cat-name">Ingredients</span><span
-                        class="item-cat-number">({{ingredients|length}})</span>
-                    </h5>
-                    {% for ingredient in ingredients %}
-                    <div class="ingredient-item show" id="ingredient-item">
-                      <input class="ingredient-input" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{ingredient.name}}">
-                      <label>{{ingredient.name}}</label><br />
-                    </div>
-                    {% endfor %}
-                  </div>
-                  {% endif %}
-                  <!-- ingredients  -->
-
-
-              <!-- seasoning  -->
-              {% if assaisonement %}
-              <div id="saissoning" class="saissoning relative mt-2">
-                <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2"
-                  src="{% static 'Resto/icons8-tomatoes-48.png'%}" alt="">
-                <div class="item-cat-instruction-multiplechoice" style="color: coral;">
-                  <small class="italic">Multiple choices</small>
-                </div>
-                <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
-                  class="item-cat-name">Saisonning</span><span
-                  class="item-cat-number">({{assaisonement|length}})</span>
-                </h5>
-                {% for saissoning in assaisonement %}
-                <div class="ingredient-item show" id="sassoning-item">
-                  <input class="ingredient-input" id="saissoning{{saissoning.id}}" type="checkbox" name="assaisonement"
-                    value="{{saissoning.name}}" />
-                  <label for="saissoning">{{saissoning.name}}</label><br />
-                </div>
-                {% endfor %}
-              </div>
-              {% endif %}
-
-              <!-- cuisson  -->
-                {% if cuisson %}
-                <div id="cuisson" class='cuisson relative mt-2'>
-                  <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
-                  <div >
-                    <small class="item-cat-instruction-onechoice italic" style="color: coral">1 choice</small>
-                  </div>
-                  <h5 class="flex items-center bg-gray-500" style="color: black;"><span
-                    class="item-cat-name">Cuisson</span><span class="item-cat-number">
-                    ({{cuisson|length}})</span><span>
-                </h5>
-                {% for cuiss in cuisson %}
-                <div class="ingredient-item show" id="cuisson-item">
-                  <input id="cuisson{{cuisson.id}}" type="checkbox" name="cuisson" value="{{cuiss.name}}" />
-                  <label for="cuisson">{{cuiss.name}}</label><br />
-                </div>
-                {% endfor %}
-                </div>
-                {% endif %}
-
-                  <!-- Water -->
-                  {% if eau_mineral %}
-                  <div class='eau_mineral' >
-                    <h5 style="color: black;"><span class="item-cat-name">Eau Mineral </span><span
-                        class="item-cat-number">({{eau_mineral|length}})</span>
-                      <span><small class="item-cat-instruction-onechoice italic" style="color: coral;">1 choice</small></span>
-                    </h5>
-                    {% for eau in eau_mineral %}
-                    <div class="ingredient-item show">
-                      <input id="eau_mineral{{eau_mineral.id}}" type="checkbox" name="eau_mineral"
-                        value="{{eau.name}}" />
-                      <label for="eau_mineral">{{eau.name}}</label><br />
-                    </div>
-                    {% endfor %}
-                    <div>
-                      {% endif %}
-
-                      <!-- Coca Cola product -->
-                      {% if coca_cola_produit %}
-                      <div id="coca_cola_produit" class='coca_cola_produit relative mt-2'>
-                        <img class="absolute top-1 left-1 w-8 lg:top-4 lg:mr-2" src="{% static 'Resto/meats.png' %}" alt="">
-                        <div >
-                          <small class="item-cat-instruction-onechoice italic" style="color: coral">1 choice</small>
-                        </div>
-                        <h5 class="flex items-center bg-gray-500" style="color:black;"><span
-                          class="item-cat-name">Coca Cola Produit</span><span
-                          class="item-cat-number">({{coca_cola_produit|length}})</span>
-                      </h5>
-                      {% for coca in coca_cola_produit %}
-                      <div class="coca_cola_produit-item show" id="coca_cola_produit-item">
-                        <input id="coca_cola_produit{{coca_cola_produit.id}}" type="checkbox" name="coca_cola_produit"
-                            value="{{coca.name}}" />
-                            <label for="coca_cola_produit">{{coca.name}}</label><br />
-                      </div>
-                      {% endfor %}
-                      </div>
-                      {% endif %}
 
                   
 
