@@ -132,7 +132,7 @@
             Mes Recettes
           </a>
           <li class="nav-item">
-            <a class="nav-link" href="#Commande Incompletes">Recettes</a>
+            <a class="nav-link" href="#CommandeIncompletes">Recettes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#section2">Commande Terminer</a>
@@ -140,6 +140,11 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'cuisine-texasgrillz' %}">Tableau de Bord</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cuisine-texasgrillz' %}">Ma Cuisine</a>
+          </li>
+         
+
         </ul>
       </div>
     </nav>
@@ -147,7 +152,7 @@
   <div class="container-fluid">
 
     <!-- INCOMPLETE ORDER -->
-    <div id="Commande Incompletes" class="container-fluid" style="padding: 100px 20px">
+    <div id="CommandeIncompletes" class="container-fluid" style="padding: 100px 20px">
   
         {% if items %}
               <h3 style="color: chocolate"> Recettes <span class="bg-success badge" id="total_uncompleted_order"> {{items.count}}</span></h3>
@@ -158,17 +163,26 @@
 
             <button data-bs-toggle="modal" data-bs-target="#addCategory" class="completedbtn btn-success" id="add-item" type="submit"> Ajouter une nouvelle recette <span class="add-icon" style="color:white;font-size:15px;font-weight:bold"> <i class="bi bi-plus-square"></i></span></button>
         
-            
+          
+                {% for item in items  %}
+
+                {{item.itemchoicecategory_set.all|first}}
+                  
+                {% endfor %}
+          
+           
+              
              <!--Table -->
              <div class="table-responsive" >
                 <table class="table table-hover mt-4 table shadow">
                   <thead class="table-light">
                     <tr class="text-center">
                       <th scope="col">Name</th>
-                      <th scope="col">Prix</th>
                       <th scope="col">Category</th>
+                      <th scope="col">Prix</th>
                       <th scope="col">Accompagnement</th>
                       <th scope="col">Supplement</th>
+                      <th scope="col">check</th>
                     </tr>
                   </thead>
                   <!-- <tbody class="table-group-divider" id="mes-recettes">
@@ -177,10 +191,11 @@
                     {% for item  in items   %}
                     <tr class='text-center align-item-center'>
                         <td scope="row">{{item.name}}</td>
-                        <td>{{item.prix}}</td>
                         <td>{{item.category}}</td>
+                        <td> <span class="badge bg-success">{{item.prix}}</span></td>
                         <td>{{item.accompagnement.all|join:','}}</td>
                         <td>{{item.supplement_set.all|join:','}}</td>
+                        <td>{{item.itemchoices_set.all|join:','}}</td>
                         <td class="p-0 mt-0">
                         <form  method="POST">
                         <p data-delete="{{item.id}}" data-item_name="{{item.name}}" style="font-size: 10px;" class="btn btn-outline-danger delete-recette mt-1 mb-1"><i style="font-size: 15px;" class="bi bi-trash"></i></p>
@@ -190,8 +205,9 @@
                       {% endfor %}
                 </tbody>
                 </table>
-                <!-- END table -->
               </div>
+                 <!-- END table -->
+             
      
     </div>
     <!-- INCOMPLETE ORDER -->

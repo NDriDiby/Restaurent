@@ -3,6 +3,7 @@ from cgitb import text
 from itertools import count
 from multiprocessing import context
 import re
+import asgiref
 from django.db import reset_queries
 from django.forms import formset_factory
 from django.shortcuts import render,redirect
@@ -35,7 +36,8 @@ import pandas as pd
 import calendar
 from dateutil.relativedelta import relativedelta
 from django.forms.formsets import formset_factory
-
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 #TASK
 from .tasks import (send_paiement_receipt,get_daily_revenu,
@@ -1116,6 +1118,15 @@ def SendOrder(request):
             order.status = 'Sent'
             order.transaction_id = order_number('texasgrillz')
             order.save()
+            
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "uncompleted-order",
+                {
+                    'type':'order_status',
+                    'message': order.id
+                }
+            )
             
         return JsonResponse({'Order_Status':'Sent to kitchen'})
             

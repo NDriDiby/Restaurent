@@ -84,7 +84,9 @@ for (var i = 0; i < updated_but.length; i++) {
     table = location.href.split("&")[1].split("=")[1];
 
     // Add cuisson
-    custChoice.push(cuisson[0]);
+    if (cuisson.length > 0) {
+      custChoice.push(cuisson[0]);
+    }
 
     // Current Page
     console.log(location.href);
@@ -130,9 +132,9 @@ for (var i = 0; i < updated_but.length; i++) {
         var new_total = response.total;
 
         msg.innerHTML = `
-        <div class='justify-center text-sm w-full items-center bg-gray-500 px-2 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
+        <div class='justify-center text-sm w-full items-center bg-gray-500 px-1 mx-1 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
           <p class="text-white"><strong>${item_name} ajouté(es) au pannier </strong> </p>
-          <span class ='pl-2'><i class="bi bi-check-circle text-xl font-bold" style="color:orange"></i></span>
+          <span class ='pl-3'><i class="bi bi-check-circle text-xl font-bold" style="color:orange"></i></span>
         </div>`;
 
         total_item_box = document.getElementById("total-item");
