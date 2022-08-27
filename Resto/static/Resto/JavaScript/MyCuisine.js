@@ -145,7 +145,8 @@ function displayUncompletedOrder(orders) {
 
 // DJANGO-CHANNEL WEBSOCKET
 function connectWebSocket() {
-  let url = `ws://${window.location.host}/ws/sendOrder/`;
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  let url = `${ws_scheme}://${window.location.host}/ws/sendOrder/`;
   const sendOrderSocket = new WebSocket(url);
 
   console.log("Connecting to webSocket");

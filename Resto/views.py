@@ -1278,7 +1278,7 @@ def Cuisine(request):
         'orderitem':orderItem,
         
     }
-    return render(request,'Resto/Cuisine.html',context)
+    return render(request,'Resto/Icarus_dashboard.html',context)
 
 
 
