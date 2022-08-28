@@ -1599,6 +1599,7 @@ def DashBoardData(request):
                     }
                     data['accompagnement'].append(my_accomp)
        
+       
         sup = Supplement.objects.filter(item__id = my_items[item].id)
         if sup:
             for s in range(0,len(sup)):
@@ -1611,13 +1612,20 @@ def DashBoardData(request):
         
     
     orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
-    # print(list(orderItem))
-    
     orderHour = list(Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id')))
-    print(orderHour)
+    
+      #REVENU OF THE DAY PER MENU
+    revPerMenu = list(OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
+        .annotate(my_sum = Sum(F("quantity")*F('item__prix'))))
+    
+    #REVENUE PER MONTH
+    revPerMonth = list(OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
+        .annotate(my_sum= Sum(F("quantity")*F('item__prix'))))
     
     return JsonResponse({'dashboard':orderItem,
                          'ordertime':orderHour,
-                         'my_items':all_items})
+                         'my_items':all_items,
+                         'revPerMenu':revPerMenu,
+                         'revPerMonth':revPerMonth})
     
     
