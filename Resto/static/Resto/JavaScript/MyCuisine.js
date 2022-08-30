@@ -2,6 +2,8 @@ console.log("what do you see");
 
 var total_uncompleted_order = document.getElementById("total_uncompleted_order").innerHTML;
 
+connectWebSocket();
+
 fetchCuisineOrder().then((data) => {
   console.log("PLEASE STAY PATIENT WHILE WE'RE GETTING YOUR ORDER");
   console.log(data);
@@ -131,8 +133,6 @@ function displayUncompletedOrder(orders) {
       `);
   });
 
-  connectWebSocket();
-
   var completed_order_btn = document.getElementsByClassName("orderDone");
   for (let i = 0; i < completed_order_btn.length; i++) {
     completed_order_btn[i].addEventListener("click", (e) => {
@@ -145,7 +145,8 @@ function displayUncompletedOrder(orders) {
 
 // DJANGO-CHANNEL WEBSOCKET
 function connectWebSocket() {
-  let url = `ws://${window.location.host}/ws/sendOrder/`;
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  let url = `${ws_scheme}://${window.location.host}/ws/sendOrder/`;
   const sendOrderSocket = new WebSocket(url);
 
   console.log("Connecting to webSocket");
@@ -167,9 +168,9 @@ function connectWebSocket() {
   // CLOSE DJANGO-CHANNELS
   sendOrderSocket.onclose = (e) => {
     console.log("Reconnecting WebSocket...");
-    setTimeout(() => {
-      connectWebSocket();
-    }, 1000);
+    // setTimeout(() => {
+    //   connectWebSocket();
+    // }, 1000);
   };
 
   // ERROR DJANGO-CHANNELS

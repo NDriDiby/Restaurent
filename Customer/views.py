@@ -8,7 +8,6 @@ from django.contrib.auth.forms import AuthenticationForm #add this
 from django.conf import settings
 from django.http.response import HttpResponseRedirect,JsonResponse
 from Customer.utils import track_session,target_app,get_table_number
-from Bakerys.models import OrderBakerys
 from django.contrib.auth.models import User
 from django.utils import timezone
 from Resto.models import Customer
@@ -34,9 +33,6 @@ def Login(request):
     targetApp = target_app(request)
     session = track_session(request)
    
-    
-    
-
     #Authenticate user then redict to their session
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -107,8 +103,6 @@ def RegisterCustomer(request):
     if request.method == 'POST':
         form = CustomerForm(request.POST or None)
         
-        
-        
         if form.is_valid():
             cust_log_email = form.cleaned_data.get('username')
             cust_first_name = form.cleaned_data.get('prenom')
@@ -144,8 +138,6 @@ def RegisterCustomer(request):
             
             # elif (cust_log_email not in testeur): #retrict access
             #     return HttpResponseRedirect(f'/noaccess/')
-            
-            
             
     else:
         form = CustomerForm()
@@ -206,33 +198,7 @@ def NoAccess(request):
 #     return render(request,'Customer/csrf_token_error.html',context)
 
 
-# def PasswordResetRequest(request):
-# 	if request.method == "POST":
-# 		password_reset_form = PasswordResetForm(request.POST)
-# 		if password_reset_form.is_valid():
-# 			data = password_reset_form.cleaned_data['email']
-# 			associated_users = User.objects.filter(Q(email=data))
-# 			if associated_users.exists():
-# 				for user in associated_users:
-# 					subject = "Password Reset Requested"
-# 					email_template_name = "Customer/password_reset_email.txt"
-# 					c = {
-# 					"email":user.email,
-# 					'domain':'127.0.0.1:8000',
-# 					'site_name': 'Website',
-# 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
-# 					"user": user.first_name,
-# 					'token': default_token_generator.make_token(user),
-# 					'protocol': 'http',
-# 					}
-# 					email = render_to_string(email_template_name, c)
-# 					try:
-# 						send_mail(subject, email, 'prudencediby@gmail.com' , [user.email], fail_silently=False)
-# 					except BadHeaderError:
-# 						return HttpResponse('Invalid header found.')
-# 					return redirect ("/password_reset/done/")
-# 	password_reset_form = PasswordResetForm()
-# 	return render(request,"Customer/password_reset.html", context={"password_reset_form":password_reset_form})
+
 
 
 

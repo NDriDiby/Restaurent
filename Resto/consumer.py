@@ -59,7 +59,8 @@ class SendOrderToKitchen(WebsocketConsumer):
     def order_status(self, event):
         message = event['message']
         
-    
+       
+        
         #Uncompleted Order
         uncompleted_order =  Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
         

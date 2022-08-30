@@ -1,0 +1,2 @@
+celery betat + worker:
+celery -A Restaurent worker --beat --scheduler django --loglevel=info

@@ -1,5 +1,4 @@
 from Resto.models import Order
-from Bakerys.models import OrderBakerys
 import Resto
 from django.db.models import Model
 from django.utils.module_loading import import_module
