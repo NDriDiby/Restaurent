@@ -78,6 +78,14 @@ add_item_btn.addEventListener("click", () => {
   console.log("I want to add an item");
 });
 
+const instruction = () => {
+  Swal.fire({
+    icon: "error",
+    title: `Select or create a category`,
+    showConfirmButton: true,
+  });
+};
+
 var delete_recette_btn = document.getElementsByClassName("delete-recette");
 for (let i = 0; i < delete_recette_btn.length++; i++) {
   delete_recette_btn[i].addEventListener("click", (e) => {
@@ -101,40 +109,64 @@ for (let i = 0; i < delete_recette_btn.length++; i++) {
   });
 }
 
-var add_item_form = document.getElementById("create-recette");
-var new_cat_list = [];
-add_item_form.addEventListener("click", () => {
-  console.log("MOVE ME");
+var new_cat = $("input[name=new-cat-name]");
 
-  var new_cat = $("input[name=form-0-name]").val();
+$(".category").change(() => {
   var cat = $("#id_category :selected").text();
-  new_cat_list[0] = new_cat;
-  console.log(new_cat, cat.length);
-
-  if ((cat == "---------") & (new_cat.length == 0)) {
-    instruction();
+  if (cat != "---------") {
+    new_cat.attr("disabled", "disabled");
+  } else {
+    new_cat.removeAttr("disabled", "disabled");
   }
-
-  if ((cat.length > 0) & (new_cat.length > 0)) {
-    instruction();
-  }
-
-  if ((new_cat.length == 0) & (cat != "---------")) {
-    new_cat_list[0] = cat;
-    $(this).attr("data-bs-target", "#addItem");
-  }
-
-  if ((new_cat.length > 0) & (cat == "---------")) {
-    new_cat_list[0] = new_cat;
-    $(this).attr("data-bs-target", "#addItem");
-  }
-  console.log("Final:", new_cat_list);
+  console.log(cat);
 });
 
-const instruction = () => {
-  Swal.fire({
-    icon: "error",
-    title: `Select or create a category`,
-    showConfirmButton: true,
-  });
-};
+var create_recette_form = document.getElementById("create-recette");
+var new_cat_list = [];
+var all_accomp = [];
+var all_sup = [];
+
+create_recette_form.addEventListener("click", (e) => {
+  console.log("MOVE ME");
+
+  var new_cat = $("input[name=new-cat-name]").val();
+  var cat = $("#id_category :selected").text();
+  var nom = $("input[name=name]").val();
+  var prix = $("input[name=prix]").val();
+  var description = $("#id_description").val();
+
+  // $("#id_supplement option")
+  //   .filter(":selected")
+  //   .each((acc, data) => {
+  //     console.log(acc, data.value);
+  //     all_sup.push(data.value);
+  //   });
+
+  // var new_sup = $("input[name=new-sup-name]").val();
+  // var sup = $("#id_category :selected").text();
+  // var new_sup = $("#id_category :selected").text();
+
+  console.log("new:", new_cat);
+  console.log("cat:", cat);
+  console.log("nom:", nom);
+  console.log("prix:", prix);
+  console.log("description:", description);
+
+  // console.log("sup:", all_sup);
+  // console.log("new_sup:", new_sup);
+});
+
+var add_accomp_form = document.getElementById("add-accomp-form");
+add_accomp_form.addEventListener("click", () => {
+  $("#id_accompagnement option")
+    .filter(":selected")
+    .each((acc, data) => {
+      console.log(acc, data.value);
+      all_accomp.push(data.value);
+    });
+
+  var new_accomp = $("input[name=new-accomp-name]").val();
+
+  console.log("accomp:", all_accomp);
+  console.log("new_accomp:", new_accomp);
+});

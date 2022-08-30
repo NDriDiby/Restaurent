@@ -3,6 +3,7 @@ from cgitb import text
 from itertools import count
 from multiprocessing import context
 import re
+import asgiref
 from django.db import reset_queries
 from django.forms import formset_factory
 from django.shortcuts import render,redirect
@@ -11,7 +12,7 @@ from django.urls import is_valid_path
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory,Transactions,SideOrderItem,Supplement)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
+from.forms import AddAccompForm, CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app,get_month
@@ -21,7 +22,6 @@ from django.contrib.auth.decorators import permission_required,login_required
 import random
 from datetime import datetime,timedelta,time
 from django.utils import timezone
-from Bakerys.forms import OrderForm
 from django.db.models import F
 from django.db.models import Max,Sum,Count
 from django.conf import settings
@@ -35,7 +35,8 @@ import pandas as pd
 import calendar
 from dateutil.relativedelta import relativedelta
 from django.forms.formsets import formset_factory
-
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 #TASK
 from .tasks import (send_paiement_receipt,get_daily_revenu,
@@ -295,15 +296,15 @@ def ItemDetails(request,item_id):
     cartItem = 0
 
     #Form
-    form = ItemChoiceForm()
-    form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
+    # form = ItemChoiceForm()
+    # form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
     
     #Choice Category
-    assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'assaisonement')
-    cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'cui')
-    ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
-    eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
-    coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
+    # assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'assaisonement')
+    # cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'cui')
+    # ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
+    # eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
+    # coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     supplement = Supplement.objects.filter(item = item_id)
 
     #Get Table Number
@@ -371,12 +372,12 @@ def ItemDetails(request,item_id):
         'orders':order,
         'cart_quantity':cartItem,
         'app':targetApp,
-        'form':form,
-        'assaisonement':assaisonement,
-        'cuisson':cuisson,
-        'ingredients':ingredients,
-        'eau_mineral':eau_mineral,
-        'coca_cola_produit':coca_cola_produit,
+        # 'form':form,
+        # 'assaisonement':assaisonement,
+        # 'cuisson':cuisson,
+        # 'ingredients':ingredients,
+        # 'eau_mineral':eau_mineral,
+        # 'coca_cola_produit':coca_cola_produit,
         'myitem':myItem,
         'my_total':my_total,
         'show_pop_item':show_pop_item,
@@ -1117,6 +1118,15 @@ def SendOrder(request):
             order.transaction_id = order_number('texasgrillz')
             order.save()
             
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "uncompleted-order",
+                {
+                    'type':'order_status',
+                    'message': order.id
+                }
+            )
+            
         return JsonResponse({'Order_Status':'Sent to kitchen'})
             
             
@@ -1267,7 +1277,7 @@ def Cuisine(request):
         'orderitem':orderItem,
         
     }
-    return render(request,'Resto/Cuisine.html',context)
+    return render(request,'Resto/Icarus_dashboard.html',context)
 
 
 
@@ -1302,24 +1312,61 @@ def DeleteOrderItem(request):
 @login_required
 @permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
 def IventorySystem(request):
-    my_items =  Item.objects.all().order_by('prix')
-    form_cat = formset_factory(AddMenu,extra=0,min_num=1)
+    my_items =  Item.objects.all().order_by('name')
+    
+    form_cat = AddMenu(request.POST or None)
+    form_accomp = AddAccompForm(request.POST or None)
+    form = AddItem(request.POST,request.FILES or None)
     
     if request.method == 'POST':
-        form = AddItem(request.POST)
-        formset_cat = form_cat(request.POST)
-        if all(form.is_valid(),formset_cat.is_valid()):
-            product = form.cleaned_data.get('name')
-            category = form.cleaned_data.get('category')
-            messages.success(request,f'{product} added to your inventory')
-            return HttpResponseRedirect(f'/texasgrillz/inventory/')
+        
+        if form.is_valid():
+            product = form.cleaned_data.get('name').lower()
+
+            if product in [item.name for item in my_items]:
+                print('this Iitem already exit')
+                messages.info(request,f'{product} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                messages.success(request,f'{product} created')
+                print('I got the data')
+                form.save()
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+        
+
+        if  form_accomp.is_valid():
+            print('I got my accomp oklm')
+            accomp = form_accomp.cleaned_data.get('name').lower()
+            if accomp in [acc.name for acc in Accompagnement.objects.all()]:
+                messages.info(request,f'{accomp} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                messages.success(request,f'{accomp} created')
+                print('I got the data')
+                form_accomp.save()
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            
+        if  form_cat.is_valid():
+            print('I got my Cat oklm')
+            category = form_cat.cleaned_data.get('name').lower()
+            if category in [cat.name for cat in Category.objects.all()]:
+                messages.info(request,f'{category} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                messages.success(request,f'{category} created')
+                print('I got the data')
+                form_cat.save()
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                
     else:
         form = AddItem()
-        formset_cat = form_cat
+        form_cat = AddMenu()
+        form_accomp = AddAccompForm()
 
     context = {
         'form':AddItem,
-        'form_cat':formset_cat,
+        'form_accomp':form_accomp,
+        'form_cat':form_cat,
         'items':my_items,
     }
     
@@ -1338,19 +1385,11 @@ def CuisineSettings(request):
         if form.is_valid():
             item = form.cleaned_data.get('name')
             category = form.cleaned_data.get('category')
+            print('I got the data')
             #form.save()
-            messages.success(request,f'{item} added to your recette list')
-            return HttpResponseRedirect(f'/texasgrillz/settings/')
+            # messages.success(request,f'{item} added to your recette list')
+            # return HttpResponseRedirect(f'/texasgrillz/settings/')
             
-            
-        elif form_menu.is_valid():
-            
-            menu = form_menu.cleaned_data.get('name')
-            #form_menu.save()
-            messages.success(request,f'{menu} added to your menu')
-            print('MY MENU',menu)
-            return HttpResponseRedirect(f'/texasgrillz/settings/')
-    
     else:
         form = AddItem()
         form_menu = AddMenu()
@@ -1588,6 +1627,7 @@ def DashBoardData(request):
                     }
                     data['accompagnement'].append(my_accomp)
        
+       
         sup = Supplement.objects.filter(item__id = my_items[item].id)
         if sup:
             for s in range(0,len(sup)):
@@ -1600,13 +1640,20 @@ def DashBoardData(request):
         
     
     orderItem = list(OrderItem.objects.values('item__name','item__category__name').annotate(Quantity=Sum('quantity')).order_by('-Quantity')[:5])
-    # print(list(orderItem))
-    
     orderHour = list(Order.objects.filter(date_ordered__date = today).values('date_ordered__hour').annotate(count_order=Count('id')))
-    print(orderHour)
+    
+      #REVENU OF THE DAY PER MENU
+    revPerMenu = list(OrderItem.objects.filter(order__complete=True,date_added__date = today).select_related('item','item__category__name').values('item__category__name')\
+        .annotate(my_sum = Sum(F("quantity")*F('item__prix'))))
+    
+    #REVENUE PER MONTH
+    revPerMonth = list(OrderItem.objects.filter(order__complete=True,date_added__date__month__lte = today.month).select_related('item').values('date_added__date__month')\
+        .annotate(my_sum= Sum(F("quantity")*F('item__prix'))))
     
     return JsonResponse({'dashboard':orderItem,
                          'ordertime':orderHour,
-                         'my_items':all_items})
+                         'my_items':all_items,
+                         'revPerMenu':revPerMenu,
+                         'revPerMonth':revPerMonth})
     
     
