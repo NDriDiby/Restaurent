@@ -46,7 +46,6 @@ async function dashBordData() {
   url = "/texasgrillz/dashBoard_data/";
   data = await fetch(url);
   result = await data.json();
-  console.log(result);
   return result;
 }
 

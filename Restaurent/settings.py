@@ -62,9 +62,9 @@ CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacl
 # Application definition
 
 INSTALLED_APPS = [
+
     'Resto.apps.RestoConfig', #TexasGrillz
     'Customer.apps.CustomerConfig', #Customer
-    'Bakerys.apps.BakerysConfig', #Bakerys
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,6 +82,26 @@ INSTALLED_APPS = [
     'channels',#Server-Client
 ]
 
+# TENANT_APPS = (
+#     'django.contrib.contenttypes',
+#     'django.contrib.auth',
+#     'django.contrib.admin',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+    
+
+#     'Resto.apps.RestoConfig', #TexasGrillz
+#     'Customer.apps.CustomerConfig', #Customer
+
+   
+# )
+
+# INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+
+TENANT_MODEL = "Tenant.Client" # app.Model
+
+TENANT_DOMAIN_MODEL = "Tenant.Domain"  # app.Model
 
 
 MIDDLEWARE = [
@@ -151,7 +171,7 @@ TAILWIND_APP_NAME = 'theme'
 # #DATA BASE - PRODUCTION 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django_tenants.postgresql_backend', #django.db.backends.postgresql
         'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
         'USER': 'yvlsowwfcscpsj', # The username from 1.6
         'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
@@ -168,6 +188,18 @@ DATABASES = {
     }
 }
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django_tenants.postgresql_backend',
+#         'NAME': 'ndridiby',
+#         # set your user details
+#         'USER': 'ndridiby',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'POST': '5432'
+#     }
+# }
 
 
 

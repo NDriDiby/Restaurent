@@ -12,7 +12,7 @@ from django.urls import is_valid_path
 from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory,Transactions,SideOrderItem,Supplement)
 from django.contrib import messages
-from.forms import CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
+from.forms import AddAccompForm, CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app,get_month
@@ -22,7 +22,6 @@ from django.contrib.auth.decorators import permission_required,login_required
 import random
 from datetime import datetime,timedelta,time
 from django.utils import timezone
-from Bakerys.forms import OrderForm
 from django.db.models import F
 from django.db.models import Max,Sum,Count
 from django.conf import settings
@@ -1313,24 +1312,61 @@ def DeleteOrderItem(request):
 @login_required
 @permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
 def IventorySystem(request):
-    my_items =  Item.objects.all().order_by('prix')
-    form_cat = formset_factory(AddMenu,extra=0,min_num=1)
+    my_items =  Item.objects.all().order_by('name')
+    
+    form_cat = AddMenu(request.POST or None)
+    form_accomp = AddAccompForm(request.POST or None)
+    form = AddItem(request.POST,request.FILES or None)
     
     if request.method == 'POST':
-        form = AddItem(request.POST)
-        formset_cat = form_cat(request.POST)
-        if all(form.is_valid(),formset_cat.is_valid()):
-            product = form.cleaned_data.get('name')
-            category = form.cleaned_data.get('category')
-            messages.success(request,f'{product} added to your inventory')
-            return HttpResponseRedirect(f'/texasgrillz/inventory/')
+        
+        if form.is_valid():
+            product = form.cleaned_data.get('name').lower()
+
+            if product in [item.name for item in my_items]:
+                print('this Iitem already exit')
+                messages.info(request,f'{product} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                messages.success(request,f'{product} created')
+                print('I got the data')
+                form.save()
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+        
+
+        if  form_accomp.is_valid():
+            print('I got my accomp oklm')
+            accomp = form_accomp.cleaned_data.get('name').lower()
+            if accomp in [acc.name for acc in Accompagnement.objects.all()]:
+                messages.info(request,f'{accomp} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                messages.success(request,f'{accomp} created')
+                print('I got the data')
+                form_accomp.save()
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            
+        if  form_cat.is_valid():
+            print('I got my Cat oklm')
+            category = form_cat.cleaned_data.get('name').lower()
+            if category in [cat.name for cat in Category.objects.all()]:
+                messages.info(request,f'{category} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                messages.success(request,f'{category} created')
+                print('I got the data')
+                form_cat.save()
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                
     else:
         form = AddItem()
-        formset_cat = form_cat
+        form_cat = AddMenu()
+        form_accomp = AddAccompForm()
 
     context = {
         'form':AddItem,
-        'form_cat':formset_cat,
+        'form_accomp':form_accomp,
+        'form_cat':form_cat,
         'items':my_items,
     }
     
@@ -1349,19 +1385,11 @@ def CuisineSettings(request):
         if form.is_valid():
             item = form.cleaned_data.get('name')
             category = form.cleaned_data.get('category')
+            print('I got the data')
             #form.save()
-            messages.success(request,f'{item} added to your recette list')
-            return HttpResponseRedirect(f'/texasgrillz/settings/')
+            # messages.success(request,f'{item} added to your recette list')
+            # return HttpResponseRedirect(f'/texasgrillz/settings/')
             
-            
-        elif form_menu.is_valid():
-            
-            menu = form_menu.cleaned_data.get('name')
-            #form_menu.save()
-            messages.success(request,f'{menu} added to your menu')
-            print('MY MENU',menu)
-            return HttpResponseRedirect(f'/texasgrillz/settings/')
-    
     else:
         form = AddItem()
         form_menu = AddMenu()

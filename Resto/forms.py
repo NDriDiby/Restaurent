@@ -5,7 +5,7 @@ from django.forms import ImageField, ModelForm
 from django.db.models import fields
 from django.db.models.fields import DateTimeField
 from .forms import models
-from.models import Category, Item,ItemChoices,ItemChoiceCategory,IventoryItem, Supplement
+from.models import Accompagnement, Category, Item,ItemChoices,ItemChoiceCategory,IventoryItem, Supplement
 from django.contrib.auth.models import AbstractUser, User,AbstractBaseUser,BaseUserManager
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.utils.translation import gettext_lazy as _
@@ -17,7 +17,6 @@ from django.forms.widgets import  TextInput, DateInput,NumberInput,DateTimeBaseI
 
 
 class CustomerForm(UserCreationForm):
-   
 
    nom = forms.CharField(label = 'Nom')
    prenom = forms.CharField(label = 'Prenom')
@@ -104,6 +103,8 @@ class AddItem(forms.ModelForm):
    
    supplement = forms.ModelMultipleChoiceField(queryset=Supplement.objects.all(),required=False, 
                                                widget=forms.SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}))
+   option_category = forms.ModelChoiceField(queryset= ItemChoiceCategory.objects.all(),required=False,
+                                           widget=forms.Select(attrs={'type': 'option','class':'form-control form-control-lg category'}) )
    class Meta:
       model = Item
       exclude = ['itm_id']
@@ -113,7 +114,7 @@ class AddItem(forms.ModelForm):
             'prix': NumberInput(attrs={'type': 'number','class':'form-control form-control-lg'}),
             'description':Textarea(attrs={'type': 'text','class':'form-control form-control-lg','rows':"2", 'cols':"3"}),
             'accompagnement': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
-            'category': Select(attrs={'type': 'option','class':'form-control form-control-lg'}),
+            'category': Select(attrs={'type': 'option','class':'form-control form-control-lg category'}),
             }
       
 class AddMenu(forms.ModelForm):
@@ -124,8 +125,18 @@ class AddMenu(forms.ModelForm):
       
       widgets = {
             'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+           
         }
       
    
-
+class AddAccompForm(forms.ModelForm):
+   
+   class Meta:
+      model = Accompagnement
+      fields = ['name','prix','img']
+      
+      widgets = {
+            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+             'prix': NumberInput(attrs={'type': 'number','class':'form-control form-control-lg'}),
+        }
         
