@@ -125,11 +125,12 @@ body{
       font-size: 30px;
   }
 
-
-  .main .chartBox{
-      width: 500px;
-      height: auto;
+  @media screen and (max-width:1024px) {
+      
   }
+
+
+
 
  
  
@@ -143,14 +144,42 @@ body{
 
       <div class="container-fluid vh-100">
 
-        <div class="text-center py-3">
-            <h5 class="product-name"  href="#home"><span style="color:chocolate">Icarus</span> <small class="text-muted"
-                ><i> <strong> Bar & Restaurant</strong> </i></small
-            ></h5>
-            <small class='text-muted'>
-                Friday 26 August, 4:50 PM
-            </small>
+        
+
+        <div class="d-flex text-center justify-content-between py-3 pl-5 p-2">
+            <div class="hidden">
+                Good
+            </div>
+            <div class="product-name-box">
+                <h5 class="product-name"  href="#home"><span style="color:chocolate">Icarus</span> <small class="text-muted"
+                    ><i> <strong> Bar & Restaurant</strong> </i></small
+                ></h5>
+                <small class='text-muted'>
+                    Friday 26 August, 4:50 PM
+                </small>
+               
+            </div>
+           
+
+            <div class="user p-2">
+                <div class="signup">
+                    <div class="round rounded-3 bg-white p-1 dropdown ">
+                        <img src="{% static 'Resto/Icarus.png' %}" width="50px" alt="" srcset="">
+                        <button data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-warning dropdown-toggle">{{request.user.get_full_name}}</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                          </ul>
+                    </div>
+                  
+                </div>
+            </div>
         </div>
+
+       
+
+        
 
         
 
@@ -164,17 +193,19 @@ body{
          
         <div class="sidebar shadow">
        
-            <a href="#home"><i style="color:chocolate" class="fa fa-fw fa-home m-1"></i> <span class="link">DashBoard</span> </a>
-            <a href="{% url 'cuisine-texasgrillz-optimize' %}"><i style="color:chocolate" class="fas fa-utensils m-1"></i> <span class="link">My Cuisine</span> </a>
-            <a href="{% url 'inventory-texasgrillz' %}"><i style="color:chocolate" class="fa-solid fa-burger m-1"></i> <span class="link">Mes Recettes</span> </a>
+            <a href="#home" class="d-flex align-items-center"><i style="color:chocolate" class="fa fa-fw fa-home m-1"></i><span class="link">DashBoard</span> </a>
+            <a href="{% url 'cuisine-texasgrillz-optimize' %}" class="d-flex align-items-center"><i style="color:chocolate" class="fas fa-utensils m-1"></i><p class="link">My Cuisine</p> </a>
+            <a href="{% url 'inventory-texasgrillz' %}"><i style="color:chocolate" class="fa-solid fa-burger m-1"></i><span class="link">Mes Recettes</span> </a>
             <!-- <a href="#contact"><i style="color:chocolate" class="fa fa-fw fa-envelope m-1"></i>Contact</a> -->
-            <a href="{% url 'inventory-texasgrillz' %}"><i style="color:chocolate" class="fa fa-fw fa-user m-1"></i> <span class="link">Team</span> </a>
-            <a href="#contact"><i style="color:chocolate" class="fa-solid fa-boxes-stacked m-1"></i> <span class="link">Iventory</span> </a>
+            <a href="{% url 'inventory-texasgrillz' %}"><i style="color:chocolate" class="fa fa-fw fa-user m-1"></i><span class="link">Team</span> </a>
+            <a href="#contact"><i style="color:chocolate" class="fa-solid fa-boxes-stacked m-1"></i><span class="link">Iventory</span> </a>
             <a href="{% url 'inventory-texasgrillz' %}"><i style="color:chocolate" class="fa-solid fa-wrench m-1"></i> <span class="link">Settings</span> </a>
-            <a href="#contact"><i style="color:chocolate" class="fa fa-fw fa-envelope m-1"></i> <span class="link">Iventory</span> </a>
+            <a href="#contact"><i style="color:chocolate" class="fa fa-fw fa-envelope m-1"></i><span class="link">Iventory</span> </a>
         </div>
           
         <div class="main">
+
+           
 
 
 
@@ -315,29 +346,32 @@ body{
             </div>
 
             <!-- viz -->
-            <div class="chart d-flex row row-cols-auto justify-content-evenly">
-                <div class="card shadow mx-2 mt-3">
+            <div class="chart d-flex flex-wrap gap-3">
+
+        
+
+                <div class="card shadow mt-3" style="width: fit-content;" >
                     <div class="chartBox">
-                        <canvas id="pop-items" height="200" ></canvas>
+                        <canvas id="pop-items" height="350" width="585" ></canvas>
                     </div>
                 </div>
                 
-              <div class="card shadow mx-2 mt-3" style="height: 290px;">
+              <div class="card shadow mt-3" style="height: fit-content;width: fit-content;">
                 <div class="chartBox" >
-                    <canvas id="order-time" height="180"  ></canvas>
+                    <canvas id="order-time" height="350" width="585" ></canvas>
                 </div>
               </div>
 
-                <div class="card shadow mx-2 mt-3">
+                <div class="card shadow" style="width: fit-content;">
                     <div class="chartBox" >
-                        <canvas class="m-2" id="month-report" width="100" height="100" ></canvas>
+                        <canvas  id="month-report" height="400" width="585" ></canvas>
                     </div>
                 </div>
 
 
-                <div class="card shadow mx-2 mt-3" style="height: fit-content;">
+                <div class="card shadow" style="height: fit-content;width: fit-content;">
                     <div class="chartBox" >
-                        <canvas class="m-2" id="revPerMonth" height="200" ></canvas>
+                        <canvas  id="revPerMonth" height="350" width="585" ></canvas>
                     </div>
                 </div>
 

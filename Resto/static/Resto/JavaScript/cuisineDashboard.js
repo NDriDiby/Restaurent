@@ -257,7 +257,10 @@ var optionsPie = {
     animation: {
       animateScale: true,
       animateRotate: true,
+      animationSteps: 100,
+      animationEasing: "easeOutBounce",
     },
+    percentageInnerCutout: 90,
   },
 };
 
