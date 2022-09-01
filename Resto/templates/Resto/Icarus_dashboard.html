@@ -69,7 +69,24 @@ body{
     overflow-x: hidden;
     padding-top: 3px;
 } */
-
+.sidebar{
+    position: relative;
+    transition: width 2s, transform 2s;
+}
+.list{
+    position: absolute;
+    top: 0px;
+    left: 70px;
+    border: none;
+    background-color: #0a2558;
+    color: white;
+    border-radius: 5px;
+    z-index: 10;
+}
+.list .bi-chevron-bar-right{
+    font-size: 40px;
+    color: chocolate;
+}
 .sidebar a {
     padding: 20px 10px 10px 25px;
     text-decoration: none;
@@ -107,7 +124,11 @@ body{
   }
    /* Same as the width of the sidenav */
 
-  
+  .chart{
+      width: 18rem;
+      padding-left: 8px;
+  }
+
   .card{
       width: 18rem;
       margin-left: auto;
@@ -148,6 +169,11 @@ body{
       font-size: 30px;
   }
 
+  @media screen and (min-width:768px) {
+      .chart{
+          width: 37rem;
+      }
+  }
 
 
   @media screen and (min-width:769px) {
@@ -191,6 +217,7 @@ body{
   }
  
  
+ 
 
   }
   @media screen and (min-width:1025px) {
@@ -212,7 +239,6 @@ body{
   .card{
       width: 18rem;
   }
- 
  
 
   }
@@ -241,7 +267,18 @@ body{
   .m{
       grid-area: header;
   }
-
+  .hide{
+      display: none;
+  }
+  .addStyles{
+    width: 200px;
+  }
+  .rotate{
+      transform: rotate(-180deg);
+  }
+  .transition{
+    transition: width 6s, transform 6s;
+  }
   </style>
   </head>
   <body>
@@ -292,6 +329,9 @@ body{
                     <a href="#contact"><i style="color:chocolate" class="fa-solid fa-boxes-stacked m-1"></i><span class="link">Iventory</span> </a>
                     <a href="{% url 'inventory-texasgrillz' %}"><i style="color:chocolate" class="fa-solid fa-wrench m-1"></i> <span class="link">Settings</span> </a>
                     <a href="#contact"><i style="color:chocolate" class="fa fa-fw fa-envelope m-1"></i><span class="link">Iventory</span> </a>
+                    <button class="list">
+                        <i class="bi bi-chevron-bar-right"></i>
+                    </button>
                 </div> 
 
             </div>
@@ -435,30 +475,28 @@ body{
             </div>
 
 
-             <div class="chart d-md-flex flex-wrap gap-3 justify-content-center">
+             <div class=" d-md-flex flex-wrap gap-3 justify-content-center">
 
-        
-
-                <div class="card shadow mt-3" >
+                <div class="chart shadow mt-3" >
                     <div class="chartBox">
                         <canvas id="pop-items"></canvas>
                     </div>
                 </div>
                 
-              <div class="card shadow mt-3">
+              <div class="chart shadow mt-3">
                 <div class="chartBox" >
                     <canvas id="order-time"></canvas>
                 </div>
               </div>
 
-                <div class="card shadow">
+                <div class="chart shadow">
                     <div class="chartBox" >
                         <canvas  id="month-report"></canvas>
                     </div>
                 </div>
 
 
-                <div class="card shadow">
+                <div class="chart shadow">
                     <div class="chartBox" >
                         <canvas  id="revPerMonth"></canvas>
                     </div>
@@ -667,7 +705,29 @@ body{
 
 
     </div> -->
-  
+   
+  <script>
+      let right = document.querySelector('.bi-chevron-bar-right')
+      let list = document.querySelector('.list');
+      let span = document.querySelector('.sidebar span')
+      let sidebar = document.querySelector('.sidebar')
+      if(window.innerWidth > 768){
+        list.style.display = 'none'
+    } else {
+        list.style.display = 'block'
+    }
+      list.addEventListener('click', ({target}) => {
+          list.classList.toggle('rotate')
+          sidebar.classList.toggle('addStyles');
+          if(!list.classList.contains('rotate')){
+              list.style.left = '70px'
+            } else if(list.classList.contains('rotate')){
+
+                list.style.left = '190px'
+            }
+        
+        })
+  </script>
  <script type="text/javascript" src="{% static 'Resto/JavaScript/cuisineDashboard.js'%}"></script>
     
 
