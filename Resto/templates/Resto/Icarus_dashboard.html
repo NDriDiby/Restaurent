@@ -721,6 +721,8 @@ body{
       let list = document.querySelector('.list');
       let spans = document.querySelectorAll('.link')
       let sidebar = document.querySelector('.sidebar');
+      let charts = document.querySelectorAll('.chart')
+      let cards = document.querySelectorAll('.card')
 
       if(window.innerWidth > 768){
         list.style.display = 'none'
@@ -731,12 +733,31 @@ body{
           list.classList.toggle('rotate')
           sidebar.classList.toggle('addStyles');
           if(!list.classList.contains('rotate')){
-              list.style.left = '70px'
+              list.style.left = '70px';
+              [...spans].map(link => {
+                link.style.opacity = 0;
+                link.style.display = 'none'
+                });
+                [...cards].map(card => {
+                    card.style.width = '18rem'
+                });
+                [...charts].map(chart => {
+                    chart.style.width = '37rem'
+                    chart.style.marginLeft = '50px'
+                });
             } 
             else if(list.classList.contains('rotate')){
                 list.style.left = '190px';
                 [...spans].map(link => {
-                link.classList.add('link')
+                link.style.opacity = 1;
+                link.style.display = 'block'
+                });
+                [...charts].map(chart => {
+                    chart.style.width = '30rem'
+                    chart.style.marginLeft = '50px'
+                });
+                [...cards].map(card => {
+                    card.style.width = '12rem'
                 })
             
             }
