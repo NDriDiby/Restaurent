@@ -96,7 +96,7 @@ body{
     align-items: center;
     
 }
-.sidebar span{
+.link{
     opacity: 0;
     display: none;
 }
@@ -188,7 +188,7 @@ body{
     overflow-x: hidden;
     padding-top: 3px;
   }
-  .sidebar span{
+  .link{
       opacity: 1;
       display: block;
   }
@@ -199,7 +199,7 @@ body{
   @media screen and (min-width:1024px) {
     .sidebar {
     height: 100vh;
-    width: 200px;
+    width: 70px;
     /* position: fixed; */
     z-index: 1;
     top: 0px;
@@ -208,13 +208,16 @@ body{
     overflow-x: hidden;
     padding-top: 3px;
   }
-  .sidebar span{
+  .link{
       opacity: 1;
       display: block;
   }
   .card{
-      width: 15rem;
+      width: 17rem;
   }
+  .chart{
+          width: 53rem;
+      }
  
  
  
@@ -232,13 +235,20 @@ body{
     overflow-x: hidden;
     padding-top: 3px;
   }
-  .sidebar span{
+  .link{
       opacity: 1;
       display: block;
   }
   .card{
       width: 18rem;
   }
+  .chart{
+          width: 35rem;
+      }
+      .chart-container{
+          margin-left: 53px;
+      }
+  
  
 
   }
@@ -279,6 +289,7 @@ body{
   .transition{
     transition: width 6s, transform 6s;
   }
+ 
   </style>
   </head>
   <body>
@@ -475,7 +486,7 @@ body{
             </div>
 
 
-             <div class=" d-md-flex flex-wrap gap-3 justify-content-center">
+             <div class="chart-container d-lg-flex flex-wrap gap-3 ">
 
                 <div class="chart shadow mt-3" >
                     <div class="chartBox">
@@ -707,10 +718,10 @@ body{
     </div> -->
    
   <script>
-      let right = document.querySelector('.bi-chevron-bar-right')
       let list = document.querySelector('.list');
-      let span = document.querySelector('.sidebar span')
-      let sidebar = document.querySelector('.sidebar')
+      let spans = document.querySelectorAll('.link')
+      let sidebar = document.querySelector('.sidebar');
+
       if(window.innerWidth > 768){
         list.style.display = 'none'
     } else {
@@ -721,9 +732,13 @@ body{
           sidebar.classList.toggle('addStyles');
           if(!list.classList.contains('rotate')){
               list.style.left = '70px'
-            } else if(list.classList.contains('rotate')){
-
-                list.style.left = '190px'
+            } 
+            else if(list.classList.contains('rotate')){
+                list.style.left = '190px';
+                [...spans].map(link => {
+                link.classList.add('link')
+                })
+            
             }
         
         })
