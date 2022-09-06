@@ -343,7 +343,7 @@ function cinetpayAPI() {
 }
 
 // Checkout API
-function checkout(api, site, amount) {
+function checkout(api, site, am, ount) {
   //TRANSACTION_ID
   var transaction = "Icarus-" + Math.floor(Math.random() * 10000000).toString();
   console.log("MY ORDER ID", transaction);
