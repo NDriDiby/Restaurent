@@ -203,9 +203,9 @@
                         <td scope="row">{{item.name}}</td>
                         <td>{{item.category}}</td>
                         <td> <span class="badge bg-success">{{item.prix}}</span></td>
-                        <td class="add">{{item.accompagnement.all|join:','}} <span ><i style="color:chocolate;font-size:18px" data-bs-toggle="modal" data-bs-target="#addAccomp" class="bi bi-plus-square mr-3 btn add-accomp"></i></span> </td>
-                        <td class="add">{{item.supplement_set.all|join:','}}</td>
-                        <td class="add">{{item.itemchoices_set.all|join:','}}</td>
+                        <td class="add">{{item.accompagnement.all|join:','}} <span ><i style="color:chocolate;font-size:15px" data-item="{{item.id}}" id="add_new_accomp" data-bs-toggle="modal" data-bs-target="#addAccompAjax-old" class="bi bi-plus-square mr-2 btn add-accomp"></i></span> </td>
+                        <td class="add">{{item.supplement_set.all|join:','}}<span ><i style="color:chocolate;font-size:15px" data-item="{{item.id}}" id="add_new_sup" data-bs-toggle="modal" data-bs-target="#addSupAjax-old" class="bi bi-plus-square mr-2 btn add-sup"></i></span></td>
+                        <td class="add">{{item.itemchoices_set.all|join:','}}<span ><i style="color:chocolate;font-size:15px" data-item="{{item.id}}" id="" data-bs-toggle="modal" data-bs-target="#addOpt" class="bi bi-plus-square mr-2 btn add-opt-btn"></i></span></td>
                         <td class="p-0 mt-0">
                         <form  method="POST">
                         <p data-delete="{{item.id}}" data-item_name="{{item.name}}" style="font-size: 10px;" class="btn btn-outline-danger delete-recette mt-1 mb-1"><i style="font-size: 15px;" class="bi bi-trash"></i></p>
@@ -258,14 +258,15 @@
                         <fieldset class="mt-2" >
                           <legend><span style="color: chocolate; font-weight:bold">ETAPE 2:</span> Recette</legend>
                       <div class="col-12 mb-2">
-                      <label for="inputPassword4" class="form-label">Nom</label>
-                      {{form.name}}
-                      </div>
+                        <div class="col-12 mt-3">
+                          <label for="inputPassword4" class="form-label">Name</label>
+                          <input class = 'form-control form-control-lg' type="text" name="prod_name"  required="true" id="prod_name">
+                        </div>
           
-                      <div class="col-12 mb-2">
-                      <label for="inputPassword4" class="form-label">Prix</label>
-                      {{form.prix}}
-                      </div>
+                        <div class="col-12 mt-3">
+                          <label for="inputPassword4" class="form-label">Prix</label>
+                          <input class = 'form-control form-control-lg' type="number" name="prod_prix"  value="0" required="true" id="prod_prix">
+                        </div>
           
 
                       <div class="col-12 mb-2">
@@ -276,7 +277,7 @@
 
                       <div class="col-12 mt-3">
                           <label for="inputPassword4" class="form-label">Image</label>
-                          {{form.img}}
+                          <input type="file" class = 'form-control form-control-lg' accept="images/*" required="true" id="myFile" name="prod_img">
                       </div>
                       </fieldset>
 
@@ -284,7 +285,7 @@
                       <fieldset class="mt-3">
                         <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
                     
-                        <div class="col-12 mt-3">
+                        <div class="col-12 mt-3 accomp-item-add">
                             <label for="inputPassword4" class="form-label">Accompagement</label>
                             {{form.accompagnement}}
                             <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
@@ -298,6 +299,18 @@
                       </fieldset>
 
 
+                      <fieldset class="mt-3">
+                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
+                    
+                        <div class="col-12 mt-3 sup-item-add">
+                            <label for="inputPassword4" class="form-label">Supplement</label>
+                            {{form.supplement}}
+                            <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                          <button data-bs-toggle="modal" data-bs-target="#new_sup" class="btn btn-outline-success"> Ajouter un nouveau supplement </button>
+                        </div> 
 
                 </div>
                 <div class="modal-footer">
@@ -311,7 +324,7 @@
       <!-- Modal ADD ITEM -->
 
 
-              <!-- Modal ADD CAT -->
+    <!-- Modal ADD CAT -->
 <div class="modal fade" id="new_cat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -320,20 +333,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="." method="POST">
-          {% csrf_token %}
-            <fieldset>
-              <legend><span style="color: chocolate; font-weight:bold">ETAPE 1:</span> Nouvelle Category</legend>
-          
-              <div class="col-12 mt-3">
+        <form id="add-cat-form" action="." method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+              <fieldset>
+                <legend><span style="color: chocolate; font-weight:bold">ETAPE 1:</span> Nouvelle Category</legend>
+            
+                <div class="col-12 mt-3">
                   <label for="inputPassword4" class="form-label">Nom</label>
-                  {{form_cat.name}}
+                  <input class = 'form-control form-control-lg' type="text" name="cat_name"  required="true" id="cat_name">
               </div>
-            </fieldset>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
-            <button  type="submit" class="completedbtn" >Ajouter</button>
+              </fieldset>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+              <button  type="submit" class="completedbtn " >Ajouter</button>
       </form>
       </div>
     </div>
@@ -342,7 +355,7 @@
   <!-- Modal ADD CAT -->
 
 
-                <!-- Modal ADD ACCOMP -->
+<!-- Modal ADD ACCOMP -->
 <div class="modal fade" id="new_accomp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -357,13 +370,13 @@
               <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
           
               <div class="col-12 mt-3">
-                  <label for="inputPassword4" class="form-label">Nom</label>
-                  {{form_accomp.name}}
+                <label for="inputPassword4" class="form-label">Name</label>
+                <input class = 'form-control form-control-lg' type="text" name="accomp_name" value="0" required="true" id="sup_prix">
               </div>
 
               <div class="col-12 mt-3">
                 <label for="inputPassword4" class="form-label">Prix</label>
-                {{form_accomp.prix}}
+                <input class = 'form-control form-control-lg' type="number" name="accomp_prix" value="0" required="true" id="sup_prix">
               </div>
 
 
@@ -376,7 +389,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
-            <button  type="submit" class="completedbtn" >Ajouter</button>
+            <button  type="submit" class="completedbtn add-accomp" >Ajouter</button>
       </form>
       </div>
     </div>
@@ -385,148 +398,297 @@
  <!-- Modal ADD ACCOMP -->
 
 
-        <!-- Modal ADD ITEM -->
-        <!-- <div class="modal fade" id="addItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Modal ADD SUP-->
+ <div class="modal fade" id="new_sup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
+          
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Nom</label>
+                  <input class = 'form-control form-control-lg' type="text" name="sup_name" required="true" id="sup_name">
+              </div>
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Prix</label>
+                <input class = 'form-control form-control-lg' type="number" name="sup_prix" value="0" required="true" id="sup_prix">
+              </div>
+
+
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+            <button  type="submit" class="completedbtn add-accomp" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Modal ADD SUP-->
+
+
+
+
+<!--ACCOMP OLD django channel -->
+<div class="modal fade" id="addAccompAjax-old" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              
+             <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Accompagement</label>
+                {{form.accompagnement}}
+                <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
             </div>
-            <div class="modal-body">
+
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addAccompAjax">
+              Ajouter un nouvel accompagement
+            </button>
+          
+
+            </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id ='add-accomp-ajax-old' data-action="accomp"  type="submit" class="completedbtn" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ACCOMP OLD django channel -->
+
+<!-- AJAX ACCOMP NEW -->
+<div class="modal fade" id="addAccompAjax" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              <legend><span style="color: chocolate; font-weight:bold"></span>Accompagement</legend>
+          
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Name</label>
+                <input class = 'form-control form-control-lg' type="text"  required="true" id="accomp_name">
+              </div>
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Prix</label>
+                <input class = 'form-control form-control-lg' type="number"  value="0" required="true" id="accomp_prix">
+              </div>
+
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Image</label>
+                <input type="file" class = 'form-control form-control-lg' accept="images/*" required="true"  id="accomp_img">
+            </div>
+
+            </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id ='add-accomp-ajax' data-action="accomp"  type="submit" class="completedbtn" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- AJAX ACCOMP NEW -->
+
+
+
+<!--SUP OLD django channel -->
+<div class="modal fade" id="addSupAjax-old" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              
+             <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Supplement</label>
+                {{form.supplement}}
+                <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+            </div>
+
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addSupAjax">
+              Ajouter un nouveau supplement
+            </button>
+          
+
+            </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id ='add-sup-ajax-old' data-action="sup"  type="submit" class="completedbtn" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SUP OLD django channel -->
+
+
+
+
+<!-- AJAX SUP NEW -->
+<div class="modal fade" id="addSupAjax" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              <legend><span style="color: chocolate; font-weight:bold"></span>Supplement</legend>
+          
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Name</label>
+                <input class = 'form-control form-control-lg' type="text"  required="true" id="sup_name_ajax">
+              </div>
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Prix</label>
+                <input class = 'form-control form-control-lg' type="number"  value="0" required="true" id="sup_prix_ajax">
+              </div>
+
+            </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id ='add-sup-ajax' data-action="sup"  type="submit" class="completedbtn" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- AJAX SUP NEW -->
+
+
+
+<!-- OPTION CAT-->
+<div class="modal fade" id="addOptCat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              <legend><span style="color: chocolate; font-weight:bold"></span>Option</legend>
+          
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Option Category Name</label>
+               {{form_opt_cat.name}}
+              </div>
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Recette</label>
+                {{form_opt_cat.item}}
+              </div>
+
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Multiple Choice</label>
+                {{form_opt_cat.multiple_choice}}
+              </div>
 
             
-        
-                    <fieldset>
-                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 2:</span> Recette</legend>
-                    <div class="col-12 mb-2">
-                    <label for="inputPassword4" class="form-label">Nom</label>
-                    {{form.name}}
-                    </div>
-        
-                    <div class="col-12 mb-2">
-                    <label for="inputPassword4" class="form-label">Prix</label>
-                    {{form.prix}}
-                    </div>
-        
-
-                    <div class="col-12 mb-2">
-                    <label for="inputPassword4" class="form-label">Description</label>
-                    {{form.description}}
-                    </div>
-
-
-                    <div class="col-12 mt-3">
-                        <label for="inputPassword4" class="form-label">Image</label>
-                        {{form.img}}
-                    </div>
-                    </fieldset>
-
-            </div>
-            <div class="modal-footer">
-                <button data-bs-toggle="modal" data-bs-target="#addCategory" class ='completedbtn btn-success'>Retour</button>
-                <button id="add-item-form" data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Suivant</button>
-        
-            </div>
-            </div>
-        </div>
-        </div> -->
-        <!-- END Modal ADD ITEM -->
+            </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id ='add-sup-ajax' data-action="sup"  type="submit" class="completedbtn" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- OPTION CAT-->
 
 
 
+<!-- OPTION-->
+<div class="modal fade" id="addOpt" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            <fieldset>
+              <legend><span style="color: chocolate; font-weight:bold"></span>Option</legend>
+          
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Name</label>
+                <input class = 'form-control form-control-lg' type="text" name="opt_name"  required="true" id="opt_name">
+              </div>
+
+              <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Option category</label>
+                {{form_opt.choice_category}}
+              </div>
+
+              <button type="button" class="btn btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#addOptCat">
+                Ajouter une nouvelle option category
+              </button>
+
+
+              <div class="col-12 mt-3 opt-name-add">
+                <label for="inputPassword4" class="form-label">Recette</label>
+                {{form_opt.parent_food}}
+              </div>
+
+            </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Abandonner</button>
+          <button id ='add-opt' data-action="opt"  type="submit" class="completedbtn" >Ajouter</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- OPTION-->
 
 
 
-        <!-- Modal ADD ACCOMP -->
-        <div class="modal fade" id="addAccomp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form action="." method="POST">
-                    {% csrf_token %}
-                    <fieldset>
-                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
-                    
-                        <div class="col-12 mt-3">
-                            <label for="inputPassword4" class="form-label">Accompagement</label>
-                            {{form.accompagnement}}
-                            <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
-                        </div>
 
-                  <!-- <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
-                    <div class="col-12 mt-1">
-                        {{form_acc}}
-                    </div>  -->
-
-                    <label>Ajouter un nouvel accompagement</label>
-
-                    <div class="col-12 mt-3">
-                      <label for="inputPassword4" class="form-label">Accompagement 1</label>
-                      <input type="text" name="new-accomp-name" class="form-control form-control-lg" maxlength="50" id="new-accomp-name">
-                  </div> 
-
-                  <div class="col-12 mt-3">
-                    <label for="inputPassword4" class="form-label">Accompagement 2</label>
-                    <input type="text" name="new-accomp-name" class="form-control form-control-lg" maxlength="50" id="new-accomp-name">
-                </div> 
-        
-                        
-                    </fieldset>
-                
-                </div>
-                <div class="modal-footer">
-                <button id="add-item-form" type="button" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addItem">Abandonner</button>
-                <button id="add-accomp-form" type="submit" class="completedbtn" data-bs-toggle="modal" data-bs-target="#addSup">Ajouter</button>
-              </form>
-                </div>
-            </div>
-            </div>
-        </div>
-        <!-- Modal ADD ACCOMP -->
-
-
-        <!-- Modal ADD SUP -->
-        <!-- <div class="modal fade" id="addSup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-        
-                    <fieldset>
-                        <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
-                    
-                        <div class="col-12 mt-3">
-                            <label for="inputPassword4" class="form-label">Supplement</label>
-                            {{form.supplement}}
-                            <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
-                        </div>
-
-                    <div class="col-12 mt-3">
-                        <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
-                        {{form_cat}}
-                    </div> 
-        
-                        
-                    </fieldset>
-                
-                </div>
-                <div class="modal-footer">
-                    <button data-bs-toggle="modal" data-bs-target="#addAccomp" class ='completedbtn btn-success'>Retour</button>
-                    <button id="create-recette" type="submit" class="completedbtn" >Creer recette</button>
-                </div>
-            </div>
-            </div>
-        </div> -->
-
-<!-- Modal ADD SUP -->
 
 
 

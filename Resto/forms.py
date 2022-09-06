@@ -1,7 +1,8 @@
 from unicodedata import category
+from xmlrpc.client import Boolean
 from django import forms
 from django.db import models
-from django.forms import ImageField, ModelForm
+from django.forms import BooleanField, ImageField, ModelForm
 from django.db.models import fields
 from django.db.models.fields import DateTimeField
 from .forms import models
@@ -93,7 +94,7 @@ class AddSupplementForm(forms.ModelForm):
       exclude = ['img','item']
       
    widgets = {
-            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+           'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
             'prix': NumberInput(attrs={'type': 'number','class':'form-control form-control-lg'}),
             }
       
@@ -103,6 +104,7 @@ class AddItem(forms.ModelForm):
    
    supplement = forms.ModelMultipleChoiceField(queryset=Supplement.objects.all(),required=False, 
                                                widget=forms.SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}))
+   
    option_category = forms.ModelChoiceField(queryset= ItemChoiceCategory.objects.all(),required=False,
                                            widget=forms.Select(attrs={'type': 'option','class':'form-control form-control-lg category'}) )
    class Meta:
@@ -124,7 +126,7 @@ class AddMenu(forms.ModelForm):
       fields = ['name']
       
       widgets = {
-            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+            'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg cat'}),
            
         }
       
@@ -139,4 +141,28 @@ class AddAccompForm(forms.ModelForm):
             'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
              'prix': NumberInput(attrs={'type': 'number','class':'form-control form-control-lg'}),
         }
-        
+
+
+
+class AddOptionCategoryForm(forms.ModelForm):
+   
+   class Meta: 
+      model = ItemChoiceCategory
+      fields = ['name', 'item'  ,'multiple_choice']
+      
+      widgets = {
+               'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               'item': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               }
+      
+
+class AddOptionForm(forms.ModelForm):
+   class Meta: 
+      model = ItemChoices
+      exclude =['prix','description']
+      
+      widgets = {
+               'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               'choice_category':Select(attrs={'type': 'text','class':'form-control form-control-lg',}),
+               'parent_food': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               }

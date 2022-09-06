@@ -2,7 +2,7 @@ import json
 from asgiref.sync import async_to_sync
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import WebsocketConsumer,AsyncWebsocketConsumer
-from . models import Order
+from . models import Order,Item,Accompagnement, Supplement
 from datetime import datetime,timedelta,time
 from django.utils import timezone
 from channels.db import database_sync_to_async
@@ -52,14 +52,10 @@ class SendOrderToKitchen(WebsocketConsumer):
         
         
         
-        
-        
     #  Send message to client
-   
+  
     def order_status(self, event):
         message = event['message']
-        
-       
         
         #Uncompleted Order
         uncompleted_order =  Order.objects.filter(status='Sent',date_ordered__date = today).order_by('date_ordered')
@@ -140,6 +136,122 @@ class SendOrderToKitchen(WebsocketConsumer):
             'type':'order_sent',
             'uncompleted_order': list(uncompleted)
         }))
+        
+    
+    
+    
+        
+        
+        
+class Recette(WebsocketConsumer):
+    def connect(self):
+        
+        self.room_group_name = 'recette'
+        
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+       
+        self.accept()
+        
+         # Send message to WebSocket
+        self.send(text_data=json.dumps({
+            'message': self.room_group_name 
+        }))
+        
+  
+    def disconnect(self, close_code):
+         # Leave room group
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+        
+  
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        action = text_data_json['action']
+        item = text_data_json['item']
+        
+        
+        # Message from client
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {  'type': 'update_recette',
+                'message': message,
+                'action':action,
+                'item':item
+                
+            }
+        )
+        print('Client said:',text_data_json)
+        
+        
+        
+    #  Send message to client
+    def update_recette(self, event):
+        my_id = event['message']
+        action = event['action']
+        item = event['item']
+        message = event['message']
+        
+        if action == 'accomp':
+            my_item = Item.objects.get(id=item)
+            my_accomp = Accompagnement.objects.filter(id__in=my_id)
+            for acc in my_accomp:
+                if acc.id in [a.id for a in my_item.accompagnement.all()]:
+                    # Send message to Client
+                    self.send(text_data=json.dumps({
+                        'message': my_id,
+                        'action':action,
+                        'item':item,
+                        'info':'error',
+                    }))
+                else:
+                    my_item.accompagnement.add(*tuple(my_accomp))
+                    my_item.save()
+                    # Send message to Client
+                    self.send(text_data=json.dumps({
+                        'message': my_id,
+                        'action':action,
+                        'item':item,
+                        'info':'success',
+                    }))
+                    
+                    
+        if action =='sup':
+            my_item = Item.objects.get(id=item)
+            my_sup = Supplement.objects.filter(id__in=my_id)
+            my_sup_id = [x.id for x in my_sup]
+            sup_id = [x.id for x in my_item.supplement_set.all()]
+            for s in my_sup_id:
+                print('s',s)
+                if s in sup_id:
+                    self.send(text_data=json.dumps({
+                    'message': my_id,
+                        'action':action,
+                        'item':item,
+                        'info':'error',
+                    }))
+                else:
+                    my_item.supplement_set.add(*tuple(my_sup_id))
+                    self.send(text_data=json.dumps({
+                            'message': my_id,
+                            'action':action,
+                            'item':item,
+                            'info':'success',
+                        }))
+                
+                    
+                
+    
+    
+    
+        
+        
         
         
         
