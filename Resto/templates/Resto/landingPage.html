@@ -7,9 +7,18 @@
     border-right: 799px solid #d2691e;
     border-top: 900px solid white;
 }
+.intro{
+  padding-top: 20px;
+}
+
+.btn-modal{
+    width: 300px;
+    left: 40px;
+  }
 
 
-@media screen and (max-width: 414px) {
+
+@media screen and (min-width: 390px) {
   
     .intro{
       padding-top: 0px;
@@ -29,21 +38,46 @@
 
 
 }
+@media screen and (min-width: 414px) {
+  
+    .intro{
+      padding-top: 30px;
+      padding-bottom: 5px;
+    }
+    .btn-modal{
+    width: 300px;
+    left: 57px;
+  }
+  .slider-indicators{
+    top: 360px;
+  }
+  .courasel-image{
+    height: 280px;
+    width: 320px;
+  }
+
+
+}
 @media screen and (min-width: 768px) {
     .rec{
     border-right: 1300px solid #d2691e;
     border-top: 980px solid white;
     } 
     .slider-indicators{
-      margin-top: 20px;
+      margin-top: 40px;
     }
     .intro{
       padding-top: 90px;
       padding-bottom: 10px;
     }
     .btn-modal{
-  width: 753px;
+  width: 600px;
+  left: 85px;
   height: 80px;
+}
+.courasel-image{
+  width: 600px;
+  height: 400px;
 }
 
 }
@@ -58,7 +92,8 @@
       font-size: 40px;
   }
 .btn-modal{
-  width: 805px;
+  width: 600px;
+  left: 110px;
   height: 80px;
   }
   .courasel-image{
@@ -84,12 +119,12 @@
 .intro{
       padding-top: 290px;
       padding-bottom: 50px;
-      font-size: 40px;
+      font-size: 50px;
   }
 .btn-modal{
   width: 805px;
   height: 80px;
-  left: 95px;
+  left: 110px;
   }
   .courasel-wrapper{
     height: 100px;
@@ -256,7 +291,7 @@
  <!-- VIEW ORDER -->
  {% if order %}
 <div class="btn-modal-parent relative">
-  <button class="btn-modal z-50 animate-bounce fixed bottom-0 mb-2 left-0 w-40 h-14 text-xl font-bold rounded-full text-black bg-white focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
+  <button class="btn-modal z-50 animate-bounce fixed bottom-0 mb-2 w-40 h-14 text-xl font-bold rounded-full text-black bg-white focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 see_order" type="button" data-modal-toggle="small-modal">
     <p class="font-bold">Ma Commande</p>
     </button>
 </div>
