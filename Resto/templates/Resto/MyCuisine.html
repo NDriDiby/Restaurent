@@ -61,13 +61,13 @@
 
       .nav-item {
         font-size: 20px;
-        padding: 7px;
+    
       }
 
       .nav-item-title {
         font-size: 31px;
         color: chocolate;
-        padding: 4px;
+
        
       }
 
@@ -88,13 +88,68 @@
         border-color: #34487a !important;
     }
 
+    @media screen and (min-width:768px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 15px;
+       
+      }
+
+      .nav-item-title {
+        font-size: 31px;
+        color: chocolate;
+       
+      }
+
+      #CommandeIncompletes{
+        padding-top: 90px;
+      }
+      
+    }
+
+    @media screen and (min-width:1024px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 23px;
+       
+      }
+
+      
+    }
+
+
+    @media screen and (min-width:912px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 19px;
+       
+      }
+
+      
+    }
+
 
   
     </style>
 
     <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
       <div class="container-fluid">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav flex align-items-center">
           <a class="navbar-brand nav-item-title" style="color: chocolate" href="#">
             <span style="font-size: 30px"> <i class="fas fa-utensils p-2"></i>
             Ma Cuisine
@@ -118,7 +173,7 @@
   <div class="container-fluid">
 
     <!-- INCOMPLETE ORDER -->
-    <div id="Commande Incompletes" class="container-fluid" style="padding: 100px 20px">
+    <div id="Commande Incompletes" class="container-fluid" style="padding-top: 110px">
       <h3 style="color: chocolate"> Commande Incompletes <span class="bg-danger badge" id="total_uncompleted_order"> {{uncompleted_order.count}}</span></h3>
       <small class="lead" style="color: #34487a;">Samedi, 20 August 2022</small>
 
@@ -128,7 +183,7 @@
     </div>
 
     <!-- INCOMPLETE ORDER -->
-    <div id="section2" class="container-fluid" style="padding: 10px 20px">
+    <div id="section2" class="container-fluid" style="padding-top: 110px">
           <!--accordion -->
       <div class="accordion border border-2 border-success shadow"  id="accordionExample">
         <div class="accordion-item">

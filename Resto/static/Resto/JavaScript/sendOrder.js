@@ -295,6 +295,7 @@ function verifyPaiement(api, site, transaction) {
 
 //Record payment to DataBase
 function processPaiement(pay_data, transaction) {
+  var orderID = $("#order_id").val();
   $.ajax({
     url: "/process_transaction/",
     method: "POST",
@@ -312,6 +313,7 @@ function processPaiement(pay_data, transaction) {
       transactionID: transaction,
       status: status_res,
       payment_method: payment_method,
+      orderID: orderID,
     },
     dataType: "json",
     success: function (response) {

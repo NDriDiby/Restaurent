@@ -148,11 +148,11 @@ class AddOptionCategoryForm(forms.ModelForm):
    
    class Meta: 
       model = ItemChoiceCategory
-      fields = ['name', 'item'  ,'multiple_choice']
+      fields = ['name','multiple_choice']
       
       widgets = {
                'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
-               'item': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               # 'item': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
                }
       
 

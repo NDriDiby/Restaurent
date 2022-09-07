@@ -51,13 +51,13 @@
 
       .nav-item {
         font-size: 20px;
-        padding: 7px;
+       
       }
 
       .nav-item-title {
         font-size: 31px;
         color: chocolate;
-        padding: 4px;
+       
        
       }
 
@@ -126,11 +126,72 @@
     .add{
       cursor: pointer;
     }
+
+    @media screen and (min-width:768px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 16px;
+       
+      }
+
+      .nav-item-title {
+        font-size: 31px;
+        color: chocolate;
+       
+      }
+
+      #CommandeIncompletes{
+        padding-top: 90px;
+      }
+      
+    }
+
+
+    @media screen and (min-width:1024px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 24px;
+       
+      }
+
+      
+    }
+
+    @media screen and (min-width:912px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 23px;
+       
+      }
+
+      
+    }
+    
+
+
+   
+
+
     </style>
 
     <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
       <div class="container-fluid">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav flex align-items-center">
           <a class="navbar-brand nav-item-title" style="color: chocolate" href="#">
             <span style="font-size: 30px"> <i class="fas fa-utensils p-2"></i>
             Mes Recettes
@@ -148,15 +209,14 @@
             <a class="nav-link" href="{% url 'cuisine-texasgrillz' %}">Ma Cuisine</a>
           </li>
          
-
         </ul>
       </div>
     </nav>
 
-  <div class="container-fluid">
+  <div class="container-fluid all-items">
 
     <!-- INCOMPLETE ORDER -->
-    <div id="CommandeIncompletes" class="container-fluid" style="padding: 80px 20px">
+    <div id="CommandeIncompletes" class="container-fluid" style="padding-top: 110px;">
   
         {% if items %}
               <h3 style="color: chocolate"> Recettes <span class="bg-success badge" id="total_uncompleted_order"> {{items.count}}</span></h3>

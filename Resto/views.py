@@ -1496,9 +1496,14 @@ def Recette(request):
            recette = opt_recette.split(',')
            recette_id = [int(x) for x in recette]
            print(recette_id)
-           re = ItemChoiceCategory.objects.get(id = opt_cat)
+           opt_cat_name = ItemChoiceCategory.objects.get(id = opt_cat)
+           opt_cat_name = opt_cat_name.name
+           print('Catname:',opt_cat_name)
+           re = ItemChoiceCategory.objects.get(
+                id = opt_cat)
+           re.item.set(recette_id)
+           re.save()
 
-        
            add_opt = ItemChoices.objects.create(
                name =  option_name,
                choice_category = re,
@@ -1509,9 +1514,6 @@ def Recette(request):
            
            
            
-           
-           
-          
            return JsonResponse({'message_'+action: 'added'})
        
        
@@ -1695,6 +1697,7 @@ def ProcessTransaction(request):
         
         #Transaction info
         amount = request.POST.get('amount')
+        orderID = request.POST.get('orderID')
         currency = request.POST.get('currency')
         description = request.POST.get('description')
         operator_id = request.POST.get('operator_id')
@@ -1708,7 +1711,7 @@ def ProcessTransaction(request):
         # date = request.POST.get('date')
         
         
-        print('working fine, just ckecking',[user,payment_method,
+        print('working fine, just ckecking',[user, orderID,payment_method,
         amount,currency,description,operator_id,
         payment_date,status,transactionID])
         
@@ -1716,6 +1719,7 @@ def ProcessTransaction(request):
         #Record Transaction
         record_trans,created = Transactions.objects.get_or_create(
         user = user,
+        order = orderID,
         amount =  amount,
         currency =  currency ,
         description =  description,

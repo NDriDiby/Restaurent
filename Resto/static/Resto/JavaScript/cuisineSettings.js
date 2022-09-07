@@ -310,10 +310,11 @@ add_sup_ajax_btn_old.addEventListener("click", (e) => {
 });
 
 // OPTION;
-var add_sup_ajax = document.getElementsByClassName("add-sup");
+var add_opt_ajax = document.getElementsByClassName("add-sup");
 for (let i = 0; i < add_sup_ajax.length; i++) {
   add_sup_ajax[i].addEventListener("click", () => {
-    $(".add-opt-btn").empty();
+    itemID = add_opt_ajax[i].dataset.item;
+    localStorage.setItem("itemID", itemID);
   });
 }
 
