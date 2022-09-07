@@ -16,6 +16,7 @@ urlpatterns = [
     path('texasgrillz/deleteitem/',views.DeleteItem, name='delete_item-texasgrillz'),#Backend process
     path('texasgrillz/deleteorderitem/',views.DeleteOrderItem, name='delete_order_item-texasgrillz'),
     path('texasgrillz/inventory/',views.IventorySystem, name='inventory-texasgrillz'),
+    path('texasgrillz/recette/',views.Recette, name='recette-texasgrillz'),#Backend Process
     path('texasgrillz/settings/',views.CuisineSettings, name='settings-texasgrillz'),
     path('texasgrillz/GetOrderCuisine/',views.GetOrderCuisine, name='GetOrderCuisine'),
     path('texasgrillz/CompletedOrder/',views.CompletedOrder, name='completed_order'),

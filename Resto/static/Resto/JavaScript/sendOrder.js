@@ -295,6 +295,7 @@ function verifyPaiement(api, site, transaction) {
 
 //Record payment to DataBase
 function processPaiement(pay_data, transaction) {
+  var orderID = $("#order_id").val();
   $.ajax({
     url: "/process_transaction/",
     method: "POST",
@@ -312,6 +313,7 @@ function processPaiement(pay_data, transaction) {
       transactionID: transaction,
       status: status_res,
       payment_method: payment_method,
+      orderID: orderID,
     },
     dataType: "json",
     success: function (response) {
@@ -343,7 +345,7 @@ function cinetpayAPI() {
 }
 
 // Checkout API
-function checkout(api, site, amount) {
+function checkout(api, site, am, ount) {
   //TRANSACTION_ID
   var transaction = "Icarus-" + Math.floor(Math.random() * 10000000).toString();
   console.log("MY ORDER ID", transaction);

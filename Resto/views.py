@@ -3,16 +3,17 @@ from cgitb import text
 from itertools import count
 from multiprocessing import context
 import re
+from xxlimited import new
 import asgiref
 from django.db import reset_queries
 from django.forms import formset_factory
 from django.shortcuts import render,redirect
 from django.test import ignore_warnings
 from django.urls import is_valid_path
-from.models import (Accompagnement, Category,Customer,Item,Order,OrderItem,ItemChoices,
+from.models import (Accompagnement, Category,Customer,Item, ItemChoiceCategory,Order,OrderItem,ItemChoices,
                     IventoryItem,IventoryItemCategory,Transactions,SideOrderItem,Supplement)
 from django.contrib import messages
-from.forms import AddAccompForm, CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu
+from.forms import AddAccompForm, AddOptionCategoryForm, AddOptionForm, CustomerForm,ItemChoiceForm,AddProducts,AddItem,AddMenu,AddSupplementForm
 from django.contrib.auth.models import User
 import json
 from Customer.utils import track_session,order_number,get_table_number,target_app,get_month
@@ -295,16 +296,6 @@ def ItemDetails(request,item_id):
     order = None
     cartItem = 0
 
-    #Form
-    # form = ItemChoiceForm()
-    # form.base_fields['name'].queryset = ItemChoices.objects.filter(parent_food_id = item_id,choice_category__name__icontains= 'Assaisonement')
-    
-    #Choice Category
-    # assaisonement = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'assaisonement')
-    # cuisson = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'cui')
-    # ingredients = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'ingredients')
-    # eau_mineral = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'eau mineral')
-    # coca_cola_produit = ItemChoices.objects.filter(parent_food_id= item_id, choice_category__name__icontains= 'coca-cola')
     supplement = Supplement.objects.filter(item = item_id)
 
     #Get Table Number
@@ -1078,7 +1069,6 @@ def CompletedOrder(request):
                          'uncompleted_order':uncompleted_order},safe=False)
 
 
-
 #BackEnd process of Order
 def SendOrder(request):
     
@@ -1314,63 +1304,220 @@ def DeleteOrderItem(request):
 def IventorySystem(request):
     my_items =  Item.objects.all().order_by('name')
     
-    form_cat = AddMenu(request.POST or None)
-    form_accomp = AddAccompForm(request.POST or None)
-    form = AddItem(request.POST,request.FILES or None)
     
+   
+   
     if request.method == 'POST':
+        form_cat = AddMenu(request.POST,request.FILES or None)
+        form_accomp = AddAccompForm(request.POST,request.FILES or None)
+        form = AddItem(request.POST,request.FILES or None)
+        form_sup = AddSupplementForm(request.POST,request.FILES or None)
+        form_opt_cat = AddOptionCategoryForm(request.POST,request.FILES or None)
+        form_opt = AddOptionForm(request.POST,request.FILES or None)
+            
         
-        if form.is_valid():
-            product = form.cleaned_data.get('name').lower()
-
-            if product in [item.name for item in my_items]:
+        product_cat = request.POST.get('category',None)
+        product_name = request.POST.get('prod_name',None)
+        product_prix = request.POST.get('prod_prix',None)
+        product_des = request.POST.get('description',None)
+        product_img = request.FILES.get('prod_img',None)
+        product_accomp = request.POST.getlist('accompagnement',None)
+        product_sup = request.POST.getlist('supplement',None)
+        print(product_cat,product_name,product_prix,product_des,product_img,product_accomp,product_sup)
+        if product_name:
+            if product_name.lower() in [item.name.lower() for item in my_items]:
                 print('this Iitem already exit')
-                messages.info(request,f'{product} already exist')
+                messages.info(request,f'{product_name} already exist')
                 return HttpResponseRedirect(f'/texasgrillz/inventory/')
             else:
-                messages.success(request,f'{product} created')
+                prod_cat = Category.objects.get(id = product_cat)
+                prod = Item.objects.create(
+                    name = product_name,
+                    prix = product_prix,
+                    description = product_des,
+                    img = f'images/{product_img}',
+                    category = prod_cat,
+                )
+                prod.accompagnement.add(*tuple(product_accomp))
+                prod.save()
+                messages.success(request,f'{product_name} created')
                 print('I got the data')
-                form.save()
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
-        
-
-        if  form_accomp.is_valid():
-            print('I got my accomp oklm')
-            accomp = form_accomp.cleaned_data.get('name').lower()
-            if accomp in [acc.name for acc in Accompagnement.objects.all()]:
-                messages.info(request,f'{accomp} already exist')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
-            else:
-                messages.success(request,f'{accomp} created')
-                print('I got the data')
-                form_accomp.save()
                 return HttpResponseRedirect(f'/texasgrillz/inventory/')
             
-        if  form_cat.is_valid():
-            print('I got my Cat oklm')
-            category = form_cat.cleaned_data.get('name').lower()
-            if category in [cat.name for cat in Category.objects.all()]:
-                messages.info(request,f'{category} already exist')
+            
+          #Cat
+        cat_name= request.POST.get('cat_name',None)
+        if cat_name:
+            if cat_name.lower() in [c.name.lower() for c in Category.objects.all()]:
+                messages.info(request,f'{cat_name} already exist')
                 return HttpResponseRedirect(f'/texasgrillz/inventory/')
             else:
-                messages.success(request,f'{category} created')
+                cat = Category.objects.create(
+                    name = cat_name,
+                )
+                cat.save()
+                messages.success(request,f'{cat_name} created')
                 print('I got the data')
-                form_cat.save()
                 return HttpResponseRedirect(f'/texasgrillz/inventory/')
-                
+            
+         #Sup
+        sup_name= request.POST.get('sup_name',None)
+        sup_prix = request.POST.get('sup_prix',None)
+        if sup_name:
+            if sup_name.lower() in [sup.name.lower() for sup in Supplement.objects.all()]:
+                messages.info(request,f'{sup_name} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                supp = Supplement.objects.create(
+                    name = sup_name,
+                    prix = sup_prix,
+                )
+                supp.save()
+                messages.success(request,f'{sup_name} created')
+                print('I got the data')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            
+        
+        #Accomp
+        accomp_name= request.POST.get('accomp_name',None)
+        accomp_prix = request.POST.get('accomp_prix',None)
+        accomp_img = request.POST.get('img',None)
+        if accomp_name:
+            if accomp_name.lower() in [acc.name.lower() for acc in Accompagnement.objects.all()]:
+                messages.info(request,f'{accomp_name} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                acc = Accompagnement.objects.create(
+                    name = accomp_name,
+                    prix = accomp_prix,
+                    img = f'images/{accomp_img}'
+                )
+                acc.save()
+                messages.success(request,f'{accomp_name} created')
+                print('I got the data')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+        
+        
+           #Accomp
+        option_name= request.POST.get('name',None)
+        option_recette = request.POST.getlist('item',None)
+        option_multi = request.POST.get('multiple_choice',None)
+        if option_multi == 'on':
+            option_multi = True
+        else:
+             option_multi = False
+             
+        if option_name:
+            if option_name.lower() in [opt.name.lower() for opt in ItemChoiceCategory.objects.all()]:
+                messages.info(request,f'{option_name} already exist')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+            else:
+                opt_cat = ItemChoiceCategory.objects.create(
+                    name = option_name,
+                    multiple_choice = option_multi
+                )
+                opt_cat.item.add(*tuple(option_recette))
+                opt_cat.save()
+                messages.success(request,f'{option_name} created')
+                print('I got the data')
+                return HttpResponseRedirect(f'/texasgrillz/inventory/')   
+            
+            
     else:
         form = AddItem()
         form_cat = AddMenu()
         form_accomp = AddAccompForm()
+        form_sup = AddSupplementForm()
+        form_opt_cat = AddOptionCategoryForm()
+        form_opt = AddOptionForm()
 
     context = {
-        'form':AddItem,
+        'form':form,
         'form_accomp':form_accomp,
         'form_cat':form_cat,
         'items':my_items,
+        'form_sup':form_sup,
+        'form_opt_cat': form_opt_cat,
+        'form_opt':form_opt,
     }
     
     return render(request,'Resto/items_cuisine.html',context)
+
+
+
+def Recette(request):
+    
+   
+    if request.method == 'POST':
+        action = request.POST.get('action',None)
+        
+        if action == 'accomp':
+            item = request.POST.get('item',None)
+            name = request.POST.get('accomp_name',None)
+            prix = request.POST.get('accomp_prix',None)
+            img = request.POST.get('accomp_img',None)
+            
+            if name:
+                if name.lower() in [acc.name.lower() for acc in Accompagnement.objects.all()]:
+                    return JsonResponse({'message_'+action:'exist'})
+                else:
+                    new_acc = Accompagnement.objects.create(
+                        name = name,
+                        prix = prix,
+                        img = f'images/{img}')
+                    new_acc.save()
+                    my_item = Item.objects.get(id=item)
+                    my_item.accompagnement.add(new_acc)
+                    my_item.save()
+                    return JsonResponse({'message_'+action:'added'})
+        
+        if action == 'sup':
+            item = request.POST.get('item')
+            name = request.POST.get('sup_name')
+            prix = request.POST.get('sup_prix')
+            if name.lower() in [sup.name.lower() for sup in Supplement.objects.all()]:
+                return JsonResponse({'message_'+action:'exist'})
+            else:
+                my_item = Item.objects.get(id=item)
+                new_sup = Supplement.objects.create(
+                    name = name,
+                    prix = prix)
+                new_sup.item.add(my_item)
+                new_sup.save()
+            return JsonResponse({'message_'+action:'added'})
+        
+        
+        if action == 'opt':
+           option_name = request.POST.get('opt_name',None)
+           opt_cat = request.POST.get('opt_cat',None)
+           opt_recette = request.POST.get('receipe',None)
+           
+           print(option_name,opt_cat,opt_recette)
+           recette = opt_recette.split(',')
+           recette_id = [int(x) for x in recette]
+           print(recette_id)
+           opt_cat_name = ItemChoiceCategory.objects.get(id = opt_cat)
+           opt_cat_name = opt_cat_name.name
+           print('Catname:',opt_cat_name)
+           re = ItemChoiceCategory.objects.get(
+                id = opt_cat)
+           re.item.set(recette_id)
+           re.save()
+
+           add_opt = ItemChoices.objects.create(
+               name =  option_name,
+               choice_category = re,
+               prix = 0
+           )
+           add_opt.parent_food.add(*tuple(recette_id))
+           add_opt.save()
+           
+           
+           
+           return JsonResponse({'message_'+action: 'added'})
+       
+       
+    return JsonResponse({'ready for action':'?'})
 
 
 def CuisineSettings(request):
@@ -1550,6 +1697,7 @@ def ProcessTransaction(request):
         
         #Transaction info
         amount = request.POST.get('amount')
+        orderID = request.POST.get('orderID')
         currency = request.POST.get('currency')
         description = request.POST.get('description')
         operator_id = request.POST.get('operator_id')
@@ -1563,7 +1711,7 @@ def ProcessTransaction(request):
         # date = request.POST.get('date')
         
         
-        print('working fine, just ckecking',[user,payment_method,
+        print('working fine, just ckecking',[user, orderID,payment_method,
         amount,currency,description,operator_id,
         payment_date,status,transactionID])
         
@@ -1571,6 +1719,7 @@ def ProcessTransaction(request):
         #Record Transaction
         record_trans,created = Transactions.objects.get_or_create(
         user = user,
+        order = orderID,
         amount =  amount,
         currency =  currency ,
         description =  description,
@@ -1581,15 +1730,10 @@ def ProcessTransaction(request):
         payment_method =  payment_method,
         )
         
+        record_trans.save()
+        
         print('END OF TRANSACTION')
         
-        # #Create RDV
-        # if status == 'ACCEPTED':
-        #     rdv,created = rendezVous.objects.get_or_create(
-        #         user = user,
-        #         object = object,
-        #         date = date,
-        #     )
     return JsonResponse({'valider':status})
 
 def CinetPayCredential(request):

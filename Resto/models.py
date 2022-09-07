@@ -67,8 +67,6 @@ class Item(models.Model):
     accompagnement = models.ManyToManyField(Accompagnement,blank=True)
    
    
-    
-    
 
     def __str__(self):
         return self.name
