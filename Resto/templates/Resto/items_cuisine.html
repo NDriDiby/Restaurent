@@ -670,8 +670,13 @@
               <legend><span style="color: chocolate; font-weight:bold"></span>Option</legend>
           
               <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">New option Category Name</label>
+                <input oninput="newCat()"   class = 'form-control form-control-lg' type="text" name="cat_opt_name"  required="true" id="cat_opt_name">
+              </div>
+
+              <div class="col-12 mt-3">
                 <label for="inputPassword4" class="form-label">Option Category Name</label>
-               {{form_opt_cat.name}}
+               {{form_opt_cat.category_opt}}
               </div>
 
               <div class="col-12 mt-3">
@@ -715,8 +720,14 @@
               <legend><span style="color: chocolate; font-weight:bold"></span>Option</legend>
           
               <div class="col-12 mt-3">
-                <label for="inputPassword4" class="form-label">Name</label>
-                <input class = 'form-control form-control-lg' type="text" name="opt_name"  required="true" id="opt_name">
+                <label for="inputPassword4" class="form-label">New Option Name</label>
+                <input oninput="newChoice()"   class = 'form-control form-control-lg' type="text" name="opt_name"  required="true" id="opt_name">
+              </div>
+
+
+              <div class="col-12 mt-3">
+                <label  for="inputPassword4" class="form-label">Option</label>
+                {{form_opt.choice}}
               </div>
 
               <div class="col-12 mt-3">

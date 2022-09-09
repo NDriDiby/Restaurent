@@ -156,7 +156,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order,on_delete=models.SET_NULL,blank=True,null=True)
     item = models.ForeignKey(Item, on_delete=CASCADE,blank=True,null=True)
     quantity = models.IntegerField(default=0,null = True, blank = True )
-    ingredient = models.CharField(null = True, blank = True,max_length=150)
+    ingredient = models.ManyToManyField(ItemChoices, blank = True)
     accompagnememt = models.ManyToManyField(Accompagnement,blank=True)
     supplement = models.ManyToManyField(Supplement,blank=True)
     date_added = models.DateTimeField(auto_now=True)

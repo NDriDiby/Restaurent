@@ -145,18 +145,23 @@ class AddAccompForm(forms.ModelForm):
 
 
 class AddOptionCategoryForm(forms.ModelForm):
-   
+   category_opt = forms.ModelChoiceField(queryset = ItemChoiceCategory.objects.all(),
+                                     widget=Select(attrs={'type': 'text','class':'form-control form-control-lg'}),)
    class Meta: 
       model = ItemChoiceCategory
-      fields = ['name','multiple_choice']
+      fields = ['name', 'category_opt' ,'item','multiple_choice']
+      
       
       widgets = {
                'name': TextInput(attrs={'type': 'text','class':'form-control form-control-lg'}),
-               # 'item': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               'item': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
+               # 'category': Select(attrs={'type': 'text','class':'form-control form-control-lg'}),
                }
-      
+   
 
 class AddOptionForm(forms.ModelForm):
+   choice = forms.ModelChoiceField(queryset = ItemChoices.objects.all(),
+                                     widget=Select(attrs={'type': 'text','class':'form-control form-control-lg'}),)
    class Meta: 
       model = ItemChoices
       exclude =['prix','description']
@@ -166,3 +171,5 @@ class AddOptionForm(forms.ModelForm):
                'choice_category':Select(attrs={'type': 'text','class':'form-control form-control-lg',}),
                'parent_food': SelectMultiple(attrs={'type': 'text','class':'form-control form-control-lg'}),
                }
+      
+   

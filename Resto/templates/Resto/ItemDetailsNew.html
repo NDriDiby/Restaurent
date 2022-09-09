@@ -608,12 +608,15 @@
               </div>
               {% endif %}
 
-            
 
-             
+          
+
+
               <!-- ITEM CHOICE -->
               {% if items.itemchoices_set.all %}
-              {% for item in items.itemchoicecategory_set.all %}
+            
+
+              {% for item in item_cat_opt %}
 
               <div id="ingredient" class="ingredient relative mt-2">
                 
@@ -631,11 +634,15 @@
                     {% endif %}
                 
                   <h5 class=" flex items-center bg-gray-500" style="color:black;"><span
-                    class="item-cat-name">{{item.name}}</span><span
-                    class="item-cat-number">({{item.itemchoices_set.all|length}})</span>
+                    class="item-cat-name">{{item.name}}</span>
+                    <!-- <span class="item-cat-number">({{item.itemchoices_set.all|length}})</span> -->
                    </h5>
+
+
                   {% for choice in item.itemchoices_set.all  %}
 
+                  {% if choice in item_choice %}
+                  
                   {% if item.multiple_choice%}
                   <div class="ingredient-item show" id="ingredient-item">
                     <input class="ingredient-input" id="ingredient{{ingredient.id}}" type="checkbox" name="ingredient" value="{{choice.name}}">
@@ -648,9 +655,12 @@
                   </div>
                   {% endif%}
               </div>
-              {% endfor %}
-              {% endfor %}
               {% endif %}
+              {% endfor %}
+              {% endfor %}
+              {%endif%}
+             
+            
                   <!-- END ITEM CHOICE -->
 
 
@@ -728,7 +738,7 @@
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-{% if side_item %}
+<!-- {% if side_item %}
 <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Accompagement(s)</h1>
 <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
   {% for side in side_item %}
@@ -738,11 +748,12 @@
         <img class="rounded-full" src="{{side.img.url}}" alt="Cinque Terre" width="600" height="400" />
       </a>
       <div class="desc font-bold lg:text-3xl">{{side.name}}</div>
-
     </div>
     {% endfor %}
   </div>
-  {% endif %}
+</div>
+  {% endif %} -->
+
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 

@@ -168,9 +168,9 @@ function connectWebSocket() {
   // CLOSE DJANGO-CHANNELS
   sendOrderSocket.onclose = (e) => {
     console.log("Reconnecting WebSocket...");
-    // setTimeout(() => {
-    //   connectWebSocket();
-    // }, 1000);
+    setTimeout(() => {
+      connectWebSocket();
+    }, 1000);
   };
 
   // ERROR DJANGO-CHANNELS

@@ -303,14 +303,12 @@
        <!-- Accompagement -->
 
         <!-- Ingredients -->
-        {% if orderItem.ingredient %}
-              <!-- issue ~~~~~--------------------  -->
-        <h6 class="italic font-bold" style="color: rgb(209, 112, 131)">{{orderItem.ingredient}}</h6>
-              <!-- issue ~~~~~--------------------  -->
-              
-              <!-- solved ~~~~~--------------------  -->
-        <div class="italic font-bold" style="color: rgb(209, 112, 131)" id="result">lijlkjl</div>
-              <!-- solved ~~~~~--------------------  -->
+        {% if orderItem.ingredient %} 
+
+        {% for ingre in orderItem.ingredient.all  %}
+           <h6 class="italic font-bold" style="color: rgb(209, 112, 131)">{{ingre.name}}</h6>
+        {% endfor %}
+       
         {% endif %}
         <!-- Ingredients -->
 

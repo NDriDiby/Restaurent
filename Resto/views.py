@@ -334,11 +334,11 @@ def ItemDetails(request,item_id):
             print("MYCAT:",item_cat_opt)
             print("MYITEMS:",item_choice)
            
-            for x in item_cat_opt:
-                print('CAT:',x.name)
-                for c in x.itemchoices_set.all().filter(id__in = item_choice):
-                    print('CHOICE:',c)
-                print('Count:',x.itemchoices_set.all().filter(id__in = item_choice).count())
+            # for x in item_cat_opt:
+            #     print('CAT:',x.name)
+            #     for c in x.itemchoices_set.all().filter(id__in = item_choice):
+            #         print('CHOICE:',c)
+            #     print('Count:',x.itemchoices_set.all().filter(id__in = item_choice).count())
             
             
             
@@ -454,6 +454,7 @@ def UpdatedItem(request):
     choice = None
     active_orderItem = None
     order_item_exist = False
+    orderItem = None
   
     
     if request.method == 'POST':
@@ -531,8 +532,6 @@ def UpdatedItem(request):
                         orderItem.save()
                         tot_ind_item = orderItem.quantity
                         total = order.get_order_total()
-                        # my_order_item = OrderItem.objects.filter(order= order, item = item)
-                        # tot_item = [sum(x.quantity for x in my_order_item)][0]
                         tot_item = tot_ind_item
                         active_orderItem = orderItem.id
                     
@@ -980,7 +979,8 @@ def GetOrderCuisine(request):
                 }
                 
                 if all_orderitem[orderitem].ingredient:
-                    orderItem['ingredient'] = all_orderitem[orderitem].ingredient
+                    for ingre in all_orderitem[orderitem].ingredient.all():
+                        orderItem['ingredient'] = list(all_orderitem[orderitem].ingredient.values_list('name',flat = True))
                     
                 if all_orderitem[orderitem].accompagnememt:
                     for accomp in all_orderitem[orderitem].accompagnememt.all():
@@ -1044,7 +1044,8 @@ def GetOrderCuisine(request):
                 }
                 
                 if all_orderitem[orderitem].ingredient:
-                    orderItem['ingredient'] = all_orderitem[orderitem].ingredient
+                    for ingre in all_orderitem[orderitem].ingredient.all():
+                        orderItem['ingredient'] = list(all_orderitem[orderitem].ingredient.values_list('name',flat = True))
                     
                 if all_orderitem[orderitem].accompagnememt:
                     for accomp in all_orderitem[orderitem].accompagnememt.all():
@@ -1390,6 +1391,7 @@ def IventorySystem(request):
                     category = prod_cat,
                 )
                 prod.accompagnement.add(*tuple(product_accomp))
+                prod.supplement_set.add(*tuple(product_sup))
                 prod.save()
                 messages.success(request,f'{product_name} created')
                 print('I got the data')

@@ -1,41 +1,6 @@
 console.log("Setting Cuisine");
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
-var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-let url = `${ws_scheme}://${window.location.host}/ws/makeRecette/`;
-const recetteSocket = new WebSocket(url);
-
-console.log("Connecting to webSocket");
-
-// OPEN DJANGO-CHANNELS
-recetteSocket.onopen = (e) => {
-  console.log("I am connected to websocket.");
-};
-
-// MESSAGE FROM SERVER DJANGO-CHANNELS
-recetteSocket.onmessage = (e) => {
-  var data = JSON.parse(e.data);
-  console.log("Data from server:", data);
-
-  // Accomp
-  if ((data.action == "accomp") & (data.info == "error")) {
-    console.log("let me refresh the page for you");
-    instructionReload(data["info"], `Accompagement(s) exist deja`);
-  }
-  if ((data.action == "accomp") & (data.info == "success")) {
-    instructionReload(data["info"], `Accompagement(s) Ajouté(s)`);
-  }
-
-  // Supplement
-  if ((data.action == "sup") & (data.info == "error")) {
-    console.log("let me refresh the page for you");
-    instructionReload(data["info"], `Supplement(s) exist deja`);
-  }
-  if ((data.action == "sup") & (data.info == "success")) {
-    instructionReload(data["info"], `Supplement(s) Ajouté(s)`);
-  }
-};
-
 const fetchtItems = async () => {
   url = "/texasgrillz/dashBoard_data/";
   var getItem = await fetch(url);
@@ -202,33 +167,29 @@ add_accomp_ajax_btn_old.addEventListener("click", (e) => {
 
   console.log("Item-numb", accomp_id);
 
-  recetteSocket.send(
-    JSON.stringify({
-      message: accomp_id,
+  $.ajax({
+    url: "/texasgrillz/recette/",
+    method: "POST",
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+      accomps: accomp_id.toString(),
       action: action,
       item: item,
-    })
-  );
+    },
+    dataType: "json",
+    success: function (response) {
+      console.log(response);
+      if (response.message == "added") {
+        instructionReload("success", `${accomp_id} Ajouter`);
+      } else {
+        instructionReload("error", `${accomp_id} Exist deja`);
+      }
+    },
 
-  // $.ajax({
-  //   url: "/texasgrillz/recette/",
-  //   method: "POST",
-  //   data: {
-  //     csrfmiddlewaretoken: csrfToken,
-  //     accomps: [1, 2, 3, 4, 5],
-  //     action: action,
-  //     item: item,
-  //   },
-  //   dataType: "json",
-  //   success: function (response) {
-  //     console.log(response);
-  //     instructionReload("success", `${accomp_id} Ajouter`);
-  //   },
-
-  //   error: function (error) {
-  //     console.log(error);
-  //   },
-  // });
+    error: function (error) {
+      console.log(error);
+    },
+  });
 
   localStorage.removeItem("ItemID");
   $(".accomp-item-add").append(`
@@ -272,7 +233,11 @@ add_sup_ajax_btn.addEventListener("click", (e) => {
     dataType: "json",
     success: function (response) {
       console.log(response);
-      instructionReload("success", `${sup_name} Ajouter`);
+      if (response.message == "added") {
+        instructionReload("success", `${accomp_id} Ajouter`);
+      } else {
+        instructionReload("error", `${accomp_id} Exist deja`);
+      }
     },
 
     error: function (error) {
@@ -293,13 +258,29 @@ add_sup_ajax_btn_old.addEventListener("click", (e) => {
 
   console.log("Item-numb", sup_id);
 
-  recetteSocket.send(
-    JSON.stringify({
-      message: sup_id,
+  $.ajax({
+    url: "/texasgrillz/recette/",
+    method: "POST",
+    data: {
+      csrfmiddlewaretoken: csrfToken,
+      sups: sup_id.toString(),
       action: action,
       item: item,
-    })
-  );
+    },
+    dataType: "json",
+    success: function (response) {
+      console.log(response);
+      if (response.message == "added") {
+        instructionReload("success", `${sup_id} Ajouter`);
+      } else {
+        instructionReload("error", `${sup_id} Exist deja`);
+      }
+    },
+
+    error: function (error) {
+      console.log(error);
+    },
+  });
 
   localStorage.removeItem("ItemID");
   $(".sup-item-add").append(`
@@ -326,17 +307,18 @@ add_opt_btn.addEventListener("click", (e) => {
   var opt_name = $("#opt_name").val();
   var opt_cat = $("#id_choice_category").val();
   var receipe = $("#id_parent_food").val();
+  var old_choice = $("#id_choice").val();
+
+  console.log(opt_name, old_choice);
 
   data = {
     opt_name: opt_name,
     opt_cat: opt_cat,
     receipe: receipe.toString(),
     action: action,
+    old_choice: old_choice,
     csrfmiddlewaretoken: csrfToken,
   };
-
-  console.log(opt_name, action);
-  console.log(opt_cat, receipe);
 
   $.ajax({
     url: "/texasgrillz/recette/",
@@ -345,7 +327,11 @@ add_opt_btn.addEventListener("click", (e) => {
     dataType: "json",
     success: function (response) {
       console.log(response);
-      instructionReload("success", `${accomp_name} Ajouter`);
+      if (response.message == "added") {
+        instructionReload("success", `${response.choice} Ajouter`);
+      } else {
+        instructionReload("error", `${response.choice} Exist deja`);
+      }
     },
 
     error: function (error) {
@@ -355,3 +341,45 @@ add_opt_btn.addEventListener("click", (e) => {
 
   console.log("Let me add option");
 });
+
+// OPTION CAT
+old_cat_choice = document.getElementById("id_category_opt");
+old_cat_choice.addEventListener("change", () => {
+  console.log(old_cat_choice.value.length > 0);
+  if (old_cat_choice.value.length > 0) {
+    $("#cat_opt_name").attr("disabled", true);
+    console.log(old_cat_choice.value);
+  } else {
+    $("#cat_opt_name").removeAttr("disabled");
+  }
+});
+function newCat() {
+  var x = document.getElementById("cat_opt_name").value;
+
+  if (x != "") {
+    $("#id_category_opt").attr("disabled", true);
+  } else {
+    $("#id_category_opt").removeAttr("disabled");
+  }
+}
+
+// Option Choices
+old_choice = document.getElementById("id_choice");
+old_choice.addEventListener("change", () => {
+  console.log(old_cat_choice.value.length > 0);
+  if (old_choice.value.length > 0) {
+    $("#opt_name").attr("disabled", true);
+    console.log(old_choice.value);
+  } else {
+    $("#opt_name").removeAttr("disabled");
+  }
+});
+function newChoice() {
+  var x = document.getElementById("opt_name").value;
+  console.log(x);
+  if (x != "") {
+    $("#id_choice").attr("disabled", true);
+  } else {
+    $("#id_choice").removeAttr("disabled");
+  }
+}
