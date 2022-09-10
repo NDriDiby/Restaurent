@@ -1,53 +1,20 @@
-// const body = document.querySelector("body"),
-//   sidebar = body.querySelector("nav"),
-//   toggle = body.querySelector(".toggle"),
-//   searchBtn = body.querySelector(".search-box"),
-//   modeSwitch = body.querySelector(".toggle-switch"),
-//   modeText = body.querySelector(".mode-text");
-
-// toggle.addEventListener("click", () => {
-//   sidebar.classList.toggle("close");
-// });
-
-// searchBtn.addEventListener("click", () => {
-//   sidebar.classList.remove("close");
-// });
-
-// modeSwitch.addEventListener("click", () => {
-//   body.classList.toggle("dark");
-
-//   if (body.classList.contains("dark")) {
-//     modeText.innerText = "Light mode";
-//   } else {
-//     modeText.innerText = "Dark mode";
-//   }
-// });
-
-// function openTab(evt, cityName) {
-//   var i, tabcontent, tablinks;
-
-//   tabcontent = document.getElementsByClassName("tabcontent");
-//   for (i = 0; i < tabcontent.length; i++) {
-//     tabcontent[i].style.display = "none";
-//   }
-
-//   tablinks = document.getElementsByClassName("tablinks");
-//   for (i = 0; i < tablinks.length; i++) {
-//     tablinks[i].className = tablinks[i].className.replace(" active", "");
-//   }
-
-//   document.getElementById(cityName).style.display = "block";
-//   evt.currentTarget.className += " active";
-// }
-
 console.log("CHART.JS");
 
 async function dashBordData() {
-  url = "/texasgrillz/dashBoard_data/";
+  url = "/dashBoard_data/";
   data = await fetch(url);
   result = await data.json();
   return result;
 }
+
+dashBordData().then((data) => {
+  console.log(data);
+  $(".number-total-orders").append(data["uncompleted_order"] + data["completed_order"]);
+  $(".number-uncompleted-orders").append(data["uncompleted_order"]);
+  $(".number-completed-orders").append(data["completed_order"]);
+  $(".number-recette").append(data["recette"]);
+  $(".number-revenue").append(`${data["total_rev"]["total_rev"]} F`);
+});
 
 const ctx = document.getElementById("pop-items").getContext("2d");
 const orderTime = document.getElementById("order-time").getContext("2d");
@@ -271,11 +238,8 @@ var configRevMenu = {
   options: optionsPie,
 };
 
-console.log(configRevMenu.options);
-
 dashBordData().then((data) => {
   rev_month = data["revPerMenu"];
-  console.log(rev_month);
   rev_month.forEach((rev) => {
     menu.push(rev.item__category__name);
     total_menu.push(rev.my_sum);

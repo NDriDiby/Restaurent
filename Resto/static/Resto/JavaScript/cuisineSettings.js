@@ -2,7 +2,7 @@ console.log("Setting Cuisine");
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
 const fetchtItems = async () => {
-  url = "/texasgrillz/dashBoard_data/";
+  url = "/dashBoard_data/";
   var getItem = await fetch(url);
   var data = await getItem.json();
   console.log(data);
@@ -49,7 +49,7 @@ const fetchtItems = async () => {
 function deleteItem(itemID, itemName) {
   var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
   $.ajax({
-    url: `/texasgrillz/deleteitem/`,
+    url: `/deleteitem/`,
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -132,7 +132,7 @@ add_accomp_ajax_btn.addEventListener("click", (e) => {
 
   console.log("Item-numb", item);
   $.ajax({
-    url: "/texasgrillz/recette/",
+    url: "/recette/",
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -168,7 +168,7 @@ add_accomp_ajax_btn_old.addEventListener("click", (e) => {
   console.log("Item-numb", accomp_id);
 
   $.ajax({
-    url: "/texasgrillz/recette/",
+    url: "/recette/",
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -221,7 +221,7 @@ add_sup_ajax_btn.addEventListener("click", (e) => {
   console.log("Item-numb", item);
 
   $.ajax({
-    url: "/texasgrillz/recette/",
+    url: "/recette/",
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -259,7 +259,7 @@ add_sup_ajax_btn_old.addEventListener("click", (e) => {
   console.log("Item-numb", sup_id);
 
   $.ajax({
-    url: "/texasgrillz/recette/",
+    url: "/recette/",
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -321,7 +321,7 @@ add_opt_btn.addEventListener("click", (e) => {
   };
 
   $.ajax({
-    url: "/texasgrillz/recette/",
+    url: "/recette/",
     method: "POST",
     data: data,
     dataType: "json",

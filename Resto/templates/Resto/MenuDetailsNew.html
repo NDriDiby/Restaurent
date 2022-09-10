@@ -100,7 +100,7 @@
 
 
 <!-- Order Total -->
- <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;">
+ <a href="myorder/?session={{app}}" style="text-decoration: none;">
     <div class="orderTotal-box">
       <div class="orderTotal-content">
         <div class="orderTotal-total"><b>{{cart_total}} FCFA (Checkout)</b></div>
@@ -153,7 +153,7 @@
 
 <section id='menu-{{m.id}}' class="w-full font-bold text-3xl p-3">
   {% for cat in m.item_set.all  %}
-  <a  href="/texasgrillz/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
+  <a  href="/itemdetails/{{cat.id}}/?session={{app}}" style="text-decoration: none; color: black">
       <div class="menudetails-items relative flex justify-between gap-x-3 sm:justify-around  py-2 lg:py-10 bg-gray-100">
         <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
           <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>
@@ -182,7 +182,7 @@
 
 <section class="w-full font-bold text-3xl p-3">
 {% for side in sides  %}
-<a  href="/texasgrillz/sidedetails/{{side.id}}/?session={{app}}" style="text-decoration: none; color: black">
+<a  href="/sidedetails/{{side.id}}/?session={{app}}" style="text-decoration: none; color: black">
 <div class="menudetails-items relative flex justify-around font-bold gap-x-3 sm:justify-around px-1 py-2 lg:py-10 bg-gray-100">
   <div class ='justify-content-center mt-2 flex items-center absolute top-0 right-2'>
     <i class="bi bi-plus w-6 h-6 lg:text-3xl rounded-full bg-green-400 text-white flex items-center justify-center border-2 md:w-8 md:h-8 lg:w-12 lg:h-12"></i>

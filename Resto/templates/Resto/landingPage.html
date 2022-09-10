@@ -289,7 +289,7 @@ left: 50px;
       les jours
     </p>
     <div class="flex justify-center">
-      <a href="/texasgrillz/menudetails/{{1}}/?session={{app}}">
+      <a href="/menudetails/{{1}}/?session={{app}}">
         <button class="w-32 md:w-44 md:py-4 md:text-2xl py-3 rounded-lg bg-green-500 text-white lg:w-60 lg:py-7 lg:text-3xl">Voir Menu</button>
       </a>
     </div>
@@ -335,8 +335,8 @@ left: 50px;
                 <h6 style="color: darkseagreen">*{{order}} ({{order.quantity}})</h6>
 
                 <!-- Ingredients -->
-                {% if order.ingredient %}
-                <p style="color: black"> Ingredient(s):{{order.ingredient}}</p>
+                {% if order.ingredient.all %}
+                <p style="color: black"> Ingredient(s):{{order.ingredient.all|join:','}}</p>
                 {% endif %}
 
                 <!-- Accomp -->

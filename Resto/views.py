@@ -1079,7 +1079,7 @@ def GetOrderCuisine(request):
                          
 
 
-def CuisineOptimize(request):
+def Cuisine(request):
     
     uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today)
     completed_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed')
@@ -1179,7 +1179,7 @@ def SendOrder(request):
 #Cuisine (Owner access Only)
 @login_required
 @permission_required('Resto.view_order',login_url='/login/') #Permission required
-def Cuisine(request):
+def DashBoard(request):
     
     #Order of the day
     #Show all order sent to the kitchen
@@ -1323,7 +1323,7 @@ def Cuisine(request):
 
 
 
-#Delete Order
+#Backend process
 def DeleteItem(request):
     
     #Get the item then delete
@@ -1333,7 +1333,7 @@ def DeleteItem(request):
     
     return JsonResponse('item deleted',safe=False)
 
-
+#Backend Process
 def DeleteOrderItem(request):
     
     if request.method == 'POST':
@@ -1352,7 +1352,7 @@ def DeleteOrderItem(request):
 #Inventory Management System
 @login_required
 @permission_required('Resto.view_inventory_item',login_url='/login/') #Permission required
-def IventorySystem(request):
+def Recipe(request):
     my_items =  Item.objects.all().order_by('name')
     
     
@@ -1509,7 +1509,7 @@ def IventorySystem(request):
     return render(request,'Resto/items_cuisine.html',context)
 
 
-
+#Backend Process
 def Recette(request):
     
     if request.method == 'POST':
@@ -1640,7 +1640,7 @@ def Recette(request):
     return JsonResponse({'ready for action':'?'})
 
 
-def CuisineSettings(request):
+def Settings(request):
     categories = IventoryItemCategory.objects.all()
     
     
@@ -1807,11 +1807,8 @@ def Revenues(request):
     
     return render(request, 'Resto/Revenues.html',context)
 
-
+#Backend Process
 def ProcessTransaction(request):
-    
-    
-    
     if request.method == 'POST':
         user = Customer.objects.get(user = request.user)
         
@@ -1839,7 +1836,7 @@ def ProcessTransaction(request):
         #Record Transaction
         record_trans,created = Transactions.objects.get_or_create(
         user = user,
-        order = orderID,
+        # order = orderID,
         amount =  amount,
         currency =  currency ,
         description =  description,
@@ -1869,6 +1866,14 @@ def CinetPayCredential(request):
 def DashBoardData(request):
     
     my_items =  Item.objects.all().order_by('prix')
+    recette = my_items.count()
+    
+    uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).count()
+    complete_order = Order.objects.filter(complete=True,date_completed__date = today).order_by('date_completed').count()
+    
+    daily_rev = OrderItem.objects.filter(order__complete=True,order__date_ordered__date = today).select_related('item').values('item__name')\
+    .annotate(my_sum= Sum(F("quantity")*F('item__prix')))
+    total_daily_rev = daily_rev.aggregate(total_rev = Sum('my_sum'))
     
     all_items = list()
     for item in range(0,len(my_items)):
@@ -1918,6 +1923,11 @@ def DashBoardData(request):
                          'ordertime':orderHour,
                          'my_items':all_items,
                          'revPerMenu':revPerMenu,
-                         'revPerMonth':revPerMonth})
+                         'revPerMonth':revPerMonth,
+                         'uncompleted_order':uncompleted_order,
+                         'completed_order':complete_order,
+                         'recette':recette,
+                         'total_rev':total_daily_rev
+                         })
     
     

@@ -27,7 +27,7 @@ var orderItem = null;
 //Get total item
 function getTotalItem() {
   $.ajax({
-    url: "/texasgrillz/sendorder/",
+    url: "/sendorder/",
     method: "GET",
     success: function (response) {
       console.log("response", response);
@@ -83,7 +83,7 @@ for (let i = 0; i < sendOrder.length; i++) {
 
 function sendMyOrder(action, order) {
   $.ajax({
-    url: "/texasgrillz/sendorder/",
+    url: "/sendorder/",
     method: "POST",
     data: { csrfmiddlewaretoken: csrfToken, action: action, order: order },
     dataType: "json",
@@ -133,7 +133,7 @@ for (let i = 0; i < update_but.length; i++) {
     table = location.href.split("&")[1].split("=")[1];
 
     $.ajax({
-      url: "/texasgrillz/checkoutpage/",
+      url: "/checkoutpage/",
       method: "POST",
       data: {
         csrfmiddlewaretoken: csrfToken,
@@ -203,7 +203,7 @@ for (let i = 0; i < delete_item.length; i++) {
 
 function deleteItem(itemID, itemName) {
   $.ajax({
-    url: `/texasgrillz/deleteorderitem/`,
+    url: `/deleteorderitem/`,
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -345,7 +345,7 @@ function cinetpayAPI() {
 }
 
 // Checkout API
-function checkout(api, site, am, ount) {
+function checkout(api, site, amount) {
   //TRANSACTION_ID
   var transaction = "Icarus-" + Math.floor(Math.random() * 10000000).toString();
   console.log("MY ORDER ID", transaction);
@@ -362,7 +362,7 @@ function checkout(api, site, am, ount) {
   });
   CinetPay.getCheckout({
     transaction_id: transaction, //YOUR TRANSACTION ID
-    amount: amount,
+    amount: 100,
     currency: "XOF",
     channels: "ALL",
     description: "Test paiement",

@@ -113,7 +113,7 @@ for (var i = 0; i < updated_but.length; i++) {
     }
 
     $.ajax({
-      url: "/texasgrillz/updateitem/",
+      url: "/updateitem/",
       method: "POST",
       data: data,
       dataType: "json",

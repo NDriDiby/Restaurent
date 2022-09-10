@@ -13,7 +13,7 @@ fetchCuisineOrder().then((data) => {
 
 //FETCH DATA
 async function fetchCuisineOrder() {
-  var url = "/texasgrillz/GetOrderCuisine/";
+  var url = "/GetOrderCuisine/";
   orders = await fetch(url);
   result = await orders.json();
   return result;
@@ -23,7 +23,7 @@ async function fetchCuisineOrder() {
 function completeOrder(orderID) {
   var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
   $.ajax({
-    url: "/texasgrillz/CompletedOrder/",
+    url: "/CompletedOrder/",
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,

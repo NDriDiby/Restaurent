@@ -262,7 +262,8 @@ class Transactions(models.Model):
     payment_method= models.CharField(max_length=150,blank=True)
     status= models.CharField(max_length=150,blank=True)
     transactionID = models.CharField(max_length=150,blank=True,primary_key=True)
-    # order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    # order = models.ForeignKey(Order,on_delete=models.CASCADE,blank = True)
+    # transaction_date = models.DateTimeField(auto_now_add=True,blank=True)
     
     def __str__(self):
         return self.status
