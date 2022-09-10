@@ -531,7 +531,7 @@
 <div class="p-3 py-5">
   <div class="flex justify-between userBox items-center">
     <div class="userfield">
-      <a href="/texasgrillz/menudetails/1/?session={{app}}"><i
+      <a href="/menudetails/1/?session={{app}}"><i
           class="bi bi-arrow-left font-bold text-2xl md:3xl lg:text-4xl flex items-center gap-x-2"><span
           class="font-normal text-xl md:text-3xl lg:text-4xl"
           style="color: chocolate;">{{side.name}}</span></i>
@@ -539,7 +539,7 @@
     </div>
 
     <div class="logOutfield">
-      <a href="/texasgrillz/myorder/?session={{app}}" style="text-decoration: none;">
+      <a href="/myorder/?session={{app}}" style="text-decoration: none;">
         <div id="cart-total" class='relative'>
           <i class="bi bi-bag text-3xl lg:text-5xl"></i>
           <p id='total-item'
@@ -601,7 +601,7 @@
                 <div class="total-order-container flex md:justify-between md:px-10 sm:gap-x-20 items-center">
                 <div class="total-order">
                   <!-- Order Total -->
-                  <a href="/texasgrillz/myorder/?session={{app}}">
+                  <a href="/myorder/?session={{app}}">
                     <div class="orderTotal-box">
                       <div class="orderTotal-content">
                         <h1>Total Price</h1>
@@ -642,7 +642,7 @@
     {% for side in side_items %}
     <div class="flex justify-center">
       <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60" style="border: solid chocolate 1px;">
-        <a href="/texasgrillz/sidedetails/{{side.id}}/?session={{app}}">
+        <a href="/sidedetails/{{side.id}}/?session={{app}}">
           <img class="rounded-full" src="{{side.img.url}}" alt="Cinque Terre" width="600" height="400" />
         </a>
         <div class="desc font-bold lg:text-3xl">{{side.name}}</div>

@@ -243,17 +243,31 @@ left: 50px;
         <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
     </svg>
   </div> -->
+
+      <!-- Message -->
+      <div class="msg text-center">
+        {% if messages %} {% for message in messages %}
+        <div class ='' >
+             <p class ='font-bold text-gray-700'>{{message}}</p>
+        </div>
+        {% endfor %}
+        <button class="btn text-center pt-2" type="submit" id='close-msg'>
+          Ok
+        </button>
+         {% endif %}
+        
+     </div>
+      <!-- Message -->
+
   
     <h1 class=" text-2xl font-bold text-gray-700 py-5 pt-7 md:w-[700px] md:px-4 md:text-5xl lg:text-4xl lg:w-full">Nos meilleurs recettes</h1>
-  
-  
 <div id="default-carousel" class="relative courasel-container" data-carousel="static">
   <!-- Carousel wrapper -->
   <div class="relative h-96 carousel-wrapper">
        <!-- Item 1 -->
        {% for pop_item in show_pop_item %}
       <div class=" duration-700 ease-in-out absolute inset-0 transition-all transform translate-x-0 z-20" data-carousel-item="">
-        <a href="/texasgrillz/itemdetails/{{pop_item.id}}/?session={{app}}">
+        <a href="/itemdetails/{{pop_item.id}}/?session={{app}}">
           <img src="{{pop_item.img.url}}" class="courasel-image absolute -z-10 w-72 h-60 rounded md:w-5/6 md:h-[400px] lg:h-[450px] object-cover block -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </a>
         <div class="tag-box bg-green-500 w-56 md:w-60 md:ml-5 flex gap-x-2 px-1 items-center text-white rounded-br-full">
@@ -363,6 +377,29 @@ left: 50px;
 </div>
  <!-- VIEW ORDER -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
+
+<script>
+  const closeMsg = ()=>{
+
+    btn = document.getElementById('close-msg')
+  } 
+
+  btn = document.getElementById('close-msg')
+  $('.block').empty()
+
+  if (btn){
+    btn.addEventListener('click',()=>{
+      console.log('gone')
+      $('.msg').hide()
+    })
+
+  }
+
+  console.log(btn)
+  closeMsg();
+
+ 
+</script>
       
 
 </body>

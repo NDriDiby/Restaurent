@@ -93,14 +93,30 @@ function sendMyOrder(action, order) {
     },
 
     success: function (response) {
-      console.log(response);
+      console.log(response.Order_Status == "Sent to kitchen");
       console.log("total Item:", total_item);
 
-      if (total_item > 0) {
+      if (response.Order_Status == "Sent to kitchen") {
         // DJANGO CHANNEL
-      }
 
-      //sendOderToServer(order);
+        $(".menudetails-content").fadeOut(1000);
+        $(".paiement-box").fadeOut(1000);
+        $(".total-box").fadeOut(1000);
+        $(".userfield").fadeOut(1000);
+        $(".logofield").fadeOut(1000);
+
+        $(".notification-order-box").fadeIn(100).append(`
+          <div class="text-center">
+          <div class="py-5 p-2 flex text-center mt-5">
+          <p class="mb-4 mt-5 animate-bounce" style="font-size: 1.5rem; color: chocolate">Please remain patient while we're 
+          sending your order to the kitchen</p>
+          </div>
+
+          <div class="logofield py-5 p-2 flex justify-center mt-5">
+          <span class="businesslogo "><img class='animate-pulse' src="${response.icarus_img}" alt="" width="150px" height="150px" /></span>
+         </div>
+        </div>`);
+      }
     },
 
     complete: function () {

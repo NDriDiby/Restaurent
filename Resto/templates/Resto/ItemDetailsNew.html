@@ -738,13 +738,13 @@
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!-- {% if side_item %}
+{% if side_item %}
 <h1 class="text-left pt-5 font-bold text-lg" style="color: chocolate;">Accompagement(s)</h1>
 <div class="pop-item flex overflow-x-scroll gap-2 lg:gap-y-4  w-full">
   {% for side in side_item %}
   <div class="flex justify-center">
     <div class="gallery w-60 sm:w-60 lg:w-80 lg:h-60" style="border: solid chocolate 1px;">
-      <a href="/texasgrillz/sidedetails/{{side.id}}/?session={{app}}">
+      <a href="/sidedetails/{{side.id}}/?session={{app}}">
         <img class="rounded-full" src="{{side.img.url}}" alt="Cinque Terre" width="600" height="400" />
       </a>
       <div class="desc font-bold lg:text-3xl">{{side.name}}</div>
@@ -752,7 +752,7 @@
     {% endfor %}
   </div>
 </div>
-  {% endif %} -->
+  {% endif %}
 
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

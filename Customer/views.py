@@ -43,9 +43,9 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 if user.has_perm('resto.view_order'):
-                    return HttpResponseRedirect(f'/texasgrillz/cuisine/')
+                    return HttpResponseRedirect(f'/cuisine/')
                 else:
-                    return HttpResponseRedirect(f'/{session}/?session={targetApp}')
+                    return HttpResponseRedirect(f'/homepage/?session={targetApp}')
         else:
             messages.warning(request, f"Le nom d'utilisateur et le mot de passe ne correspondent pas")
             
@@ -104,40 +104,19 @@ def RegisterCustomer(request):
         form = CustomerForm(request.POST or None)
         
         if form.is_valid():
-            cust_log_email = form.cleaned_data.get('username')
+            cust_log_email = form.cleaned_data.get('username').lower()
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
             cust_phone = form.cleaned_data.get('phone_number')
+            form.save() #User created 
             
-            
-            # if (cust_log_email in ['ndiby65@gmail.com','icarus@gmail.com','kaxharel@gmail.com','felinspiritual508@gmail.com',
-            #                        'zeynabfdg02@gmail.com','sostheneange@gmail.com','wogninroger86@gmail.com','ohachosimjennifer@gmail.com',
-            #                        'htehua07@gmail.com','rickysilencieux@gmail.com','sinoussouc@gmail.com','tkfatim@gmail.com','bakayokohassan112@gmail.com',
-            #                        'cedric.acho@gmail.com','yedofficiel@gmail.com','yannis_kodjo@yahoo.com','cyrayacine@gmail.com','seydinaibrahim16@gmail.com',
-            #                        'salimatabamba37@gmail.com','diarrassoumar@outlook.com','nbrandon@hotmail.fr','frejusmactaylor@gmail.com','juliediby@yahoo.com',
-            #                        'juniorsoulama@yahoo.fr']):
-            #     form.save() #User created 
-            #     user,created= User.objects.get_or_create(username = cust_log_email)
-            #     user.first_name = cust_first_name
-            #     user.last_name = cust_last_name 
-            #     user.email = cust_log_email
-            #     user.save()
-            #     messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
-                
-            #     newline = "\n"
-            #     #send email after registration
-            #     send_mail("Bienvenue sur Icarus",
-            #               f"Salut {cust_first_name},{newline}{newline}Bienvenu sur Icarus Bar & Restaurent et merci d'utiliser notre service. Nous sommes très heureux de vous compter parmis nos utilisateurs.\
-            #               {newline}{newline}Meilleurs salutations.{newline}Nova Cloud Team",
-            #               settings.EMAIL_HOST_USER,
-            #               [cust_log_email],fail_silently=False,)
-                
-            #     return HttpResponseRedirect(f'/login/?register=true&session={targetApp}') #send to login page
-            
-                
-            
-            # elif (cust_log_email not in testeur): #retrict access
-            #     return HttpResponseRedirect(f'/noaccess/')
+            user,created= User.objects.get_or_create(username = cust_log_email)
+            user.first_name = cust_first_name
+            user.last_name = cust_last_name 
+            user.email = cust_log_email
+            user.save()
+            messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
+
             
     else:
         form = CustomerForm()

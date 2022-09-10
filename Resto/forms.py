@@ -40,7 +40,7 @@ class CustomerForm(UserCreationForm):
     
     
    def clean_username(self):
-      email = self.cleaned_data.get('username')
+      email = self.cleaned_data.get('username').lower()
       allUser= User.objects.values_list('username',flat=True)
       
       if email in allUser:
@@ -63,6 +63,8 @@ class CustomerForm(UserCreationForm):
             raise ValidationError("Les deux champs de mot de passe ne correspondent pas.")
          
       return password2
+   
+   
     
    def clean_phone_number(self):
       phone = self.cleaned_data.get('phone_number')

@@ -130,6 +130,7 @@ body{
   .chart{
       width: 18rem;
       padding-left: 8px;
+      background-color: white;
   }
 
   .card{
@@ -176,6 +177,25 @@ body{
       .chart{
           width: 37rem;
       }
+
+      .card{
+        width: 13rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .card-title{
+        font-size: 16px;
+        color: #0a2558;
+        margin-bottom: 0px;
+    }
+
+    .chart-container{
+        margin-left: 53px;
+        
+    }
+
+    
+ 
   }
 
 
@@ -195,6 +215,8 @@ body{
       opacity: 1;
       display: block;
   }
+
+
  
  
 
@@ -222,7 +244,23 @@ body{
           width: 45rem;
           margin-left: auto;
           margin-right: auto;
-      }
+    }
+
+      .card{
+        width: 16rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .card-title{
+        font-size: 20px;
+        color: #0a2558;
+        margin-bottom: 0px;
+    }
+
+    .chart-container{
+        margin-left: 10px;
+        margin-bottom: 15px;
+    }
  
  
  
@@ -251,7 +289,7 @@ body{
           width: 35rem;
       }
       .chart-container{
-          margin-left: 53px;
+          margin-left: 50px;
       }
   
  
@@ -341,13 +379,9 @@ body{
                     <a href="{% url 'cuisine' %}" class="d-flex align-items-center"><i style="color:chocolate" class="fas fa-utensils m-1"></i><span class="link">My Cuisine</span> </a>
                     <a href="{% url 'recipe' %}"><i style="color:chocolate" class="fa-solid fa-burger m-1"></i><span class="link">Mes Recettes</span> </a>
                     
-                    <!-- <a href="{% url 'cuisine' %}"><i style="color:chocolate" class="fa fa-fw fa-user m-1"></i><span class="link">Team</span> </a> -->
-                    <!-- <a href="#contact"><i style="color:chocolate" class="fa-solid fa-boxes-stacked m-1"></i><span class="link">Iventory</span> </a> -->
-                    <!-- <a href="{% url 'settings' %}"><i style="color:chocolate" class="fa-solid fa-wrench m-1"></i> <span class="link">Settings</span> </a> -->
-                    <!-- <a href="#contact"><i style="color:chocolate" class="fa fa-fw fa-envelope m-1"></i><span class="link">Iventory</span> </a> -->
-                    <button class="list">
+                    <!-- <button class="list">
                         <i class="bi bi-chevron-bar-right"></i>
-                    </button>
+                    </button> -->
                 </div> 
 
             </div>
@@ -357,31 +391,37 @@ body{
             <div class="metrics d-md-flex flex-wrap justify-content-center">
                 <div class="card shadow mx-2 mt-3">
                     <div class="card-title text-center">  <span><i style="color:chocolate;" class="bx bx-cart-alt cart"></i></span> Total orders</div>
+                    <a href="{% url 'cuisine' %}" style="text-decoration: none;">
                     <div class="card-body text-center"> <span class="number-total-orders"></span> 
                         <div class="stat">
                             <span class ='text-muted'> <span><i class="bi bi-arrow-up-circle-fill" style="color:darkseagreen"></i></span> 50% up from yesterday</span> 
                         </div>
                     </div>
+                    </a>
                 </div>
 
                 <div class="card shadow mx-2 mt-3" >
                     <div class="card-title text-center"> <span> <i style="color: crimson;" class="bx bxs-cart-download cart four"></i></span> Uncompleted Orders</div>
+                    <a href="{% url 'cuisine' %}" style="text-decoration: none;">
                     <div class="card-body text-center"><span class="number-uncompleted-orders"></span> 
                         <div class="stat">
                             <span class ='text-muted'><span><i class="bi bi-arrow-down-circle-fill" style="color:crimson;"></i></span> 5% down from yesterday</span> 
                         </div>
                     </div>
+                    </a>
                 </div>
 
                 <div class="card shadow mx-2 mt-3" >
                     <div class="card-title text-center"> <span>
                         <i style="color: green;" class="bx bxs-cart-add cart two"></i>
                     </span> Completed Orders</div>
+                    <a href="{% url 'cuisine' %}" style="text-decoration: none;">
                     <div class="card-body text-center"><span class="number-completed-orders"></span> 
                         <div class="stat">
                             <span class ='text-muted'> <span><i class="bi bi-arrow-up-circle-fill" style="color:darkseagreen"></i></span> 50% up from yesterday</span> 
                         </div>
                     </div>
+                </a>
                 </div>
 
 
@@ -408,11 +448,11 @@ body{
                 </div>
 
 
-                <div class="card shadow mx-2 mt-3" >
-                    <div class="card-title text-center"> <span>
+                <div class="card shadow mx-2 mt-3" style="background-color:darkgray" >
+                    <div class="card-title text-center" > <span>
                         <i class="bx bxs-user cart two"></i>
                     </span> Total Visits</div>
-                    <div class="card-body text-center"><span class="number">450</span> 
+                    <div class="card-body text-center"><span class="number" >450</span> 
                         <div class="stat">
                             <span class ='text-muted'> <span><i class="bi bi-arrow-up-circle-fill" style="color:darkseagreen"></i></span> 50% up from yesterday</span> 
                         </div>
@@ -430,7 +470,7 @@ body{
                     </div>
                 </div>
 
-                <div class="card shadow mx-2 mt-3" >
+                <div class="card shadow mx-2 mt-3" style="background-color:darkgray" >
                     <div class="card-title text-center"> <span>
                         <i style="color:crimson" class='bx bxs-dollar-circle' ></i>
                     </span> Spending</div>
@@ -452,12 +492,11 @@ body{
                             <span class ='text-muted'><span><i class="bi bi-arrow-down-circle-fill" style="color:crimson;"></i></span> 5% down from yesterday</span> 
                         </div>
                     </div>
-                </a>
-
+                     </a>
                 </div>
 
 
-                <div class="card shadow mx-2 mt-3" >
+                <div class="card shadow mx-2 mt-3" style="background-color:darkgray" >
                     <div class="card-title text-center">
                        <span><i style="color:green"  class='bx bxs-lock-open'></i></span> Open tables</div>
                     <div class="card-body text-center"><span class="number">5</span> 
@@ -468,7 +507,7 @@ body{
                 </div>
 
 
-                <div class="card shadow mx-2 mt-3" >
+                <div class="card shadow mx-2 mt-3" style="background-color:darkgray" >
                     <div class="card-title text-center"> 
                        <span>
                         <i style="color:crimson"  class='bx bxs-lock'></i>
@@ -480,7 +519,7 @@ body{
                     </div>
                 </div>
 
-                <div class="card shadow mx-2 mt-3" >
+                <div class="card shadow mx-2 mt-3" style="background-color:darkgray" >
                     <div class="card-title text-center"> <span>
                         <i class="bx bx-time-five cart two"></i>
                     </span> Avg. time per order</div>

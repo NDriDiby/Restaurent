@@ -94,19 +94,21 @@
 <!-- UserBox -->
  <div class="flex justify-between userBox items-center px-5 py-5">
     <div class="userfield">
-      <a class="" href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl md:text-3xl lg:text-4xl flex items-center gap-x-2">
+      <a class="" href="/homepage/?session={{app}}"><i class="bi bi-arrow-left font-bold text-2xl md:text-3xl lg:text-4xl flex items-center gap-x-2">
       </i></a>
     </div>
 
 
 <!-- Order Total -->
- <a href="myorder/?session={{app}}" style="text-decoration: none;">
+ <a href="/myorder/?session={{app}}" style="text-decoration: none;">
     <div class="orderTotal-box">
       <div class="orderTotal-content">
         <div class="orderTotal-total"><b>{{cart_total}} FCFA (Checkout)</b></div>
       </div></a>
     </div>
 <!-- Order Total -->
+
+
 <div class="logOutfield">
       <div class="logOutlogo md:text-2xl lg:text-3xl">
         {% if user.is_authenticated %}

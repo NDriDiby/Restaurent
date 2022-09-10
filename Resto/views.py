@@ -123,7 +123,6 @@ def HomePage(request):
         
         
         
-        
         #odd_even = Permission.objects.get(name='can_view_even_ids')
         
         if username.email == 'ndiby65@gmail.com':
@@ -141,7 +140,6 @@ def HomePage(request):
         order_sent = Order.objects.filter(customer=cust, status = 'Sent', table =table, date_ordered__date = today).last()
 
         
-
     context = {
         'category':category,
         'order':order_sent,
@@ -296,6 +294,7 @@ def ItemDetails(request,item_id):
     order = None
     cartItem = 0
 
+    # supplement
     supplement = Supplement.objects.filter(item = item_id)
 
     #Get Table Number
@@ -331,49 +330,28 @@ def ItemDetails(request,item_id):
             
             item_cat_opt = ItemChoiceCategory.objects.filter(item__id= item_id).order_by('name')
             item_choice = ItemChoices.objects.filter(parent_food = item_id)
-            print("MYCAT:",item_cat_opt)
-            print("MYITEMS:",item_choice)
-           
-            # for x in item_cat_opt:
-            #     print('CAT:',x.name)
-            #     for c in x.itemchoices_set.all().filter(id__in = item_choice):
-            #         print('CHOICE:',c)
-            #     print('Count:',x.itemchoices_set.all().filter(id__in = item_choice).count())
-            
-            
-            
-            # for i in item_choice:
-            #     print('cat:',i.choice_category)
-            #     print('Choices:',i.name)
 
+           
             
-            
-            
-            #Check for past or pending order for the user
-            pending_order = Order.objects.filter(customer=cust,status='Pending')
-            if len(pending_order) > 1:
-                pending_order.delete()
-                messages.warning(request,"Vous ne pouvez pas passer de commande sur plusieurs tables")
-                messages.success(request,f"Votre nouveau numéro de table est {table}")
-                order,created= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
-                return HttpResponseRedirect(f'/texasgrillz/?session={targetApp}')
-                
-                
-            
-            if request.method == 'POST':
-                order_table = request.POST.get('item')
-                
-                
-                myitem = Item.objects.get(id=order_table)
-                my_order_item = OrderItem.objects.filter(order= order, item = myitem)
-                tot_item = [sum(x.quantity for x in my_order_item)][0]
-                messages.success(request,f"({tot_item}) {myitem} ajouté votre table")
-                
-                
+         
         except:
+            print('What wrong')
             pass
+        
+        #Check for past or pending order for the user
+        pending_order = Order.objects.filter(customer=cust,status='Pending')
+        print('DO I HAVE PENDING ORDER:',pending_order)
+        if pending_order:
+            for p in pending_order:
+                if p.table != order.table:
+                    print("you're on a new table")
+                    pending_order.first().delete()
+                    messages.warning(request,f"Vous ne pouvez pas passer de commande sur plusieurs tables")
+                    messages.success(request,f"Votre nouveau numéro de table est {table}")
+                    order= Order.objects.get_or_create(customer=cust,status='Pending',table=table)
+                    print('a new table has been assign')
+                    return HttpResponseRedirect(f'/homepage/?session={targetApp}')
             
-    
     else:
         return HttpResponseRedirect(f'/register/?session={targetApp}')
         
@@ -513,28 +491,36 @@ def UpdatedItem(request):
         
             #NO INGRE AND NO ACCOMP
             if not choice and not accompagment:
-                print('NO INGRE AND ACCOMP')
-               
+                
                 if not supplement:  #If there is no supplement
+                    print('NO INGRE AND ACCOMP AND SUP')
+                    
                     #filter all order with no supplement
                     orderItem_all= OrderItem.objects.filter(customer=customer,order = order,item = item).all()
+                    print('IS THERE ANY:',orderItem_all)
                     if not orderItem_all: #if there is nothing then create orderitem with no supplement
-                        orderItem= OrderItem.objects.create(customer=customer,order = order,item = item)
+                        my_order_item= OrderItem.objects.create(customer=customer,order = order,item = item, quantity=1)
+                        my_order_item.save()
+                        tot_ind_item = my_order_item.quantity
+                        tot_item = tot_ind_item
+                        total = order.get_order_total()
+                        active_orderItem = my_order_item.id
+                        
                     
                     else: #if there are orderItem with supplement
-                        for item in orderItem_all:
-                            if not item.supplement.all(): #if no supplement is attached to the orderItem then we have our orderItem with no supplement
-                                orderItem = item
-                                break
+                        for order_item in orderItem_all:
+                            if not order_item.supplement.all(): #if no supplement is attached to the orderItem then we have our orderItem with no supplement
+                                my_order_item = order_item
                                 
-                    if action =='add':
-                        orderItem.quantity = (orderItem.quantity + 1)
-                        orderItem.save()
-                        tot_ind_item = orderItem.quantity
-                        total = order.get_order_total()
-                        tot_item = tot_ind_item
-                        active_orderItem = orderItem.id
-                    
+                                if action =='add':
+                                    my_order_item.quantity = (my_order_item.quantity + 1)
+                                    my_order_item.save()
+                                    tot_ind_item = my_order_item.quantity
+                                    tot_item = tot_ind_item
+                                    total = order.get_order_total()
+                                    active_orderItem = my_order_item.id
+                                    break
+                            
                 else: #If there is supplement
                    #find all orderitem that have a supplement
                     retrieve_order_item = OrderItem.objects.filter(customer=customer,order = order,item = item, supplement__in=sup_id).all()
@@ -551,7 +537,7 @@ def UpdatedItem(request):
                                     tot_item = tot_ind_item
                                     total = order.get_order_total()
                                     active_orderItem = my_order_item.id
-                                break
+                                    break
 
                         if order_item_exist == False: #it is not the same as the user then create one
                             orderItem = OrderItem.objects.create(customer = customer,order = order, quantity =1)
@@ -1151,13 +1137,14 @@ def SendOrder(request):
         customer = request.user
         cust,created = Customer.objects.get_or_create(user =request.user)
         order,created = Order.objects.get_or_create(id=order_numb, customer = cust)
+        icarus_img = '/static/Resto/Icarus.png'
 
     
         #Process the order
         item = order.get_order_quantity()
         if item >0:
             order.status = 'Sent'
-            order.transaction_id = order_number('texasgrillz')
+            order.transaction_id = order_number('NovaCloud')
             order.save()
             
             channel_layer = get_channel_layer()
@@ -1169,7 +1156,7 @@ def SendOrder(request):
                 }
             )
             
-        return JsonResponse({'Order_Status':'Sent to kitchen'})
+        return JsonResponse({'Order_Status':'Sent to kitchen','icarus_img':icarus_img})
             
             
 
@@ -1380,7 +1367,7 @@ def Recipe(request):
             if product_name.lower() in [item.name.lower() for item in my_items]:
                 print('this Iitem already exit')
                 messages.info(request,f'{product_name} already exist')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             else:
                 prod_cat = Category.objects.get(id = product_cat)
                 prod = Item.objects.create(
@@ -1395,7 +1382,7 @@ def Recipe(request):
                 prod.save()
                 messages.success(request,f'{product_name} created')
                 print('I got the data')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             
             
           #Cat
@@ -1403,7 +1390,7 @@ def Recipe(request):
         if cat_name:
             if cat_name.lower() in [c.name.lower() for c in Category.objects.all()]:
                 messages.info(request,f'{cat_name} already exist')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             else:
                 cat = Category.objects.create(
                     name = cat_name,
@@ -1411,7 +1398,7 @@ def Recipe(request):
                 cat.save()
                 messages.success(request,f'{cat_name} created')
                 print('I got the data')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             
          #Sup
         sup_name= request.POST.get('sup_name',None)
@@ -1419,7 +1406,7 @@ def Recipe(request):
         if sup_name:
             if sup_name.lower() in [sup.name.lower() for sup in Supplement.objects.all()]:
                 messages.info(request,f'{sup_name} already exist')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             else:
                 supp = Supplement.objects.create(
                     name = sup_name,
@@ -1428,7 +1415,7 @@ def Recipe(request):
                 supp.save()
                 messages.success(request,f'{sup_name} created')
                 print('I got the data')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             
         
         #Accomp
@@ -1438,7 +1425,7 @@ def Recipe(request):
         if accomp_name:
             if accomp_name.lower() in [acc.name.lower() for acc in Accompagnement.objects.all()]:
                 messages.info(request,f'{accomp_name} already exist')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             else:
                 acc = Accompagnement.objects.create(
                     name = accomp_name,
@@ -1448,7 +1435,7 @@ def Recipe(request):
                 acc.save()
                 messages.success(request,f'{accomp_name} created')
                 print('I got the data')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
         
         
         #Opt
@@ -1467,7 +1454,7 @@ def Recipe(request):
         if option_name:
             if option_name.lower() in [opt.name.lower() for opt in ItemChoiceCategory.objects.all()]:
                 messages.info(request,f'{option_name} already exist')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             else:
                 opt_cat = ItemChoiceCategory.objects.create(
                     name = option_name,
@@ -1477,7 +1464,7 @@ def Recipe(request):
                 opt_cat.save()
                 messages.success(request,f'{option_name} created')
                 print('I got the data')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')  
+                return HttpResponseRedirect(f'/recipe/')  
             
         if  option_cat:
                 option_name = ItemChoiceCategory.objects.get(id=option_cat)
@@ -1485,7 +1472,7 @@ def Recipe(request):
                 option_name.save()
                 messages.success(request,f'{option_name} created')
                 print('I got the data')
-                return HttpResponseRedirect(f'/texasgrillz/inventory/')
+                return HttpResponseRedirect(f'/recipe/')
             
             
     else:
