@@ -1,13 +1,13 @@
 import os
 
-from celery import Celery
+import celery
 from celery.schedules import crontab
 import os, ssl
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Restaurent.settings')
 
-app = Celery('Restaurent',broker_use_ssl = {
+app = celery.Celery('Restaurent',broker_use_ssl = {
         'ssl_cert_reqs': ssl.CERT_NONE
      },
      redis_backend_use_ssl = {
