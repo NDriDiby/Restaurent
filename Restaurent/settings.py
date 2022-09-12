@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import django_on_heroku
+import django_heroku
 
 
 
@@ -364,5 +364,5 @@ EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 
 
-django_on_heroku.settings(locals())
+django_heroku.settings(locals())
 
