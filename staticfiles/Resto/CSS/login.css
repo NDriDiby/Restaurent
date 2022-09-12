@@ -1,9 +1,9 @@
 body {
-  background: rgb(28, 163, 250);
-  background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
+  /* background: rgb(28, 163, 250); */
+  /* background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%); */
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  /* height: 100vh; */
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 img {
@@ -11,18 +11,18 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 200px;
+  width: 235px;
 }
 .login-container {
   text-align: center;
   background-color: white;
   width: 350px;
-  height: auto;
+  /*  */
   margin-left: auto;
   margin-right: auto;
-  border-radius: 5px;
-  padding-top: 10px;
-  margin-top: 90px;
+  /* /* border-radius: 5px; */
+  /* padding-top: 10px;
+  margin-top: 90px;  */
   animation: slide 1s forwards;
 }
 @keyframes slide {
@@ -46,13 +46,13 @@ h1 {
 #label {
   padding-right: 190px;
 }
-input {
+/* input {
   border: none;
   border-bottom: 1px solid rgb(151, 150, 150);
   width: 270px;
   padding: 15px 0;
   outline: none;
-}
+} */
 .two {
   padding-top: 20px;
 }
@@ -68,7 +68,7 @@ input {
 p {
   font-size: 13px;
 }
-#span {
+/* #span {
   color: white;
   padding: 10px;
   border-radius: 20px;
@@ -76,7 +76,7 @@ p {
   font-size: 12px;
   background: rgb(28, 163, 250);
   background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
-}
+} */
 #span:hover {
   animation: move 4s alternate infinite;
   cursor: pointer;
@@ -92,19 +92,20 @@ p {
     transform: translateY(-10px);
   }
 }
-button {
+/* button {
   background: rgb(28, 163, 250);
   background: linear-gradient(59deg, rgba(28, 163, 250, 1) 28%, rgba(1, 36, 129, 0.5970588919161415) 57%, rgba(0, 99, 255, 1) 100%);
   color: white;
   width: 275px;
-  /* margin-left: 38px; */
+  margin-left: 38px;
   padding: 10px 0;
   border-radius: 20px;
-  text-align: center;
   outline: none;
   border: none;
   cursor: none;
-}
+  margin-left: auto;
+  margin-right: auto;
+} */
 
 /* button:hover {
   font-size: 10px;
