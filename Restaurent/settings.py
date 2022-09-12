@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     'storages',
     'django.contrib.humanize',
     'django_resized',
-    'django_celery_beat',
+    # 'django_celery_beat',
     'tailwind',
     'theme',
     # 'django_browser_reload',

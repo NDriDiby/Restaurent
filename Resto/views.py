@@ -40,8 +40,8 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 #TASK
-from .tasks import (send_paiement_receipt,get_daily_revenu,
-                    add_number,fetch_key,get_cinetpay_balance,add_cinetpay_contact)
+# from .tasks import (send_paiement_receipt,get_daily_revenu,
+#                     add_number,fetch_key,get_cinetpay_balance,add_cinetpay_contact)
 
 
 
