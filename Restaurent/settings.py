@@ -328,13 +328,13 @@ EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 # CELERY
 # CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_BROKER_URL = 'rediss://:pa142fa7357bc59cdc2cdc4a6ebd63ffaff3cd7773a653c7dc584d9bbc53e4526@ec2-44-205-146-175.compute-1.amazonaws.com:15240'
-CELERY_RESULT_BACKEND = 'rediss://:pa142fa7357bc59cdc2cdc4a6ebd63ffaff3cd7773a653c7dc584d9bbc53e4526@ec2-44-205-146-175.compute-1.amazonaws.com:15240'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Lome'
-CELERY_ALWAYS_EAGER = True
+# CELERY_BROKER_URL = 'rediss://:pa142fa7357bc59cdc2cdc4a6ebd63ffaff3cd7773a653c7dc584d9bbc53e4526@ec2-44-205-146-175.compute-1.amazonaws.com:15240'
+# CELERY_RESULT_BACKEND = 'rediss://:pa142fa7357bc59cdc2cdc4a6ebd63ffaff3cd7773a653c7dc584d9bbc53e4526@ec2-44-205-146-175.compute-1.amazonaws.com:15240'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Africa/Lome'
+# CELERY_ALWAYS_EAGER = True
 
 # CACHES = {
 #     "default": {
@@ -359,9 +359,6 @@ CELERY_ALWAYS_EAGER = True
 #     'schedule':5.0,
 #     }
 # }
-
-
-
 
 
 
