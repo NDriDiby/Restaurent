@@ -2,6 +2,7 @@ from django import forms
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from Resto.forms import CustomerForm
+from .forms import LoginForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm #add this
@@ -24,6 +25,8 @@ from django.core.mail import send_mail
 
 def Login(request):
     
+    print(User.objects.all())
+    
     #Table Number
     table = get_table_number(request)
     if table == None:
@@ -35,11 +38,13 @@ def Login(request):
    
     #Authenticate user then redict to their session
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
+            print(username,password,user)
+            
             if user is not None:
                 login(request, user)
                 if user.has_perm('resto.view_order'):
@@ -108,14 +113,18 @@ def RegisterCustomer(request):
             cust_first_name = form.cleaned_data.get('prenom')
             cust_last_name = form.cleaned_data.get('nom')
             cust_phone = form.cleaned_data.get('phone_number')
-            form.save() #User created 
+            cust_pass = form.cleaned_data.get('password2')
             
-            user,created= User.objects.get_or_create(username = cust_log_email)
+            form.save()
+          
+            
+            user= User.objects.get(username = cust_log_email)
             user.first_name = cust_first_name
-            user.last_name = cust_last_name 
+            user.last_name = cust_last_name
             user.email = cust_log_email
             user.save()
             messages.success(request,f'Compte créé pour {cust_first_name} {cust_last_name}')
+            return HttpResponseRedirect(f'/login/?session={targetApp}')
 
             
     else:

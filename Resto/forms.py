@@ -26,18 +26,8 @@ class CustomerForm(UserCreationForm):
    
    class Meta:
     model = User
-    fields = ['username','phone_number','nom','prenom']
+    fields = ['username','phone_number','nom','prenom','password1','password2']
 
-    labels = {
-            'username': _('Email'),
-         }
-    error_messages={
-       'phone_number':{
-          'required': _("You need an email bro")
-       }
-    }
-    
-    
     
    def clean_username(self):
       email = self.cleaned_data.get('username').lower()

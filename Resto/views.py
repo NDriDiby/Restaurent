@@ -1100,7 +1100,7 @@ def CompletedOrder(request):
         uncompleted_order = Order.objects.filter(status='Sent',date_ordered__date = today).count()
     
         # #TASK
-        # send_paiement_receipt.delay(order_numb)
+        send_paiement_receipt.delay(order_numb)
         
 
     return JsonResponse({'response':"Order Completed",
