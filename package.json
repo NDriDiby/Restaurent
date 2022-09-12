@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "flowbite": "^1.5.2",
+    "reconnecting-websocket": "^4.4.0"
+  }
+}

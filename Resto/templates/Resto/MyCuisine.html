@@ -1,0 +1,390 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+    <!-- Boxicons CDN Link -->
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="50">
+    <style>
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        }
+
+      .completedbtn {
+        background-color: chocolate;
+        border-radius: 6px;
+        color: white;
+        padding: 5px 10px;
+        cursor: pointer;
+        box-shadow: 1px 2px;
+      }
+
+      .completedbtn:hover{
+       background-color: darkgreen;
+      }
+
+  
+      .navbar {
+        background-color: #0a2558;
+   
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 20px;
+    
+      }
+
+      .nav-item-title {
+        font-size: 31px;
+        color: chocolate;
+
+       
+      }
+
+      
+      .table th {
+        color: chocolate;
+        font-weight:bold;
+   
+      }
+
+      .table thead tr{
+        margin: 10px;
+      }
+
+    
+
+      .border-success {
+        border-color: #34487a !important;
+    }
+
+    @media screen and (min-width:768px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 13px;
+       
+      }
+
+      .nav-item-title {
+        font-size: 31px;
+        color: chocolate;
+       
+      }
+
+      #CommandeIncompletes{
+        padding-top: 90px;
+      }
+      
+    }
+
+    @media screen and (min-width:1024px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 23px;
+       
+      }
+
+      
+    }
+
+
+    @media screen and (min-width:912px) {
+
+      .navbar {
+        background-color: #0a2558;
+        color: white;
+      }
+
+      .nav-item {
+        font-size: 19px;
+       
+      }
+
+      
+    }
+
+
+  
+    </style>
+
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+      <div class="container-fluid">
+        <ul class="navbar-nav flex align-items-center">
+          <a class="navbar-brand nav-item-title" style="color: chocolate" href="#">
+            <span style="font-size: 30px"> <i class="fas fa-utensils p-2"></i>
+            Ma Cuisine
+          </a>
+          <li class="nav-item">
+            <a class="nav-link" href="#Commande Incompletes">  Commande Incompletes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#section2">Commande Terminer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">Tableau de Bord</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'recipe' %}">Mes Recettes</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  <div class="container-fluid">
+
+    <!-- INCOMPLETE ORDER -->
+    <div id="Commande Incompletes" class="container-fluid" style="padding-top: 110px">
+      <h3 style="color: chocolate"> Commande Incompletes <span class="bg-danger badge" id="total_uncompleted_order"> {{uncompleted_order.count}}</span></h3>
+      <small class="lead" style="color: #34487a;">Samedi, 20 August 2022</small>
+
+      <!-- BackEnd Job -->
+      <div id="unCompletedOrder" class="row justify-content-start g-lg-3 align-items-lg-baseline mt-3"></div>
+      <!-- BackEnd Job -->
+    </div>
+
+    <!-- INCOMPLETE ORDER -->
+    <div id="section2" class="container-fluid" style="padding-top: 110px">
+          <!--accordion -->
+      <div class="accordion border border-2 border-success shadow"  id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <h3 style="color: chocolate"> Commande Terminer <span class="bg-success badge" id="total_completed_order">{{completed_order.count}}</span></h3>
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <!--Table -->
+        <div class="table-responsive" >
+          <table class="table table-hover mt-4 table-sm shadow">
+            <thead class="table-light">
+              <tr class="text-center">
+                <th scope="col">Table</th>
+                <th scope="col">Client</th>
+                <th scope="col">Date & Heure</th>
+                <th scope="col">Commande</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" id="completedOrder">
+            </tbody>
+          </table>
+          <!-- END table -->
+        </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    </div>
+
+    
+    <!-- END accordion -->
+
+
+      <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5  class="modal-title" id="order-tansaction"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- <p class ='mt-0' id="quantity"> <p>
+        <p class ='mt-0' id="ingredient"> <p>
+        <p class ='mt-0' id="accompagnement"> <p>
+        <p class ='mt-0' id="supplement"> <p>
+        <p class ='mt-0' id="side_order"> <p></p> -->
+         
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="completedbtn" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+ 
+
+  </body>
+
+ 
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"
+  ></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="text/javascript" src="{% static 'Resto/JavaScript/MyCuisine.js'%}"></script>
+</html>
+
+
+
+
+
+
+
+<!-- Modal --> 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+  <div class="modal-content"> <div class="modal-header">
+      <h6 style="color: chocolate;"  class="modal-title p-1" id="order-tansaction">  <span > <i class="fas fa-utensils p-2"></i> Nouvelle Recette</h6>
+   <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+  <span aria-hidden="true">&times;</span> </button> </div> 
+  <div class="modal-body">
+  
+  <div id="smartwizard"> 
+      <ul> 
+          <li><a  href="#step-1">Etape 1<br /><small>Category</small></a></li> 
+          <li><a  href="#step-2">Etape 2<br /><small>Recette</small></a></li> 
+          <li><a href="#step-3">Etape 3<br /><small>Accompagement</small></a></li>
+          <li><a href="#step-4">Etape 4<br /><small>Supplement</small></a></li>
+      </ul> 
+   <div> 
+       <!-- step 1 -->
+      <div id="step-1"> 
+  
+              <div class="col-12 mb-2">
+                  <label for="inputPassword4" class="form-label">Category</label>
+                  {{form.category}}
+              </div>
+  
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Ajouter une nouvelle category</label>
+                  {{form_cat}}
+              </div> 
+      </div> 
+  
+   <!--  end step 1 -->
+  
+          <!-- step 2 -->
+          <div id="step-2"> 
+              <fieldset>
+                  
+              <div class="col-12 mb-2">
+                <label for="inputPassword4" class="form-label">Nom</label>
+                {{form.name}}
+              </div>
+    
+              <div class="col-12 mb-2">
+                <label for="inputPassword4" class="form-label">Prix</label>
+                {{form.prix}}
+              </div>
+    
+  
+              <div class="col-12 mb-2">
+                <label for="inputPassword4" class="form-label">Description</label>
+                {{form.description}}
+              </div>
+  
+  
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Image</label>
+                  {{form.img}}
+                </div>
+              </fieldset>
+  
+          </div> 
+          <!-- end step 2 -->
+  
+      <!-- step 3 -->
+      <div id="step-3">
+          <fieldset>
+              <legend><span style="color: chocolate; font-weight:bold">ETAPE 3:</span> Accompagement</legend>
+          
+              <div class="col-12 mt-3">
+                  <label for="inputPassword4" class="form-label">Accompagement</label>
+                  {{form.accompagnement}}
+                  <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+                </div>
+  
+            <div class="col-12 mt-3">
+                <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
+                {{form_cat}}
+            </div> 
+  
+              
+            </fieldset>
+      </div>
+      <!-- end step 3 -->
+  
+         <!-- step 4 -->
+    <div id="step-4" class=""> 
+  
+      <fieldset>
+          <legend><span style="color: chocolate; font-weight:bold">ETAPE 4:</span> Supplement</legend>
+      
+          <div class="col-12 mt-3">
+              <label for="inputPassword4" class="form-label">Supplement</label>
+              {{form.supplement}}
+              <small class="text-muted" >Appuyer cmd pour selectioner plusieur ou deselectioner</small>
+            </div>
+  
+        <div class="col-12 mt-3">
+            <label for="inputPassword4" class="form-label">Ajouter un nouvel accompagement</label>
+            {{form_cat}}
+        </div> 
+        </fieldset>
+  
+  </div> 
+  
+     <!-- end step 4 -->
+   
+  
+  </div>
+   </div>
+   </div>
+   </div>
+   </div>
+   </div> 

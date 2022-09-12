@@ -1,8 +1,49 @@
 {% extends 'Resto/base_dashboard.html' %} {% block content %}
+
+<style>
+  .chartBox {
+    background-color: #fff;
+    border-radius: 12px;
+    width: 96%;
+    height: 300px;
+    margin: 10px;
+    object-fit: contain;
+  }
+
+  #pop-items {
+    height: 100%;
+  }
+  .chart {
+    border-color: black;
+    background-color: #f9f0ee;
+    margin: 12px;
+    border-radius: 12px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .chartBox {
+      background-color: #fff;
+      border-radius: 12px;
+      width: 97%;
+      height: 100%;
+      margin: 10px;
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    .chartBox {
+      background-color: #fff;
+      border-radius: 12px;
+      width: 90%;
+      height: 100%;
+      margin: 10px;
+    }
+  }
+</style>
+
 <div class="overview-boxes">
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Order</div>
+      <div class="box-topic">Commande Total</div>
       <div class="number">{{total_order}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">25%</div>
@@ -15,8 +56,8 @@
 
   <div class="box">
     <div class="right-side">
-        <div class="box-topic">Uncompleted Order</div>
-        <div class="number">{{all_order|length}}</div>
+      <div class="box-topic">Commande Terminer</div>
+      <div class="number">{{all_order|length}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">15%</div>
         <i class="bx bx-up-arrow-alt"></i>
@@ -28,8 +69,8 @@
 
   <div class="box">
     <div class="right-side">
-        <div class="box-topic">Completed Order</div>
-        <div class="number">{{total_completed_order}}</div>
+      <div class="box-topic">Commande incompletes</div>
+      <div class="number">{{total_completed_order}}</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">10%</div>
         <i class="bx bx-up-arrow-alt"></i>
@@ -41,8 +82,8 @@
 
   <div class="box">
     <div class="right-side">
-        <div class="box-topic">Performance</div>
-        <div class="number">85%</div>
+      <div class="box-topic">Performance Cuisine</div>
+      <div class="number">85%</div>
       <div class="indicator">
         <div class="comparePercentage" style="padding: 5px">25%</div>
         <i class="bx bx-down-arrow-alt down"></i>
@@ -58,85 +99,117 @@
 <div class="overview-boxes">
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Revenue</div>
+      <div class="d-flex justify-content-evenly">
+        <div class="p-1">Jour</div>
+        <div class="p-1">Mois</div>
+        <div class="p-1">Année</div>
+      </div>
+      <div class="box-topic">Revenue Total</div>
       <div class="number">150.000</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bx-money cart three"></i>
   </div>
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Customer</div>
+      <div class="d-flex justify-content-evenly">
+        <div class="p-1">Jour</div>
+        <div class="p-1">Mois</div>
+        <div class="p-1">Année</div>
+      </div>
+      <div class="box-topic">Total Client</div>
       <div class="number">{{total_customer}}</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-down-arrow-alt down"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bxs-user cart two"></i>
   </div>
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Total Visit</div>
+      <div class="d-flex justify-content-evenly">
+        <div class="p-1">Jour</div>
+        <div class="p-1">Mois</div>
+        <div class="p-1">Année</div>
+      </div>
+      <div class="box-topic">Visite Total</div>
       <div class="number">30</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bxs-user-check cart one"></i>
   </div>
 
   <div class="box">
     <div class="right-side">
-      <div class="box-topic">Average Time Per Order</div>
+      <div class="box-topic">Avg. Time Per Order</div>
       <div class="number">5 min</div>
+      <div class="indicator">
+        <div class="comparePercentage" style="padding: 5px">10%</div>
+        <i class="bx bx-up-arrow-alt"></i>
+        <span class="text">Up from yesterday</span>
+      </div>
     </div>
     <i class="bx bx-time-five cart two"></i>
   </div>
 </div>
 
-<div class="dataviz">
-  <div class="dataviz-content">
-    <div class="topmeals">
-      <div class="title">
-        <h1>Top 5 Meals</h1>
-      </div>
-
-      <div class="viz">{{vizTop5meals|safe}}</div>
-    </div>
+<div class="chart d-lg-flex justify-content-around">
+  <div class="chartBox shadow">
+    <canvas id="pop-items" width="96%" height="90%" style="object-fit: contain; margin-bottom: 20px"></canvas>
   </div>
 
-  <div class="dataviz-content">
-    <div class="topmeals">
-      <div class="title">
-        <h1>Upcoming orders</h1>
-        <div class="viz">{{vizOrder|safe}}</div>
-      </div>
-    </div>
+  <div class="chartBox shadow">
+    <canvas id="order-time" width="96%" height="90%" style="object-fit: contain; margin-top: 20px"></canvas>
   </div>
-
-  <!-- <div class="dataviz-content">
-    <div class="topmeals">
-      <div class="title">
-        <h1>Customer orders</h1>
-
-        <div class="viz">
-          <!-- <table>
-            <tr>
-              <th>Customer</th>
-              <th>Order</th>
-              <th>Total</th>
-              <th>status</th>
-            </tr>
-            {% for order in all_order %}
-            <tr>
-              <td>{{order.customer.user.first_name}} {{order.customer.user.last_name}}</td>
-              <td>{{order.id}}</td>
-              <td>{{order.get_order_total}}</td>
-              <td><span class="status">{{order.status}}</span></td>
-            </tr>
-            {% endfor %}
-          </table> -->
-  <!-- </div>
-      </div>
-    </div>
-  </div> -->
 </div>
 
-</div>
+<!-- <div>
+  <textarea name="ta" id="results" cols="30" rows="10"> </textarea><br />
+  Enter the expression: <input type="text" id="exp" />
+  <input type="button" id="submit" value="Get Results" />
+</div> -->
+
+<!-- <script>
+  const socket = new WebSocket("ws://localhost:8000/ws/livec/");
+  socket.onmessage = (e) => {
+    result = JSON.parse(e.data).result;
+    document.getElementById("results").value += "Server: " + result + "\n";
+  };
+
+  socket.onclose = (e) => {
+    console.log("Socket closed!");
+  };
+
+  document.querySelector("#exp").onkeyup = function (e) {
+    if (e.keyCode === 13) {
+      // enter, return
+      document.querySelector("#submit ").click();
+    }
+  };
+
+  document.querySelector("#submit").onclick = (e) => {
+    inputfield = document.querySelector("#exp");
+    exp = inputfield.value;
+    socket.send(
+      JSON.stringify({
+        expression: exp,
+      })
+    );
+    document.querySelector("#results").value += "You: " + exp + "\n";
+    inputfield.value = "";
+  };
+</script> -->
 
 {% endblock content %}

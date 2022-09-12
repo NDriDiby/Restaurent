@@ -1,5 +1,4 @@
 // Start here
-
 // send order to the kitchen
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 var sendOrder = document.getElementsByClassName("send-order");
@@ -7,10 +6,28 @@ var sendOrder = document.getElementsByClassName("send-order");
 var total_item = null;
 var orderItem = null;
 
+//  WEBSOCKET ROOTING
+// let url = `ws://${window.location.host}/ws/sendOrder/uncompleted-order/`;
+// const sendOrderSocket = new WebSocket(url);
+
+// sendOrderSocket.onclose = (e) => {
+//   console.log("Reconnecting....");
+// };
+
+// //OPEN DJANGO-CHANNELS
+// sendOrderSocket.onopen = (e) => {
+//   console.log("I am connected to websocket", url);
+// };
+
+// sendOrderSocket.onerror = (error) => {
+//   console.log(error);
+//   sendOrderSocket.close();
+// };
+
 //Get total item
 function getTotalItem() {
   $.ajax({
-    url: "/texasgrillz/sendorder/",
+    url: "/sendorder/",
     method: "GET",
     success: function (response) {
       console.log("response", response);
@@ -45,15 +62,28 @@ for (let i = 0; i < sendOrder.length; i++) {
     var action = this.dataset.action;
     var order = this.dataset.order;
 
-    //CINETPAY API
-    //cinetpayAPI();
-    sendMyOrder(action, order);
+    console.log("Paiement_method", paiement_method.innerText);
+
+    if (paiement_method.innerText === "Mobile") {
+      //CINETPAY API
+      cinetpayAPI();
+    } else {
+      sendMyOrder(action, order);
+    }
+
+    //SEND MESSAGE TO SERVER DJANGO-CHANNEL
+    // sendOrderSocket.send(
+    //   JSON.stringify({
+    //     message: order,
+    //     type: "order_status",
+    //   })
+    // );
   });
 }
 
 function sendMyOrder(action, order) {
   $.ajax({
-    url: "/texasgrillz/sendorder/",
+    url: "/sendorder/",
     method: "POST",
     data: { csrfmiddlewaretoken: csrfToken, action: action, order: order },
     dataType: "json",
@@ -63,10 +93,36 @@ function sendMyOrder(action, order) {
     },
 
     success: function (response) {
+      console.log(response.Order_Status == "Sent to kitchen");
       console.log("total Item:", total_item);
 
-      if (total_item > 0) {
-        console.log("I can send your order");
+      if (response.Order_Status == "Sent to kitchen") {
+        // DJANGO CHANNEL
+
+        $(".menudetails-content").fadeOut(1000);
+        $(".paiement-box").fadeOut(1000);
+        $(".total-box").fadeOut(1000);
+        $(".userfield").fadeOut(1000);
+        $(".logofield").fadeOut(1000);
+
+        $(".notification-order-box").fadeIn(100).append(`
+          <div class="text-center">
+
+          <div class="py-5 p-2 flex text-center mt-5">
+          <p class="mb-4 mt-5 animate-bounce" style="font-size: 1.5rem; color: chocolate">Please remain patient while we're 
+          sending your order to the kitchen</p>
+          </div>
+
+          <button type="submit" class="bg-indigo-500 btn">
+            Processing...
+          </button>
+
+          <div class="logofield py-5 p-2 flex justify-center mt-5 animate-pulse">
+          
+          <span class="businesslogo "><img src="${response.icarus_img}" alt="" width="150px" height="150px" /></span>
+         </div>
+
+        </div>`);
       }
     },
 
@@ -89,39 +145,42 @@ for (let i = 0; i < update_but.length; i++) {
     var itemId = this.dataset.product;
     var action = this.dataset.action;
     var ingre = this.dataset.ingredient;
-    var ordItem = this.dataset.orderItemID;
+    var ordItem = this.dataset.orderitem;
+    var sideorderitem = this.dataset.sideorderitem;
     var accompa = this.dataset.accomp;
 
+    console.log("ORDER ITEM ID", ordItem);
+    console.log("action:", action);
+
+    // GET TABLE NUMBER
+    table = location.href.split("&")[1].split("=")[1];
+
     $.ajax({
-      url: "/texasgrillz/updateitem/",
+      url: "/checkoutpage/",
       method: "POST",
       data: {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
+        ordItem: ordItem,
         action: action,
-        choice: ingre,
-        accomp: accompa,
+        table: table,
+        sideorderitem: sideorderitem,
       },
       success: function (response) {
         console.log(response);
-        orderItem = response.orderItem;
         active_item = null;
 
-        for (var ord in orderItem) {
-          var total_item = document.getElementsByClassName("quantity-field")[ord];
-          var item_total_price = document.getElementsByClassName("item-price")[ord];
-          var item_price_item = document.getElementsByClassName("item-price-item")[ord];
-          var total_item_accomp = document.getElementsByClassName("total-item-accomp")[ord];
+        // Get Response from backend
+        orderitem_id = response.order_item_id;
+        orderitem_quantity = response.tot_ind_item;
+        total_orderitem = response.total_order_item;
+        total_sup = response.total_supplement;
 
-          total_item.innerHTML = orderItem[ord]["quantity"];
-          item_total_price.innerHTML = `${orderItem[ord]["total"]} FCFA`;
-          item_price_item.innerHTML = "(" + orderItem[ord]["item_price_item"] + ")";
-          if (total_item_accomp) {
-            total_item_accomp.innerHTML = "(" + orderItem[ord]["total_item_accomp"] + ")";
-          }
+        var total_item = document.getElementById(`item-quantity-${orderitem_id}`);
+        var item_total_price = document.getElementById(`item-total-price-${orderitem_id}`);
 
-          console.log("NEW PRICE ALERT", orderItem[ord]["item_price_item"]);
-        }
+        total_item.innerHTML = orderitem_quantity;
+        item_total_price.innerHTML = `${total_orderitem} FCFA`;
 
         activeItem = document.getElementById(`item-total-price-${response.active_orderItem}`);
 
@@ -167,7 +226,7 @@ for (let i = 0; i < delete_item.length; i++) {
 
 function deleteItem(itemID, itemName) {
   $.ajax({
-    url: `/texasgrillz/deleteorderitem/`,
+    url: `/deleteorderitem/`,
     method: "POST",
     data: {
       csrfmiddlewaretoken: csrfToken,
@@ -192,7 +251,6 @@ function deleteItem(itemID, itemName) {
 }
 
 //Verify paiement
-
 function verifyPaiement(api, site, transaction) {
   $.ajax({
     url: `https://api-checkout.cinetpay.com/v2/payment/check?apikey=${api}&site_id=${site}&transaction_id=${transaction}`,
@@ -235,7 +293,7 @@ function verifyPaiement(api, site, transaction) {
           timer: 4000,
         }).then(() => {
           setTimeout(() => {
-            menu = location.href.replace("myorder/", "");
+            menu = location.href.replace("myorder/", "homepage/");
             location.href = menu;
           }, 3000);
         });
@@ -260,6 +318,7 @@ function verifyPaiement(api, site, transaction) {
 
 //Record payment to DataBase
 function processPaiement(pay_data, transaction) {
+  var orderID = $("#order_id").val();
   $.ajax({
     url: "/process_transaction/",
     method: "POST",
@@ -277,6 +336,7 @@ function processPaiement(pay_data, transaction) {
       transactionID: transaction,
       status: status_res,
       payment_method: payment_method,
+      orderID: orderID,
     },
     dataType: "json",
     success: function (response) {
@@ -325,7 +385,7 @@ function checkout(api, site, amount) {
   });
   CinetPay.getCheckout({
     transaction_id: transaction, //YOUR TRANSACTION ID
-    amount: amount,
+    amount: 100,
     currency: "XOF",
     channels: "ALL",
     description: "Test paiement",
@@ -342,6 +402,7 @@ function checkout(api, site, amount) {
   CinetPay.waitResponse(function (data) {
     if (data.status == "REFUSED") {
       console.log("refused");
+      return;
     } else if (data.status == "ACCEPTED") {
       console.log("accepted");
       sendMyOrder("Sent", orderID);
@@ -350,15 +411,4 @@ function checkout(api, site, amount) {
   });
 
   return "Caisse Ouverte";
-}
-
-// UPDATE SIDE ORDER
-var updateSide = document.getElementsByClassName("update-cart-side");
-
-for (let i = 0; i < updateSide.length; i++) {
-  updateSide[i].addEventListener("click", () => {
-    console.log(updateSide[i].dataset.accomp);
-
-    console.log(this.data);
-  });
 }

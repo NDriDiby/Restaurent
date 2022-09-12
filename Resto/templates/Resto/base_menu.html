@@ -55,16 +55,16 @@
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="btn btn-sm btn-outline-secondary " href="/texasgrillz/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
+                    <a class="btn btn-sm btn-outline-secondary " href="/?session={{app}}"><i class="bi bi-arrow-left-square"></i> Retour</a>
                 </div>
 
                 <div class="col-4 text-center" id="heading_logo">
                     <img src="{% static 'Resto/TexasGrillzLogo.jpeg' %}" style="width: 100px; height: 100px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;">
-                    <a class="blog-header-logo text-dark" href="/texasgrillz/?session={{app}}">Texas GrillZ</a>
+                    <a class="blog-header-logo text-dark" href="/?session={{app}}">Texas GrillZ</a>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
-                    <a href="/texasgrillz/myorder/?session={{app}}">
+                    <a href="/myorder/?session={{app}}">
                         <img id='cart-icon' src='{% static "Resto/cart.png" %}' style="width: 70px; height: 70px; object-fit: scale-down;image-rendering: auto;
                     flex: auto;text-align: center;"></a>
                     <div id='cart-total'>
@@ -78,10 +78,10 @@
         <div class=" nav-scroller py-1 mb-2 ">
             <nav class="nav d-flex justify-content-between ">
                 {% for m in category %}
-                <a class="p-2 text-muted " href="/texasgrillz/menudetails/{{m.id}}/?session={{app}}">
+                <a class="p-2 text-muted " href="menudetails/{{m.id}}/?session={{app}}">
                     <p style="color:skyblue;font-size: large; ">{{m.name}}</p>
                 </a> {% endfor %} {% if perms.resto.view_order%}
-                <a class="p-2 text-muted " href="{% url 'cuisine-texasgrillz'  %} ">
+                <a class="p-2 text-muted " href="{% url 'cuisine'  %} ">
                     <p style="color:skyblue;font-size: large; ">Cuisine</p>
                 </a>
                 {% endif %}

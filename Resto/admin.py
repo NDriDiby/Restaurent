@@ -2,7 +2,7 @@ from django.contrib import admin
 from.models import (Category,Item,Order,OrderItem,
                     Customer,ItemChoices,
                     ItemChoiceCategory,IventoryItemCategory,IventoryItem,Accompagnement,
-                    Transactions)
+                    Transactions,SideOrderItem,Supplement)
 
 
 # Register your models here.
@@ -13,7 +13,7 @@ admin.site.register(Customer,CustomerAdmin)
 
 
 class ItemChoicesAdmin(admin.ModelAdmin):
-    list_display = ('parent_food','name','choice_category','prix','date_created')
+    list_display = ('name','choice_category','prix','date_created')
 admin.site.register(ItemChoices,ItemChoicesAdmin)
 
 
@@ -33,13 +33,22 @@ admin.site.register(Item,ItemAdmin)
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('id','order','item','ingredient','quantity','date_added')
+    list_display = ('id','order','item','quantity','date_added')
 admin.site.register(OrderItem,OrderItemAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id','customer','table' ,'transaction_id','complete','status' ,'date_ordered','date_completed')
 admin.site.register(Order,OrderAdmin)
+
+class SideOrderItemAdmin(admin.ModelAdmin):
+    list_display = ('id','order','item','quantity','date_added')
+admin.site.register(SideOrderItem,SideOrderItemAdmin)
+
+
+class SupplementItemAdmin(admin.ModelAdmin):
+    list_display = ('name','prix','img')
+admin.site.register(Supplement,SupplementItemAdmin)
 
 class IventoryItemCategoryAdmin(admin.ModelAdmin):
     list_display = ('name','description','date_created')
@@ -50,12 +59,12 @@ class IventoryItemAdmin(admin.ModelAdmin):
 admin.site.register(IventoryItem,IventoryItemAdmin)
 
 class AccompagementAdmin(admin.ModelAdmin):
-    list_display = ('name','prix')
+    list_display = ('name','prix','img')
 admin.site.register(Accompagnement,AccompagementAdmin)
 
 
 class TransactionsAdmin(admin.ModelAdmin):
-    list_display = ('transactionID','user','amount','currency','payment_date','payment_method','status')
+    list_display = ('transactionID','user','amount','currency','payment_date','payment_method','status','order','transaction_date')
 admin.site.register(Transactions,TransactionsAdmin)
 
 

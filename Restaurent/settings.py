@@ -15,6 +15,7 @@ import os
 
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,15 +56,15 @@ CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacl
 
 # CSRF_COOKIE_DOMAIN =['novacloudlab.com']
 
-CSRF_FAILURE_VIEW = 'Customer.views.csrf_failure'
+# CSRF_FAILURE_VIEW = 'Customer.views.csrf_failure'
 
 
 # Application definition
 
 INSTALLED_APPS = [
+
     'Resto.apps.RestoConfig', #TexasGrillz
     'Customer.apps.CustomerConfig', #Customer
-    'Bakerys.apps.BakerysConfig', #Bakerys
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,15 +73,36 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'storages',
-    # 'django_extensions',
     'django.contrib.humanize',
     'django_resized',
-     'django_celery_beat',
-   
-
-
-
+    # 'django_celery_beat',
+    'tailwind',
+    'theme',
+    # 'django_browser_reload',
+    'channels',#Server-Client
 ]
+
+# TENANT_APPS = (
+#     'django.contrib.contenttypes',
+#     'django.contrib.auth',
+#     'django.contrib.admin',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+    
+
+#     'Resto.apps.RestoConfig', #TexasGrillz
+#     'Customer.apps.CustomerConfig', #Customer
+
+   
+# )
+
+# INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+
+TENANT_MODEL = "Tenant.Client" # app.Model
+
+TENANT_DOMAIN_MODEL = "Tenant.Domain"  # app.Model
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -91,6 +113,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = 'Restaurent.urls'
@@ -114,6 +137,33 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Restaurent.wsgi.application'
 
 
+#Django Channel
+ASGI_APPLICATION = 'Restaurent.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
+
+
+# Tailwind setup
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+TAILWIND_APP_NAME = 'theme'
+
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -121,7 +171,7 @@ WSGI_APPLICATION = 'Restaurent.wsgi.application'
 # #DATA BASE - PRODUCTION 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django_tenants.postgresql_backend', #django.db.backends.postgresql
         'NAME': 'da17t6rj0v8t6j', # The Server name from 1.5
         'USER': 'yvlsowwfcscpsj', # The username from 1.6
         'PASSWORD': 'f8bdf70870982fe69fa6a871ad2e4b9ab29c4cffbbecf10c694730441a28fcd1', # The password from installation
@@ -138,6 +188,18 @@ DATABASES = {
     }
 }
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django_tenants.postgresql_backend',
+#         'NAME': 'ndridiby',
+#         # set your user details
+#         'USER': 'ndridiby',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'POST': '5432'
+#     }
+# }
 
 
 
@@ -255,6 +317,7 @@ AUTHENTICATION_BACKENDS =['Customer.EmailAuth.EmailAuthBackend']
 
 
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -264,13 +327,24 @@ EMAIL_HOST_PASSWORD = 'lqbougxhwtocyofk'
 
 
 # CELERY
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/Lome'
-CELERY_ALWAYS_EAGER = True
+# CELERY_BROKER_URL = 'redis://localhost:6379'
+# CELERY_BROKER_URL = 'rediss://:pa142fa7357bc59cdc2cdc4a6ebd63ffaff3cd7773a653c7dc584d9bbc53e4526@ec2-44-205-146-175.compute-1.amazonaws.com:15240'
+# CELERY_RESULT_BACKEND = 'rediss://:pa142fa7357bc59cdc2cdc4a6ebd63ffaff3cd7773a653c7dc584d9bbc53e4526@ec2-44-205-146-175.compute-1.amazonaws.com:15240'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Africa/Lome'
+# CELERY_ALWAYS_EAGER = True
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": os.environ.get('REDIS_URL'),
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
 
 # CELERY_BEAT_SCHEDULE ={
@@ -285,9 +359,6 @@ CELERY_ALWAYS_EAGER = True
 #     'schedule':5.0,
 #     }
 # }
-
-
-
 
 
 

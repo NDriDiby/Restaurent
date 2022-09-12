@@ -20,9 +20,9 @@ from django.conf.urls.static import static #add this
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("__reload__/", include("django_browser_reload.urls")),
     path('',include('Resto.urls')),
     path('',include('Customer.urls')),
-     path('',include('Bakerys.urls')),
     
 ]
 

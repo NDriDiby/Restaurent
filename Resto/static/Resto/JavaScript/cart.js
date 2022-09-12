@@ -2,13 +2,11 @@
 var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
 
 // Add item to your cart
-var updated_but = document.getElementsByClassName("update-cart");
-var ingredients = document.querySelectorAll("input");
-var accompagnement = document.getElementsByClassName("accompagement");
-var form = document.getElementById("choiceOptions");
-
 var form = $("#item-details-form");
-console.log(form[0]);
+var updated_but = document.getElementsByClassName("update-cart");
+var ingredients = document.getElementsByClassName("ingredient-input");
+var accompagnement = document.getElementsByClassName("accompagement");
+var supplement = document.getElementsByClassName("supplement-input");
 
 //Accompagement
 
@@ -16,10 +14,25 @@ $(".accompagement").on("click", function () {
   $(this).toggleClass("active");
 });
 
+var one_choice = document.querySelectorAll(".cuisson input");
+console.log(one_choice);
+
+// for (let index = 0; index < one_choice.length; index++) {
+//   one_choice[index].addEventListener("click", () => {
+//     if (cuisson.length == 0) {
+//       //cuisson.push($(this).val());
+//     } else {
+//       cuisson[0] = one_choice[index].value;
+//     }
+//   });
+// }
+
 //Cuisson
 var cuisson = [];
 $(".cuisson input").click(function () {
+  console.log("I click you bro", $(this).val());
   $(".cuisson input").not(this).prop("checked", false);
+  cuisson[0] = $(this).val();
   if (cuisson.length == 0) {
     //cuisson.push($(this).val());
   } else {
@@ -28,16 +41,21 @@ $(".cuisson input").click(function () {
   //console.log(bag.concat(cuisson).toString());
 });
 
+// Current Page
+page = location.href.split("/")[4];
+console.log(page);
+
 for (var i = 0; i < updated_but.length; i++) {
   updated_but[i].addEventListener("click", function (e) {
     var custChoice = [];
     var accomp_id = [];
+    var supplements = [];
     msg = document.getElementById("message");
 
     e.preventDefault();
     var itemId = this.dataset.product;
+    var side_itemId = this.dataset.product_side;
     var action = this.dataset.action;
-    var ingre = this.dataset.ingredient;
 
     for (let i = 0; i < accompagnement.length; i++) {
       if (accompagnement[i].className == "accompagement active") {
@@ -46,38 +64,58 @@ for (var i = 0; i < updated_but.length; i++) {
     }
 
     //Customer ingredient choice
-    for (let i = 1; i < ingredients.length; i++) {
+    for (let i = 0; i < ingredients.length; i++) {
       if (ingredients[i].checked === true) {
         custChoice.push(ingredients[i].value);
       }
     }
 
-    //From order page (ingredient)
-    if (custChoice[0] == null) {
-      custChoice = ingre;
+    //Customer supplement choice
+    for (let i = 0; i < supplement.length; i++) {
+      if (supplement[i].checked === true) {
+        supplements.push(supplement[i].value);
+        console.log(supplement[i].value);
+      }
+    }
+    console.log(custChoice);
+    console.log(cuisson);
+
+    // GET TABLE NUMBER
+    table = location.href.split("&")[1].split("=")[1];
+
+    // Add cuisson
+    if (cuisson.length > 0) {
+      custChoice.push(cuisson[0]);
     }
 
-    //No ingredient item (choice)
-    if (custChoice == undefined) {
-      custChoice = " ";
-    }
+    // Current Page
+    console.log(location.href);
 
-    //From order page (ingredient) - (no choice)
-    if (ingre == "None") {
-      ingre = " ";
-      custChoice = ingre;
-    }
-
-    $.ajax({
-      url: "/texasgrillz/updateitem/",
-      method: "POST",
-      data: {
+    // DATA TO PROCESS
+    if (side_itemId) {
+      data = {
+        csrfmiddlewaretoken: csrfToken,
+        side_itemId: side_itemId,
+        action: action,
+        table: table,
+        page: page,
+      };
+    } else {
+      data = {
         csrfmiddlewaretoken: csrfToken,
         itemId: itemId,
         action: action,
         choice: custChoice.toString(),
         accomp: accomp_id.toString(),
-      },
+        sup: supplements.toString(),
+        table: table,
+      };
+    }
+
+    $.ajax({
+      url: "/updateitem/",
+      method: "POST",
+      data: data,
       dataType: "json",
       success: function (response) {
         orderItem = response.orderItem;
@@ -85,35 +123,34 @@ for (var i = 0; i < updated_but.length; i++) {
         item_name = response.item_name;
         tot_item = response.tot_item;
 
+        console.log(response);
+
         var old_total = document.getElementById("orderTotal-total").innerText;
         old_total = parseInt(old_total.split("FCFA")[0]);
-
-        console.log("OLD VAL", old_total);
 
         item_price = parseInt(document.getElementById("item-price").innerText);
         var new_total = response.total;
 
-        console.log("NEW VAL", new_total);
-
         msg.innerHTML = `
-        <div class='justify-center text-sm w-full items-center bg-gray-500 px-2 mx-2 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
-          <p class="text-white pr-1"><strong>(${tot_item}) </strong>${item_name} ajouté(es) a votre table </p>
-          <span><i class="bi bi-check-circle text-xl font-bold text-green-300"></i></span>
+        <div class='justify-center text-sm w-full items-center bg-gray-500 px-1 mx-1 py-1 rounded-md sm:py-3 sm:mt-24 sm:text-2xl flex'>
+          <p class="text-white"><strong>${item_name} ajouté(es) au pannier </strong> </p>
+          <span class ='pl-3'><i class="bi bi-check-circle text-xl font-bold" style="color:orange"></i></span>
         </div>`;
 
         total_item_box = document.getElementById("total-item");
         $("#cart-total").slideUp(100).slideDown(300);
         $("#message").show();
+
         total_item_box.innerHTML = total_cart;
 
         $("#message").delay(3000).fadeOut("slow");
 
         count = old_total;
 
-        let counting = setInterval(countUp, 10);
+        let counting = setInterval(countUp, 7);
 
         function countUp() {
-          count = count + 100;
+          count = count + 50;
 
           if (count == new_total) {
             clearInterval(counting);
