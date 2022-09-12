@@ -37,6 +37,7 @@ django-storages==1.12.3
 django-tailwind==3.4.0
 django-timezone-field==5.0
 flower==1.1.0
+gunicorn==20.1.0
 hiredis==2.0.0
 humanize==4.2.3
 hyperlink==21.0.0
