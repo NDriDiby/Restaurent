@@ -64,7 +64,7 @@ admin.site.register(Accompagnement,AccompagementAdmin)
 
 
 class TransactionsAdmin(admin.ModelAdmin):
-    list_display = ('transactionID','user','amount','currency','payment_date','payment_method','status')
+    list_display = ('transactionID','user','amount','currency','payment_date','payment_method','status','order','transaction_date')
 admin.site.register(Transactions,TransactionsAdmin)
 
 

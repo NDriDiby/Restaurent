@@ -293,7 +293,7 @@ function verifyPaiement(api, site, transaction) {
           timer: 4000,
         }).then(() => {
           setTimeout(() => {
-            menu = location.href.replace("myorder/", "");
+            menu = location.href.replace("myorder/", "homepage/");
             location.href = menu;
           }, 3000);
         });
