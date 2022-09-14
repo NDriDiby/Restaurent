@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     # 'crispy_forms',
     'storages',
     'django.contrib.humanize',
-    'django_resized',
+
     # 'django_celery_beat',
     'tailwind',
     'theme',
