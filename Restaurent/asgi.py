@@ -16,12 +16,12 @@ from channels.routing import ProtocolTypeRouter
 from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
 from channels.routing import ProtocolTypeRouter, URLRouter
-import Resto.routing
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Restaurent.settings')
 django_asgi_app = get_asgi_application()
 
-
+import Resto.routing
   
 application = ProtocolTypeRouter({
   "http": django_asgi_app,
