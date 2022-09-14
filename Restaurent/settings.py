@@ -63,7 +63,7 @@ CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacl
 # Application definition
 
 INSTALLED_APPS = [
-      'channels',#Server-Client
+    'channels',#Server-Client
     'Resto.apps.RestoConfig', #TexasGrillz
     'Customer.apps.CustomerConfig', #Customer
     'django.contrib.admin',
@@ -100,9 +100,7 @@ INSTALLED_APPS = [
 # INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 
-TENANT_MODEL = "Tenant.Client" # app.Model
 
-TENANT_DOMAIN_MODEL = "Tenant.Domain"  # app.Model
 
 
 MIDDLEWARE = [
