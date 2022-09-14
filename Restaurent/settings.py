@@ -72,14 +72,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'crispy_forms',
-    # 'storages',
-    # 'django.contrib.humanize',
+    'crispy_forms',
+    'storages',
+    'django.contrib.humanize',
 
-    # # 'django_celery_beat',
-    # 'tailwind',
-    # 'theme',
-    # 'django_browser_reload',
+    # 'django_celery_beat',
+    'tailwind',
+    'theme',
+    'django_browser_reload',
   
 ]
 
@@ -145,14 +145,14 @@ CHANNEL_LAYERS = {
     }
 }
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [('127.0.0.1', 6379)],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+           "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+    },
+}
 
 
 # Tailwind setup
