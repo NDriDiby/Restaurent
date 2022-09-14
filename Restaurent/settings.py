@@ -50,9 +50,11 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','https://cinetpay.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com','https://novacloudlab.com']
+CSRF_TRUSTED_ORIGINS = ['https://icarusrestaurant.herokuapp.com',
+                        'https://novacloudlab.com',
+                        'https://cinetpay.com']
 
 
 # CSRF_COOKIE_DOMAIN =['novacloudlab.com']
