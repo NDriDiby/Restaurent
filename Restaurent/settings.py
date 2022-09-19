@@ -88,7 +88,6 @@ INSTALLED_APPS = [
 #     'django.contrib.admin',
 #     'django.contrib.sessions',
 #     'django.contrib.messages',
-    
 
 #     'Resto.apps.RestoConfig', #TexasGrillz
 #     'Customer.apps.CustomerConfig', #Customer
